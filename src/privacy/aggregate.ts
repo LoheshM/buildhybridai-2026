@@ -10,8 +10,8 @@ export const MIN_SHEETS = 5;
 export const LANGS = ['en', 'hi', 'ta'] as const;
 export type Lang = (typeof LANGS)[number];
 
-/** A count, or a suppressed small count shown as "<k". */
-export type Cell = number | `<${number}`;
+/** A count, or "hidden": a group smaller than k, or a cell that would let one be worked out. */
+export type Cell = number | 'hidden';
 
 export interface QuestionTotals {
   q: number;
@@ -48,7 +48,7 @@ export function suppressRow(values: number[], k: number, totalKnown: boolean): C
       count++;
     }
   }
-  return values.map((v, i) => (hidden[i] ? (`<${k}` as Cell) : v));
+  return values.map((v, i) => (hidden[i] ? ('hidden' as const) : v));
 }
 
 export interface SheetMarks { marks: Marked[] }
@@ -84,7 +84,7 @@ export function buildTotals(keys: QuestionKey[], sheets: SheetMarks[], kIn: numb
 export const safeNumberText = (s: string) => (s ?? '').replace(/[^0-9 ./-]/g, '').replace(/\s+/g, ' ').trim().slice(0, 16);
 
 /** A cell is 0, a count of at least k, or the suppression marker. Unsuppressed small counts are refused. */
-const CELL = (c: unknown, k: number) => (typeof c === 'number' && Number.isInteger(c) && (c === 0 || (c >= k && c < 10000))) || c === `<${k}`;
+const CELL = (c: unknown, k: number) => (typeof c === 'number' && Number.isInteger(c) && (c === 0 || (c >= k && c < 10000))) || c === 'hidden';
 const MATH = /^[0-9 ./+×÷-]{0,40}$/;
 
 /** Strict allowlist validation of the outbound payload. Throws on anything unexpected. */

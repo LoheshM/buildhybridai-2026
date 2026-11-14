@@ -76,7 +76,7 @@ export function Reteach({ quizId }: { quizId: string }) {
             </tbody>
           </table>
         </div>
-        <p className="small muted" style={{ marginTop: 8 }}><span className="hidden-cell">&lt;{totals.k}</span> means fewer than {totals.k} students: hidden so nobody can be singled out.</p>
+        <p className="small muted" style={{ marginTop: 8 }}><span className="hidden-cell">hidden</span> means fewer than {totals.k} students, or a number that would let someone work one out. Nobody can be singled out.</p>
         <fieldset className="row" style={{ border: 0, padding: 0, margin: '12px 0' }}>
           <legend className="small" style={{ fontWeight: 700, marginBottom: 6 }}>Parent notes in</legend>
           {(['en', 'hi', 'ta'] as Lang[]).map((l) => (
@@ -129,8 +129,12 @@ function PlanView({ plan, where, ms, sheets, rosterName, credit, langs }: { plan
     return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
   };
   const template = (g: string, l: Lang): { text: string; fallback: boolean } => {
-    const t = plan.notes?.find((n) => n.group === g && n.language === l) ?? plan.notes?.find((n) => n.group === (g === 'default' ? 'other' : g) && n.language === l);
-    if (t && validTemplate(t.text)) return { text: t.text, fallback: false };
+    // the child's own group first, then the generic "other" note in the same language, then built-in English
+    const candidates = [g, g === 'default' ? 'other' : '', g !== 'secure' ? 'other' : ''].filter(Boolean);
+    for (const c of candidates) {
+      const t = plan.notes?.find((n) => n.group === c && n.language === l);
+      if (t && validTemplate(t.text)) return { text: t.text, fallback: false };
+    }
     return { text: FALLBACK_NOTES[g] ?? FALLBACK_NOTES.default, fallback: true };
   };
   const slips = sheets.filter((s) => s.studentId).map((s) => {
@@ -180,7 +184,7 @@ function PlanView({ plan, where, ms, sheets, rosterName, credit, langs }: { plan
         </div>
         <p className="muted small noprint">The cloud wrote one template per mistake group with placeholders. Each child's name and score were filled in here, on this laptop.</p>
         <div className="tabs noprint" role="tablist">{langs.map((l) => <button key={l} role="tab" aria-selected={lang === l} onClick={() => setLang(l)}>{LANG_NAME[l]}</button>)}</div>
-        {fallbacks > 0 && <p className="callout small noprint">{fallbacks} note{fallbacks === 1 ? '' : 's'} use Tickmark's built-in English text because the cloud template failed a placeholder check.</p>}
+        {fallbacks > 0 && <p className="callout small noprint">{fallbacks === 1 ? '1 note uses' : `${fallbacks} notes use`} Tickmark's built-in English text because the cloud template failed a placeholder check.</p>}
         <div className="stack">
           {slips.map((s) => <div key={s.id} className="slip"><div className="small muted">{s.name}</div><div className="note" lang={s.fallback ? 'en' : lang}>{s.text}</div></div>)}
         </div>

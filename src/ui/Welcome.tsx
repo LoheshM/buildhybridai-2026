@@ -45,7 +45,7 @@ export function Welcome() {
           </div>
           <div className="mark-sheet" style={{ transform: 'rotate(1.5deg)' }}>
             <img src="/samples/s05.jpg" alt="" />
-            <ScoreRing points={10} outOf={10} />
+            <ScoreRing points={10} outOf={10} big />
           </div>
         </div>
       </section>

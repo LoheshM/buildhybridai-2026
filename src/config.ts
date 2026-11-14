@@ -21,4 +21,4 @@ export const DEVICE_EXPECTED_INPUTS = [{ type: 'text', languages: ['en'] }, { ty
 export const DEVICE_EXPECTED_OUTPUTS = [{ type: 'text', languages: ['en'] }] as const;
 
 export const DEVICE_TIMEOUT_MS = 90_000;
-export const BUILD = { commit: import.meta.env.VITE_COMMIT ?? 'dev', date: import.meta.env.VITE_BUILD_DATE ?? '' };
+export const BUILD = { commit: import.meta.env?.VITE_COMMIT ?? 'dev', date: import.meta.env?.VITE_BUILD_DATE ?? '' };

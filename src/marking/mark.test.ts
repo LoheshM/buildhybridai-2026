@@ -111,3 +111,22 @@ describe('agreement with the independent sample simulator', () => {
     }
   });
 });
+
+describe('pipeline merge', async () => {
+  const { mergeReread } = await import('./pipeline');
+  const k = K(3, '3/5 - 1/10', '1/2');
+  it('agreement keeps the mark; disagreement flags and offers only clean values', () => {
+    const m = markAnswer(k, '1/2');
+    expect(mergeReread([m], new Map([[3, '1/2']]))[0]).toEqual(m);
+    const d = mergeReread([m], new Map([[3, '1 1/2']]))[0];
+    expect(d.flags).toContain('reread_disagreed');
+    expect(d.suggestions).toContain('1 1/2');
+    const g = mergeReread([m], new Map([[3, '/2 1/2']]))[0];
+    expect(g.flags).toContain('reread_disagreed');
+    expect(g.suggestions).not.toContain('/2 1/2');
+    expect(g.status).toBe('correct'); // a second opinion never changes the mark by itself
+  });
+  it('crossed-out text equal to the answer is dropped', () => {
+    expect(markAnswer(k, '1/2', '1/2').crossedOut).toBe('');
+  });
+});

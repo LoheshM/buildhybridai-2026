@@ -32,7 +32,9 @@ export function mergeReread(marks: Marked[], second: Map<number, string>): Marke
     if (!second.has(m.q)) return m;
     const alt = second.get(m.q)!;
     if (sameValue(alt, m.read)) return m;
-    return { ...m, flags: [...new Set([...m.flags, 'reread_disagreed' as const])], suggestions: [...new Set([alt, ...m.suggestions])].filter((s) => s !== m.read) };
+    // Only offer readings that are a single clean value; garbage like "/2 1/2" is never a one-tap fix.
+    const usable = parse(alt).kind === 'value' || parse(alt).kind === 'blank';
+    return { ...m, flags: [...new Set([...m.flags, 'reread_disagreed' as const])], suggestions: usable ? [...new Set([alt, ...m.suggestions])].filter((s) => s !== m.read) : m.suggestions };
   });
 }
 

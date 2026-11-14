@@ -1,10 +1,10 @@
 // Red-pen marks: a hand-drawn ring around the score, ticks and crosses.
 import type { Status } from '../marking/mark';
 
-export function ScoreRing({ points, outOf, draw = true }: { points: number; outOf: number; draw?: boolean }) {
+export function ScoreRing({ points, outOf, draw = true, big = false }: { points: number; outOf: number; draw?: boolean; big?: boolean }) {
   const p = Number.isInteger(points) ? String(points) : points.toFixed(1).replace('.5', '½');
   return (
-    <span className="score-ring" aria-label={`Score ${points} out of ${outOf}`}>
+    <span className={`score-ring${big ? ' big' : ''}`} aria-label={`Score ${points} out of ${outOf}`}>
       <svg viewBox="0 0 100 60" preserveAspectRatio="none" aria-hidden="true">
         <path className={draw ? 'draw' : ''} d="M60 6 C 22 2, 4 18, 6 33 C 9 52, 52 58, 80 50 C 99 43, 98 18, 74 9 C 66 6, 54 5, 44 7" />
       </svg>
@@ -40,7 +40,7 @@ export function Logo() {
 
 export function WhereChip({ where, ms }: { where?: string; ms?: number }) {
   if (!where) return null;
-  const secs = ms ? ` · ${(ms / 1000).toFixed(1)} s` : '';
+  const secs = ms ? `, ${(ms / 1000).toFixed(1)} s` : '';
   if (where === 'on_device') return <span className="pill device"><span className="dot" />On this laptop{secs}</span>;
   if (where === 'in_cloud') return <span className="pill cloud"><span className="dot" />Cloud AI{secs}</span>;
   if (where === 'recorded') return <span className="pill cloud"><span className="dot" />Recorded cloud reading</span>;

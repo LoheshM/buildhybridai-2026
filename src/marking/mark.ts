@@ -70,8 +70,10 @@ export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marke
   const flags: Flag[] = [];
   const suggestions: string[] = [];
   const p = parse(read);
-  const co = (crossedOut ?? '').trim();
-  if (co && co.replace(/\s+/g, '') !== (read ?? '').replace(/\s+/g, '')) flags.push('crossed_out');
+  // Models sometimes repeat the final answer as "crossed out"; that is noise, not crossed-out work.
+  const coRaw = (crossedOut ?? '').trim();
+  const co = coRaw && coRaw.replace(/\s+/g, '') !== (read ?? '').replace(/\s+/g, '') ? coRaw : '';
+  if (co) flags.push('crossed_out');
 
   let status: Status;
   let misconception: MisconceptionId | null = null;

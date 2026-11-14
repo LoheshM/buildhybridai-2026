@@ -20,7 +20,7 @@ export const totalsPrompt = (t: ClassTotals) =>
   `no student names or individual answers. "mistakes" counts wrong answers by the mistake pattern a marking program detected ` +
   `(add_across = added tops and bottoms straight across; numerators_only = combined numerators but kept one denominator; ` +
   `denominators_multiplied; whole_dropped = lost the whole number of a mixed number; cross_multiply; no_invert = divided without flipping; ` +
-  `flipped_first; reversed_subtraction; wrong_operation; slip = arithmetic slip; other = unexplained). Values like "<3" are small numbers hidden for privacy.\n\n` +
+  `flipped_first; reversed_subtraction; wrong_operation; slip = arithmetic slip; other = unexplained). A value of "hidden" is a small group hidden for privacy (or a number that would reveal one); treat it as "a few".\n\n` +
   `Write:\n` +
   `1. plan: a reteach mini-lesson of at most 15 minutes aimed at the most common mistake pattern, with 3-5 steps, ` +
   `a hinge question (with answer and what to do if students get it wrong), and practice in three tiers ` +

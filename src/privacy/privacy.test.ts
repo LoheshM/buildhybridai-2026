@@ -12,10 +12,10 @@ const names: string[] = m.students.map((s: { name: string }) => s.name);
 
 describe('suppressRow', () => {
   it('hides small counts', () => {
-    expect(suppressRow([20, 1, 7, 0], 3, false)).toEqual([20, '<3', 7, 0]);
+    expect(suppressRow([20, 1, 7, 0], 3, false)).toEqual([20, 'hidden', 7, 0]);
   });
   it('hides a second cell when the row total would reveal the first', () => {
-    expect(suppressRow([20, 1, 7, 0], 3, true)).toEqual([20, '<3', '<3', 0]);
+    expect(suppressRow([20, 1, 7, 0], 3, true)).toEqual([20, 'hidden', 'hidden', 0]);
   });
   it('property: with a known total, a hidden cell is never derivable (never exactly one hidden)', () => {
     for (let t = 0; t < 2000; t++) {
@@ -35,7 +35,7 @@ describe('class totals payload', () => {
     validatePayload(p);
     const text = JSON.stringify(p);
     expect(findRosterNames(text, rosterTokens(names))).toEqual([]);
-    expect(stringValues(p).every((v) => /^[0-9a-z <./+×÷_-]*$/.test(v))).toBe(true);
+    expect(stringValues(p).every((v) => /^[0-9a-z ./+×÷_-]*$/.test(v))).toBe(true);
   });
   it('counts add up and small cells are hidden', () => {
     const q2 = p.questions.find((q) => q.q === 2)!;

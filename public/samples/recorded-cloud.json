@@ -1,0 +1,1668 @@
+{
+ "recordedAt": "2026-11-14",
+ "model": "gemini-3.5-flash-lite",
+ "reads": {
+  "s01": {
+   "studentName": "Aarav S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "1/2",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s02": {
+   "studentName": "Meera K.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s03": {
+   "studentName": "Rohan D.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "2/7",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s04": {
+   "studentName": "Ananya I.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s05": {
+   "studentName": "Kabir S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s06": {
+   "studentName": "Diya M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s07": {
+   "studentName": "Arjun R.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "4/5",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "4/5",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "1/2",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s08": {
+   "studentName": "Ishita R.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "6/8"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "15/18"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "6/15"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "18/8"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s09": {
+   "studentName": "Vihaan J.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "25/50"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "6/4"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "18/8"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s10": {
+   "studentName": "Saanvi N.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "4/5",
+     "finalAnswer": "6/8"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "25/50"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "6/15"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "15/6"
+    }
+   ]
+  },
+  "s11": {
+   "studentName": "Aditya K.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "2/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s12": {
+   "studentName": "Myra F.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "2/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "3/9"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s13": {
+   "studentName": "Reyansh G.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s14": {
+   "studentName": "Kiara T.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "2/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s15": {
+   "studentName": "Dhruv P.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "2/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "3/9"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s16": {
+   "studentName": "Anika B.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "2/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "3/9"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s17": {
+   "studentName": "Kavin R.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "2/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "3/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "2/4"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "3/5"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s18": {
+   "studentName": "Tara M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "2/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "3/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "2/10"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "3/5"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "2/7",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s19": {
+   "studentName": "Neil D.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "3/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "2/10"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "2/4"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "3/5"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s20": {
+   "studentName": "Zoya K.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "4/9"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s21": {
+   "studentName": "Yash J.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "1/2",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s22": {
+   "studentName": "Riya P.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "4/9"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s23": {
+   "studentName": "Samar M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s24": {
+   "studentName": "Aisha S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "2/7",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "1/2",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "5/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s25": {
+   "studentName": "Ved C.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "1/2",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "1/2",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s26": {
+   "studentName": "Nila S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "2/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "3/9"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s27": {
+   "studentName": "Leo M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "6/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "3/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "1 5/6"
+    }
+   ]
+  },
+  "s28": {
+   "studentName": "Pari A.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "4/5",
+     "finalAnswer": "3/4"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/2"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "11/15"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "2/5"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    }
+   ]
+  }
+ },
+ "totals": {
+  "plan": {
+   "title": "Fixing Fraction Addition and Subtraction: Finding Common Denominators",
+   "focus": "Addressing the add_across mistake pattern by reinforcing common denominators before adding or subtracting fractions.",
+   "minutes": 15,
+   "steps": [
+    {
+     "minutes": 3,
+     "teacher": "Show 1/2 + 1/4 on the board. Remind students that add_across (adding tops and bottoms straight out) is a trap because the pieces are different sizes.",
+     "students": "Observe the visual fraction strips showing why different denominators cannot be directly added."
+    },
+    {
+     "minutes": 4,
+     "teacher": "Demonstrate how to find a common denominator. Convert 1/2 to 2/4 by multiplying numerator and denominator by 2.",
+     "students": "Follow along and write down the steps for finding the lowest common denominator."
+    },
+    {
+     "minutes": 4,
+     "teacher": "Work through 2/3 + 1/6 together. Show how 2/3 becomes 4/6, then add numerators to get 5/6.",
+     "students": "Practice converting and adding alongside the teacher on individual whiteboards."
+    },
+    {
+     "minutes": 4,
+     "teacher": "Guide students through setting up subtraction with unlike denominators, like 3/4 - 1/3.",
+     "students": "Convert both fractions to twelfths and complete the subtraction independently."
+    }
+   ],
+   "hingeQuestion": {
+    "question": "What is 1/3 + 1/6?",
+    "answer": "1/2",
+    "ifWrong": "If students answer 2/9, pause and draw a pizza split into sixths to show that 1/3 equals 2/6, so 2/6 + 1/6 = 3/6 which simplifies to 1/2."
+   },
+   "practice": {
+    "support": [
+     {
+      "question": "1/4 + 1/2",
+      "answer": "3/4"
+     },
+     {
+      "question": "1/3 + 1/6",
+      "answer": "1/2"
+     },
+     {
+      "question": "1/2 - 1/4",
+      "answer": "1/4"
+     },
+     {
+      "question": "2/5 + 1/10",
+      "answer": "1/2"
+     }
+    ],
+    "core": [
+     {
+      "question": "1/2 + 1/4",
+      "answer": "3/4"
+     },
+     {
+      "question": "2/3 + 1/6",
+      "answer": "5/6"
+     },
+     {
+      "question": "3/5 - 1/10",
+      "answer": "1/2"
+     },
+     {
+      "question": "3/4 - 1/3",
+      "answer": "5/12"
+     }
+    ],
+    "stretch": [
+     {
+      "question": "2/5 + 1/3",
+      "answer": "11/15"
+     },
+     {
+      "question": "3/4 + 2/5",
+      "answer": "1 3/20"
+     },
+     {
+      "question": "7/8 - 1/3",
+      "answer": "13/24"
+     }
+    ]
+   }
+  },
+  "notes": [
+   {
+    "group": "add_across",
+    "language": "en",
+    "text": "Hello! {{student}} worked hard on fractions today, scoring {{score}} out of {{total}}. We noticed a tendency to add denominators straight across. Remember, fractions need common sizes before combining! Try practicing by adding halves and quarters using measuring cups during cooking at home."
+   },
+   {
+    "group": "add_across",
+    "language": "hi",
+    "text": "नमस्ते! {{student}} ने आज भिन्न के प्रश्नों में अच्छा प्रयास किया और {{score}}/{{total}} अंक प्राप्त किए। हमने देखा कि हर (denominators) को सीधे जोड़ा जा रहा है। जोड़ने से पहले समान हर बनाना याद रखें। घर पर खाना बनाते समय मापने वाले कपों से अभ्यास करें।"
+   },
+   {
+    "group": "add_across",
+    "language": "ta",
+    "text": "வணக்கம்! {{student}} இன்று பின்னங்கள் சோதனையில் {{score}}/{{total}} மதிப்பெண்கள் பெற்றுள்ளார். பகுதியை (denominator) அப்படியே கூட்டுவதில் சிறிய குழப்பம் உள்ளது. கூட்டுவதற்கு முன் பொதுவான பகுதியை கண்டறிய வேண்டும். சமையலின் போது அளவிடும் கோப்பைகளைப் பயன்படுத்தி பயிற்சி செய்யுங்கள்."
+   },
+   {
+    "group": "secure",
+    "language": "en",
+    "text": "Hello! Excellent news about {{student}}'s math check. They scored {{score}} out of {{total}} and showed a strong understanding of fractions! To keep those skills sharp, ask them to help calculate ingredient fractions when baking at home."
+   },
+   {
+    "group": "secure",
+    "language": "hi",
+    "text": "नमस्ते! {{student}} ने गणित जाँच में बहुत अच्छा प्रदर्शन किया है। उन्होंने {{score}}/{{total}} अंक प्राप्त किए और भिन्नों की अच्छी समझ दिखाई! इस कौशल को मजबूत रखने के लिए घर पर बेकिंग करते समय सामग्री की मात्रा का हिसाब लगवाने में मदद लें।"
+   },
+   {
+    "group": "secure",
+    "language": "ta",
+    "text": "வணக்கம்! {{student}} கணித சோதனையில் சிறந்து விளங்கியுள்ளார். {{score}}/{{total}} பெற்று பின்னங்களை நன்றாகப் புரிந்து கொண்டுள்ளார்! திறமையை மேலும் வளர்க்க சமையலின் போது தேவையான பொருட்களின் அளவுகளைக் கணக்கிடச் சொல்லுங்கள்."
+   }
+  ]
+ },
+ "cloudAccuracy": {
+  "exact": 279,
+  "total": 280
+ }
+}

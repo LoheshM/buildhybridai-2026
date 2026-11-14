@@ -1545,85 +1545,85 @@
  },
  "totals": {
   "plan": {
-   "title": "Adding and Subtracting Fractions with Unlike Denominators",
-   "focus": "Finding a common denominator before adding or subtracting fractions",
+   "title": "Adding Fractions with Different Denominators",
+   "focus": "Finding a common denominator before adding fractions instead of adding straight across.",
    "minutes": 15,
    "steps": [
     {
      "minutes": 3,
-     "teacher": "Show 1/2 + 1/4. Point out that the bottom numbers are different, so we cannot just add the tops and bottoms straight across.",
-     "students": "Observe the problem and discuss why the denominators must match."
+     "teacher": "The teacher displays 1/2 + 1/4 and explains that we cannot add fractions directly when the bottom numbers are different.",
+     "students": "Students listen and observe that the two fraction strips have different sizes."
     },
     {
      "minutes": 4,
-     "teacher": "Explain how to find a common denominator by listing multiples, converting 1/2 to 2/4.",
-     "students": "Follow along and help find the common denominator for 1/2 and 1/4."
+     "teacher": "The teacher demonstrates how to find a common denominator by converting 1/2 into 2/4.",
+     "students": "Students follow along on their whiteboards, rewriting 1/2 as 2/4."
     },
     {
      "minutes": 4,
-     "teacher": "Demonstrate adding the converted fractions: 2/4 + 1/4 = 3/4. Emphasize that the denominator stays the same.",
-     "students": "Practice the steps on mini-whiteboards with a similar problem."
+     "teacher": "The teacher guides the class to add only the top numbers while keeping the bottom number the same: 2/4 + 1/4 = 3/4.",
+     "students": "Students calculate the final sum and discuss why the bottom number does not change."
     },
     {
      "minutes": 4,
-     "teacher": "Guide students through 3/5 - 1/10, showing how to change 3/5 into 6/10 before subtracting.",
-     "students": "Solve the subtraction problem step-by-step in their notebooks."
+     "teacher": "The teacher provides a new example, 1/3 + 1/6, and asks students to find the common denominator in pairs.",
+     "students": "Students work in pairs to convert the fractions and find the correct sum of 3/6, which simplifies to 1/2."
     }
    ],
    "hingeQuestion": {
     "question": "What is 1/3 + 1/6?",
     "answer": "1/2",
-    "ifWrong": "If students add straight across to get 2/9, pause and remind them that denominators must be the same first. Convert 1/3 to 2/6 and add again."
+    "ifWrong": "If students add across to get 2/9, have them draw fraction bars to show why thirds and sixths must be converted to the same size before combining."
    },
    "practice": {
     "support": [
      {
-      "question": "1/2 + 1/4",
-      "answer": "3/4"
+      "question": "1/4 + 1/8",
+      "answer": "3/8"
      },
      {
-      "question": "1/3 + 1/6",
+      "question": "1/2 + 1/6",
+      "answer": "2/3"
+     },
+     {
+      "question": "1/3 + 1/9",
+      "answer": "4/9"
+     },
+     {
+      "question": "1/5 + 3/10",
       "answer": "1/2"
-     },
-     {
-      "question": "3/5 - 1/10",
-      "answer": "1/2"
-     },
-     {
-      "question": "1/4 + 1/2",
-      "answer": "3/4"
      }
     ],
     "core": [
      {
-      "question": "2/3 + 1/6",
-      "answer": "5/6"
+      "question": "2/5 + 1/10",
+      "answer": "1/2"
      },
      {
-      "question": "3/4 - 1/3",
-      "answer": "5/12"
+      "question": "1/4 + 3/8",
+      "answer": "5/8"
      },
      {
-      "question": "2/5 + 1/3",
-      "answer": "11/15"
+      "question": "1/3 + 2/9",
+      "answer": "5/9"
      },
      {
-      "question": "1/2 + 3/8",
-      "answer": "7/8"
+      "question": "3/10 + 1/2",
+      "answer": "4/5"
      }
     ],
     "stretch": [
      {
-      "question": "3/4 - 2/5",
-      "answer": "7/20"
+      "question": "3/4 + 5/12",
+      "answer": "1 1/6"
      },
      {
-      "question": "5/6 - 1/4",
-      "answer": "7/12"
+      "question": "2/3 + 4/9",
+      "answer": "1 1/9"
      },
      {
-      "question": "1 1/2 + 3/4",
-      "answer": "2 1/4"
+      "question": "7/10 + 3/5",
+      "answer": "1 3/10"
      }
     ]
    }
@@ -1632,137 +1632,142 @@
    {
     "group": "add_across",
     "language": "en",
-    "text": "Hello! {{student}} completed the check with a score of {{score}} out of {{total}}. We noticed a tendency to add the tops and bottoms straight across. Fractions need a common denominator first. Try drawing fraction bars together at home to see why the bottom numbers stay the same when adding."
-   },
-   {
-    "group": "numerators_only",
-    "language": "en",
-    "text": "Hello! {{student}} completed the check with a score of {{score}} out of {{total}}. When adding fractions, remember to convert them to a common denominator before combining the top numbers. Practice finding common multiples using everyday items like slices of fruit."
-   },
-   {
-    "group": "cross_multiply",
-    "language": "en",
-    "text": "Hello! {{student}} completed the check with a score of {{score}} out of {{total}}. For multiplication, multiply straight across (tops together, bottoms together). Reviewing multiplication facts together at home will help build confidence with these steps."
-   },
-   {
-    "group": "slip",
-    "language": "en",
-    "text": "Hello! {{student}} completed the check with a score of {{score}} out of {{total}}. There were a few small arithmetic slips. Encouraging double-checking of calculations at home can make a big difference in final answers."
-   },
-   {
-    "group": "no_invert",
-    "language": "en",
-    "text": "Hello! {{student}} completed the check with a score of {{score}} out of {{total}}. When dividing fractions, remember to flip the second fraction and then multiply. Practice this 'keep, change, flip' method with quick verbal checks at home."
-   },
-   {
-    "group": "whole_dropped",
-    "language": "en",
-    "text": "Hello! {{student}} completed the check with a score of {{score}} out of {{total}}. When working with mixed numbers, remember to keep track of the whole number alongside the fraction. Practice counting with mixed numbers during cooking or baking."
-   },
-   {
-    "group": "other",
-    "language": "en",
-    "text": "Hello! {{student}} completed the check with a score of {{score}} out of {{total}}. We are reviewing a few tricky fraction concepts in class tomorrow. Ask {{student}} to explain how to find a common denominator over dinner tonight!"
-   },
-   {
-    "group": "secure",
-    "language": "en",
-    "text": "Hello! {{student}} completed the check with a score of {{score}} out of {{total}}. Fantastic job! {{student}} showed a strong understanding of fraction operations. You can challenge {{student}} at home with fun fraction word problems."
-   },
-   {
-    "group": "default",
-    "language": "en",
-    "text": "Hello! {{student}} completed the check with a score of {{score}} out of {{total}}. We had mixed results across different fraction topics. Reviewing basic fraction concepts together at home using drawings will be very helpful."
+    "text": "Hello! {{student}} scored {{score}} out of {{total}} on our fractions check. Today we practiced finding common denominators instead of adding the top and bottom numbers straight across. Try practicing with measuring cups while cooking at home to help make fraction sizes visual!"
    },
    {
     "group": "add_across",
     "language": "hi",
-    "text": "नमस्ते! {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। हमने देखा कि अंश और हर को सीधे जोड़ने की प्रवृत्ति थी। भिन्न जोड़ने के लिए समान हर की आवश्यकता होती है। घर पर आरेख बनाकर अभ्यास करें।"
-   },
-   {
-    "group": "numerators_only",
-    "language": "hi",
-    "text": "नमस्ते! {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। भिन्न जोड़ते समय, ऊपर की संख्याएँ मिलाने से पहले समान हर बनाना याद रखें। घर पर फलों के टुकड़ों से अभ्यास करें।"
-   },
-   {
-    "group": "cross_multiply",
-    "language": "hi",
-    "text": "नमस्ते! {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। गुणा करने के लिए, सीधे गुणा करें। घर पर पहाड़े दोहराने से इसमें मदद मिलेगी।"
-   },
-   {
-    "group": "slip",
-    "language": "hi",
-    "text": "नमस्ते! {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। यहाँ कुछ छोटी गणना संबंधी त्रुटियाँ थीं। घर पर उत्तरों की दोबारा जाँच करने से सुधार हो सकता है।"
-   },
-   {
-    "group": "no_invert",
-    "language": "hi",
-    "text": "नमस्ते! {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। भिन्न भाग देते समय, दूसरी भिन्न को उल्टा करके गुणा करना याद रखें। घर पर इसका अभ्यास करें।"
-   },
-   {
-    "group": "whole_dropped",
-    "language": "hi",
-    "text": "नमस्ते! {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। मिश्रित संख्याओं के साथ काम करते समय पूर्ण संख्या को याद रखना न भूलें। खाना बनाते समय इसका अभ्यास करें।"
-   },
-   {
-    "group": "other",
-    "language": "hi",
-    "text": "नमस्ते! {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। हम कक्षा में कुछ कठिन अवधारणाओं की समीक्षा कर रहे हैं। रात के खाने पर भिन्न समझाने के लिए कहें!"
-   },
-   {
-    "group": "secure",
-    "language": "hi",
-    "text": "नमस्ते! {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। बहुत बढ़िया! {{student}} ने भिन्न के सवालों को अच्छे से समझा है। आप घर पर मजेदार शब्द समस्याओं से चुनौती दे सकते हैं।"
-   },
-   {
-    "group": "default",
-    "language": "hi",
-    "text": "नमस्ते! {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। विभिन्न भिन्न विषयों पर मिले-जुले परिणाम रहे। घर पर चित्रों की मदद से बुनियादी अवधारणाओं की समीक्षा करें।"
+    "text": "नमस्ते! {{student}} ने हमारे भिन्न परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। आज हमने सीधे ऊपर और नीचे की संख्याओं को जोड़ने के बजाय समान हर खोजना सीखा। घर पर खाना बनाते समय मापने वाले कप के साथ अभ्यास करें!"
    },
    {
     "group": "add_across",
     "language": "ta",
-    "text": "வணக்கம்! {{student}} இந்த சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். தொகுதிகளையும் பகுதிகளையும் நேராகக் கூட்டப்படுவதைக் கவனித்தோம். பின்னங்களைக் கூட்ட பொதுவான பகுதி தேவை. வீட்டில் வரைபடங்கள் மூலம் பயிற்சி செய்யுங்கள்."
+    "text": "வணக்கம்! {{student}} எங்கள் பின்னங்கள் சோதனையில் {{total}} க்கு {{score}} மதிப்பெண்கள் பெற்றுள்ளார். மேலே மற்றும் கீழே உள்ள எண்களை நேராக கூட்டுவதற்கு பதிலாக பொதுவான பகுதிகளை கண்டுபிடிப்பதை இன்று பயிற்சி செய்தோம்."
+   },
+   {
+    "group": "numerators_only",
+    "language": "en",
+    "text": "Hello! {{student}} scored {{score}} out of {{total}} on our fractions check. We worked on remembering to keep the denominator the same when combining numerators. Try drawing fraction pictures together at home to build confidence!"
+   },
+   {
+    "group": "numerators_only",
+    "language": "hi",
+    "text": "नमस्ते! {{student}} ने हमारे भिन्न परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने अंशों को जोड़ते समय हर को समान रखना याद रखने पर काम किया। घर पर एक साथ भिन्न के चित्र बनाएं!"
    },
    {
     "group": "numerators_only",
     "language": "ta",
-    "text": "வணக்கம்! {{student}} இந்த சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். பின்னங்களைக் கூட்டும்போது, கூட்டுவதற்கு முன் பொதுவான பகுதியை உருவாக்க வேண்டும். வீட்டில் எளிய முறையில் பயிற்சி செய்யுங்கள்."
+    "text": "வணக்கம்! {{student}} எங்கள் பின்னங்கள் சோதனையில் {{total}} க்கு {{score}} மதிப்பெண்கள் பெற்றுள்ளார். எண்களை சேர்க்கும்போது வகுஎண்ணை ஒரே மாதிரியாக வைத்திருக்க பயிற்சி செய்தோம்."
+   },
+   {
+    "group": "cross_multiply",
+    "language": "en",
+    "text": "Hello! {{student}} scored {{score}} out of {{total}} on our fractions check. We reviewed multiplying straight across for numerators and denominators. Practice simple multiplication facts at home using flashcards!"
+   },
+   {
+    "group": "cross_multiply",
+    "language": "hi",
+    "text": "नमस्ते! {{student}} ने हमारे भिन्न परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने अंशों और हरों को सीधे गुणा करने का अभ्यास किया। घर पर फ्लैशकार्ड का उपयोग करें!"
    },
    {
     "group": "cross_multiply",
     "language": "ta",
-    "text": "வணக்கம்! {{student}} இந்த சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். பெருக்கலுக்கு, நேராகப் பெருக்க வேண்டும். வீட்டில் பெருக்கல் வாய்ப்பாடுகளை மீள்பார்வை செய்வது உதவும்."
+    "text": "வணக்கம்! {{student}} எங்கள் பின்னங்கள் சோதனையில் {{total}} க்கு {{score}} மதிப்பெண்கள் பெற்றுள்ளார். எண்கள் மற்றும் வகுஎண்களை நேராக பெருக்குவதை மதிப்பாய்வு செய்தோம்."
+   },
+   {
+    "group": "slip",
+    "language": "en",
+    "text": "Hello! {{student}} scored {{score}} out of {{total}} on our fractions check. It was just a small arithmetic slip. Reviewing basic addition or multiplication facts for a few minutes at home will help avoid small errors."
+   },
+   {
+    "group": "slip",
+    "language": "hi",
+    "text": "नमस्ते! {{student}} ने हमारे भिन्न परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। यह केवल एक छोटी सी गणना की चूक थी। घर पर कुछ मिनट बुनियादी तथ्यों का अभ्यास करें।"
    },
    {
     "group": "slip",
     "language": "ta",
-    "text": "வணக்கம்! {{student}} இந்த சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். சில சிறிய கணக்கீட்டுப் பிழைகள் இருந்தன. வீட்டில் பதில்களை இருமுறை சரிபார்க்க ஊக்குவிக்கவும்."
+    "text": "வணக்கம்! {{student}} எங்கள் பின்னங்கள் சோதனையில் {{total}} க்கு {{score}} மதிப்பெண்கள் பெற்றுள்ளார். இது ஒரு சிறிய கணக்கீட்டு தவறு மட்டுமே. வீட்டில் சில நிமிடங்கள் அடிப்படைகளை மீளாய்வு செய்யவும்."
+   },
+   {
+    "group": "no_invert",
+    "language": "en",
+    "text": "Hello! {{student}} scored {{score}} out of {{total}} on our fractions check. We practiced flipping the second fraction before multiplying when dividing fractions. Try writing reminder notes on sticky notes at home!"
+   },
+   {
+    "group": "no_invert",
+    "language": "hi",
+    "text": "नमस्ते! {{student}} ने हमारे भिन्न परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने भिन्न भाग देते समय दूसरी भिन्न को उलटने का अभ्यास किया।"
    },
    {
     "group": "no_invert",
     "language": "ta",
-    "text": "வணக்கம்! {{student}} இந்த சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். பின்னங்களை வகுக்கும்போது, இரண்டாவது பின்னத்தைத் திருப்பிப் பெருக்க வேண்டும். இதை வீட்டில் பயிற்சி செய்யுங்கள்."
+    "text": "வணக்கம்! {{student}} எங்கள் பின்னங்கள் சோதனையில் {{total}} க்கு {{score}} மதிப்பெண்கள் பெற்றுள்ளார். வகுக்கும்போது இரண்டாவது பின்னத்தை தலைகீழாக மாற்றுவதை பயிற்சி செய்தோம்."
+   },
+   {
+    "group": "whole_dropped",
+    "language": "en",
+    "text": "Hello! {{student}} scored {{score}} out of {{total}} on our fractions check. We practiced keeping track of whole numbers alongside fractions. Practice adding mixed numbers with everyday items like coins!"
+   },
+   {
+    "group": "whole_dropped",
+    "language": "en",
+    "text": "Hello! {{student}} scored {{score}} out of {{total}} on our fractions check. We practiced keeping track of whole numbers alongside fractions. Practice adding mixed numbers with everyday items like coins!"
+   },
+   {
+    "group": "whole_dropped",
+    "language": "hi",
+    "text": "नमस्ते! {{student}} ने हमारे भिन्न परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने भिन्नों के साथ पूर्ण संख्याओं का ध्यान रखना सीखा।"
    },
    {
     "group": "whole_dropped",
     "language": "ta",
-    "text": "வணக்கம்! {{student}} இந்த சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். கலப்பு எண்களுடன் வேலை செய்யும்போது முழு எண்ணைக் கவனிக்க வேண்டும். சமையல் செய்யும்போது இதைப்பற்றி பேசலாம்."
+    "text": "வணக்கம்! {{student}} எங்கள் பின்னங்கள் சோதனையில் {{total}} க்கு {{score}} மதிப்பெண்கள் பெற்றுள்ளார். முழு எண்களையும் பின்னங்களையும் சேர்த்து கண்காணிக்க பயிற்சி செய்தோம்."
+   },
+   {
+    "group": "other",
+    "language": "en",
+    "text": "Hello! {{student}} scored {{score}} out of {{total}} on our fractions check. We are reviewing the tricky parts of today's fraction concepts in class. Asking your child to explain their steps at home is a great way to support learning."
+   },
+   {
+    "group": "other",
+    "language": "hi",
+    "text": "नमस्ते! {{student}} ने हमारे भिन्न परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हम कक्षा में आज की अवधारणाओं की समीक्षा कर रहे हैं।"
    },
    {
     "group": "other",
     "language": "ta",
-    "text": "வணக்கம்! {{student}} இந்த சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். வகுப்பில் சில கடினமான பின்னக் கருத்துக்களை மீள்பார்வை செய்கிறோம். இரவு உணவின்போது விளக்கச் சொல்லுங்கள்!"
+    "text": "வணக்கம்! {{student}} எங்கள் பின்னங்கள் சோதனையில் {{total}} க்கு {{score}} மதிப்பெண்கள் பெற்றுள்ளார். வகுப்பில் கருத்துக்களை மதிப்பாய்வு செய்கிறோம்."
+   },
+   {
+    "group": "secure",
+    "language": "en",
+    "text": "Hello! {{student}} scored {{score}} out of {{total}} on our fractions check. Fantastic job! {{student}} showed a strong understanding of fractions. Encourage them to try creating their own fraction word problems at home."
+   },
+   {
+    "group": "secure",
+    "language": "hi",
+    "text": "नमस्ते! {{student}} ने हमारे भिन्न परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। शानदार काम! {{student}} ने भिन्नों की बहुत अच्छी समझ दिखाई।"
    },
    {
     "group": "secure",
     "language": "ta",
-    "text": "வணக்கம்! {{student}} இந்த சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். அருமை! {{student}} பின்னங்களை நன்றாகப் புரிந்துகொண்டுள்ளார். வீட்டில் கூடுதல் கணக்குகளைத் தரலாம்."
+    "text": "வணக்கம்! {{student}} எங்கள் பின்னங்கள் சோதனையில் {{total}} க்கு {{score}} மதிப்பெண்கள் பெற்றுள்ளார். அருமையான வேலை! பின்னங்களை நன்றாக புரிந்து கொண்டுள்ளார்."
+   },
+   {
+    "group": "default",
+    "language": "en",
+    "text": "Hello! {{student}} scored {{score}} out of {{total}} on our fractions check. We reviewed several fraction skills today in class. Playing a card game together that involves simple counting can make math fun at home!"
+   },
+   {
+    "group": "default",
+    "language": "hi",
+    "text": "नमस्ते! {{student}} ने हमारे भिन्न परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने कक्षा में कई भिन्न कौशलों की समीक्षा की।"
    },
    {
     "group": "default",
     "language": "ta",
-    "text": "வணக்கம்! {{student}} இந்த சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். பல்வேறு பின்ன தலைப்புகளில் கலவையான முடிவுகள் வந்தன. வீட்டில் அடிப்படை கருத்துக்களை மீள்பார்வை செய்வது உதவியாக இருக்கும்."
+    "text": "வணக்கம்! {{student}} எங்கள் பின்னங்கள் சோதனையில் {{total}} க்கு {{score}} மதிப்பெண்கள் பெற்றுள்ளார். வகுப்பில் பல பின்ன திறன்களை மதிப்பாய்வு செய்தோம்."
    }
   ]
  },
@@ -1770,20 +1775,17 @@
   "v": 1,
   "topic": "fractions",
   "grade_band": "4-8",
-  "sheets": 28,
+  "class_size": "25-29",
   "k": 3,
   "questions": [
    {
     "q": 1,
     "question": "1/2 + 1/4",
     "answer": "3/4",
-    "correct": 18,
-    "unsimplified": "hidden",
-    "wrong": "hidden",
-    "blank": 0,
-    "unreadable": 0,
+    "right": 20,
+    "wrong": 8,
     "mistakes": {
-     "add_across": 6,
+     "add_across": "hidden",
      "numerators_only": "hidden"
     }
    },
@@ -1791,11 +1793,8 @@
     "q": 2,
     "question": "2/3 + 1/6",
     "answer": "5/6",
-    "correct": 20,
-    "unsimplified": "hidden",
-    "wrong": "hidden",
-    "blank": 0,
-    "unreadable": 0,
+    "right": 21,
+    "wrong": 7,
     "mistakes": {
      "add_across": 4,
      "numerators_only": 3
@@ -1805,13 +1804,10 @@
     "q": 3,
     "question": "3/5 - 1/10",
     "answer": "1/2",
-    "correct": 20,
-    "unsimplified": "hidden",
-    "wrong": "hidden",
-    "blank": 0,
-    "unreadable": 0,
+    "right": 22,
+    "wrong": 6,
     "mistakes": {
-     "add_across": 4,
+     "add_across": "hidden",
      "numerators_only": "hidden"
     }
    },
@@ -1819,11 +1815,8 @@
     "q": 4,
     "question": "3/4 - 1/3",
     "answer": "5/12",
-    "correct": 19,
-    "unsimplified": 0,
+    "right": 19,
     "wrong": 9,
-    "blank": 0,
-    "unreadable": 0,
     "mistakes": {
      "add_across": 6,
      "numerators_only": 3
@@ -1833,11 +1826,8 @@
     "q": 5,
     "question": "2/5 + 1/3",
     "answer": "11/15",
-    "correct": 18,
-    "unsimplified": 0,
+    "right": 18,
     "wrong": 10,
-    "blank": 0,
-    "unreadable": 0,
     "mistakes": {
      "add_across": 7,
      "numerators_only": 3
@@ -1847,11 +1837,8 @@
     "q": 6,
     "question": "1/3 × 3/4",
     "answer": "1/4",
-    "correct": "hidden",
-    "unsimplified": 0,
+    "right": 26,
     "wrong": "hidden",
-    "blank": 0,
-    "unreadable": 0,
     "mistakes": {
      "cross_multiply": "hidden"
     }
@@ -1860,11 +1847,8 @@
     "q": 7,
     "question": "2/3 × 3/5",
     "answer": "2/5",
-    "correct": 25,
-    "unsimplified": "hidden",
+    "right": 27,
     "wrong": "hidden",
-    "blank": 0,
-    "unreadable": 0,
     "mistakes": {
      "slip": "hidden"
     }
@@ -1873,11 +1857,8 @@
     "q": 8,
     "question": "3/4 ÷ 1/2",
     "answer": "1 1/2",
-    "correct": 24,
-    "unsimplified": "hidden",
+    "right": 25,
     "wrong": "hidden",
-    "blank": "hidden",
-    "unreadable": 0,
     "mistakes": {
      "no_invert": "hidden"
     }
@@ -1886,11 +1867,8 @@
     "q": 9,
     "question": "1 1/2 + 3/4",
     "answer": "2 1/4",
-    "correct": 24,
-    "unsimplified": "hidden",
+    "right": 26,
     "wrong": "hidden",
-    "blank": "hidden",
-    "unreadable": 0,
     "mistakes": {
      "whole_dropped": "hidden"
     }
@@ -1899,11 +1877,8 @@
     "q": 10,
     "question": "2 1/3 - 1/2",
     "answer": "1 5/6",
-    "correct": "hidden",
-    "unsimplified": 0,
+    "right": 27,
     "wrong": 0,
-    "blank": "hidden",
-    "unreadable": 0,
     "mistakes": {}
    }
   ],

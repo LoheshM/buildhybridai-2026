@@ -1,0 +1,35 @@
+// Second layer behind the closed payload: refuses any outbound text that contains a word from
+// the class roster. Folding handles case, accents and full-width forms; word boundaries keep
+// "Hope" from matching "hopefully". Roster words in non-Latin scripts are checked as-is.
+import { fold } from '../marking/roster';
+
+/** Words that appear in our own fixed vocabulary; a student literally named "Other" must not block every call. */
+const VOCAB = new Set(['other', 'correct', 'wrong', 'blank', 'fractions', 'question', 'answer', 'mistakes']);
+
+export function rosterTokens(names: string[]): string[] {
+  const t = new Set<string>();
+  for (const n of names) for (const w of fold(n).split(' ')) if (w.length >= 2 && !/^\d+$/.test(w)) t.add(w);
+  return [...t];
+}
+
+export interface NameHit { token: string; at: number }
+
+/** Returns roster words found in `text` (empty array = clean). */
+export function findRosterNames(text: string, tokens: string[]): NameHit[] {
+  const hay = ` ${fold(text)} `;
+  const hits: NameHit[] = [];
+  for (const tok of tokens) {
+    if (VOCAB.has(tok)) continue;
+    const at = hay.indexOf(` ${tok} `);
+    if (at >= 0) hits.push({ token: tok, at });
+  }
+  return hits;
+}
+
+/** Collects every string value inside a JSON-like value (keys are fixed by the schema). */
+export function stringValues(v: unknown, out: string[] = []): string[] {
+  if (typeof v === 'string') out.push(v);
+  else if (Array.isArray(v)) v.forEach((x) => stringValues(x, out));
+  else if (v && typeof v === 'object') Object.values(v).forEach((x) => stringValues(x, out));
+  return out;
+}

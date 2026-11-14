@@ -1,0 +1,69 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Renders one synthetic worksheet. Data comes from the URL hash (base64 JSON).
+     Handwriting fonts are SIL Open Font License fonts from Google Fonts. -->
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Kalam&family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&family=Shadows+Into+Light&family=Reenie+Beanie&display=block" rel="stylesheet">
+<style>
+  html,body{margin:0;background:#f7f4ea}
+  .page{width:1240px;height:1754px;position:relative;background:#fbf9f2;font-family:Arial,Helvetica,sans-serif;color:#2a2a2a;overflow:hidden}
+  .rule{position:absolute;left:0;right:0;height:1px;background:#c9d6ea}
+  .margin{position:absolute;top:0;bottom:0;left:120px;width:2px;background:#e8a3a3}
+  h1{position:absolute;top:70px;left:160px;margin:0;font-size:40px;font-weight:700;letter-spacing:.5px}
+  .sub{position:absolute;top:126px;left:160px;font-size:24px;color:#555}
+  .namebox{position:absolute;top:78px;left:760px;font-size:26px}
+  .namebox .line{display:inline-block;width:300px;border-bottom:2px solid #444;margin-left:8px}
+  .q{position:absolute;left:160px;font-size:36px}
+  .ans{position:absolute;white-space:nowrap}
+  .ch{display:inline-block}
+  .strike{position:absolute;height:3px;border-radius:2px}
+  .frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px}
+  .frac .bar{height:3px;width:100%;border-radius:2px;margin:2px 0}
+  .scribble{position:absolute;font-size:24px;opacity:.75}
+</style></head>
+<body><div class="page" id="p"></div>
+<script>
+const data = JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(1)))));
+const p = document.getElementById('p');
+let seed = data.seed;
+const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff);
+const r = (a, b) => a + rnd() * (b - a);
+for (let y = 230; y < 1754; y += 56) { const d = document.createElement('div'); d.className = 'rule'; d.style.top = y + 'px'; p.appendChild(d); }
+p.insertAdjacentHTML('beforeend', '<div class="margin"></div>');
+p.insertAdjacentHTML('beforeend', `<h1>${data.title} — ${data.className}</h1><div class="sub">Show your answer in its simplest form. Time: 15 minutes.</div><div class="namebox">Name:<span class="line"></span></div>`);
+const ink = data.ink, font = `'${data.font}'`, size = data.size;
+function hand(text, x, y, sz, opts = {}) {
+  const el = document.createElement('div'); el.className = 'ans';
+  el.style.left = x + 'px'; el.style.top = y + 'px'; el.style.fontFamily = font; el.style.fontSize = sz + 'px'; el.style.color = ink;
+  el.style.transform = `rotate(${r(-3, 3)}deg)`;
+  const tokens = text.split(' ');
+  tokens.forEach((t, i) => {
+    if (i) el.appendChild(document.createTextNode(' '));
+    if (opts.stacked && t.includes('/')) {
+      const [n, d] = t.split('/');
+      const f = document.createElement('span'); f.className = 'frac';
+      f.innerHTML = `<span>${n}</span><span class="bar" style="background:${ink}"></span><span>${d}</span>`;
+      f.style.fontSize = (sz * 0.72) + 'px'; el.appendChild(f);
+    } else {
+      for (const c of t) { const s = document.createElement('span'); s.className = 'ch'; s.textContent = c; s.style.transform = `translateY(${r(-3, 3)}px) rotate(${r(-6, 6)}deg)`; s.style.fontSize = (sz * r(0.92, 1.08)) + 'px'; el.appendChild(s); }
+    }
+  });
+  p.appendChild(el); return el;
+}
+hand(data.name, 880 + r(-10, 10), 58 + r(-6, 4), size * 0.95);
+data.questions.forEach((q, i) => {
+  const y = 280 + i * 140;
+  p.insertAdjacentHTML('beforeend', `<div class="q" style="top:${y}px">${q.q})&nbsp;&nbsp;${q.prompt} =</div>`);
+  const a = data.answers[i];
+  let x = 640 + r(-20, 30);
+  if (a.crossedOut) {
+    const el = hand(a.crossedOut, x, y - 8, size, { stacked: data.stacked });
+    const w = el.getBoundingClientRect().width;
+    const s = document.createElement('div'); s.className = 'strike'; s.style.background = ink;
+    s.style.left = (x - 6) + 'px'; s.style.top = (y + size * 0.55) + 'px'; s.style.width = (w + 12) + 'px'; s.style.transform = `rotate(${r(-8, 8)}deg)`; p.appendChild(s);
+    x += w + 40;
+  }
+  if (a.written) hand(a.written, x, y - 8 + r(-4, 4), size, { stacked: data.stacked });
+  if (data.working && a.working) { const s = document.createElement('div'); s.className = 'scribble'; s.style.left = '1000px'; s.style.top = (y + 4) + 'px'; s.style.fontFamily = font; s.style.color = ink; s.textContent = a.working; p.appendChild(s); }
+});
+document.fonts.ready.then(() => document.title = 'ready');
+</script></body></html>

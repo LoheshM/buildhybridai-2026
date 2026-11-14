@@ -1,0 +1,2094 @@
+{
+ "quiz": {
+  "title": "Fractions Check",
+  "className": "Class 6B",
+  "questions": [
+   {
+    "q": 1,
+    "op": "+",
+    "a": [
+     0,
+     1,
+     2
+    ],
+    "b": [
+     0,
+     1,
+     4
+    ],
+    "prompt": "1/2 + 1/4",
+    "key": "3/4"
+   },
+   {
+    "q": 2,
+    "op": "+",
+    "a": [
+     0,
+     2,
+     3
+    ],
+    "b": [
+     0,
+     1,
+     6
+    ],
+    "prompt": "2/3 + 1/6",
+    "key": "5/6"
+   },
+   {
+    "q": 3,
+    "op": "-",
+    "a": [
+     0,
+     3,
+     5
+    ],
+    "b": [
+     0,
+     1,
+     10
+    ],
+    "prompt": "3/5 - 1/10",
+    "key": "1/2"
+   },
+   {
+    "q": 4,
+    "op": "-",
+    "a": [
+     0,
+     3,
+     4
+    ],
+    "b": [
+     0,
+     1,
+     3
+    ],
+    "prompt": "3/4 - 1/3",
+    "key": "5/12"
+   },
+   {
+    "q": 5,
+    "op": "+",
+    "a": [
+     0,
+     2,
+     5
+    ],
+    "b": [
+     0,
+     1,
+     3
+    ],
+    "prompt": "2/5 + 1/3",
+    "key": "11/15"
+   },
+   {
+    "q": 6,
+    "op": "x",
+    "a": [
+     0,
+     1,
+     3
+    ],
+    "b": [
+     0,
+     3,
+     4
+    ],
+    "prompt": "1/3 × 3/4",
+    "key": "1/4"
+   },
+   {
+    "q": 7,
+    "op": "x",
+    "a": [
+     0,
+     2,
+     3
+    ],
+    "b": [
+     0,
+     3,
+     5
+    ],
+    "prompt": "2/3 × 3/5",
+    "key": "2/5"
+   },
+   {
+    "q": 8,
+    "op": "÷",
+    "a": [
+     0,
+     3,
+     4
+    ],
+    "b": [
+     0,
+     1,
+     2
+    ],
+    "prompt": "3/4 ÷ 1/2",
+    "key": "1 1/2"
+   },
+   {
+    "q": 9,
+    "op": "+",
+    "a": [
+     1,
+     1,
+     2
+    ],
+    "b": [
+     0,
+     3,
+     4
+    ],
+    "prompt": "1 1/2 + 3/4",
+    "key": "2 1/4"
+   },
+   {
+    "q": 10,
+    "op": "-",
+    "a": [
+     2,
+     1,
+     3
+    ],
+    "b": [
+     0,
+     1,
+     2
+    ],
+    "prompt": "2 1/3 - 1/2",
+    "key": "1 5/6"
+   }
+  ]
+ },
+ "students": [
+  {
+   "id": "s01",
+   "name": "Aarav Shah",
+   "profile": [],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": "1/2"
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "name": "Meera Krishnan",
+   "profile": [],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s03",
+   "name": "Rohan Das",
+   "profile": [],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": "2/7"
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s04",
+   "name": "Ananya Iyer",
+   "profile": [],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s05",
+   "name": "Kabir Singh",
+   "profile": [],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s06",
+   "name": "Diya Menon",
+   "profile": [],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s07",
+   "name": "Arjun Reddy",
+   "profile": [],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": "4/5"
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": "4/5"
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": "1/2"
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s08",
+   "name": "Ishita Rao",
+   "profile": [
+    "unsimplified"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "6/8",
+     "label": "unsimplified",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "15/18",
+     "label": "unsimplified",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "6/15",
+     "label": "unsimplified",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "18/8",
+     "label": "unsimplified",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s09",
+   "name": "Vihaan Joshi",
+   "profile": [
+    "unsimplified"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "25/50",
+     "label": "unsimplified",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "6/4",
+     "label": "unsimplified",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "18/8",
+     "label": "unsimplified",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s10",
+   "name": "Saanvi Nair",
+   "profile": [
+    "unsimplified"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "6/8",
+     "label": "unsimplified",
+     "crossedOut": "4/5"
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "25/50",
+     "label": "unsimplified",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "6/15",
+     "label": "unsimplified",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s11",
+   "name": "Aditya Kulkarni",
+   "profile": [
+    "add_across"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "2/6",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "2/5",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "2",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "3/8",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s12",
+   "name": "Myra Fernandes",
+   "profile": [
+    "add_across"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "2/6",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "3/9",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "2/5",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "2",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "3/8",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s13",
+   "name": "Reyansh Gupta",
+   "profile": [
+    "add_across"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "2",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "3/8",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s14",
+   "name": "Kiara Thomas",
+   "profile": [
+    "add_across"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "2/6",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "2/5",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "2",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "3/8",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s15",
+   "name": "Dhruv Patel",
+   "profile": [
+    "add_across"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "2/6",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "3/9",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "2/5",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "3/8",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s16",
+   "name": "Anika Bose",
+   "profile": [
+    "add_across"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "2/6",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "3/9",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "2",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "3/8",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s17",
+   "name": "Kavin Raj",
+   "profile": [
+    "numerators_only"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "2/4",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "3/6",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "2/4",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "3/5",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s18",
+   "name": "Tara Mehta",
+   "profile": [
+    "numerators_only"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "2/4",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "3/6",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "2/10",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "3/5",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": "2/7"
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s19",
+   "name": "Neil D'Souza",
+   "profile": [
+    "numerators_only"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "3/6",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "2/10",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "2/4",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "3/5",
+     "label": "numerators_only",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s20",
+   "name": "Zoya Khan",
+   "profile": [
+    "no_invert",
+    "cross_multiply"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "4/9",
+     "label": "cross_multiply",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "3/8",
+     "label": "no_invert",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s21",
+   "name": "Yash Verma",
+   "profile": [
+    "no_invert",
+    "cross_multiply"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "3/8",
+     "label": "no_invert",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": "1/2"
+    }
+   ]
+  },
+  {
+   "id": "s22",
+   "name": "Riya Pillai",
+   "profile": [
+    "no_invert",
+    "cross_multiply"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "4/9",
+     "label": "cross_multiply",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s23",
+   "name": "Samar Malhotra",
+   "profile": [
+    "whole_dropped"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s24",
+   "name": "Aisha Siddiqui",
+   "profile": [
+    "whole_dropped"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": "2/7"
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": "1/2"
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "5/4",
+     "label": "whole_dropped",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s25",
+   "name": "Ved Chatterjee",
+   "profile": [
+    "whole_dropped"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": "1/2"
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": "1/2"
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s26",
+   "name": "Nila Sundaram",
+   "profile": [
+    "add_across",
+    "no_invert"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "2/6",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "3/9",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "2",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "3/8",
+     "label": "add_across",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s27",
+   "name": "Leo Mathew",
+   "profile": [
+    "slip"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "6/12",
+     "label": "slip",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "3/5",
+     "label": "slip",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "1 1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "2 1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "1 5/6",
+     "label": "correct",
+     "crossedOut": ""
+    }
+   ]
+  },
+  {
+   "id": "s28",
+   "name": "Pari Agarwal",
+   "profile": [
+    "blank"
+   ],
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/4",
+     "label": "correct",
+     "crossedOut": "4/5"
+    },
+    {
+     "q": 2,
+     "written": "5/6",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 3,
+     "written": "1/2",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 4,
+     "written": "5/12",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 5,
+     "written": "11/15",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 6,
+     "written": "1/4",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 7,
+     "written": "2/5",
+     "label": "correct",
+     "crossedOut": ""
+    },
+    {
+     "q": 8,
+     "written": "",
+     "label": "blank",
+     "crossedOut": ""
+    },
+    {
+     "q": 9,
+     "written": "",
+     "label": "blank",
+     "crossedOut": ""
+    },
+    {
+     "q": 10,
+     "written": "",
+     "label": "blank",
+     "crossedOut": ""
+    }
+   ]
+  }
+ ],
+ "generated": "2026-11-15",
+ "note": "Synthetic, fictional students. Ground truth for Tickmark sample class."
+}

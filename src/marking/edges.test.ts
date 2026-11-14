@@ -179,3 +179,29 @@ describe('R12/R49: names in our own prompt, and the payload k', () => {
     expect(JSON.stringify(TOTALS_SCHEMA_CLOUD)).toContain('"hi"');
   });
 });
+
+describe('crossed-out noise is cleared only by an agreeing second read', () => {
+  const k = K(2, '2/3 + 1/6', '5/6');
+  it('agreeing second read turns the flag into a note', () => {
+    const m = markAnswer(k, '5/6', '4/5');
+    expect(m.flags).toContain('crossed_out');
+    const merged = mergeReread([m], new Map([[2, '5/6']]))[0];
+    expect(merged.flags).not.toContain('crossed_out');
+    expect(merged.crossedOut).toBe('4/5'); // still shown to the teacher
+  });
+  it('a disagreeing second read keeps it flagged', () => {
+    const merged = mergeReread([markAnswer(k, '5/6', '4/5')], new Map([[2, '4/5']]))[0];
+    expect(merged.flags).toEqual(expect.arrayContaining(['crossed_out', 'reread_disagreed']));
+  });
+  it('without a second read it stays flagged', () => {
+    expect(mergeReread([markAnswer(k, '5/6', '4/5')], new Map())[0].flags).toContain('crossed_out');
+  });
+});
+
+describe('practice answers are checked even inside sentences', async () => {
+  const { extractExpr } = await import('./fraction');
+  it.each([['What is the answer to 1/3 + 1/6?', '1/2'], ['Work out 2 1/3 − 1/2.', '1 5/6'], ['Find 3/4 ÷ 1/2', '1 1/2'], ['1/3 x 3/4 = ?', '1/4']])('%s', (q, a) => {
+    expect(format(evaluate(extractExpr(q)!))).toBe(a);
+  });
+  it('no sum, no check', () => expect(extractExpr('Explain why we need a common denominator.')).toBeNull());
+});

@@ -5,7 +5,7 @@ import { totalsPrompt } from '../ai/prompts';
 import type { PracticeItem, TotalsResponse } from '../ai/schemas';
 import { planFromTotals, PlanUnavailable } from '../ai/tasks';
 import { href } from '../app/router';
-import { eq, evaluate, format, parse, parseExpr } from '../marking/fraction';
+import { eq, evaluate, extractExpr, format, parse } from '../marking/fraction';
 import { scoreSheet } from '../marking/mark';
 import { MISCONCEPTIONS, type MisconceptionId } from '../marking/misconceptions';
 import { needsCheck } from '../marking/pipeline';
@@ -113,7 +113,7 @@ export function Reteach({ quizId }: { quizId: string }) {
         <p className="small muted" aria-live="polite" style={{ minHeight: '1.5em', marginTop: 8 }}>
           {busy ? (keepLocal ? 'Gemini Nano is writing the plan on this laptop (up to 2 minutes)…' : `Asking cloud Gemini…${deviceReady ? ' If it can\'t be reached, Gemini Nano writes the plan here instead (up to 2 minutes).' : ''}`) : ''}
         </p>
-        {showText && <pre className="json">{totalsPrompt(totals)}</pre>}
+        {showText && <pre className="json">{totalsPrompt(totals, keepLocal)}</pre>}
         {err && (
           <div className="callout bad" role="alert" style={{ marginTop: 12 }}>
             {err.msg}
@@ -135,7 +135,7 @@ const plain = (t: string) => (t ?? '').replace(/\b(add_across|numerators_only|de
 
 /** Checks a practice item with Tickmark's own fraction engine. */
 export function verifyPractice(p: PracticeItem): { state: 'verified' | 'fixed' | 'unchecked'; answer: string } {
-  const e = parseExpr(p.question.replace(/[=?]\s*$/, '').trim());
+  const e = extractExpr(p.question.replace(/[=?]\s*$/, '').trim());
   if (!e) return { state: 'unchecked', answer: p.answer };
   try {
     const v = evaluate(e);

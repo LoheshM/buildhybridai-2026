@@ -50,6 +50,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
   stopRequested = false;
   if (cls.sample) resetLiveSampleReads();
   let totalMs = 0;
+  let timeoutsInARow = 0;
   try {
     // A sheet left "reading" by a reload or crash is stale here: nothing else is running.
     const all = await store.sheets(quiz.id);
@@ -93,6 +94,8 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
       if (await store.quiz(quiz.id)) await save(s);
       emit({ done: state.done + 1, avgMs: Math.round(totalMs / (state.done + 1)) });
       if (lastErr && STOPS_BATCH.has(lastErr.name)) { emit({ error: s.error }); break; }
+      timeoutsInARow = lastErr?.name === 'TimeoutError' ? timeoutsInARow + 1 : 0;
+      if (timeoutsInARow >= 2) { emit({ error: 'The on-device model stopped responding. Reload the page (Ctrl+R) to restart it, then click Read the rest: your sheets so far are saved.' }); break; }
     }
   } catch (e) {
     emit({ error: friendly(e as Error) });

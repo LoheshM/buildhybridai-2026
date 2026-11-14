@@ -36,6 +36,17 @@ export function aiInstance(): AI {
   return ai;
 }
 
+let deviceAi: AI | null = null;
+/**
+ * A second Firebase app with no App Check, used only by ONLY_ON_DEVICE models (warm-up, student
+ * sheets). It never loads reCAPTCHA, and any cloud request it might make would be refused (401)
+ * because App Check is enforced: one more layer behind the device gate and the network guard.
+ */
+export function deviceOnlyAi(): AI {
+  if (!deviceAi) deviceAi = getAI(initializeApp(FIREBASE_CONFIG, { name: 'tickmark-device-only', automaticDataCollectionEnabled: false }), { backend: new GoogleAIBackend() });
+  return deviceAi;
+}
+
 // ---- Remote Config: operator settings only. It can tighten behaviour, never loosen privacy. ----
 export interface Settings { cloudModel: string; minGroupSize: number; cloudFeaturesEnabled: boolean; sampleLiveReads: number; source: 'default' | 'remote' }
 const DEFAULTS = { cloud_model: DEFAULT_CLOUD_MODEL, min_group_size: 3, cloud_features_enabled: true, sample_cloud_live_reads: 3 };

@@ -2,7 +2,7 @@
 // model is created, so each task gets its own instance.
 import { getGenerativeModel, InferenceMode, type GenerativeModel } from 'firebase/ai';
 import { DEVICE_EXPECTED_INPUTS, DEVICE_EXPECTED_OUTPUTS } from '../config';
-import { aiInstance, currentSettings } from './firebase';
+import { aiInstance, currentSettings, deviceOnlyAi } from './firebase';
 import { REREAD_SCHEMA, SHEET_SCHEMA, TOTALS_SCHEMA_CLOUD, TOTALS_SCHEMA_DEVICE } from './schemas';
 
 export type Task = 'readSheet' | 'reread' | 'warmup' | 'classTotals';
@@ -15,30 +15,42 @@ const SCHEMAS: Record<Task, { device?: object; cloud?: object }> = {
   classTotals: { device: TOTALS_SCHEMA_DEVICE, cloud: TOTALS_SCHEMA_CLOUD },
 };
 
-const cache = new Map<string, GenerativeModel>();
+const cache = new Map<string, { m: GenerativeModel; abort: AbortController }>();
+const keyOf = (task: Task, mode: Mode) => `${task}|${mode}|${mode === InferenceMode.ONLY_ON_DEVICE ? '' : currentSettings().cloudModel}`;
 
 export function model(task: Task, mode: Mode): GenerativeModel {
-  const cloudModel = currentSettings().cloudModel;
-  const key = `${task}|${mode}|${cloudModel}`;
+  const key = keyOf(task, mode);
   const hit = cache.get(key);
-  if (hit) return hit;
+  if (hit) return hit.m;
   const s = SCHEMAS[task];
-  const m = getGenerativeModel(aiInstance(), {
+  // Each instance gets its own AbortSignal in the on-device prompt options, so a hung prompt can be
+  // cancelled (resetModel) instead of blocking every later on-device call on the page.
+  const abort = new AbortController();
+  const m = getGenerativeModel(mode === InferenceMode.ONLY_ON_DEVICE ? deviceOnlyAi() : aiInstance(), {
     mode,
     onDeviceParams: {
       createOptions: { expectedInputs: [...DEVICE_EXPECTED_INPUTS] as never, expectedOutputs: [...DEVICE_EXPECTED_OUTPUTS] as never },
-      ...(s.device ? { promptOptions: { responseConstraint: s.device as never } } : {}),
+      promptOptions: { ...(s.device ? { responseConstraint: s.device as never } : {}), signal: abort.signal } as never,
     },
     inCloudParams: {
-      model: cloudModel,
+      model: currentSettings().cloudModel,
       generationConfig: {
         temperature: task === 'classTotals' ? 0.6 : 0,
         ...(s.cloud ? ({ responseMimeType: 'application/json', responseJsonSchema: s.cloud } as object) : {}),
       },
     },
   });
-  cache.set(key, m);
+  cache.set(key, { m, abort });
   return m;
+}
+
+/** Cancels a hung on-device prompt and drops the instance so the next call starts a fresh session. */
+export function resetModel(task: Task, mode: Mode) {
+  const key = keyOf(task, mode);
+  const hit = cache.get(key);
+  if (!hit) return;
+  try { hit.abort.abort(new DOMException('Timed out', 'TimeoutError')); } catch { /* ignore */ }
+  cache.delete(key);
 }
 
 export { InferenceMode };

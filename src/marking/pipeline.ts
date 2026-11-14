@@ -34,7 +34,10 @@ export function mergeReread(marks: Marked[], second: Map<number, string>): Marke
   return marks.map((m) => {
     if (!second.has(m.q)) return m;
     const alt = second.get(m.q)!;
-    if (sameValue(alt, m.read)) return m;
+    // Agreement: a second read that ignores crossed-out work found the same answer, so "crossed-out work"
+    // is a note, not a flag (Nano often reports crossed-out text that isn't there). A swapped final and
+    // crossed-out answer would make the two reads disagree, which keeps the flag where it matters.
+    if (sameValue(alt, m.read)) return m.flags.includes('crossed_out') ? { ...m, flags: m.flags.filter((f) => f !== 'crossed_out') } : m;
     // Only offer readings that are a single clean value; garbage like "/2 1/2" is never a one-tap fix.
     const usable = parse(alt).kind === 'value';
     return { ...m, flags: [...new Set([...m.flags, 'reread_disagreed' as const])], suggestions: usable ? [...new Set([alt, ...m.suggestions])].filter((s) => s !== m.read) : m.suggestions };

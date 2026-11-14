@@ -10,7 +10,7 @@ import { assertDeviceReady, deviceState } from './gate';
 import type { SampleImage, StudentImage } from './images';
 import { ledger, type DataClass, type Where } from './ledger';
 import { canCallCloud, noteCloudCall } from './limiter';
-import { InferenceMode, model, type Mode, type Task } from './models';
+import { InferenceMode, model, resetModel, type Mode, type Task } from './models';
 import { blockCount, GuardBlocked, lastBlockReason, withStudentLock } from './netGuard';
 import { readSheetPrompt, rereadPrompt, totalsPrompt, WARMUP_PROMPT } from './prompts';
 import { CancelledError, enqueue, TimeoutError } from './queue';
@@ -60,6 +60,8 @@ async function call(task: Task, mode: Mode, parts: Part[], dataClass: DataClass,
     ledger.addCall({ task: label, dataClass, mode, where, ms: Math.round(performance.now() - t0), ok: true, note: heldBack ? `Tickmark held back the cloud request (${heldBack}); Gemini Nano answered here.` : undefined });
     return { text: r.response.text(), where, ms: Math.round(performance.now() - t0), heldBack };
   } catch (e) {
+    // A hung on-device prompt would block every later on-device call on this page: cancel it.
+    if ((e as Error).name === 'TimeoutError') resetModel(task, mode);
     // The SDK wraps errors thrown inside fetch; recover our own guard's verdict from its counter.
     const err = blockCount() > blocksBefore ? new GuardBlocked(lastBlockReason() ?? 'blocked') : (e as Error);
     ledger.addCall({ task: label, dataClass, mode, where: err.name === 'GuardBlocked' ? 'blocked' : 'local', ms: Math.round(performance.now() - t0), ok: false, note: err.message.slice(0, 200) });
@@ -131,7 +133,8 @@ export async function readSampleSheet(img: SampleImage, questionCount: number): 
     liveSampleReads++;
     noteCloudCall();
     try {
-      const r = await call('readSheet', InferenceMode.PREFER_ON_DEVICE, [readSheetPrompt(questionCount), imagePart(img)], 'sample', 'Read sample sheet', { queue: false, timeoutMs: CLOUD_READ_TIMEOUT_MS, what: 'cloud Gemini' });
+      // The device just failed or is missing: this read goes to the cloud explicitly (sample sheets only).
+      const r = await call('readSheet', InferenceMode.ONLY_IN_CLOUD, [readSheetPrompt(questionCount), imagePart(img)], 'sample', 'Read sample sheet', { queue: false, timeoutMs: CLOUD_READ_TIMEOUT_MS, what: 'cloud Gemini' });
       return { read: coerceSheetRead(parseJson(r.text), questionCount), where: r.where, ms: r.ms };
     } catch { cloudUnreachable = true; /* use the recording for the rest of this run */ }
   }
@@ -170,7 +173,7 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
       } else { noteCloudCall(); mode = InferenceMode.PREFER_IN_CLOUD; }
     }
     // Queued so it runs between sheets: no student lock can be held while its request leaves.
-    const r = await call('classTotals', mode, [totalsPrompt(totals)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: device ? PLAN_TIMEOUT_DEVICE_MS : PLAN_TIMEOUT_CLOUD_MS, what: device ? 'the AI' : 'cloud Gemini' });
+    const r = await call('classTotals', mode, [totalsPrompt(totals, mode === InferenceMode.ONLY_ON_DEVICE)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: device ? PLAN_TIMEOUT_DEVICE_MS : PLAN_TIMEOUT_CLOUD_MS, what: device ? 'the AI' : 'cloud Gemini' });
     return { response: parseJson(r.text) as TotalsResponse, where: r.where, ms: r.ms, heldBack: r.heldBack, mode, payload: totals, note: offline ? 'offline' : undefined };
   } catch (e) {
     const err = classify(e as Error);

@@ -185,3 +185,14 @@ export function exprText(e: Expr): string {
   const t = (x: Frac, orig: string) => (/ /.test(orig) ? format(x, 'mixed') : orig.includes('/') ? `${x.n}/${x.d}` : String(x.n));
   return `${t(e.a, e.aText)} ${e.op} ${t(e.b, e.bText)}`;
 }
+
+const NUM = String.raw`-?\d+ \d+\/\d+|-?\d+\/\d+|-?\d+`; // mixed first, then fraction, then integer
+const EXPR_IN_TEXT = new RegExp(String.raw`(?<![\d/])(${NUM})\s*([+\-−×x*÷:]|\/(?=\s))\s*(${NUM})(?![\d/])`);
+
+/** Finds a fraction sum inside a sentence ("What is 1/3 + 1/6?", "Work out 2 1/3 − 1/2."). */
+export function extractExpr(text: string): Expr | null {
+  const direct = parseExpr(text);
+  if (direct) return direct;
+  const m = normalize((text ?? '').replace(/÷/g, ' ÷ '), { keepDivide: true }).match(EXPR_IN_TEXT);
+  return m ? parseExpr(`${m[1]} ${m[2]} ${m[3]}`) : null;
+}

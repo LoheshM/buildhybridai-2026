@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { currentSettings } from '../ai/firebase';
+import { testGuard } from '../ai/tasks';
+import { sampleManifest } from '../app/boot';
 import { counters, ledger, type CallEvent, type NetEvent } from '../ai/ledger';
 import { BUILD } from '../config';
 import { storageEstimate, store } from '../store/db';
@@ -17,6 +19,8 @@ export function Privacy() {
   const [est, reload] = useLoad(storageEstimate, []);
   const [open, setOpen] = useState<string | null>(null);
   const s = currentSettings();
+  const [guardBusy, setGuardBusy] = useState(false);
+  const [guardResult, setGuardResult] = useState<{ what: string; blocked: boolean; reason: string }[] | null>(null);
   const studentCalls = calls.filter((e) => e.dataClass === 'student');
   const studentOnDevice = studentCalls.filter((e) => e.where === 'on_device').length;
 
@@ -28,9 +32,41 @@ export function Privacy() {
       <div className="stats">
         <div className="stat"><b>{c.cloudRequests}</b><span>requests sent to cloud AI</span></div>
         <div className="stat"><b style={{ color: c.studentPhotosSent ? 'var(--red)' : 'var(--green)' }}>{c.studentPhotosSent}</b><span>student photos sent{c.studentPhotosBlocked ? ` (${c.studentPhotosBlocked} blocked)` : ''}</span></div>
-        <div className="stat"><b>{studentOnDevice}/{studentCalls.length}</b><span>student-sheet reads on this laptop</span></div>
+        {studentCalls.length > 0 && <div className="stat"><b>{studentOnDevice}/{studentCalls.length}</b><span>reads of your students' sheets done on this laptop</span></div>}
         <div className="stat"><b style={{ color: c.blocked ? 'var(--red)' : undefined }}>{c.blocked}</b><span>requests blocked by Tickmark</span></div>
       </div>
+
+      <section className="grid2 section" aria-label="Where the work happened">
+        <div className="sheet" style={{ borderTop: '4px solid var(--device)' }}>
+          <h2>On this laptop</h2>
+          <ul className="plain-list">
+            <li><b>{calls.filter((e) => e.where === 'on_device' && /Read sheet|Read sample/.test(e.task)).length}</b> sheet readings by Gemini Nano</li>
+            <li><b>{calls.filter((e) => e.where === 'on_device' && /Second read/.test(e.task)).length}</b> second readings of doubtful answers</li>
+            <li><b>{calls.filter((e) => e.where === 'on_device' && /Reteach/.test(e.task)).length}</b> lesson plans written on the laptop</li>
+            <li>All marking, mistake names, names and parent-note filling: plain code, here</li>
+          </ul>
+        </div>
+        <div className="sheet" style={{ borderTop: '4px solid var(--cloud)' }}>
+          <h2>In the cloud</h2>
+          <ul className="plain-list">
+            <li><b>{net.filter((e) => !e.blocked && !e.images).length}</b> class-totals requests ({(net.filter((e) => !e.blocked && !e.images).reduce((a, e) => a + e.bytes, 0) / 1024).toFixed(1)} KB, no names)</li>
+            <li><b>{net.filter((e) => !e.blocked && e.images).length}</b> made-up sample sheets read without on-device AI</li>
+            <li><b>{c.studentPhotosSent}</b> photos of your students</li>
+            <li><b>{c.blocked}</b> requests refused by Tickmark's guard</li>
+          </ul>
+        </div>
+      </section>
+
+      <section className="sheet section">
+        <h2>Test the guard yourself</h2>
+        <p className="muted small">Tickmark checks every request to the AI service before it leaves this browser. This button tries to send two things that must never leave: a photo that isn't one of the made-up sample sheets, and a sentence containing a name from the sample class list. Both should be refused, and appear in the Outbox as blocked.</p>
+        <button className="btn" disabled={guardBusy} onClick={async () => { setGuardBusy(true); try { setGuardResult(await testGuard(sampleManifest()?.students.map((s) => s.name) ?? [])); } finally { setGuardBusy(false); } }}>{guardBusy ? 'Testing…' : 'Try to send them'}</button>
+        {guardResult && (
+          <ul className="plain-list" style={{ marginTop: 10 }} aria-live="polite">
+            {guardResult.map((r) => <li key={r.what}>{r.blocked ? <b style={{ color: 'var(--green)' }}>Refused:</b> : <b style={{ color: 'var(--red)' }}>Not refused:</b>} {r.what}. <span className="muted small">{r.reason}</span></li>)}
+          </ul>
+        )}
+      </section>
 
       <section className="sheet section">
         <h2>Outbox</h2>

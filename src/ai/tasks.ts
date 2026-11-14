@@ -3,7 +3,7 @@
 //   sample sheets   -> PREFER_ON_DEVICE, else a few live cloud reads, else recorded cloud readings
 //   class totals    -> PREFER_IN_CLOUD (the SDK falls back to Gemini Nano on 429, App Check failure or
 //                      network errors); ONLY_ON_DEVICE when the teacher keeps it on the laptop or is offline
-import { CLOUD_READ_TIMEOUT_MS, DEVICE_TIMEOUT_MS, PLAN_TIMEOUT_CLOUD_MS, PLAN_TIMEOUT_DEVICE_MS } from '../config';
+import { CLOUD_READ_TIMEOUT_MS, DEVICE_TIMEOUT_MS, PLAN_TIMEOUT_CLOUD_MS, PLAN_TIMEOUT_DEVICE_MS, PLAN_TIMEOUT_HYBRID_MS } from '../config';
 import { MIN_SHEETS, validatePayload, type ClassTotals } from '../privacy/aggregate';
 import { currentSettings } from './firebase';
 import { assertDeviceReady, deviceState } from './gate';
@@ -158,26 +158,38 @@ export interface TotalsResult { response: TotalsResponse; where: Where; ms: numb
 
 export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; keepLocal: boolean; minK: number }): Promise<TotalsResult> {
   validatePayload(totals, o.minK); // closed schema: numbers and fixed words only
-  if (totals.sheets < MIN_SHEETS) throw new PlanUnavailable('other', `Needs at least ${MIN_SHEETS} marked sheets.`);
+  if (Number(totals.class_size.split('-')[0]) < MIN_SHEETS) throw new PlanUnavailable('other', `Needs at least ${MIN_SHEETS} marked sheets.`);
   const device = (await deviceState()) === 'available';
   const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
+  const onDevice = async (why: string): Promise<TotalsResult> => {
+    // Gemini Nano writes far fewer tokens per second: it gets the compact variant of the prompt.
+    const r = await call('classTotals', InferenceMode.ONLY_ON_DEVICE, [totalsPrompt(totals, true)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: PLAN_TIMEOUT_DEVICE_MS });
+    return { response: parseJson(r.text) as TotalsResponse, where: r.where, ms: r.ms, mode: InferenceMode.ONLY_ON_DEVICE, payload: totals, note: why };
+  };
   try {
-    let mode: Mode;
-    if (o.keepLocal || offline || !currentSettings().cloudFeaturesEnabled) {
-      if (!device) throw new PlanUnavailable(offline ? 'offline' : 'device', offline ? 'offline' : 'no on-device model');
-      mode = InferenceMode.ONLY_ON_DEVICE;
-    } else {
-      if (!canCallCloud()) {
-        if (!device) throw new PlanUnavailable('limit', 'client limiter');
-        mode = InferenceMode.ONLY_ON_DEVICE;
-      } else { noteCloudCall(); mode = InferenceMode.PREFER_IN_CLOUD; }
+    if (o.keepLocal) {
+      // the teacher asked for nothing to leave the laptop: never fall through to the cloud
+      if (!device) throw new PlanUnavailable('device', 'Gemini Nano is not ready on this laptop, so the plan was not written (nothing was sent).');
+      return await onDevice('kept on this laptop');
     }
-    // Queued so it runs between sheets: no student lock can be held while its request leaves.
-    const r = await call('classTotals', mode, [totalsPrompt(totals, mode === InferenceMode.ONLY_ON_DEVICE)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: device ? PLAN_TIMEOUT_DEVICE_MS : PLAN_TIMEOUT_CLOUD_MS, what: device ? 'the AI' : 'cloud Gemini' });
-    return { response: parseJson(r.text) as TotalsResponse, where: r.where, ms: r.ms, heldBack: r.heldBack, mode, payload: totals, note: offline ? 'offline' : undefined };
+    if (offline || !currentSettings().cloudFeaturesEnabled || !canCallCloud()) {
+      if (!device) throw new PlanUnavailable(offline ? 'offline' : !canCallCloud() ? 'limit' : 'device', offline ? 'offline' : 'cloud not available');
+      return await onDevice(offline ? 'offline' : 'cloud not available');
+    }
+    noteCloudCall();
+    try {
+      // Hybrid: PREFER_IN_CLOUD lets the SDK fall back to Gemini Nano on 429, App Check failure or network
+      // errors. Queued so it runs between sheets: no student lock can be held while its request leaves.
+      const r = await call('classTotals', InferenceMode.PREFER_IN_CLOUD, [totalsPrompt(totals)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: device ? PLAN_TIMEOUT_HYBRID_MS : PLAN_TIMEOUT_CLOUD_MS, what: device ? 'the AI' : 'cloud Gemini' });
+      return { response: parseJson(r.text) as TotalsResponse, where: r.where, ms: r.ms, heldBack: r.heldBack, mode: InferenceMode.PREFER_IN_CLOUD, payload: totals };
+    } catch (e) {
+      // The SDK's own fallback sends the full prompt, which Gemini Nano can't finish in time: retry compact on the laptop.
+      if (device && (e as Error).name !== 'GuardBlocked') return await onDevice(`cloud unavailable: ${(e as Error).message.slice(0, 80)}`);
+      throw e;
+    }
   } catch (e) {
     const err = classify(e as Error);
-    if (o.sample && recorded?.totals) {
+    if (o.sample && recorded?.totals && !o.keepLocal) {
       ledger.addCall({ task: 'Reteach plan and parent notes', dataClass: 'totals', mode: 'recorded', where: 'recorded', ms: 0, ok: true, note: `Live AI unavailable (${err.message.slice(0, 80)}); showing the plan recorded on ${recorded.recordedAt}` });
       return { response: recorded.totals, where: 'recorded', ms: 0, mode: 'recorded', payload: recorded.totalsPayload ?? totals, note: err.message };
     }
@@ -193,4 +205,34 @@ function classify(e: Error): PlanUnavailable {
   const status = (e as { customErrorData?: { status?: number } }).customErrorData?.status;
   if (status === 429 || /429|RESOURCE_EXHAUSTED|quota/i.test(e.message)) return new PlanUnavailable('quota', e.message);
   return new PlanUnavailable('other', e.message);
+}
+
+/**
+ * "Test the guard yourself": tries to send a made-up student photo and a sentence with a name
+ * from the (made-up) sample class list to the cloud. The network guard refuses both before
+ * anything leaves the browser; the Outbox shows the refusals.
+ */
+export async function testGuard(rosterNames: string[]): Promise<{ what: string; blocked: boolean; reason: string }[]> {
+  const { setRosterTokens } = await import('./netGuard');
+  const { rosterTokens } = await import('../privacy/nameCheck');
+  setRosterTokens(rosterTokens(rosterNames));
+  const canvas = new OffscreenCanvas(320, 200);
+  const ctx = canvas.getContext('2d')!;
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, 320, 200);
+  ctx.fillStyle = '#1b2f8a'; ctx.font = '28px sans-serif'; ctx.fillText('Name: Meera K.', 20, 60); ctx.fillText('2/3 + 1/6 = 3/9', 20, 120);
+  const photo = await (await import('./images')).blobToBase64(await canvas.convertToBlob({ type: 'image/jpeg' }));
+  const attempts: [string, Part[]][] = [
+    ['A photo that is not a made-up sample sheet', ['Read this worksheet.', { type: 'inlineData', inlineData: { mimeType: 'image/jpeg', data: photo } }]],
+    [`Text with a name from the class list ("${rosterNames[1] ?? 'Meera'}")`, [`Write a note for ${rosterNames[1] ?? 'Meera Krishnan'}, who scored 7 out of 10.`]],
+  ];
+  const out: { what: string; blocked: boolean; reason: string }[] = [];
+  for (const [what, parts] of attempts) {
+    try {
+      await call('readSheet', InferenceMode.ONLY_IN_CLOUD, parts, 'system', `Guard test: ${what}`, { queue: false, timeoutMs: CLOUD_READ_TIMEOUT_MS });
+      out.push({ what, blocked: false, reason: 'it was sent' });
+    } catch (e) {
+      out.push({ what, blocked: (e as Error).name === 'GuardBlocked', reason: (e as Error).message });
+    }
+  }
+  return out;
 }

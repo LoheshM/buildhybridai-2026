@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
 import { href } from '../app/router';
-import { scoreSheet } from '../marking/mark';
+import { scoreSheet, type QuestionKey } from '../marking/mark';
+import { ScoreRing, Tick } from './Marks';
+import { Steps } from './Steps';
 import { MISCONCEPTIONS, type MisconceptionId } from '../marking/misconceptions';
 import { needsCheck } from '../marking/pipeline';
 import { MIN_SHEETS } from '../privacy/aggregate';
@@ -20,7 +22,7 @@ export function Results({ quizId }: { quizId: string }) {
   const [toast, setToast] = useToast();
   const view = useMemo(() => {
     if (!ctx?.quiz || !ctx.cls) return null;
-    const v = summarise(ctx.sheets, ctx.quiz.keys.length, ctx.quiz.unsimplifiedCredit);
+    const v = summarise(ctx.sheets, ctx.quiz.keys, ctx.quiz.unsimplifiedCredit);
     const m = ctx.cls.sample ? sampleManifest() : null;
     return { ...v, acc: m ? accuracy(ctx.sheets, m.students) : null, deviceShare: ctx.sheets.filter((s) => s.where === 'on_device').length, checkedByTeacher: ctx.sheets.reduce((n, s) => n + s.marks.filter((x) => x.checked && x.flags.length > 0).length, 0) };
   }, [ctx]);
@@ -43,8 +45,9 @@ export function Results({ quizId }: { quizId: string }) {
 
   return (
     <>
+      <Steps quizId={quizId} at="results" className={cls.name} />
       <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
-        <div><span className="muted small">{cls.name}</span><h1 style={{ margin: 0 }}>{quiz.title}: results</h1></div>
+        <h1 style={{ margin: 0 }}>{quiz.title}: results</h1>
         <div className="row noprint">
           <a className="btn" href={href.check(quizId)}>Check answers</a>
           <a className={`btn ${sheets.length >= MIN_SHEETS ? 'primary' : ''}`} href={href.reteach(quizId)} aria-disabled={sheets.length < MIN_SHEETS}>Plan tomorrow's lesson</a>
@@ -54,8 +57,8 @@ export function Results({ quizId }: { quizId: string }) {
       {ctx.total > sheets.length && <p className="callout" style={{ marginTop: 8 }}>{sheets.length} of {ctx.total} sheets are read so far. <a href={href.scan(quizId)}>Read the rest</a> before planning a lesson.</p>}
       <div className="stats">
         <div className="stat"><b>{sheets.length}{ctx.total > sheets.length ? ` of ${ctx.total}` : ''}</b><span>sheets marked</span></div>
-        <div className="stat"><b>{view.avg.toFixed(1)}/{quiz.keys.length}</b><span>class average</span></div>
-        <div className="stat"><b>{view.flagsLeft}</b><span>answers still to check{view.checkedByTeacher ? ` (you checked ${view.checkedByTeacher})` : ''}</span></div>
+        <div className="stat"><ScoreRing big={false} draw={false} points={+view.avg.toFixed(1)} outOf={quiz.keys.length} /><span style={{ display: 'block' }}>class average</span></div>
+        <div className="stat"><b>{view.flagsLeft ? <a href={href.check(quizId)}><span className="flag" style={{ fontSize: '1.2rem' }}>{view.flagsLeft}</span></a> : 0}</b><span>answers still to check{view.checkedByTeacher ? ` (you checked ${view.checkedByTeacher})` : ''}</span></div>
         <div className="stat"><b>{view.deviceMins}</b><span>reading on this laptop</span></div>
       </div>
       {cls.sample && view.acc && view.acc.sheets > 0 && (
@@ -68,21 +71,23 @@ export function Results({ quizId }: { quizId: string }) {
           </p>
         </section>
       )}
-      {view.flagsLeft > 0 && <p className="callout">Some answers are still flagged. The results below include Tickmark's best reading for them; <a href={href.check(quizId)}>check them</a> before sharing marks.</p>}
+      {view.flagsLeft > 0 && <p className="muted small">Flagged answers are counted with Tickmark's best reading until you <a href={href.check(quizId)}>check them</a>.</p>}
 
       <section className="section">
         <h2>Mistakes to reteach</h2>
         <p className="muted">Tickmark recomputes each wrong answer with common wrong methods. When one matches, the mistake gets a name.</p>
         <div className="groups">
-          {view.groups.map((g) => (
-            <div key={g.id} className={`sheet group ${g.id === 'secure' ? 'secure' : ''}`}>
+          {view.groups.filter((g) => g.id !== 'secure').map((g) => (
+            <div key={g.id} className="sheet group">
               <h3>{g.label}</h3>
+              {g.example && <p className="example">{g.example.prompt} = <span className="hand" style={{ color: 'var(--pen)', fontSize: '1.15rem' }}>{g.example.read}</span> <span className="markcell no" style={{ fontSize: '1.1rem' }}>✗</span></p>}
               <p className="muted small">{g.teacher}</p>
               <p><b>{g.students.length} student{g.students.length === 1 ? '' : 's'}</b>{g.qs.length ? `, on Q${g.qs.join(', Q')}` : ''}</p>
-              <details><summary className="small">Who</summary><p className="small">{g.students.map((s) => name(s)).join(', ')}</p></details>
+              <p className="small muted">{g.students.map((s) => name(s)).join(', ')}</p>
             </div>
           ))}
         </div>
+        {view.groups.some((g) => g.id === 'secure') && <p style={{ marginTop: 12 }}><span style={{ color: 'var(--green)' }}><Tick /></span> All correct: {view.groups.find((g) => g.id === 'secure')!.students.map((s) => name(s)).join(', ')}</p>}
       </section>
 
       <section className="section">
@@ -122,27 +127,29 @@ export function Results({ quizId }: { quizId: string }) {
   );
 }
 
-function summarise(sheets: SheetRec[], n: number, credit: number) {
+function summarise(sheets: SheetRec[], keys: QuestionKey[], credit: number) {
+  const n = keys.length;
   const scored = sheets.filter((s) => scoreSheet(s.marks, credit).unreadable === 0);
   const avg = scored.reduce((a, s) => a + scoreSheet(s.marks, credit).points, 0) / Math.max(1, scored.length);
   const perQ = Array.from({ length: n }, (_, i) => sheets.filter((s) => s.marks[i]?.status === 'correct' || s.marks[i]?.status === 'unsimplified').length / Math.max(1, sheets.length));
   const flagsLeft = sheets.reduce((a, s) => a + s.marks.filter(needsCheck).length, 0);
   const ms = sheets.filter((s) => s.where === 'on_device').reduce((a, s) => a + (s.ms ?? 0) + (s.rereadMs ?? 0), 0);
   const deviceMins = ms ? `${Math.floor(ms / 60000)} min ${Math.round((ms % 60000) / 1000)} s` : 'none';
-  const map = new Map<string, { students: Set<SheetRec>; qs: Set<number> }>();
+  const map = new Map<string, { students: Set<SheetRec>; qs: Set<number>; example?: { prompt: string; read: string } }>();
   for (const s of sheets) for (const m of s.marks) {
     if (m.status !== 'wrong') continue;
     const id = m.misconception ?? 'other';
     const g = map.get(id) ?? { students: new Set(), qs: new Set() };
+    if (!g.example && keys[m.q - 1]) g.example = { prompt: keys[m.q - 1].prompt, read: m.read };
     g.students.add(s); g.qs.add(m.q); map.set(id, g);
   }
   const groups = [...map.entries()].map(([id, g]) => ({
     id,
     label: id === 'other' ? 'Other wrong answers' : MISCONCEPTIONS[id as MisconceptionId].label,
     teacher: id === 'other' ? 'No common wrong method matched. Worth a look at the working.' : MISCONCEPTIONS[id as MisconceptionId].teacher,
-    students: [...g.students], qs: [...g.qs].sort((a, b) => a - b),
-  })).sort((a, b) => b.students.length - a.students.length);
+    students: [...g.students], qs: [...g.qs].sort((a, b) => a - b), example: g.example,
+  })).sort((a, b) => Number(a.id === 'other') - Number(b.id === 'other') || b.students.length - a.students.length); // named mistakes first
   const secure = sheets.filter((s) => s.marks.every((m) => m.status === 'correct'));
-  if (secure.length) groups.push({ id: 'secure', label: 'All correct', teacher: 'Every answer right and simplified.', students: secure, qs: [] });
+  if (secure.length) groups.push({ id: 'secure', label: 'All correct', teacher: 'Every answer right and simplified.', students: secure, qs: [], example: undefined });
   return { avg, perQ, flagsLeft, deviceMins, groups };
 }

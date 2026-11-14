@@ -18,13 +18,13 @@ export function accuracy(sheets: SheetLike[], truth: Truth[]): Accuracy {
     a.sheets++;
     for (const m of s.marks) {
       const want = t.answers.find((x) => x.q === m.q)?.written ?? '';
-      const flagged = m.flags.some((f) => f !== 'teacher_changed') || m.status === 'unreadable';
+      // judge the model's own reading and flags, before any teacher change
+      const flagged = m.modelFlagged ?? (m.flags.some((f) => f !== 'teacher_changed') || m.status === 'unreadable');
+      const read = m.modelRead ?? m.read;
       a.answers++;
       if (flagged) a.flagged++;
-      // judge the model's reading, before any teacher correction
-      const read = m.flags.includes('teacher_changed') && m.suggestions[0] !== undefined ? m.suggestions[0] : m.read;
       if (norm(read) === norm(want)) a.exact++;
-      else { a.misread++; if (flagged || m.flags.includes('teacher_changed')) a.flaggedMisreads++; else a.unflagged++; }
+      else { a.misread++; if (flagged) a.flaggedMisreads++; else a.unflagged++; }
     }
   }
   return a;

@@ -46,11 +46,18 @@ export function model(task: Task, mode: Mode): GenerativeModel {
 
 /** Cancels a hung on-device prompt and drops the instance so the next call starts a fresh session. */
 export function resetModel(task: Task, mode: Mode) {
-  const key = keyOf(task, mode);
-  const hit = cache.get(key);
-  if (!hit) return;
-  try { hit.abort.abort(new DOMException('Timed out', 'TimeoutError')); } catch { /* ignore */ }
-  cache.delete(key);
+  // every cached instance for this task and mode, whatever cloud model was current when it was made
+  for (const [key, hit] of [...cache]) {
+    if (!key.startsWith(`${task}|${mode}|`)) continue;
+    try { hit.abort.abort(new DOMException('Timed out', 'TimeoutError')); } catch { /* ignore */ }
+    cache.delete(key);
+  }
+}
+
+/** Cancels every prompt in flight (Stop). */
+export function resetAllModels() {
+  for (const hit of cache.values()) { try { hit.abort.abort(new DOMException('Stopped', 'AbortError')); } catch { /* ignore */ } }
+  cache.clear();
 }
 
 export { InferenceMode };

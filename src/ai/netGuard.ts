@@ -121,7 +121,9 @@ export function installNetGuard() {
   window.fetch = async (input: RequestInfo | URL, init?: RequestInit) => {
     const url = new URL(typeof input === 'string' ? input : input instanceof URL ? input.href : input.url, location.href);
     if (url.hostname !== AI_HOST) return orig(input, init);
-    const body = typeof init?.body === 'string' ? init.body : init?.body ? '[non-text body]' : '';
+    const body = typeof init?.body === 'string' ? init.body
+      : input instanceof Request ? await input.clone().text().catch(() => '[non-text body]')
+      : init?.body ? '[non-text body]' : '';
     const r = body === '[non-text body]' ? { reason: 'non-text request body', images: 0, nonSampleImages: 0, sanitized: '' } : await inspectBody(body);
     const reason = r.reason;
     const ev: OutboundEvent = { at: Date.now(), path: url.pathname.replace(/^.*\/models\//, 'models/'), bytes: new Blob([body]).size, body: r.sanitized, blocked: !!reason, reason: reason ?? undefined, images: r.images, nonSampleImages: r.nonSampleImages };

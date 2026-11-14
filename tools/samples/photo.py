@@ -2,15 +2,16 @@
 
 Adds a desk background, a slight rotation and perspective, uneven lighting, sensor noise
 and mild blur, then saves a 1100 px wide JPEG. Deterministic per file name.
-Usage: uv run --with pillow python tools/samples/photo.py
+Usage: uv run --with pillow python tools/samples/photo.py [raw-dir] [out-dir]
 """
 import random
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFilter, ImageEnhance
 
 HERE = Path(__file__).resolve().parent
-RAW = HERE / "out" / "raw"
-OUT = HERE.parent.parent / "public" / "samples"
+import sys as _sys
+RAW = Path(_sys.argv[1]) if len(_sys.argv) > 1 else HERE / "out" / "raw"
+OUT = Path(_sys.argv[2]) if len(_sys.argv) > 2 else HERE.parent.parent / "public" / "samples"
 OUT.mkdir(parents=True, exist_ok=True)
 
 

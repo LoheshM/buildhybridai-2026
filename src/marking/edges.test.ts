@@ -6,7 +6,7 @@ import { matchName, parseRoster } from './roster';
 import { evaluate, format, mixedAlternatives, parse, parseExpr } from './fraction';
 import { coerceSheetRead, TOTALS_SCHEMA_CLOUD } from '../ai/schemas';
 import { csvAnswer, validTemplate } from '../privacy/templates';
-import { buildTotals, suppressRow, validatePayload } from '../privacy/aggregate';
+import { buildTotals, hiddenRange, suppressRow, validatePayload } from '../privacy/aggregate';
 import { findRosterNames, rosterTokens } from '../privacy/nameCheck';
 import { FIXED_VOCAB, totalsPrompt } from '../ai/prompts';
 
@@ -124,41 +124,45 @@ describe('E14/E16/E17/E19/E20/E21/E22: small parse cases', () => {
   });
 });
 
-describe('R09: hidden class counts can never be worked out', () => {
-  // Enumerate every completion of the hidden cells consistent with the published cells and the total.
-  const completions = (cells: (number | 'hidden')[], total: number): number[][] => {
-    const hiddenIdx = cells.map((c, i) => (c === 'hidden' ? i : -1)).filter((i) => i >= 0);
-    const residual = total - cells.reduce<number>((a, c) => a + (c === 'hidden' ? 0 : c), 0);
+describe('R09/C1: no hidden class count can be worked out, even by someone who knows the algorithm', () => {
+  // The exact attacker: enumerate every row with the same length and total that this algorithm would
+  // publish identically. A hidden cell leaks if all such rows agree on its value.
+  const rowsSumming = (len: number, total: number): number[][] => {
+    if (len === 1) return [[total]];
     const out: number[][] = [];
-    const rec = (i: number, left: number, acc: number[]) => {
-      if (i === hiddenIdx.length) { if (left === 0) out.push(acc); return; }
-      for (let v = 0; v <= left; v++) rec(i + 1, left - v, [...acc, v]);
-    };
-    rec(0, residual, []);
+    for (let v = 0; v <= total; v++) for (const rest of rowsSumming(len - 1, total - v)) out.push([v, ...rest]);
     return out;
   };
-  it('reviewer rows', () => {
-    expect(suppressRow([4, 1, 1, 0, 0], 3, true).filter((c) => c === 'hidden').length).toBeGreaterThanOrEqual(3);
-    expect(suppressRow([1, 1, 1], 3, true)).not.toEqual(['hidden', 'hidden', 'hidden'].map((x, i) => (i < 0 ? x : x)).slice(0, 2));
+  const leaks = (row: number[], k: number): number[] => {
+    const cells = suppressRow(row, k, true);
+    if (!cells) return []; // withheld: nothing published
+    const pub = JSON.stringify(cells);
+    const total = row.reduce((a, b) => a + b, 0);
+    const same = rowsSumming(row.length, total).filter((r) => JSON.stringify(suppressRow(r, k, true)) === pub);
+    return cells.map((c, i) => (c === 'hidden' && new Set(same.map((r) => r[i])).size === 1 ? i : -1)).filter((i) => i >= 0);
+  };
+  it('reviewer rows no longer leak', () => {
+    expect(leaks([4, 1, 1, 0, 0], 3)).toEqual([]);
+    expect(leaks([3, 2, 2], 3)).toEqual([]);
+    expect(leaks([1, 1, 1], 3)).toEqual([]);
+    expect(leaks([6, 0, 0, 0, 0], 10)).toEqual([]);
   });
-  it('property: every hidden cell has at least two possible values', () => {
-    let seed = 7;
-    const rnd = (n: number) => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) % n);
-    for (let t = 0; t < 500; t++) {
+  it('property: across many random rows, no hidden cell is ever pinned', () => {
+    let seed = 11, checked = 0;
+    const rnd = (n: number) => ((seed = (Math.imul(seed, 1103515245) + 12345) & 0x7fffffff) % n);
+    for (let t = 0; t < 1500; t++) {
       const k = 3 + rnd(3);
-      const row = Array.from({ length: 5 }, () => rnd(4) === 0 ? 0 : rnd(5));
-      const total = row.reduce((a, b) => a + b, 0);
-      if (total > 12) continue;
-      const cells = suppressRow(row, k, true);
-      const hidden = cells.map((c, i) => (c === 'hidden' ? i : -1)).filter((i) => i >= 0);
-      if (!hidden.length) continue;
-      // an attacker who knows the rule: non-zero cells below k are always hidden, so any hidden cell may be anything >= 0
-      const comps = completions(cells, total);
-      hidden.forEach((_, j) => {
-        const values = new Set(comps.map((c) => c[j]));
-        expect(values.size, `row ${row} k ${k} -> ${cells}`).toBeGreaterThanOrEqual(2);
-      });
+      const row = Array.from({ length: 2 + rnd(3) }, () => (rnd(4) === 0 ? 0 : rnd(6)));
+      const out = suppressRow(row, k, true);
+      if (row.reduce((a, b) => a + b, 0) > 12 || !out || !out.includes('hidden')) continue;
+      expect(leaks(row, k), `row ${row} k ${k} -> ${JSON.stringify(suppressRow(row, k, true))}`).toEqual([]);
+      checked++;
     }
+    expect(checked).toBeGreaterThan(300);
+  });
+  it('hiddenRange is consistent', () => {
+    const r = hiddenRange([3, 2, 2], [false, true, true], 3)!;
+    expect(r).toEqual([2, 2]); // why [3,h,h] was unsafe
   });
 });
 

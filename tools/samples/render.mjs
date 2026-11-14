@@ -8,7 +8,8 @@ import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const m = JSON.parse(readFileSync(join(here, 'out', 'manifest.json'), 'utf8'));
-const rawDir = join(here, 'out', 'raw');
+const blank = process.argv.includes('--blank'); // blank answers: real handwriting is pasted in later (mnist.py)
+const rawDir = join(here, 'out', blank ? 'raw-blank' : 'raw');
 mkdirSync(rawDir, { recursive: true });
 const CHROME = process.env.CHROME || 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const FONTS = ['Kalam', 'Caveat', 'Patrick Hand', 'Gochi Hand', 'Indie Flower', 'Shadows Into Light', 'Reenie Beanie'];
@@ -24,7 +25,7 @@ m.students.forEach((s, i) => {
     seed: 1000 + i * 77, title: m.quiz.title, className: m.quiz.className, name: s.name.split(' ')[0] + ' ' + s.name.split(' ')[1][0] + '.',
     font, size: SIZES[font], ink: INKS[i % INKS.length], stacked: i % 5 === 3,
     questions: m.quiz.questions.map((q) => ({ q: q.q, prompt: q.prompt })),
-    answers: s.answers,
+    answers: blank ? s.answers.map((a) => ({ ...a, written: '', crossedOut: '' })) : s.answers,
   };
   const hash = Buffer.from(JSON.stringify(data), 'utf8').toString('base64');
   const out = join(rawDir, `${s.id}.png`);

@@ -2,7 +2,10 @@ import { DEVICE_STATE_TEXT } from '../ai/gate';
 import { go, href } from '../app/router';
 import { SAMPLE_QUIZ_ID } from '../app/boot';
 import { downloadDeviceModel, useDevice } from './hooks';
-import { ScoreRing } from './Marks';
+import { PenPass, ScoreRing, type PenMark } from './Marks';
+
+// Marks for sample sheet s16 (Anika: added tops and bottoms on Q1, Q2, Q4 and Q5): the hero shows the product working.
+const HERO_MARKS: PenMark[] = ['wrong', 'wrong', 'correct', 'wrong', 'wrong', 'correct', 'correct', 'correct', 'correct', 'correct'].map((s) => ({ status: s as PenMark['status'] }));
 
 export function Welcome() {
   const d = useDevice();
@@ -26,8 +29,8 @@ export function Welcome() {
               <span className="muted">Paste your class list, type the answer key, add photos.</span>
             </button>
           </div>
-          {st && (
-            <div className={`callout ${d.state === 'available' ? 'device' : ''}`} style={{ marginTop: 20 }} role="status">
+          {st && d.state !== 'available' && (
+            <div className="callout" style={{ marginTop: 20 }} role="status">
               <strong>{st.title}.</strong> {st.body}
               {d.state === 'downloadable' && (
                 <div style={{ marginTop: 10 }}><button className="btn primary small" onClick={() => downloadDeviceModel()}>Download Gemini Nano</button></div>
@@ -40,12 +43,10 @@ export function Welcome() {
           )}
         </div>
         <div aria-hidden="true" style={{ position: 'relative', maxWidth: 380, justifySelf: 'center', width: '100%' }}>
-          <div className="mark-sheet" style={{ transform: 'rotate(-3deg)', position: 'absolute', inset: '18px -14px auto 14px', opacity: .55 }}>
-            <img src="/samples/s12.jpg" alt="" />
-          </div>
           <div className="mark-sheet" style={{ transform: 'rotate(1.5deg)' }}>
-            <img src="/samples/s05.jpg" alt="" />
-            <ScoreRing points={10} outOf={10} big />
+            <img src="/samples/s16.jpg" alt="" />
+            <PenPass play delayMs={500} marks={HERO_MARKS} note={{ row: 1, text: 'added tops & bottoms' }} />
+            <ScoreRing points={6} outOf={10} big />
           </div>
         </div>
       </section>

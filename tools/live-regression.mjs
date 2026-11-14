@@ -11,6 +11,7 @@ const results = [];
 const check = (name, pass, extra = '') => { results.push(pass); console.log(`${pass ? 'PASS' : 'FAIL'} ${name}${extra ? ` (${extra})` : ''}`); };
 
 const browser = await chromium.launch({ channel: 'msedge', headless: true });
+try {
 const ctx = await browser.newContext({ viewport: { width: 1366, height: 768 } });
 const page = await ctx.newPage();
 const aiBodies = [];
@@ -52,7 +53,7 @@ check('no CSP violations', cspErrors.length === 0, cspErrors[0] ?? '');
 await page.goto(`${SITE}/#/privacy`);
 const photos = await page.locator('.stat').filter({ hasText: 'student photos sent' }).locator('b').textContent();
 check('Privacy page: 0 student photos sent', photos?.trim() === '0');
-await browser.close();
+} finally { await browser.close(); }
 const ok = results.every(Boolean);
 console.log(ok ? `ALL PASS (${results.length})` : 'SOME CHECKS FAILED');
 process.exit(ok ? 0 : 1);

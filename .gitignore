@@ -32,3 +32,5 @@ firebase-debug*.log
 spike/
 tools/samples/out/raw/
 tools/samples/out/render.log
+
+public/bench/

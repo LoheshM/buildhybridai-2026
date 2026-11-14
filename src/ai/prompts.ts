@@ -23,11 +23,11 @@ export const totalsPrompt = (t: ClassTotals, compact = false) =>
   `no student names or individual answers. "mistakes" counts wrong answers by the mistake pattern a marking program detected ` +
   `(add_across = added tops and bottoms straight across; numerators_only = combined numerators but kept one denominator; ` +
   `denominators_multiplied; whole_dropped = lost the whole number of a mixed number; cross_multiply; no_invert = divided without flipping; ` +
-  `flipped_first; reversed_subtraction; wrong_operation; slip = arithmetic slip; other = unexplained). A value of "hidden" is a small group hidden for privacy (or a number that would reveal one); treat it as "a few".\n\n` +
+  `flipped_first; reversed_subtraction; wrong_operation; slip = arithmetic slip; other = unexplained). For each question "right" and "wrong" count students; class_size is a range. A value of "hidden" is a small group hidden for privacy; treat it as "a few". A question with no mistakes listed may have had its breakdown withheld for privacy.\n\n` +
   `Write:\n` +
   `1. plan: a reteach mini-lesson of at most 15 minutes aimed at the most common mistake pattern, with ${compact ? '3 short' : '3-5'} steps (each with one full sentence for what the teacher does and one for what students do), ` +
   `a hinge question (with answer and what to do if students get it wrong), and practice in three tiers ` +
-  `(${compact ? 'support: 2 items, core: 2 items, stretch: 2 items' : 'support: 4 easier items, core: 4 items, stretch: 3 items'}). Every practice answer must be exact and in simplest form ("a/b", or "w a/b" for mixed numbers).\n` +
+  `(${compact ? 'support: 2 items, core: 2 items, stretch: 2 items' : 'support: 4 easier items, core: 4 items, stretch: 3 items'}). Use NEW numbers, not the quiz's own questions, and write each practice question as a plain sum such as "2/5 + 1/10". The hinge question must target the most common mistake pattern. Every practice answer must be exact and in simplest form ("a/b", or "w a/b" for mixed numbers).\n` +
   `2. notes: one short, warm parent-note template (max 70 words) for EACH of these groups: ${noteGroups(t, compact).join(', ')} ` +
   `("secure" = did well; "default" = mixed results with no single pattern; the others are the mistake patterns above), ` +
   `in EACH of these languages: ${t.note_languages.join(', ')}. That is ${noteGroups(t, compact).length * t.note_languages.length} notes${compact ? ', each at most 40 words' : ''}. ` +
@@ -49,8 +49,8 @@ export const WARMUP_PROMPT = 'Reply with the single word: ready';
 /** Every word of Tickmark's fixed prompt text. A student named "Max" or "Do" must not block the plan. */
 export const FIXED_VOCAB: ReadonlySet<string> = (() => {
   const all: ClassTotals = {
-    v: 1, topic: 'fractions', grade_band: '4-8', sheets: 0, k: 3, note_languages: ['en', 'hi', 'ta'],
-    questions: [{ q: 1, question: '', answer: '', correct: 0, unsimplified: 0, wrong: 0, blank: 0, unreadable: 0, mistakes: Object.fromEntries([...Object.keys(MISCONCEPTIONS), 'other'].map((k) => [k, 0])) }],
+    v: 1, topic: 'fractions', grade_band: '4-8', class_size: '25-29', k: 3, note_languages: ['en', 'hi', 'ta'],
+    questions: [{ q: 1, question: '', answer: '', right: 0, wrong: 0, mistakes: Object.fromEntries([...Object.keys(MISCONCEPTIONS), 'other'].map((k) => [k, 0])) }],
   };
   const text = [totalsPrompt(all), totalsPrompt(all, true), readSheetPrompt(10), rereadPrompt([1, 2]), WARMUP_PROMPT].join(' ');
   return new Set(fold(text).split(' ').filter(Boolean));

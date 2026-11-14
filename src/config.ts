@@ -22,6 +22,7 @@ export const DEVICE_EXPECTED_OUTPUTS = [{ type: 'text', languages: ['en'] }] as 
 
 export const DEVICE_TIMEOUT_MS = 45_000; // one sheet read on the device (typically 6-10 s)
 export const CLOUD_READ_TIMEOUT_MS = 25_000; // one sample sheet read in the cloud (typically 3-8 s)
-export const PLAN_TIMEOUT_DEVICE_MS = 120_000; // plan with a possible Gemini Nano fallback
+export const PLAN_TIMEOUT_DEVICE_MS = 60_000; // compact plan on Gemini Nano (measured 13 s)
 export const PLAN_TIMEOUT_CLOUD_MS = 30_000; // plan when there is no on-device fallback
+export const PLAN_TIMEOUT_HYBRID_MS = 45_000; // PREFER_IN_CLOUD with Nano present; then a compact on-device retry
 export const BUILD = { commit: import.meta.env?.VITE_COMMIT ?? 'dev', date: import.meta.env?.VITE_BUILD_DATE ?? '' };

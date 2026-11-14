@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { href } from '../app/router';
-import { runState } from '../app/runner';
+import { runState, stopRun } from '../app/runner';
 import { ensureSampleClass } from '../app/boot';
 import { needsCheck } from '../marking/pipeline';
 import { store } from '../store/db';
@@ -36,7 +36,7 @@ export function Home() {
                 </div>
                 <div className="row">
                   {c.sample && <ResetSample onDone={reload} />}
-                  {!c.sample && <button className="btn small danger" onClick={async () => { if (confirmDelete(c.name)) { await store.deleteClass(c.id); reload(); } }}>Delete class</button>}
+                  {!c.sample && <button className="btn small danger" onClick={async () => { if (confirmDelete(c.name)) { stopRun(); await store.deleteClass(c.id); reload(); } }}>Delete class</button>}
                 </div>
               </div>
               <table className="plain" style={{ marginTop: 12 }}>

@@ -14,18 +14,8 @@ describe('suppressRow', () => {
   it('hides small counts', () => {
     expect(suppressRow([20, 1, 7, 0], 3, false)).toEqual([20, 'hidden', 7, 0]);
   });
-  it('hides a second cell when the row total would reveal the first', () => {
-    expect(suppressRow([20, 1, 7, 0], 3, true)).toEqual([20, 'hidden', 'hidden', 0]);
-  });
-  it('property: with a known total, a hidden cell is never derivable (never exactly one hidden)', () => {
-    for (let t = 0; t < 2000; t++) {
-      const row = Array.from({ length: 2 + (t % 5) }, (_, i) => (t * 7919 + i * 104729) % 9);
-      const k = 3 + (t % 3);
-      const out = suppressRow(row, k, true);
-      const hidden = out.filter((c) => typeof c === 'string').length;
-      expect(hidden === 0 || hidden >= 2 || out.every((c, i) => typeof c === 'string' || row[i] === 0)).toBe(true);
-      out.forEach((c, i) => { if (typeof c === 'number') expect(c === 0 || c >= k || false).toBe(row[i] === 0 || row[i] >= k); });
-    }
+  it('hides the whole row when the total would reveal a small cell', () => {
+    expect(suppressRow([20, 1, 7, 0], 3, true)).toEqual(['hidden', 'hidden', 'hidden', 'hidden']);
   });
 });
 
@@ -40,16 +30,18 @@ describe('class totals payload', () => {
   it('counts add up and small cells are hidden', () => {
     const q2 = p.questions.find((q) => q.q === 2)!;
     expect(q2.question).toBe('2/3 + 1/6');
-    const cells: Cell[] = [q2.correct, q2.unsimplified, q2.wrong, q2.blank, q2.unreadable];
+    const cells: Cell[] = [q2.right, q2.wrong];
     for (const c of cells) if (typeof c === 'number') expect(c === 0 || c >= 3).toBe(true);
-    expect(typeof q2.mistakes.add_across).toBe('number');
+    expect(p.class_size).toBe('25-29');
+    expect(Object.keys(q2)).not.toContain('blank');
   });
   it('rejects extra fields, free text, small classes and bad cells', () => {
     expect(() => validatePayload({ ...p, teacher_note: 'Meera struggles' })).toThrow(/unexpected field/);
-    expect(() => validatePayload({ ...p, sheets: 4 })).toThrow(/fewer than 5/);
+    expect(() => validatePayload({ ...p, class_size: '0-4' })).toThrow(/fewer than 5/);
+    expect(() => validatePayload({ ...p, sheets: 28 })).toThrow(/unexpected field/);
     const bad = structuredClone(p); bad.questions[0].question = 'Meera + 1/2';
     expect(() => validatePayload(bad)).toThrow(/question text/);
-    const bad2 = structuredClone(p); (bad2.questions[0] as unknown as Record<string, unknown>).correct = 2;
+    const bad2 = structuredClone(p); (bad2.questions[0] as unknown as Record<string, unknown>).right = 2;
     expect(() => validatePayload(bad2)).toThrow(/cell/);
     const bad3 = structuredClone(p); (bad3.questions[0].mistakes as Record<string, unknown>).meera = 4;
     expect(() => validatePayload(bad3)).toThrow(/mistake/);

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { BUILD } from '../config';
 import { bootError } from '../app/boot';
+import { currentTheme, setTheme, type Theme } from '../app/theme';
 import { href, useRoute } from '../app/router';
 import { downloadDeviceModel, useCounters, useDevice } from './hooks';
 import { Logo } from './Marks';
@@ -44,6 +45,7 @@ export function App() {
           <a href={href.privacy()} aria-current={r.page === 'privacy' ? 'page' : undefined}>Privacy &amp; data</a>
         </nav>
         <span className="spacer" />
+        <ThemeToggle />
         <DevicePill />
         <CloudCounter />
       </header>
@@ -81,5 +83,15 @@ function CloudCounter() {
       <span>Student photos sent <b className={c.studentPhotosSent ? '' : 'zero'}>{c.studentPhotosSent}</b></span>
       {c.blocked > 0 && <span style={{ color: 'var(--red)' }}>Blocked <b>{c.blocked}</b></span>}
     </a>
+  );
+}
+
+function ThemeToggle() {
+  const [t, setT] = useState<Theme>(currentTheme());
+  const next: Theme = t === 'dark' ? 'light' : 'dark';
+  return (
+    <button className="btn small ghost" aria-pressed={t === 'dark'} title="Switch between the paper and chalkboard looks" onClick={() => { setTheme(next); setT(next); }}>
+      {t === 'dark' ? 'Paper' : 'Chalkboard'}
+    </button>
   );
 }

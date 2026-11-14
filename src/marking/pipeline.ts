@@ -37,16 +37,19 @@ export function mergeReread(marks: Marked[], second: Map<number, string>): Marke
     // Agreement: a second read that ignores crossed-out work found the same answer, so "crossed-out work"
     // is a note, not a flag (Nano often reports crossed-out text that isn't there). A swapped final and
     // crossed-out answer would make the two reads disagree, which keeps the flag where it matters.
-    if (sameValue(alt, m.read)) return m.flags.includes('crossed_out') ? { ...m, flags: m.flags.filter((f) => f !== 'crossed_out') } : m;
+    if (sameValue(alt, m.read)) return m.flags.includes('crossed_out') && (m.status === 'correct' || m.status === 'unsimplified') ? { ...m, flags: m.flags.filter((f) => f !== 'crossed_out') } : m;
     // Only offer readings that are a single clean value; garbage like "/2 1/2" is never a one-tap fix.
-    const usable = parse(alt).kind === 'value';
+    const pa = parse(alt);
+    // "1 1/2" read from a crossed-out "1/2" next to "1/2" is not a reading worth offering
+    const glued = !!m.crossedOut && pa.kind === 'value' && pa.form === 'mixed' && !m.suggestions.includes(alt);
+    const usable = pa.kind === 'value' && !glued;
     return { ...m, flags: [...new Set([...m.flags, 'reread_disagreed' as const])], suggestions: usable ? [...new Set([alt, ...m.suggestions])].filter((s) => s !== m.read) : m.suggestions };
   });
 }
 
 /** Applies a teacher's correction: re-marks the answer from the corrected reading. */
 export function applyCorrection(key: QuestionKey, before: Marked, corrected: string): Marked {
-  const m = markAnswer(key, corrected, '');
+  const m = { ...markAnswer(key, corrected, ''), modelRead: before.modelRead, modelFlagged: before.modelFlagged };
   const changed = before.read.replace(/\s+/g, ' ').trim() !== corrected.replace(/\s+/g, ' ').trim();
   // Still unreadable (e.g. two answers typed back): keep it open for the teacher.
   if (m.status === 'unreadable') return { ...m, checked: false };
@@ -62,3 +65,6 @@ export function markWrongByTeacher(before: Marked): Marked {
 export const openFlags = (m: Marked) => (m.checked ? [] : m.flags.filter((f) => f !== 'teacher_changed'));
 /** An answer waits for the teacher while it has open flags or is still unreadable. */
 export const needsCheck = (m: Marked) => (m.status === 'unreadable' && !m.checked) || openFlags(m).length > 0;
+
+/** Stamps the model's reading onto each mark after the second read, before any teacher change. */
+export const stampModelRead = (marks: Marked[]): Marked[] => marks.map((m) => ({ ...m, modelRead: m.read, modelFlagged: needsCheck(m) }));

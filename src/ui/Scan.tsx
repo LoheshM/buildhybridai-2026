@@ -10,7 +10,8 @@ import { markRead, needsCheck } from '../marking/pipeline';
 import { rosterTokens } from '../privacy/nameCheck';
 import { store, uid, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 import { downloadDeviceModel, useDevice, useLoad } from './hooks';
-import { ScoreRing, WhereChip } from './Marks';
+import { PenPass, ScoreRing, WhereChip } from './Marks';
+import { Steps } from './Steps';
 
 export function Scan({ quizId }: { quizId: string }) {
   const [ctx, reload] = useLoad(async () => {
@@ -44,13 +45,11 @@ export function Scan({ quizId }: { quizId: string }) {
 
   return (
     <>
+      <Steps quizId={quiz.id} at="scan" className={cls.name} />
       <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
-        <div>
-          <span className="muted small">{cls.name}</span>
-          <h1 style={{ margin: 0 }}>{quiz.title}</h1>
-        </div>
+        <h1 style={{ margin: 0 }}>{quiz.title}</h1>
         <div className="row">
-          <button className="btn" onClick={() => { document.body.classList.add('printing-quiz'); const off = () => { document.body.classList.remove('printing-quiz'); removeEventListener('afterprint', off); }; addEventListener('afterprint', off); window.print(); }}>Print blank quiz</button>
+          <button className="btn ghost" onClick={() => { document.body.classList.add('printing-quiz'); const off = () => { document.body.classList.remove('printing-quiz'); removeEventListener('afterprint', off); }; addEventListener('afterprint', off); window.print(); }}>Print blank quiz</button>
           <a className={`btn ${toCheck ? 'primary' : ''}`} href={href.check(quiz.id)}>{toCheck ? `Check ${toCheck} flagged item${toCheck === 1 ? '' : 's'}` : 'Check answers'}</a>
           <a className={`btn ${toCheck ? '' : 'primary'}`} href={href.results(quiz.id)}>Results</a>
         </div>
@@ -96,7 +95,7 @@ export function Scan({ quizId }: { quizId: string }) {
       </section>
 
       {!cls.sample && (state === 'available' || state === 'downloading' || state === 'downloadable' || state === 'checking'
-        ? <DropPhotos quiz={quiz} existing={sheets} onAdded={reload} />
+        ? <DropPhotos quiz={quiz} existing={sheets} onAdded={reload} compact={readCount > 0 && pending.length === 0} />
         : <TypedGrid cls={cls} quiz={quiz} existing={sheets} onSaved={reload} />)}
 
       <PrintableQuiz quiz={quiz} className={cls.sample ? undefined : cls.name} />
@@ -163,13 +162,17 @@ function Tile({ s, cls, quiz, onRetry, canRetry }: { s: SheetRec; cls: ClassRec;
   }, [s.imageId, s.sampleId]);
   const student = cls.roster.find((r) => r.id === s.studentId);
   const done = s.status === 'read' || s.status === 'checked';
+  const prev = useRef(s.status);
+  const [play, setPlay] = useState(false);
+  useEffect(() => { if (prev.current === 'reading' && done) setPlay(true); prev.current = s.status; }, [s.status, done]);
   const score = done ? scoreSheet(s.marks, quiz.unsimplifiedCredit) : null;
   const flags = s.marks.filter(needsCheck).length;
   const body = (
     <>
       <div className="mark-sheet">
         {url ? <img src={url} alt="" loading="lazy" /> : <div style={{ aspectRatio: '1100/1492', display: 'grid', placeItems: 'center' }} className="muted small">{s.source === 'typed' ? 'Typed in' : ''}</div>}
-        {score && score.unreadable === 0 && <ScoreRing points={score.points} outOf={score.outOf} />}
+        {s.sampleId && done && <PenPass play={play} marks={s.marks.map((m) => ({ status: m.status, flag: needsCheck(m) }))} />}
+        {score && <ScoreRing points={score.points} outOf={score.outOf} draw={play} unknown={score.unreadable > 0} />}
       </div>
       <span className="name">{student?.name ?? (s.readName ? `"${s.readName}"` : s.status === 'queued' ? 'Waiting' : s.status === 'reading' ? 'Reading…' : s.status === 'error' ? 'Not read yet' : 'Name not found')}</span>
       <span className="meta">
@@ -192,7 +195,7 @@ function Tile({ s, cls, quiz, onRetry, canRetry }: { s: SheetRec; cls: ClassRec;
   return <a className={`tile ${s.status}`} href={href.check(quiz.id, s.id)}>{body}</a>;
 }
 
-function DropPhotos({ quiz, existing, onAdded }: { quiz: QuizRec; existing: SheetRec[]; onAdded: () => void }) {
+function DropPhotos({ quiz, existing, onAdded, compact = false }: { quiz: QuizRec; existing: SheetRec[]; onAdded: () => void; compact?: boolean }) {
   const [over, setOver] = useState(false);
   const [msg, setMsg] = useState<string[]>([]);
   const [adding, setAdding] = useState<{ done: number; total: number } | null>(null);
@@ -223,10 +226,10 @@ function DropPhotos({ quiz, existing, onAdded }: { quiz: QuizRec; existing: Shee
   };
   return (
     <section className="section">
-      <div className={`dropzone ${over ? 'over' : ''}`} onDragOver={(e) => { e.preventDefault(); setOver(true); }} onDragLeave={() => setOver(false)}
+      <div className={`dropzone ${over ? 'over' : ''} ${compact ? 'compact' : ''}`} onDragOver={(e) => { e.preventDefault(); setOver(true); }} onDragLeave={() => setOver(false)}
         onDrop={(e) => { e.preventDefault(); setOver(false); add(e.dataTransfer.files); }}>
-        <p style={{ margin: '0 auto 10px', fontWeight: 700 }}>Drop worksheet photos here, one photo per student.</p>
-        <p className="muted small" style={{ margin: '0 auto 12px' }}>JPEG, PNG or WebP. Photos are straightened, resized and their location data removed on this laptop, then kept in this browser only. Tip: AirDrop, Nearby Share or a USB cable moves phone photos to the laptop without a cloud album.</p>
+        <p style={{ margin: compact ? 0 : '0 auto 10px', fontWeight: 700 }}>{compact ? 'Drop more photos here, or' : 'Drop worksheet photos here, one photo per student.'}</p>
+        {!compact && <p className="muted small" style={{ margin: '0 auto 12px' }}>JPEG, PNG or WebP. Photos are straightened, resized and their location data removed on this laptop, then kept in this browser only. Tip: AirDrop, Nearby Share or a USB cable moves phone photos to the laptop without a cloud album.</p>}
         <button className="btn" onClick={() => input.current?.click()} disabled={!!adding}>{adding ? `Adding ${adding.done} of ${adding.total}…` : 'Choose photos'}</button>
         <input ref={input} type="file" accept="image/jpeg,image/png,image/webp" multiple hidden onChange={(e) => { if (e.target.files) add(e.target.files); e.target.value = ''; }} />
       </div>

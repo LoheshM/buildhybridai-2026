@@ -35,7 +35,7 @@ Tickmark routes every AI call by **what data it carries**, not by how hard the t
 | Anonymous class totals | Cloud, falling back to Gemini Nano on 429, App Check failure or network error; or kept on the laptop when the teacher asks | `PREFER_IN_CLOUD` / `ONLY_ON_DEVICE` | Closed schema, small groups hidden, roster-name check, shown before sending |
 | Parent-note personalisation | This laptop, plain code | none | Placeholder validation |
 
-**Every reading shows where it ran.** Labels such as "Laptop, 7.3 s" and "Cloud" come from the SDK's `inferenceSource`, and the **Privacy & data** page lists every request this browser sent to the AI service.
+**Every reading shows where it ran.** A step bar (Read sheets → Check flags → Results → Plan lesson) runs through every quiz. Labels such as "Laptop, 7.3 s" and "Cloud" come from the SDK's `inferenceSource`, and the **Privacy & data** page lists every request this browser sent to the AI service.
 
 **Why Tickmark has its own guards:**
 - In `@firebase/ai` 3.1.0, a browser with no `LanguageModel` API sends even `ONLY_ON_DEVICE` requests to the cloud.
@@ -64,17 +64,26 @@ Tickmark routes every AI call by **what data it carries**, not by how hard the t
 - **Names:** the name on each sheet is matched to the class list. Unsure matches are left for the teacher to confirm, never guessed.
 - **Practice answers:** the cloud's practice answers are re-checked by the same fraction engine. A wrong AI answer is corrected and labelled.
 
-## Measured (synthetic sample class, Chrome 157 on a 16 GB laptop, 15 Nov 2026)
-| | Result |
-|---|---|
-| Answers read exactly, on the device (single read) | {{DEVICE_EXACT}} |
-| Misreads the teacher was **not** asked to check | {{UNFLAGGED}} |
-| Answers flagged for the teacher | {{FLAGGED}} |
-| Names matched to the class list | {{NAMES}} |
-| Time per sheet on the device, including the second read | {{SECS}} |
-| Answers read exactly by cloud Gemini (`gemini-3.5-flash-lite`, same sheets) | 279 of 280 |
+## Measured (Chrome 157 on a 16 GB laptop, 15 Nov 2026)
+| | Sample class (handwriting fonts) | Real handwritten digits (MNIST) |
+|---|---|---|
+| Answers read exactly by Gemini Nano on the laptop | 84–90% across runs (235 of 280 on the last run) | 78.6% (220 of 280) |
+| **Misreads the teacher was not asked to check** | **0 of 280** | **0 of 280** |
+| Answers flagged for the teacher (how many were real misreads) | 16.8% (45 of 47) | 24.3% (60 of 68) |
+| Names matched to the class list (confident) | 28 of 28 (24) | 26 of 28 confident |
+| Time per sheet on the laptop, including the second read | 11 s | 11 s |
+| Same sheets read by cloud Gemini (`gemini-3.5-flash-lite`) | 279 of 280 | not sent: real-student path |
+| Lesson plan | cloud 9–17 s; on the laptop 13 s | |
 
-These sheets are generated (`tools/samples/`): made-up students, handwriting rendered from open-licence handwriting fonts, and planted mistakes. The cloud model reads them better; Tickmark trades that for privacy and makes up for it with flags and the teacher's check. Real children's handwriting will be harder; that's why the teacher checks the flags. **Print blank quiz** gives you a sheet to try your own handwriting.
+**What these numbers mean:**
+- **Sample class:** generated sheets (`tools/samples/`): made-up students, handwriting rendered from open-licence fonts, and planted mistakes.
+- **Real-handwriting set:** the same sheets with every answer rewritten in **real human handwritten digits** from the MNIST test set (`tools/samples/mnist.py`, CC BY-SA 3.0). They were uploaded as an ordinary class, so they went through the device-only student path.
+- **The trade-off:** the cloud model reads better, but Tickmark gives that up for privacy and makes up for it with flags and the teacher's check. In both sets every misread was flagged.
+- **Real children's handwriting** will vary more again. **Print blank quiz** gives you a sheet to try your own.
+
+**Which laptops work:**
+- **On-device reading** needs Gemini Nano in Chrome. That means Windows 10/11, macOS 13+ or Linux, with 16 GB of memory or a graphics card with more than 4 GB, plus 22 GB of free disk. We measured on a 16 GB laptop with a 4 GB RTX 3050 Ti.
+- **Any other laptop or browser** still gets Tickmark's marking, mistake names and lesson planning through the typed-answer grid. Only photo reading needs Gemini Nano, and student photos are never sent anywhere instead.
 
 ## Try it
 **You need** Chrome 139 or newer on a Windows, macOS or Linux laptop or desktop. On-device reading needs 16 GB of memory (or a graphics card with more than 4 GB) and 22 GB of free disk. Without these, the sample still works through the cloud path below.
@@ -86,7 +95,7 @@ These sheets are generated (`tools/samples/`): made-up students, handwriting ren
 3. Click **Try the sample class**, then **Quick look: read 8**. To read all 28 (about 6 minutes), click **Read all**.
 4. Open **Check answers**. Use <kbd>J</kbd>/<kbd>K</kbd> to move, <kbd>Enter</kbd> when the reading is right, and <kbd>1</kbd>–<kbd>3</kbd> to pick a suggested reading. Use **Name is right** to confirm a name.
 5. Open **Results**, then **Plan tomorrow's lesson**. Read the "Before you send" table, then click **Send class totals and plan the lesson**. To keep everything on the laptop instead, tick **Keep this on the laptop**.
-6. Open **Privacy & data** to see each request sent to the AI service.
+6. Open **Privacy & data** to see each request sent to the AI service. Under **Test the guard yourself**, click **Try to send them**: Tickmark refuses to send a non-sample photo and a sentence containing a class-list name, before either leaves the browser.
 
 **No on-device AI on your laptop?** The top bar says "Sample: cloud mode".
 - The sample class reads its first 3 sheets live with cloud Gemini (allowed only for made-up sheets) and uses cloud readings recorded on 15 Nov for the rest.

@@ -6,6 +6,7 @@ import { createHash } from 'node:crypto';
 const FIREBASE_TOOLS = 'firebase-tools@15.32.1';
 const args = process.argv.slice(2);
 const channel = args.includes('--channel') ? args[args.indexOf('--channel') + 1] : null;
+if (args.includes('--channel') && (!channel || channel.startsWith('-'))) { console.error('Usage: node tools/deploy.mjs --channel <name>'); process.exit(2); }
 const run = (cmd) => execSync(cmd, { stdio: 'inherit' });
 
 run('npm run build');

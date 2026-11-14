@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { go, href } from '../app/router';
 import { onSheetChanged, runState } from '../app/runner';
 import { FLAG_TEXT, scoreSheet, type Marked } from '../marking/mark';
@@ -6,7 +6,8 @@ import { MISCONCEPTIONS } from '../marking/misconceptions';
 import { applyCorrection, markWrongByTeacher, needsCheck, openFlags } from '../marking/pipeline';
 import { store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 import { useLoad } from './hooks';
-import { Mark, ScoreRing, WhereChip } from './Marks';
+import { Mark, ScoreRing, Tick, WhereChip } from './Marks';
+import { Steps } from './Steps';
 
 const nameNeedsCheck = (s: SheetRec) => !s.studentId || !s.nameConfident;
 const sheetNeeds = (s: SheetRec) => s.marks.some(needsCheck) || nameNeedsCheck(s);
@@ -43,11 +44,11 @@ export function Check({ quizId, sheetId }: { quizId: string; sheetId?: string })
   );
   const answersLeft = sheets.reduce((n, s) => n + s.marks.filter(needsCheck).length, 0);
   const namesLeft = sheets.filter(nameNeedsCheck).length;
-  const save = async (s: SheetRec) => {
+  const save = (s: SheetRec) => {
     const done = !s.marks.some(needsCheck) && !nameNeedsCheck(s);
     const next = { ...s, status: done ? 'checked' as const : 'read' as const, checkedAt: done ? Date.now() : undefined };
-    await store.putSheet(next);
-    setSheets((xs) => xs.map((x) => (x.id === next.id ? next : x)));
+    setSheets((xs) => xs.map((x) => (x.id === next.id ? next : x))); // update first so quick edits build on it
+    store.putSheet(next).catch(() => undefined);
   };
   const remove = async (s: SheetRec) => {
     if (!window.confirm('Remove this sheet and its photo from the quiz? This cannot be undone.')) return;
@@ -65,11 +66,12 @@ export function Check({ quizId, sheetId }: { quizId: string; sheetId?: string })
 
   return (
     <>
+      <Steps quizId={quizId} at="check" className={ctx.cls.name} />
       <div className="row" style={{ justifyContent: 'space-between', marginBottom: 16 }}>
-        <div><span className="muted small">{ctx.cls.name}, {ctx.quiz.title}</span><h1 style={{ margin: 0 }}>Check answers</h1></div>
+        <h1 style={{ margin: 0 }}>Check answers</h1>
         <div className="row">
           <span className="muted" role="status">{parts.length ? `${parts.join(' and ')} waiting for you` : 'Everything checked'}{stillReading ? `. ${stillReading} more sheet${stillReading === 1 ? ' is' : 's are'} still being read.` : ''}</span>
-          <a className="btn primary" href={href.results(quizId)}>Results</a>
+          <a className={`btn ${parts.length ? '' : 'primary'}`} href={href.results(quizId)}>{parts.length ? 'Results' : 'See results'}</a>
         </div>
       </div>
       <div className="check">
@@ -80,7 +82,7 @@ export function Check({ quizId, sheetId }: { quizId: string; sheetId?: string })
             return (
               <button key={s.id} aria-current={s.id === current.id} onClick={() => go(href.check(quizId, s.id))}>
                 <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{st?.name ?? `"${s.readName || 'no name'}"`}</span>
-                {n > 0 ? <span className="flag">{n}</span> : <span style={{ color: 'var(--green)' }} aria-label="checked">✓</span>}
+                {n > 0 ? <span className="flag">{n}</span> : <span style={{ color: 'var(--green)' }} aria-label="checked"><Tick size={16} /></span>}
               </button>
             );
           })}
@@ -132,9 +134,11 @@ function SheetPanel({ sheet, cls, quiz, sheets, onChange, onNext, onRemove }: { 
   const score = scoreSheet(sheet.marks, quiz.unsimplifiedCredit);
   const taken = new Set(sheets.filter((s) => s.id !== sheet.id).map((s) => s.studentId));
 
-  const setMark = useCallback((i: number, m: Marked) => onChange({ ...sheet, marks: sheet.marks.map((x, j) => (j === i ? m : x)) }), [sheet, onChange]);
-  const accept = useCallback((i: number) => { const m = sheet.marks[i]; if (m.status === 'unreadable') return; setMark(i, { ...m, checked: true }); }, [sheet, setMark]);
-  const correct = useCallback((i: number, text: string) => setMark(i, applyCorrection(quiz.keys[i], sheet.marks[i], text)), [quiz, sheet, setMark]);
+  const latest = useRef(sheet);
+  latest.current = sheet;
+  const setMark = useCallback((i: number, m: Marked) => { const cur = latest.current; const next = { ...cur, marks: cur.marks.map((x, j) => (j === i ? m : x)) }; latest.current = next; onChange(next); }, [onChange]);
+  const accept = useCallback((i: number) => { const m = latest.current.marks[i]; if (m.status === 'unreadable') return; setMark(i, { ...m, checked: true }); }, [setMark]);
+  const correct = useCallback((i: number, text: string) => setMark(i, applyCorrection(quiz.keys[i], latest.current.marks[i], text)), [quiz, setMark]);
   useEffect(() => { rows.current[focus]?.scrollIntoView({ block: 'nearest' }); }, [focus]);
 
   useEffect(() => {
@@ -157,13 +161,13 @@ function SheetPanel({ sheet, cls, quiz, sheets, onChange, onNext, onRemove }: { 
       <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-start' }}>
         <label className="field" style={{ flex: 1, minWidth: 200 }}>Student
           <select data-student value={sheet.studentId ?? ''} onChange={(e) => { onChange({ ...sheet, studentId: e.target.value || null, nameConfident: !!e.target.value }); e.currentTarget.blur(); }}
-            style={{ borderColor: nameNeedsCheck(sheet) ? 'var(--red)' : undefined }}>
+            style={nameNeedsCheck(sheet) ? { borderColor: 'var(--hl)', boxShadow: '0 0 0 3px var(--hl-soft)' } : undefined}>
             <option value="">Pick a student…</option>
             {cls.roster.map((r) => <option key={r.id} value={r.id} disabled={taken.has(r.id)}>{r.name}{taken.has(r.id) ? ' (already has a sheet)' : ''}</option>)}
           </select>
           <span className="hint">Read on the sheet as "{sheet.readName || 'nothing'}".</span>
         </label>
-        <div style={{ position: 'relative', minWidth: 90, minHeight: 56 }}>{score.unreadable === 0 && <ScoreRing points={score.points} outOf={score.outOf} draw={false} />}</div>
+        <div style={{ position: 'relative', minWidth: 90, minHeight: 56 }}><ScoreRing points={score.points} outOf={score.outOf} draw={false} unknown={score.unreadable > 0} /></div>
       </div>
       {sheet.studentId && !sheet.nameConfident && (
         <div className="row callout small" style={{ margin: '8px 0', justifyContent: 'space-between' }}>
@@ -172,45 +176,55 @@ function SheetPanel({ sheet, cls, quiz, sheets, onChange, onNext, onRemove }: { 
         </div>
       )}
       <div className="row small" style={{ margin: '4px 0 8px' }}><WhereChip where={sheet.source === 'typed' ? 'typed' : sheet.where} ms={sheet.ms} />{sheet.rereadQs?.length ? <span className="muted">Read twice: Q{sheet.rereadQs.join(', Q')}</span> : null}</div>
+      <p className="muted small keys"><kbd>J</kbd>/<kbd>K</kbd> move, <kbd>Enter</kbd> read is right, <kbd>1</kbd>–<kbd>3</kbd> pick a reading, <kbd>E</kbd> edit, <kbd>Z</kbd> zoom, <kbd>N</kbd> next sheet</p>
       <table className="answers">
-        <thead><tr><th>Q</th><th>Question</th><th>Read as</th><th>Mark</th><th>What to look at</th></tr></thead>
+        <thead><tr><th>Q</th><th>Question</th><th>Read as</th><th>Mark</th></tr></thead>
         <tbody>
           {sheet.marks.map((m, i) => {
             const k = quiz.keys[i];
             const need = needsCheck(m);
+            const sub = need || !!m.misconception || m.flags.includes('teacher_changed');
+            const cls = `${need ? 'needs' : ''} ${focus === i ? 'focus' : ''}`;
             return (
-              <tr key={m.q} ref={(el) => { rows.current[i] = el; }} className={`${need ? 'needs' : ''} ${focus === i ? 'focus' : ''}`} onClick={() => setFocus(i)}>
-                <td>{m.q}</td>
-                <td className="small">{k?.prompt} = <b>{k?.answer}</b></td>
-                <td>
-                  <input id={`ans-${i}`} data-student aria-label={`Answer to question ${m.q}`} spellCheck={false} autoComplete="off"
-                    value={edits[i] ?? m.read} onChange={(e) => setEdits({ ...edits, [i]: e.target.value })}
-                    onBlur={() => { if (edits[i] !== undefined && edits[i] !== m.read) correct(i, edits[i]); setEdits((x) => { const y = { ...x }; delete y[i]; return y; }); }}
-                    onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur(); }} />
-                  {m.crossedOut && <div className="small muted">crossed out: <s>{m.crossedOut}</s></div>}
-                </td>
-                <td><Mark status={m.status} /></td>
-                <td>
-                  {openFlags(m).map((f) => <span key={f} className="flag">{FLAG_TEXT[f]}</span>)}
-                  {m.status === 'unreadable' && !m.checked && openFlags(m).length === 0 && <span className="flag">{FLAG_TEXT.unreadable}</span>}
-                  {m.misconception && <div className="mis">{MISCONCEPTIONS[m.misconception].label}</div>}
-                  {m.flags.includes('teacher_changed') && <div className="mis">Changed by you{m.suggestions[0] ? ` (read as "${m.suggestions[0]}")` : ''}</div>}
-                  {need && (
-                    <div className="row" style={{ gap: 6, marginTop: 4 }}>
-                      {m.suggestions.slice(0, 3).map((s, j) => <button key={s} className="btn small sugg" onClick={() => correct(i, s)}>It says {s} <kbd>{j + 1}</kbd></button>)}
-                      {m.status === 'unreadable'
-                        ? <button className="btn small" onClick={() => setMark(i, markWrongByTeacher(m))}>Mark wrong</button>
-                        : <button className="btn small" onClick={() => accept(i)}>Read is right <kbd>Enter</kbd></button>}
-                    </div>
-                  )}
-                </td>
-              </tr>
+              <Fragment key={m.q}>
+                <tr ref={(el) => { rows.current[i] = el; }} className={cls} onClick={() => setFocus(i)}>
+                  <td>{m.q}</td>
+                  <td className="small">{k?.prompt} = <b>{k?.answer}</b></td>
+                  <td>
+                    <input id={`ans-${i}`} data-student aria-label={`Answer to question ${m.q}`} spellCheck={false} autoComplete="off"
+                      value={edits[i] ?? m.read} onChange={(e) => setEdits({ ...edits, [i]: e.target.value })}
+                      onBlur={() => { if (edits[i] !== undefined && edits[i] !== m.read) correct(i, edits[i]); setEdits((x) => { const y = { ...x }; delete y[i]; return y; }); }}
+                      onKeyDown={(e) => { if (e.key === 'Enter') (e.target as HTMLInputElement).blur(); }} />
+                    {m.crossedOut && <div className="small muted">crossed out: <s>{m.crossedOut}</s></div>}
+                  </td>
+                  <td><Mark status={m.status} /></td>
+                </tr>
+                {sub && (
+                  <tr className={`sub ${cls}`} onClick={() => setFocus(i)}>
+                    <td />
+                    <td colSpan={3}>
+                      {openFlags(m).map((f) => <span key={f} className="flag">{FLAG_TEXT[f]}</span>)}
+                      {m.status === 'unreadable' && !m.checked && openFlags(m).length === 0 && <span className="flag">{FLAG_TEXT.unreadable}</span>}
+                      {m.misconception && <span className="mis">{MISCONCEPTIONS[m.misconception].label}. </span>}
+                      {m.flags.includes('teacher_changed') && <span className="mis">Changed by you{m.suggestions[0] ? ` (read as "${m.suggestions[0]}")` : ''}.</span>}
+                      {need && (
+                        <div className="row" style={{ gap: 6, marginTop: 4 }}>
+                          {m.suggestions.slice(0, 3).map((s, j) => <button key={s} className="btn small sugg" onClick={() => correct(i, s)}>It says {s} <kbd>{j + 1}</kbd></button>)}
+                          {m.status === 'unreadable'
+                            ? <button className="btn small" onClick={() => setMark(i, markWrongByTeacher(m))}>Mark wrong</button>
+                            : <button className="btn small" onClick={() => accept(i)}>Read is right <kbd>Enter</kbd></button>}
+                        </div>
+                      )}
+                    </td>
+                  </tr>
+                )}
+              </Fragment>
             );
           })}
         </tbody>
       </table>
       <div className="row next-bar" style={{ justifyContent: 'space-between', marginTop: 12 }}>
-        <span className="muted small"><kbd>J</kbd>/<kbd>K</kbd> move, <kbd>Enter</kbd> read is right, <kbd>1</kbd>–<kbd>3</kbd> pick a reading, <kbd>E</kbd> edit, <kbd>N</kbd> next sheet</span>
+        <span className="muted small">Sheet {Math.max(1, sheets.findIndex((x) => x.id === sheet.id) + 1)} of {sheets.length}</span>
         <div className="row">
           <button className="btn small ghost danger" onClick={() => onRemove(sheet)}>Remove sheet</button>
           <button className="btn primary" onClick={onNext}>Next sheet to check <kbd>N</kbd></button>

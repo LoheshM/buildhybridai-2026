@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { currentSettings, ensureAppCheck } from '../ai/firebase';
+import { currentSettings } from '../ai/firebase';
 import { setRosterTokens } from '../ai/netGuard';
 import { totalsPrompt } from '../ai/prompts';
 import type { PracticeItem, TotalsResponse } from '../ai/schemas';
@@ -15,6 +15,7 @@ import { FALLBACK_NOTES, fillTemplate, validTemplate } from '../privacy/template
 import { store, type PlanRec, type SheetRec } from '../store/db';
 import { useDevice, useLoad, useToast } from './hooks';
 import { WhereChip } from './Marks';
+import { Steps } from './Steps';
 
 const LANG_NAME: Record<Lang, string> = { en: 'English', hi: 'Hindi', ta: 'Tamil' };
 
@@ -35,7 +36,6 @@ export function Reteach({ quizId }: { quizId: string }) {
   const [showText, setShowText] = useState(false);
   const planHeading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (ctx?.saved) setPlan(ctx.saved); }, [ctx?.saved]);
-  useEffect(() => { if (navigator.onLine) ensureAppCheck(); }, []); // a cloud request may follow on this page
   useEffect(() => { if (ctx?.cls) setRosterTokens(rosterTokens(ctx.cls.roster.map((s) => s.name))); }, [ctx?.cls]);
   const totals: ClassTotals | null = useMemo(() => (ctx?.quiz ? buildTotals(ctx.quiz.keys, ctx.sheets, currentSettings().minGroupSize, keepLocal ? ['en'] : langs) : null), [ctx, langs, keepLocal]);
 
@@ -49,7 +49,9 @@ export function Reteach({ quizId }: { quizId: string }) {
   const send = async () => {
     setBusy(true); setErr(null);
     try {
-      const r = await planFromTotals(totals, { sample: !!cls.sample, keepLocal: keepLocal && deviceReady, minK: currentSettings().minGroupSize });
+      // rebuilt now so the payload uses the settings in force when it is sent
+      const fresh = buildTotals(quiz.keys, sheets, currentSettings().minGroupSize, keepLocal ? ['en'] : langs);
+      const r = await planFromTotals(fresh, { sample: !!cls.sample, keepLocal, minK: currentSettings().minGroupSize });
       const rec: PlanRec = { quizId, at: Date.now(), payload: r.payload, response: r.response, where: r.where, ms: r.ms, heldBack: r.heldBack, note: r.note, mode: String(r.mode) };
       await store.putPlan(rec);
       setPlan(rec);
@@ -61,8 +63,9 @@ export function Reteach({ quizId }: { quizId: string }) {
 
   return (
     <>
+      <Steps quizId={quizId} at="reteach" className={cls.name} />
       <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
-        <div><span className="muted small">{cls.name}, {quiz.title}</span><h1 style={{ margin: 0 }}>Plan tomorrow's lesson</h1></div>
+        <h1 style={{ margin: 0 }}>Plan tomorrow's lesson</h1>
         <a className="btn noprint" href={href.results(quizId)}>Back to results</a>
       </div>
 
@@ -74,19 +77,19 @@ export function Reteach({ quizId }: { quizId: string }) {
         {flagsLeft > 0 && <p className="callout small">{flagsLeft} answers are still flagged. You can send now, but the totals are more accurate after <a href={href.check(quizId)}>checking them</a>.</p>}
         <div style={{ overflowX: 'auto' }}>
           <table className="plain">
-            <thead><tr><th>Q</th><th>Question</th><th>Right</th><th>Not simplified</th><th>Wrong</th><th>Blank</th><th>Mistakes found</th></tr></thead>
+            <thead><tr><th>Q</th><th>Question</th><th>Right</th><th>Wrong</th><th>Mistakes found</th></tr></thead>
             <tbody>
               {totals.questions.map((q) => (
                 <tr key={q.q}>
                   <td>{q.q}</td><td>{q.question ? `${q.question} = ${q.answer}` : <span className="muted">(not sent)</span>}</td>
-                  <td><C c={q.correct} /></td><td><C c={q.unsimplified} /></td><td><C c={q.wrong} /></td><td><C c={q.blank} /></td>
+                  <td><C c={q.right} /></td><td><C c={q.wrong} /></td>
                   <td className="small">{Object.keys(q.mistakes).length === 0 ? <span className="muted">none</span> : Object.entries(q.mistakes).map(([k, v]) => <span key={k} style={{ marginRight: 10 }}>{label(k)}: <C c={v!} /></span>)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <p className="small muted" style={{ marginTop: 8 }}><span className="hidden-cell">hidden</span> means fewer than {totals.k} students, or a number that would let someone work one out. Nobody can be singled out.</p>
+        <p className="small muted" style={{ marginTop: 8 }}>Class size is sent as a range ({totals.class_size}). <span className="hidden-cell">hidden</span> means fewer than {totals.k} students, or a breakdown that would let someone work a small group out. Blank answers are not sent.</p>
         {deviceReady && (
           <label className="row small" style={{ gap: 8, margin: '12px 0 0' }}>
             <input type="checkbox" checked={keepLocal} onChange={(e) => setKeepLocal(e.target.checked)} />
@@ -122,7 +125,7 @@ export function Reteach({ quizId }: { quizId: string }) {
         )}
       </section>
 
-      {plan && <PlanView plan={plan} headingRef={planHeading} sheets={sheets} rosterName={(id) => cls.roster.find((r) => r.id === id)?.name ?? 'your child'} credit={quiz.unsimplifiedCredit} />}
+      {plan && <PlanView key={plan.at} plan={plan} headingRef={planHeading} sheets={sheets} rosterName={(id) => cls.roster.find((r) => r.id === id)?.name ?? 'your child'} credit={quiz.unsimplifiedCredit} />}
     </>
   );
 }
@@ -174,9 +177,12 @@ function PlanView({ plan: rec, headingRef, sheets, rosterName, credit }: { plan:
     }
     return { text: FALLBACK_NOTES[g] ?? FALLBACK_NOTES.default, fallback: 'english' };
   };
-  const slips = sheets.filter((s) => s.studentId).map((s) => {
+  // a note only goes to a confirmed name: an unsure match could send one child's score to another's parent
+  const held = sheets.filter((s) => !s.studentId || !s.nameConfident).length;
+  const slips = sheets.filter((s) => s.studentId && s.nameConfident).map((s) => {
     const sc = scoreSheet(s.marks, credit);
     const t = template(groupOf(s), lang);
+    if (sc.unreadable) return { id: s.id, name: rosterName(s.studentId!), text: `${rosterName(s.studentId!)}: finish checking this sheet first (an answer is still unreadable).`, fallback: 'none' as const };
     return { id: s.id, name: rosterName(s.studentId!), text: fillTemplate(t.text, { student: rosterName(s.studentId!), score: sc.points, total: sc.outOf }), fallback: t.fallback };
   });
   const english = slips.filter((s) => s.fallback === 'english').length;
@@ -200,7 +206,7 @@ function PlanView({ plan: rec, headingRef, sheets, rosterName, credit }: { plan:
             {rec.mode === 'only_on_device' ? 'Written on this laptop by Gemini Nano: nothing was sent.' : rec.heldBack ? `Tickmark held the cloud request back (${rec.heldBack}), so Gemini Nano wrote this plan here.` : 'Cloud Gemini could not be reached, so Gemini Nano wrote this plan on this laptop.'} Hindi and Tamil notes need the cloud.
           </p>
         )}
-        <p className="muted">{plain(p.focus)} {p.minutes ? `About ${p.minutes} minutes.` : ''}</p>
+        <p className="lede">{plain(p.focus)} {p.minutes ? <span className="pill">About {p.minutes} min</span> : null}</p>
         <table className="plain"><thead><tr><th>Min</th><th>You</th><th>Students</th></tr></thead>
           <tbody>{p.steps?.map((s, i) => <tr key={i}><td>{s.minutes}</td><td>{plain(s.teacher)}</td><td>{plain(s.students)}</td></tr>)}</tbody></table>
         {p.hingeQuestion && (
@@ -238,6 +244,7 @@ function PlanView({ plan: rec, headingRef, sheets, rosterName, credit }: { plan:
         </div>
         <p className="muted small noprint">The AI wrote one template per mistake group, with placeholders. Each child's name and score were filled in here, on this laptop.</p>
         {tabs.length > 1 && <div className="tabs noprint" role="tablist">{tabs.map((l) => <button key={l} role="tab" aria-selected={lang === l} onClick={() => setLang(l)}>{LANG_NAME[l]}</button>)}</div>}
+        {held > 0 && <p className="callout small noprint">{held} note{held === 1 ? ' is' : 's are'} held back until you confirm the student's name in Check answers.</p>}
         {english > 0 && lang !== 'en' && <p className="callout small noprint">{english === 1 ? '1 note uses' : `${english} notes use`} Tickmark's built-in English text because no usable {LANG_NAME[lang]} template came back for that group.</p>}
         <div className="stack">
           {slips.map((s) => <div key={s.id} className="slip"><div className="small muted">{s.name}</div><div className="note" lang={s.fallback === 'english' ? 'en' : lang}>{s.text}</div></div>)}

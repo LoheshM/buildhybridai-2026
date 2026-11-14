@@ -4,7 +4,8 @@
 import { classify, isSample, type SampleImage, type StudentImage } from '../ai/images';
 import { readSampleSheet, readStudentSheet, rereadSampleQuestions, rereadStudentQuestions, resetLiveSampleReads } from '../ai/tasks';
 import { cancelQueued } from '../ai/queue';
-import { markRead, mergeReread, rereadQuestions } from '../marking/pipeline';
+import { resetAllModels } from '../ai/models';
+import { markRead, mergeReread, rereadQuestions, stampModelRead } from '../marking/pipeline';
 import { matchName } from '../marking/roster';
 import { store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 
@@ -20,7 +21,7 @@ export const onRun = (l: Listener) => { listeners.add(l); return () => { listene
 /** Fires after every sheet the runner saves, whichever page is open. */
 export const onSheetChanged = (l: (s: SheetRec) => void) => { sheetListeners.add(l); return () => { sheetListeners.delete(l); }; };
 
-export function stopRun() { stopRequested = true; cancelQueued(); }
+export function stopRun() { stopRequested = true; cancelQueued(); resetAllModels(); }
 
 class OutOfSpace extends Error { constructor() { super('This browser is out of storage space. Delete the photos of quizzes you have already checked (Results page), then try again.'); this.name = 'OutOfSpace'; } }
 
@@ -79,6 +80,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
             const second = isSample(img) ? await rereadSampleQuestions(img as SampleImage, qs) : await rereadStudentQuestions(img as StudentImage, qs);
             if (second) { marks = mergeReread(marks, second.answers); rereadMs = second.ms; }
           }
+          marks = stampModelRead(marks);
           const match = matchName(first.read.studentName, cls.roster, taken);
           if (match.studentId) taken.add(match.studentId);
           s = { ...s, status: 'read', read: first.read, readName: first.read.studentName, studentId: match.studentId, nameConfident: match.confident, marks, where: first.where, ms: first.ms, rereadQs: qs, rereadMs };

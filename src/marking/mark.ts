@@ -42,6 +42,9 @@ export interface Marked {
   suggestions: string[];
   /** Set when the teacher has looked at this answer and accepted or corrected it. */
   checked?: boolean;
+  /** The model's own reading and whether it was flagged, kept for the accuracy card. */
+  modelRead?: string;
+  modelFlagged?: boolean;
 }
 
 export interface KeyInfo {
@@ -91,7 +94,8 @@ export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marke
   } else if (p.kind === 'multiple') {
     status = 'unreadable';
     flags.push('two_answers');
-    suggestions.push(...p.parts);
+    // the part that isn't the crossed-out attempt is the likely final answer: offer it first
+    suggestions.push(...[...p.parts].sort((a, b) => Number(a === co) - Number(b === co)));
   } else if (p.kind === 'unparseable') {
     status = 'unreadable';
     flags.push(/[a-z]/i.test(p.text) ? 'letters' : 'unreadable');

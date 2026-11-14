@@ -1,5 +1,6 @@
 // The network guard must be installed before Firebase is evaluated: ES imports run in order.
 import './ai/installGuard';
+import './app/theme';
 
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';

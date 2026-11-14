@@ -81,7 +81,7 @@ p { margin: 0 0 .8em; max-width: 70ch; }
 .topnav a[aria-current='page'] { color: var(--ink); background: var(--pen-soft); }
 .topbar .spacer { flex: 1; }
 main { width: 100%; max-width: 1240px; margin: 0 auto; padding: 28px 24px 64px; flex: 1; }
-footer.foot { max-width: 1240px; margin: 0 auto; padding: 16px 24px 28px; color: var(--ink-3); font-size: .8rem; width: 100%; }
+footer.foot { max-width: 1240px; margin: 0 auto; padding: 16px 24px 28px; color: var(--ink-2); font-size: .8rem; width: 100%; }
 
 /* ---------- pills ---------- */
 .pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: .85rem; border: 1px solid var(--line); background: var(--sheet); white-space: nowrap; }
@@ -176,7 +176,9 @@ table.answers th, table.answers td { padding: 8px 6px; border-bottom: 1px solid 
 table.answers th { font-size: .8rem; color: var(--ink-2); font-weight: 700; }
 table.answers tr.needs { background: var(--hl-soft); }
 table.answers tr.focus { outline: 2px solid var(--pen); outline-offset: -2px; }
-table.answers input { width: 7.5em; min-height: 34px; font-family: var(--hand); font-size: 1.15rem; color: var(--pen); }
+table.answers input { width: 7.5em; min-height: 34px; font-family: var(--ui); font-variant-numeric: tabular-nums; font-size: 1.05rem; color: var(--pen); }
+.next-bar { position: sticky; bottom: 0; background: var(--sheet); padding: 10px 0 4px; border-top: 1px solid var(--line); }
+.btn kbd { margin-left: 4px; opacity: .8; }
 .markcell { font: 700 1.5rem/1 var(--hand); width: 2.2em; text-align: center; }
 .markcell.ok { color: var(--green); }
 .markcell.no { color: var(--red); }
@@ -222,6 +224,12 @@ details > summary { cursor: pointer; }
 
 .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--paper); padding: 10px 16px; border-radius: var(--radius-s); z-index: 50; }
 .narrow-note { display: none; }
+.print-only { display: none; }
+.printable-quiz { font: 20px/1.6 Arial, sans-serif; color: #000; }
+.printable-quiz .pq-head { display: flex; justify-content: space-between; font-size: 22px; margin-bottom: 8px; }
+.printable-quiz ol { padding-left: 32px; }
+.printable-quiz li { margin: 0 0 34px; }
+.printable-quiz .pq-line { display: inline-block; width: 160px; border-bottom: 1px solid #000; }
 
 @media (max-width: 1100px) { .check { grid-template-columns: 200px 1fr; } .check .viewer { grid-column: 1 / -1; position: static; order: 3; } }
 @media (max-width: 860px) {
@@ -231,6 +239,12 @@ details > summary { cursor: pointer; }
   .narrow-note { display: block; }
 }
 @media print {
+  body.printing-slips main > *:not(.slips-section) { display: none !important; }
+  body.printing-quiz main > * { display: none !important; }
+  body.printing-quiz main > .printable-quiz { display: block !important; }
+  body.printing-slips .slips-section { display: block !important; }
+  details > * { display: block; }
+  * { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
   body { background: #fff; } .topbar, footer.foot, .noprint { display: none !important; }
   main { padding: 0; max-width: none; } .sheet { box-shadow: none; border: 0; padding: 0; }
   .slip { page-break-inside: avoid; border-bottom: 1px dashed #999; padding: 12px 0; }

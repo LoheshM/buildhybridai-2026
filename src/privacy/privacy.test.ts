@@ -57,7 +57,7 @@ describe('class totals payload', () => {
   it('teacher-typed prompts with names are rebuilt from numbers or dropped', () => {
     const q = buildTotals([{ q: 1, prompt: "Meera's question: 1/2 + 1/4", answer: '3/4 (Meera)' }], sheets.slice(0, 6), 3, ['en']);
     expect(q.questions[0].question).toBe('');
-    expect(q.questions[0].answer).toBe('3/4');
+    expect(q.questions[0].answer).toBe(''); // an unreadable typed key is dropped, never sent as text
     validatePayload(q);
   });
 });

@@ -51,13 +51,23 @@ const VULGAR: Record<string, string> = {
   '⅙': '1/6', '⅚': '5/6', '⅐': '1/7', '⅛': '1/8', '⅜': '3/8', '⅝': '5/8', '⅞': '7/8', '⅑': '1/9', '⅒': '1/10',
 };
 
-/** Normalise model or keyboard text: unicode fractions, minus signs, slashes, spacing. */
-export function normalize(raw: string): string {
+// Zero code points of decimal digit sets students may write in (Arabic-Indic, Devanagari, Bengali,
+// Gurmukhi, Gujarati, Odia, Tamil, Telugu, Kannada, Malayalam). Full-width digits are handled by NFKC.
+const DIGIT_ZEROS = [0x0660, 0x06f0, 0x0966, 0x09e6, 0x0a66, 0x0ae6, 0x0b66, 0x0be6, 0x0c66, 0x0ce6, 0x0d66];
+const toAsciiDigits = (s: string) => s.replace(/\p{Nd}/gu, (c) => {
+  const cp = c.codePointAt(0)!;
+  const z = DIGIT_ZEROS.find((z0) => cp >= z0 && cp <= z0 + 9);
+  return z === undefined ? c : String(cp - z);
+});
+
+/** Normalise model or keyboard text: unicode fractions and digits, minus signs, slashes, spacing. */
+export function normalize(raw: string, opts: { keepDivide?: boolean } = {}): string {
   // Replace vulgar fractions first: NFKC would turn "1½" into "11⁄2".
-  let s = (raw ?? '').replace(/[½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅐⅛⅜⅝⅞⅑⅒]/g, (c) => ` ${VULGAR[c]} `).normalize('NFKC');
-  s = s.replace(/[⁄∕÷]/g, '/').replace(/[−–—]/g, '-');
+  let s = toAsciiDigits((raw ?? '').replace(/[½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅐⅛⅜⅝⅞⅑⅒]/g, (c) => ` ${VULGAR[c]} `).normalize('NFKC'));
+  s = s.replace(opts.keepDivide ? /[⁄∕]/g : /[⁄∕÷]/g, '/').replace(/[−–—]/g, '-');
   s = s.replace(/(\d)\s*\/\s*(\d)/g, '$1/$2');
   s = s.replace(/^[=\s]+/, '').replace(/[.,;:\s]+$/, '');
+  s = s.replace(/^\+\s*/, '').replace(/^-\s+/, '-'); // "+1/2" -> "1/2", "- 5/12" -> "-5/12"
   return s.replace(/\s+/g, ' ').trim();
 }
 
@@ -80,9 +90,12 @@ export function parse(raw: string | null | undefined): Parsed {
   return { kind: 'unparseable', text };
 }
 
+const tooBig = (...xs: string[]) => xs.some((x) => x.replace('-', '').length > 15 || !Number.isSafeInteger(Number(x)));
+
 function parseOne(text: string): Parsed | null {
   let m: RegExpMatchArray | null;
-  if (RE_INT.test(text)) return { kind: 'value', value: frac(Number(text)), form: 'integer', text };
+  if (/\d{16,}/.test(text) || /\.\d{10,}/.test(text)) return null; // beyond exact arithmetic: ask the teacher
+  if (RE_INT.test(text)) return tooBig(text) ? null : { kind: 'value', value: frac(Number(text)), form: 'integer', text };
   if ((m = text.match(RE_FRAC))) {
     if (Number(m[2]) === 0) return null;
     return { kind: 'value', value: frac(Number(m[1]), Number(m[2])), form: 'fraction', text };
@@ -122,7 +135,9 @@ export function mixedAlternatives(text: string): string[] {
   if (!m) return [];
   const alts: string[] = [];
   const digits = m[1];
+  if (digits.startsWith('0')) return alts;
   for (let cut = 1; cut < digits.length; cut++) {
+    if (digits[cut] === '0') continue; // "1 0/10" is not a reading anyone writes
     const cand = `${digits.slice(0, cut)} ${digits.slice(cut)}/${m[2]}`;
     if (parseOne(cand)) alts.push(cand);
   }
@@ -134,7 +149,11 @@ export interface Expr { a: Frac; aText: string; op: Op; b: Frac; bText: string }
 
 /** Parse a question prompt like "2/3 + 1/6", "1 1/2 + 3/4", "3/4 ÷ 1/2", "2/3 x 3/5". */
 export function parseExpr(prompt: string): Expr | null {
-  const s = normalize(prompt.replace(/=\s*$/, '')).replace(/\s*[x*×]\s*/g, ' × ').replace(/\s*:\s*/g, ' ÷ ');
+  const cleaned = (prompt ?? '')
+    .replace(/^\s*\(?[Qq]?\d+\s*[.):]\s+/, '') // "1) ", "Q1. ", "(3) "
+    .replace(/=\s*[?_.…\s]*$/, '') // "= ?", "= ___"
+    .replace(/÷/g, ' ÷ ');
+  const s = normalize(cleaned, { keepDivide: true }).replace(/\s*[x*×]\s*/g, ' × ').replace(/\s*:\s*/g, ' ÷ ').replace(/\s*÷\s*/g, ' ÷ ');
   const m = s.match(/^(-?\d+(?: \d+\/\d+)?|-?\d+\/\d+)\s*([+\-×÷])\s*(-?\d+(?: \d+\/\d+)?|-?\d+\/\d+)$/);
   if (!m) {
     // "/" between two fractions means divide only if written with spaces: "3/4 / 1/2"

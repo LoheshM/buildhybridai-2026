@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { go, href } from '../app/router';
 import { sampleManifest } from '../app/boot';
 import { keyProblem, type QuestionKey } from '../marking/mark';
+import { parseExpr } from '../marking/fraction';
 import { parseRoster } from '../marking/roster';
 import { store, uid, type ClassRec, type QuizRec } from '../store/db';
 import { useLoad } from './hooks';
@@ -22,6 +23,8 @@ export function NewQuiz() {
   const filled = rows.filter((r) => r.prompt.trim() || r.answer.trim());
   const keys: QuestionKey[] = filled.map((r, i) => ({ q: i + 1, prompt: r.prompt.trim(), answer: r.answer.trim() }));
   const problems = keys.map((k) => (k.prompt ? keyProblem(k) : k.answer ? null : 'Add an answer.'));
+  // A question with numbers and an operator that Tickmark can't parse loses mistake names and typo checks.
+  const unparsed = keys.map((k) => !!k.prompt && /\d/.test(k.prompt) && /[+\-×x*÷:/]/.test(k.prompt.replace(/\d+\/\d+/g, '')) && !parseExpr(k.prompt));
 
   const useTemplate = () => {
     const m = sampleManifest();
@@ -98,6 +101,7 @@ export function NewQuiz() {
                     <td>
                       <input aria-label={`Answer ${i + 1}`} value={r.answer} placeholder="5/6" onChange={(e) => setRows(rows.map((x, j) => (j === i ? { ...x, answer: e.target.value } : x)))} style={{ width: '7em', borderColor: prob ? 'var(--red)' : undefined }} spellCheck={false} />
                       {prob && <div className="small" style={{ color: 'var(--red)' }}>{prob}</div>}
+                      {!prob && idx >= 0 && unparsed[idx] && <div className="small muted">Marked by value only: Tickmark can't read this question to name mistakes.</div>}
                     </td>
                     <td><button className="btn ghost small" aria-label={`Remove question ${i + 1}`} onClick={() => setRows(rows.filter((_, j) => j !== i))}>Remove</button></td>
                   </tr>

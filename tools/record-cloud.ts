@@ -4,10 +4,10 @@
 // Uses the same prompts and schemas as the app, through the same Firebase AI Logic endpoint,
 // authenticated with an App Check debug token (exchanged via the App Check REST API).
 // Usage: npx -y tsx tools/record-cloud.ts            (needs .env.development.local)
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { FIREBASE_CONFIG } from '../src/config';
 import { readSheetPrompt, totalsPrompt } from '../src/ai/prompts';
-import { SHEET_SCHEMA, TOTALS_SCHEMA_CLOUD } from '../src/ai/schemas';
+import { coerceSheetRead, SHEET_SCHEMA, TOTALS_SCHEMA_CLOUD } from '../src/ai/schemas';
 import { buildTotals } from '../src/privacy/aggregate';
 import { markAnswer } from '../src/marking/mark';
 
@@ -42,12 +42,14 @@ const norm = (s: string) => (s || '').replace(/\s+/g, ' ').replace(/\s*\/\s*/g, 
 
 const m = JSON.parse(readFileSync('public/samples/manifest.json', 'utf8'));
 const ac = await appCheckToken();
-const out: Record<string, unknown> = { recordedAt: new Date().toISOString().slice(0, 10), model: MODEL, reads: {} as Record<string, unknown> };
-let exact = 0, total = 0;
-for (const s of m.students) {
+const totalsOnly = process.argv.includes('--totals-only');
+const prev = totalsOnly ? JSON.parse(readFileSync('public/samples/recorded-cloud.json', 'utf8')) : null;
+const out: Record<string, unknown> = { recordedAt: prev?.recordedAt ?? new Date().toISOString().slice(0, 10), model: MODEL, reads: prev?.reads ?? ({} as Record<string, unknown>) };
+let exact = prev?.cloudAccuracy?.exact ?? 0, total = prev?.cloudAccuracy?.total ?? 0;
+for (const s of totalsOnly ? [] : m.students) {
   const data = readFileSync(`public/samples/${s.id}.jpg`).toString('base64');
   const t0 = Date.now();
-  const read = await generate([{ text: readSheetPrompt(10) }, { inlineData: { mimeType: 'image/jpeg', data } }], SHEET_SCHEMA, 0, ac);
+  const read = coerceSheetRead(await generate([{ text: readSheetPrompt(m.quiz.questions.length) }, { inlineData: { mimeType: 'image/jpeg', data } }], SHEET_SCHEMA, 0, ac), m.quiz.questions.length);
   (out.reads as Record<string, unknown>)[s.id] = read;
   const byQ = new Map(read.answers.map((a: { q: number; finalAnswer: string }) => [a.q, a.finalAnswer]));
   const ok = s.answers.filter((a: { q: number; written: string }) => norm(String(byQ.get(a.q) ?? '')) === norm(a.written)).length;
@@ -57,7 +59,13 @@ for (const s of m.students) {
 }
 const keys = m.quiz.questions.map((q: { q: number; prompt: string; key: string }) => ({ q: q.q, prompt: q.prompt, answer: q.key }));
 const sheets = m.students.map((s: { answers: { q: number; written: string }[] }) => ({ marks: s.answers.map((a) => markAnswer(keys[a.q - 1], a.written)) }));
-out.totals = await generate([{ text: totalsPrompt(buildTotals(keys, sheets, 3, ['en', 'hi', 'ta'])) }], TOTALS_SCHEMA_CLOUD, 0.6, ac);
+const payload = buildTotals(keys, sheets, 3, ['en', 'hi', 'ta']);
+out.totals = await generate([{ text: totalsPrompt(payload) }], TOTALS_SCHEMA_CLOUD, 0.6, ac);
+out.totalsPayload = payload;
+out.totalsRecordedAt = new Date().toISOString().slice(0, 10);
 out.cloudAccuracy = { exact, total };
-writeFileSync('public/samples/recorded-cloud.json', JSON.stringify(out, null, 1));
+const notes = (out.totals as { notes: { group: string; language: string }[] }).notes;
+console.log('notes:', notes.length, [...new Set(notes.map((n) => `${n.group}/${n.language}`))].join(' '));
+writeFileSync('public/samples/recorded-cloud.json.tmp', JSON.stringify(out, null, 1));
+renameSync('public/samples/recorded-cloud.json.tmp', 'public/samples/recorded-cloud.json');
 console.log(`cloud exact reads: ${exact}/${total}; wrote public/samples/recorded-cloud.json`);

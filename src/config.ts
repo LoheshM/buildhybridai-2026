@@ -20,5 +20,8 @@ export const AI_HOST = 'firebasevertexai.googleapis.com';
 export const DEVICE_EXPECTED_INPUTS = [{ type: 'text', languages: ['en'] }, { type: 'image' }] as const;
 export const DEVICE_EXPECTED_OUTPUTS = [{ type: 'text', languages: ['en'] }] as const;
 
-export const DEVICE_TIMEOUT_MS = 90_000;
+export const DEVICE_TIMEOUT_MS = 45_000; // one sheet read on the device (typically 6-10 s)
+export const CLOUD_READ_TIMEOUT_MS = 25_000; // one sample sheet read in the cloud (typically 3-8 s)
+export const PLAN_TIMEOUT_DEVICE_MS = 120_000; // plan with a possible Gemini Nano fallback
+export const PLAN_TIMEOUT_CLOUD_MS = 30_000; // plan when there is no on-device fallback
 export const BUILD = { commit: import.meta.env?.VITE_COMMIT ?? 'dev', date: import.meta.env?.VITE_BUILD_DATE ?? '' };

@@ -12,18 +12,27 @@ let ai: AI | null = null;
 let rc: RemoteConfig | null = null;
 
 export function firebaseApp(): FirebaseApp {
-  if (app) return app;
-  if (import.meta.env.DEV && import.meta.env.VITE_APPCHECK_DEBUG_TOKEN) {
-    // Local development only: the debug token never ships in a production build (checked by tools/check-dist.mjs).
-    (self as unknown as { FIREBASE_APPCHECK_DEBUG_TOKEN?: string }).FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_APPCHECK_DEBUG_TOKEN;
-  }
-  app = initializeApp(FIREBASE_CONFIG);
-  initializeAppCheck(app, { provider: new ReCaptchaEnterpriseProvider(RECAPTCHA_ENTERPRISE_SITE_KEY), isTokenAutoRefreshEnabled: true });
+  if (!app) app = initializeApp(FIREBASE_CONFIG, { automaticDataCollectionEnabled: false });
   return app;
 }
 
+let appCheckReady = false;
+/**
+ * App Check (and with it the reCAPTCHA script) is started only when a cloud request may follow:
+ * planning a lesson, or the sample class without on-device AI. Pages with student data never load it.
+ */
+export function ensureAppCheck() {
+  if (appCheckReady) return;
+  appCheckReady = true;
+  if (import.meta.env?.DEV && import.meta.env.VITE_APPCHECK_DEBUG_TOKEN) {
+    // Local development only: the debug token never ships in a production build (checked by tools/check-dist.mjs).
+    (self as unknown as { FIREBASE_APPCHECK_DEBUG_TOKEN?: string }).FIREBASE_APPCHECK_DEBUG_TOKEN = import.meta.env.VITE_APPCHECK_DEBUG_TOKEN;
+  }
+  initializeAppCheck(firebaseApp(), { provider: new ReCaptchaEnterpriseProvider(RECAPTCHA_ENTERPRISE_SITE_KEY), isTokenAutoRefreshEnabled: false });
+}
+
 export function aiInstance(): AI {
-  if (!ai) ai = getAI(firebaseApp(), { backend: new GoogleAIBackend(), useLimitedUseAppCheckTokens: true });
+  if (!ai) { ensureAppCheck(); ai = getAI(firebaseApp(), { backend: new GoogleAIBackend(), useLimitedUseAppCheckTokens: true }); }
   return ai;
 }
 
@@ -48,7 +57,7 @@ export async function loadRemoteSettings(): Promise<Settings> {
     rc.settings.fetchTimeoutMillis = 5000;
     rc.settings.minimumFetchIntervalMillis = 60 * 60 * 1000;
     rc.defaultConfig = DEFAULTS;
-    const fetched = await Promise.race([fetchAndActivate(rc).then(() => true), new Promise<boolean>((r) => setTimeout(() => r(false), 6000))]);
+    const fetched = await Promise.race([fetchAndActivate(rc).then(() => true).catch(() => false), new Promise<boolean>((r) => setTimeout(() => r(false), 6000))]);
     settings = clampSettings({
       cloud_model: getValue(rc, 'cloud_model').asString(),
       min_group_size: getValue(rc, 'min_group_size').asNumber(),

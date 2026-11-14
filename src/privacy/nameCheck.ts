@@ -14,12 +14,16 @@ export function rosterTokens(names: string[]): string[] {
 
 export interface NameHit { token: string; at: number }
 
-/** Returns roster words found in `text` (empty array = clean). */
-export function findRosterNames(text: string, tokens: string[]): NameHit[] {
+/**
+ * Returns roster words found in `text` (empty array = clean). Words in `ignore` (Tickmark's own
+ * fixed prompt text, sent for every class) are skipped: they cannot identify a child, and the
+ * closed payload remains the primary control.
+ */
+export function findRosterNames(text: string, tokens: string[], ignore: ReadonlySet<string> = new Set()): NameHit[] {
   const hay = ` ${fold(text)} `;
   const hits: NameHit[] = [];
   for (const tok of tokens) {
-    if (VOCAB.has(tok)) continue;
+    if (VOCAB.has(tok) || ignore.has(tok)) continue;
     const at = hay.indexOf(` ${tok} `);
     if (at >= 0) hits.push({ token: tok, at });
   }

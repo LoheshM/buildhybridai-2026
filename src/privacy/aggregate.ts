@@ -1,8 +1,8 @@
 // Builds the ONLY payload that may leave the laptop for a real class: anonymous class totals.
 // It is assembled from numbers and fixed vocabulary, never from free text, so it cannot hold a
 // name by construction. validatePayload() re-checks the shape before anything is sent.
-import { exprText, parseExpr } from '../marking/fraction';
-import type { Marked, QuestionKey } from '../marking/mark';
+import { exprText, format, parseExpr } from '../marking/fraction';
+import { keyInfo, type Marked, type QuestionKey } from '../marking/mark';
 import { MISCONCEPTIONS, type MisconceptionId } from '../marking/misconceptions';
 
 export const PAYLOAD_VERSION = 1;
@@ -35,17 +35,28 @@ export interface ClassTotals {
   note_languages: Lang[];
 }
 
-/** Suppress cells in 1..k-1. If a row's total is known and exactly one cell is hidden, hide the next smallest too. */
+/**
+ * Suppress cells in 1..k-1. When the row total is known, keep hiding more cells until no hidden
+ * cell can be worked out: a single hidden cell equals the residual, and h hidden non-zero cells
+ * summing to exactly h must each be 1. Visible non-zero cells are hidden first (smallest first),
+ * then zero cells, so that an attacker can no longer assume every hidden cell is at least 1.
+ */
 export function suppressRow(values: number[], k: number, totalKnown: boolean): Cell[] {
   const hidden = values.map((v) => v > 0 && v < k);
   if (totalKnown) {
-    let count = hidden.filter(Boolean).length;
-    while (count === 1) {
-      let idx = -1;
-      values.forEach((v, i) => { if (!hidden[i] && v > 0 && (idx < 0 || v < values[idx])) idx = i; });
-      if (idx < 0) break;
-      hidden[idx] = true;
-      count++;
+    const unsafe = () => {
+      const idx = hidden.map((h, i) => (h ? i : -1)).filter((i) => i >= 0);
+      if (idx.length === 0) return false;
+      const residual = idx.reduce((a, i) => a + values[i], 0);
+      const zeroHidden = idx.some((i) => values[i] === 0);
+      return idx.length === 1 || (!zeroHidden && residual === idx.length);
+    };
+    while (unsafe()) {
+      let next = -1;
+      values.forEach((v, i) => { if (!hidden[i] && v > 0 && (next < 0 || v < values[next])) next = i; });
+      if (next < 0) next = values.findIndex((v, i) => !hidden[i] && v === 0);
+      if (next < 0) break;
+      hidden[next] = true;
     }
   }
   return values.map((v, i) => (hidden[i] ? ('hidden' as const) : v));
@@ -72,7 +83,7 @@ export function buildTotals(keys: QuestionKey[], sheets: SheetMarks[], kIn: numb
     return {
       q: key.q,
       question: expr ? exprText(expr) : '',
-      answer: safeNumberText(key.answer),
+      answer: (() => { const v = keyInfo(key).value; return v ? format(v) : ''; })(), // rebuilt from the number, never the typed text
       correct: statusCells[0], unsimplified: statusCells[1], wrong: statusCells[2], blank: statusCells[3], unreadable: statusCells[4],
       mistakes,
     };
@@ -88,7 +99,7 @@ const CELL = (c: unknown, k: number) => (typeof c === 'number' && Number.isInteg
 const MATH = /^[0-9 ./+×÷-]{0,40}$/;
 
 /** Strict allowlist validation of the outbound payload. Throws on anything unexpected. */
-export function validatePayload(p: unknown): asserts p is ClassTotals {
+export function validatePayload(p: unknown, minK = 3): asserts p is ClassTotals {
   const fail = (why: string) => { throw new Error(`Blocked: class totals failed validation (${why})`); };
   if (!p || typeof p !== 'object') fail('not an object');
   const o = p as Record<string, unknown>;
@@ -96,7 +107,7 @@ export function validatePayload(p: unknown): asserts p is ClassTotals {
   for (const key of Object.keys(o)) if (!allowed.includes(key)) fail(`unexpected field ${key}`);
   if (o.v !== PAYLOAD_VERSION || o.topic !== 'fractions' || o.grade_band !== '4-8') fail('header');
   const k = o.k as number;
-  if (!Number.isInteger(k) || k < 3) fail('k');
+  if (!Number.isInteger(k) || k < Math.max(3, minK)) fail('k');
   if (!Number.isInteger(o.sheets) || (o.sheets as number) < MIN_SHEETS) fail(`fewer than ${MIN_SHEETS} sheets`);
   if (!Array.isArray(o.note_languages) || !o.note_languages.every((l) => (LANGS as readonly string[]).includes(l as string))) fail('languages');
   if (!Array.isArray(o.questions) || o.questions.length > 40) fail('questions');

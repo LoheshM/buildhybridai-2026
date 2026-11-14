@@ -46,6 +46,7 @@ export async function normalizeUpload(file: File): Promise<Blob> {
   }
   if (file.size > 25 * 1024 * 1024) throw new UnsupportedImage(`${file.name} is larger than 25 MB.`);
   const bmp = await createImageBitmap(file, { imageOrientation: 'from-image' });
+  if (Math.min(bmp.width, bmp.height) < 600) { bmp.close(); throw new UnsupportedImage(`${file.name} is too small to read (${bmp.width}×${bmp.height}). Use the phone's full-size photo.`); }
   const scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height));
   const w = Math.round(bmp.width * scale), h = Math.round(bmp.height * scale);
   const canvas = new OffscreenCanvas(w, h);

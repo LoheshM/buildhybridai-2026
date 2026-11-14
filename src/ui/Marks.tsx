@@ -38,12 +38,12 @@ export function Logo() {
   );
 }
 
-export function WhereChip({ where, ms }: { where?: string; ms?: number }) {
+export function WhereChip({ where, ms, short = false }: { where?: string; ms?: number; short?: boolean }) {
   if (!where) return null;
   const secs = ms ? `, ${(ms / 1000).toFixed(1)} s` : '';
-  if (where === 'on_device') return <span className="pill device"><span className="dot" />On this laptop{secs}</span>;
-  if (where === 'in_cloud') return <span className="pill cloud"><span className="dot" />Cloud AI{secs}</span>;
-  if (where === 'recorded') return <span className="pill cloud"><span className="dot" />Recorded cloud reading</span>;
-  if (where === 'typed') return <span className="pill">Typed in</span>;
+  if (where === 'on_device') return <span className="pill device" title="Read by Gemini Nano on this laptop"><span className="dot" />{short ? 'Laptop' : 'On this laptop'}{secs}</span>;
+  if (where === 'in_cloud') return <span className="pill cloud" title="Read by Gemini in the cloud (sample sheets only)"><span className="dot" />{short ? 'Cloud' : 'Cloud AI'}{secs}</span>;
+  if (where === 'recorded') return <span className="pill cloud" title="A cloud reading recorded earlier, used when this laptop has no on-device AI"><span className="dot" />{short ? 'Recorded' : 'Recorded cloud reading'}</span>;
+  if (where === 'typed' || where === 'local') return <span className="pill">Typed in</span>;
   return null;
 }

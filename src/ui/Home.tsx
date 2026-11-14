@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { href } from '../app/router';
+import { runState } from '../app/runner';
 import { ensureSampleClass } from '../app/boot';
 import { needsCheck } from '../marking/pipeline';
 import { store } from '../store/db';
@@ -33,7 +35,7 @@ export function Home() {
                   <span className="muted small">{c.roster.length} students{c.sample ? '. Made-up students and handwriting for trying Tickmark.' : ''}</span>
                 </div>
                 <div className="row">
-                  {c.sample && <button className="btn small" onClick={async () => { await ensureSampleClass(true); reload(); }}>Reset sample</button>}
+                  {c.sample && <ResetSample onDone={reload} />}
                   {!c.sample && <button className="btn small danger" onClick={async () => { if (confirmDelete(c.name)) { await store.deleteClass(c.id); reload(); } }}>Delete class</button>}
                 </div>
               </div>
@@ -65,4 +67,15 @@ export function Home() {
 // A plain prompt is acceptable here: it is the teacher's own data and the wording names the class.
 function confirmDelete(name: string) {
   return window.confirm(`Delete "${name}" with its quizzes, photos and marks from this laptop? This can't be undone.`);
+}
+
+function ResetSample({ onDone }: { onDone: () => void }) {
+  const [busy, setBusy] = useState(false);
+  return (
+    <button className="btn small" disabled={busy || runState().running} aria-busy={busy}
+      title={runState().running ? 'Wait for the current reading to finish' : 'Start the sample class again from unread sheets'}
+      onClick={async () => { setBusy(true); try { await ensureSampleClass(true); } finally { setBusy(false); onDone(); } }}>
+      {busy ? 'Resetting…' : 'Reset sample'}
+    </button>
+  );
 }

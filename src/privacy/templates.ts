@@ -11,6 +11,7 @@ export function placeholdersIn(t: string): string[] {
 /** A template is valid when it uses each placeholder at least once and no unknown ones. */
 export function validTemplate(t: string): boolean {
   if (!t || t.length > 1200) return false;
+  if (/[{}]/.test(t.replace(RE, ''))) return false; // damaged braces such as {{ छात्र }} or {{{student}}}
   const found = placeholdersIn(t);
   const set = new Set(found);
   return found.every((p) => (PLACEHOLDERS as readonly string[]).includes(p)) && set.has('{{student}}');
@@ -34,6 +35,13 @@ export const FALLBACK_NOTES: Record<string, string> = {
   numerators_only: 'Dear parent of {{student}}, {{student}} scored {{score}} out of {{total}} on the fractions check. {{student}} is learning to make the bottom numbers the same before adding. Ask {{student}} to explain why 1/2 + 1/4 is 3/4. Thank you!',
   secure: 'Dear parent of {{student}}, well done! {{student}} scored {{score}} out of {{total}} on this week\'s fractions check. Please say well done at home!',
 };
+
+/** An answer cell: numbers and fractions are written as text formulas so spreadsheets do not turn 3/4 into a date. */
+export function csvAnswer(v: string): string {
+  const s = String(v ?? '').trim();
+  if (s && /^[-0-9 ./]+$/.test(s)) return `"=""${s}"""`;
+  return csvCell(s);
+}
 
 /** CSV cell guard: neutralises values a spreadsheet would treat as a formula. */
 export function csvCell(v: string | number): string {

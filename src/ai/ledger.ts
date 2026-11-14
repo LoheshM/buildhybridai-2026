@@ -26,7 +26,7 @@ let events: LedgerEvent[] = [];
 const listeners = new Set<Listener>();
 let persist: ((e: LedgerEvent) => void) | null = null;
 let seq = 0;
-const newId = () => `${Date.now().toString(36)}-${(seq++).toString(36)}`;
+const newId = () => (typeof globalThis.crypto?.randomUUID === "function" ? crypto.randomUUID() : `${Date.now().toString(36)}-${(seq++).toString(36)}`);
 
 export const ledger = {
   all: () => events,
@@ -46,15 +46,15 @@ function emit() { listeners.forEach((l) => l()); }
 
 onOutbound((e) => push({ kind: 'net', id: newId(), ...e }));
 
-export interface Counters { cloudRequests: number; bytesSent: number; blocked: number; studentPhotosSent: number; onDeviceCalls: number }
+export interface Counters { cloudRequests: number; bytesSent: number; blocked: number; studentPhotosSent: number; studentPhotosBlocked: number; onDeviceCalls: number }
 
-/** Header counters. "Student photos sent" counts sent requests carrying a non-sample image: the guard makes this impossible, so it stays 0. */
+/** Header counters, measured from the requests the guard saw. A sent request with a non-sample image would count as a student photo sent. */
 export function counters(evts: LedgerEvent[] = events): Counters {
-  const c: Counters = { cloudRequests: 0, bytesSent: 0, blocked: 0, studentPhotosSent: 0, onDeviceCalls: 0 };
+  const c: Counters = { cloudRequests: 0, bytesSent: 0, blocked: 0, studentPhotosSent: 0, studentPhotosBlocked: 0, onDeviceCalls: 0 };
   for (const e of evts) {
     if (e.kind === 'net') {
-      if (e.blocked) c.blocked++;
-      else { c.cloudRequests++; c.bytesSent += e.bytes; }
+      if (e.blocked) { c.blocked++; c.studentPhotosBlocked += e.nonSampleImages ?? 0; }
+      else { c.cloudRequests++; c.bytesSent += e.bytes; c.studentPhotosSent += e.nonSampleImages ?? 0; }
     } else if (e.where === 'on_device') c.onDeviceCalls++;
   }
   return c;

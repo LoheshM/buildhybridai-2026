@@ -1,5 +1,7 @@
 // Prompts are versioned so measured accuracy can be tied to the exact wording.
 import type { ClassTotals } from '../privacy/aggregate';
+import { MISCONCEPTIONS } from '../marking/misconceptions';
+import { fold } from '../marking/roster';
 
 export const PROMPTS_VERSION = 'r1-2026-11-16';
 
@@ -25,9 +27,29 @@ export const totalsPrompt = (t: ClassTotals) =>
   `1. plan: a reteach mini-lesson of at most 15 minutes aimed at the most common mistake pattern, with 3-5 steps, ` +
   `a hinge question (with answer and what to do if students get it wrong), and practice in three tiers ` +
   `(support: 4 easier items, core: 4 items, stretch: 3 items). Every practice answer must be exact and in simplest form ("a/b", or "w a/b" for mixed numbers).\n` +
-  `2. notes: one short, warm parent-note template (max 70 words) for EACH mistake group that has at least one count, plus one for "secure" (students who did well), ` +
-  `in each of these languages: ${t.note_languages.join(', ')}. Each template MUST use the placeholders {{student}}, {{score}} and {{total}} literally (keep the double braces and English placeholder words in every language). ` +
-  `Do not invent names. Suggest one simple home activity where helpful.\n\n` +
+  `2. notes: one short, warm parent-note template (max 70 words) for EACH of these groups: ${noteGroups(t).join(', ')} ` +
+  `("secure" = did well; "default" = mixed results with no single pattern; the others are the mistake patterns above), ` +
+  `in EACH of these languages: ${t.note_languages.join(', ')}. That is ${noteGroups(t).length * t.note_languages.length} notes. ` +
+  `Each template MUST use the placeholders {{student}}, {{score}} and {{total}} literally (keep the double braces and the English placeholder words in every language). ` +
+  `Do not invent names. Suggest one simple home activity where helpful.\n` +
+  `In all text a teacher or parent reads, describe mistake patterns in plain words (for example "added the tops and the bottoms"), never with the ids above.\n\n` +
   `Class totals (JSON):\n${JSON.stringify(t)}`;
 
+/** Groups that need a parent-note template: every mistake pattern seen, plus the general ones. */
+export function noteGroups(t: ClassTotals): string[] {
+  const seen = new Set<string>();
+  for (const q of t.questions) for (const [k, v] of Object.entries(q.mistakes)) if (v === 'hidden' || (typeof v === 'number' && v > 0)) seen.add(k);
+  return [...seen].filter((k) => k !== 'other').concat(['other', 'secure', 'default']);
+}
+
 export const WARMUP_PROMPT = 'Reply with the single word: ready';
+
+/** Every word of Tickmark's fixed prompt text. A student named "Max" or "Do" must not block the plan. */
+export const FIXED_VOCAB: ReadonlySet<string> = (() => {
+  const all: ClassTotals = {
+    v: 1, topic: 'fractions', grade_band: '4-8', sheets: 0, k: 3, note_languages: ['en', 'hi', 'ta'],
+    questions: [{ q: 1, question: '', answer: '', correct: 0, unsimplified: 0, wrong: 0, blank: 0, unreadable: 0, mistakes: Object.fromEntries([...Object.keys(MISCONCEPTIONS), 'other'].map((k) => [k, 0])) }],
+  };
+  const text = [totalsPrompt(all), readSheetPrompt(10), rereadPrompt([1, 2]), WARMUP_PROMPT].join(' ');
+  return new Set(fold(text).split(' ').filter(Boolean));
+})();

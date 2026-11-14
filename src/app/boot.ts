@@ -5,7 +5,7 @@ import { setAllowedImageHashes } from '../ai/netGuard';
 import { setRecorded, type Recorded } from '../ai/tasks';
 import { loadRemoteSettings } from '../ai/firebase';
 import type { QuestionKey } from '../marking/mark';
-import { store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
+import { db, store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 
 export interface SampleManifest {
   quiz: { title: string; className: string; questions: { q: number; prompt: string; key: string }[] };
@@ -18,8 +18,23 @@ export const sampleManifest = () => manifest;
 export const SAMPLE_CLASS_ID = 'sample-class';
 export const SAMPLE_QUIZ_ID = 'sample-quiz';
 
+export let bootError: string | null = null;
+
 export async function boot() {
-  const m = (await (await fetch('/samples/manifest.json')).json()) as SampleManifest;
+  try { ledger.load(await store.ledger()); } catch { /* first run */ }
+  ledger.setPersist((e) => { store.putLedger(e).catch(() => undefined); });
+  loadRemoteSettings().catch(() => undefined);
+  await requeueInterrupted().catch(() => undefined);
+  let m: SampleManifest;
+  try {
+    const r = await fetch('/samples/manifest.json', { cache: 'no-cache' });
+    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+    m = (await r.json()) as SampleManifest;
+    bootError = null;
+  } catch (e) {
+    bootError = `The sample class couldn't load (${(e as Error).message}). Check the connection and reload.`;
+    return;
+  }
   manifest = m;
   const map = new Map(m.students.map((s) => [s.sha256, s.id]));
   setSampleHashes(map);
@@ -28,11 +43,15 @@ export async function boot() {
     const r = await fetch('/samples/recorded-cloud.json');
     if (r.ok) setRecorded((await r.json()) as Recorded);
   } catch { /* optional */ }
-  try { ledger.load(await store.ledger()); } catch { /* first run */ }
-  ledger.setPersist((e) => { store.putLedger(e).catch(() => undefined); });
-  navigator.storage?.persist?.().catch(() => undefined);
-  loadRemoteSettings().catch(() => undefined);
   await ensureSampleClass();
+}
+
+/** A reload or crash mid-run leaves sheets marked "reading". At start-up nothing is running, so queue them again. */
+export async function requeueInterrupted() {
+  const d = await db();
+  const tx = d.transaction('sheets', 'readwrite');
+  for (const s of await tx.store.getAll()) if (s.status === 'reading') await tx.store.put({ ...s, status: 'queued' });
+  await tx.done;
 }
 
 export async function ensureSampleClass(reset = false) {

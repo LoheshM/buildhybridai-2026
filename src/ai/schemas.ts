@@ -28,6 +28,9 @@ export const REREAD_SCHEMA = {
   required: ['answers'],
 } as const;
 
+/** Every group a parent note can be written for (mistake patterns plus the general groups). */
+export const NOTE_GROUPS = ['add_across', 'numerators_only', 'denominators_multiplied', 'whole_dropped', 'cross_multiply', 'no_invert', 'flipped_first', 'reversed_subtraction', 'wrong_operation', 'slip', 'other', 'secure', 'default'] as const;
+
 const practiceItem = { type: 'object', properties: { question: { type: 'string' }, answer: { type: 'string' } }, required: ['question', 'answer'] };
 const planSchema = {
   type: 'object',
@@ -51,7 +54,7 @@ const notesSchema = (langs: readonly string[]) => ({
   items: {
     type: 'object',
     properties: {
-      group: { type: 'string' },
+      group: { type: 'string', enum: [...NOTE_GROUPS] },
       language: { type: 'string', enum: [...langs] },
       text: { type: 'string' },
     },
@@ -75,16 +78,23 @@ export interface ReteachPlan {
 export interface NoteTemplate { group: string; language: string; text: string }
 export interface TotalsResponse { plan: ReteachPlan; notes: NoteTemplate[] }
 
-/** Light runtime validation of a sheet read (the model can return odd shapes). */
+/** Strict runtime validation of a sheet read (the model can return odd shapes). Throws SyntaxError if unusable. */
 export function coerceSheetRead(x: unknown, questionCount: number): SheetRead {
   const o = (x && typeof x === 'object' ? x : {}) as Record<string, unknown>;
-  const raw = Array.isArray(o.answers) ? o.answers : [];
+  const raw = (Array.isArray(o.answers) ? o.answers : []) as Record<string, unknown>[];
+  const str = (v: unknown) => (typeof v === 'string' || typeof v === 'number' ? String(v).trim().slice(0, 40) : '');
+  const qOf = (v: unknown) => (typeof v === 'number' && Number.isInteger(v) ? v : typeof v === 'string' && /^\s*\d+\s*$/.test(v) ? Number(v) : NaN);
+  let items = raw.map((a) => ({ q: qOf(a?.q), crossedOutText: str(a?.crossedOutText), finalAnswer: str(a?.finalAnswer) })).filter((a) => Number.isInteger(a.q));
+  if (raw.length > 0 && items.length === 0) throw new SyntaxError('The reading had no usable question numbers.');
+  // 0-based numbering: shift when q:0 is present and the last question is missing
+  if (items.some((a) => a.q === 0) && !items.some((a) => a.q === questionCount)) items = items.map((a) => ({ ...a, q: a.q + 1 }));
   const byQ = new Map<number, { q: number; crossedOutText: string; finalAnswer: string }>();
-  for (const a of raw as Record<string, unknown>[]) {
-    const q = Number(a?.q);
-    if (!Number.isInteger(q) || q < 1 || q > questionCount || byQ.has(q)) continue;
-    byQ.set(q, { q, crossedOutText: String(a.crossedOutText ?? '').slice(0, 40), finalAnswer: String(a.finalAnswer ?? '').slice(0, 40) });
+  for (const a of items) {
+    if (a.q < 1 || a.q > questionCount) continue;
+    const prev = byQ.get(a.q);
+    if (!prev) byQ.set(a.q, a);
+    else if (a.finalAnswer && a.finalAnswer !== prev.finalAnswer) byQ.set(a.q, { ...prev, finalAnswer: [prev.finalAnswer, a.finalAnswer].filter(Boolean).join(' ') }); // surfaces as "Two answers"
   }
   const answers = Array.from({ length: questionCount }, (_, i) => byQ.get(i + 1) ?? { q: i + 1, crossedOutText: '', finalAnswer: '' });
-  return { studentName: String(o.studentName ?? '').slice(0, 60), answers };
+  return { studentName: str(o.studentName).slice(0, 60), answers };
 }

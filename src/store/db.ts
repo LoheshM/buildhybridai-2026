@@ -10,12 +10,12 @@ export interface ClassRec { id: string; name: string; roster: Student[]; created
 export interface QuizRec { id: string; classId: string; title: string; keys: QuestionKey[]; unsimplifiedCredit: number; createdAt: number }
 export type SheetStatus = 'queued' | 'reading' | 'read' | 'error' | 'checked';
 export interface SheetRec {
-  id: string; quizId: string; imageId?: string; source: 'photo' | 'typed' | 'sample'; sampleId?: string; fileName?: string;
+  id: string; quizId: string; imageId?: string; imageSha?: string; source: 'photo' | 'typed' | 'sample'; sampleId?: string; fileName?: string;
   status: SheetStatus; studentId: string | null; nameConfident: boolean; readName: string;
   marks: Marked[]; read?: SheetRead; where?: Where; ms?: number; rereadQs?: number[]; rereadMs?: number; error?: string;
   createdAt: number; checkedAt?: number;
 }
-export interface PlanRec { quizId: string; at: number; payload: ClassTotals; response: TotalsResponse; where: Where; ms: number }
+export interface PlanRec { quizId: string; at: number; payload: ClassTotals; response: TotalsResponse; where: Where; ms: number; heldBack?: string; note?: string; mode?: string }
 
 interface Schema extends DBSchema {
   classes: { key: string; value: ClassRec };
@@ -32,6 +32,8 @@ let dbp: Promise<IDBPDatabase<Schema>> | null = null;
 export function db() {
   if (!dbp) {
     dbp = openDB<Schema>(DB_NAME, 1, {
+      // Another tab wants to erase or upgrade the database: let go so it can, then ask for a reload.
+      blocking() { dbp?.then((d) => d.close()); dbp = null; window.dispatchEvent(new CustomEvent('tickmark:db-blocked')); },
       upgrade(d) {
         d.createObjectStore('classes', { keyPath: 'id' });
         d.createObjectStore('quizzes', { keyPath: 'id' }).createIndex('byClass', 'classId');
@@ -86,7 +88,12 @@ export const store = {
   /** Erases the whole database and local settings. */
   async eraseEverything() {
     if (dbp) { (await dbp).close(); dbp = null; }
-    await new Promise<void>((res, rej) => { const r = indexedDB.deleteDatabase(DB_NAME); r.onsuccess = () => res(); r.onerror = () => rej(r.error); r.onblocked = () => res(); });
+    await new Promise<void>((res, rej) => {
+      const r = indexedDB.deleteDatabase(DB_NAME);
+      r.onsuccess = () => res();
+      r.onerror = () => rej(r.error);
+      r.onblocked = () => setTimeout(() => rej(new Error('Close the other Tickmark tabs to finish erasing.')), 3000);
+    });
     try { localStorage.clear(); sessionStorage.clear(); } catch { /* ignore */ }
   },
 };

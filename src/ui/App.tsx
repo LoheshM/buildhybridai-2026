@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { BUILD } from '../config';
+import { bootError } from '../app/boot';
 import { href, useRoute } from '../app/router';
 import { downloadDeviceModel, useCounters, useDevice } from './hooks';
 import { Logo } from './Marks';
@@ -13,6 +15,12 @@ import { Privacy } from './Privacy';
 
 export function App() {
   const r = useRoute();
+  const [blocked, setBlocked] = useState(false);
+  useEffect(() => { const on = () => setBlocked(true); addEventListener('tickmark:db-blocked', on); return () => removeEventListener('tickmark:db-blocked', on); }, []);
+  useEffect(() => {
+    const titles: Record<string, string> = { welcome: 'Tickmark', home: 'Classes', new: 'New class and quiz', scan: 'Sheets', check: 'Check answers', results: 'Results', reteach: "Plan tomorrow's lesson", privacy: 'Privacy & data' };
+    document.title = r.page === 'welcome' ? 'Tickmark' : `${titles[r.page]} | Tickmark`;
+  }, [r.page]);
   const page = (() => {
     switch (r.page) {
       case 'welcome': return <Welcome />;
@@ -28,6 +36,7 @@ export function App() {
   const inClasses = r.page !== 'welcome' && r.page !== 'privacy';
   return (
     <div className="shell">
+      <a className="sr-only" href="#main">Skip to content</a>
       <header className="topbar">
         <a className="brand" href={href.welcome()} aria-label="Tickmark home"><Logo />Tickmark</a>
         <nav className="topnav" aria-label="Main">
@@ -38,7 +47,11 @@ export function App() {
         <DevicePill />
         <CloudCounter />
       </header>
-      <main id="main">{page}</main>
+      <main id="main">
+        {bootError && <p className="callout bad" role="alert">{bootError} <button className="btn small" onClick={() => location.reload()}>Reload</button></p>}
+        {blocked && <p className="callout" role="alert">Tickmark was changed in another tab. <button className="btn small" onClick={() => location.reload()}>Reload this tab</button></p>}
+        {page}
+      </main>
       <footer className="foot">
         Tickmark is open source (Apache-2.0). Build {BUILD.commit}{BUILD.date ? ` (${BUILD.date})` : ''}. Protected by reCAPTCHA Enterprise and Firebase App Check;
         Google's <a href="https://policies.google.com/privacy">Privacy Policy</a> and <a href="https://policies.google.com/terms">Terms</a> apply.
@@ -55,16 +68,17 @@ function DevicePill() {
     const pct = d.progress !== null ? Math.round(d.progress * 100) : null;
     return <span className="pill warn" role="status">{pct !== null && pct >= 90 ? 'Unpacking Gemini Nano…' : `Downloading Gemini Nano${pct !== null ? ` ${pct}%` : '…'}`}</span>;
   }
-  if (d.state === 'downloadable') return <button className="pill warn" onClick={() => downloadDeviceModel()}>Download on-device AI</button>;
-  return <a className="pill bad" href={href.welcome()} title="Student sheets can only be read on a laptop that runs Gemini Nano">No on-device AI here</a>;
+  if (d.state === 'downloadable') return <button className="btn small primary" onClick={() => downloadDeviceModel()}>Download on-device AI</button>;
+  if (d.state === 'no_image') return <a className="pill warn" href={href.welcome()} title="Turn on image input in chrome://flags">Image reading is off</a>;
+  return <a className="pill" href={href.welcome()} title="This browser can't run Gemini Nano. The sample class still works; your own classes use typed answers.">Sample: cloud mode</a>;
 }
 
 function CloudCounter() {
   const c = useCounters();
   return (
-    <a className="counter" href={href.privacy()} title="Everything that left this browser. Open to see each request.">
-      <span>Sent to cloud <b>{c.cloudRequests}</b></span>
-      <span>Student photos <b className="zero">{c.studentPhotosSent}</b></span>
+    <a className="counter" href={href.privacy()} title="Requests sent to the AI service, counted in this browser. Open to see each one.">
+      <span>Sent to cloud AI <b>{c.cloudRequests}</b></span>
+      <span>Student photos sent <b className={c.studentPhotosSent ? '' : 'zero'}>{c.studentPhotosSent}</b></span>
       {c.blocked > 0 && <span style={{ color: 'var(--red)' }}>Blocked <b>{c.blocked}</b></span>}
     </a>
   );

@@ -10,7 +10,8 @@ function load(): number[] {
 function save(ts: number[]) { try { localStorage.setItem(KEY, JSON.stringify(ts)); } catch { /* private mode */ } }
 
 let memory: number[] = [];
-const all = () => { const s = load(); return s.length ? s : memory; };
+/** Merges stored and in-memory timestamps (storage may be unavailable or cleared). */
+const all = () => [...new Set([...load(), ...memory.filter((t) => Date.now() - t < 86_400_000)])];
 
 export function canCallCloud(now = Date.now()): boolean {
   const ts = all();

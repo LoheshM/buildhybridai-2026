@@ -130,3 +130,23 @@ describe('pipeline merge', async () => {
     expect(markAnswer(k, '1/2', '1/2').crossedOut).toBe('');
   });
 });
+
+describe('round 1 P0 pins', async () => {
+  const { mergeReread } = await import('./pipeline');
+  const { matchName } = await import('./roster');
+  it('E02: a second read of "2 2/8" disagrees with "2 1/4"', () => {
+    const k = K(9, '1 1/2 + 3/4', '2 1/4');
+    const m = markAnswer(k, '2 1/4');
+    const d = mergeReread([m], new Map([[9, '2 2/8']]))[0];
+    expect(d.flags).toContain('reread_disagreed');
+    expect(d.status).toBe('correct');
+  });
+  it('E01: a fallback name match after a wrong guess is never confident', () => {
+    const roster = [{ id: 'a', name: 'Aarav Shah' }, { id: 'b', name: 'Aarav Singh' }];
+    const first = matchName('Aarav Sh.', roster);
+    const second = matchName('Aarav Shah', roster, new Set(['a'])); // "a" wrongly taken by another sheet
+    expect(first.studentId).toBe('a');
+    expect(second.studentId).toBe('b');
+    expect(second.confident).toBe(false);
+  });
+});

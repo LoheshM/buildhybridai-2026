@@ -27,7 +27,7 @@ export function Welcome() {
             </button>
           </div>
           {st && (
-            <div className={`callout ${d.state === 'available' ? 'device' : d.state === 'unavailable' || d.state === 'unsupported' ? 'bad' : ''}`} style={{ marginTop: 20 }} role="status">
+            <div className={`callout ${d.state === 'available' ? 'device' : ''}`} style={{ marginTop: 20 }} role="status">
               <strong>{st.title}.</strong> {st.body}
               {d.state === 'downloadable' && (
                 <div style={{ marginTop: 10 }}><button className="btn primary small" onClick={() => downloadDeviceModel()}>Download Gemini Nano</button></div>

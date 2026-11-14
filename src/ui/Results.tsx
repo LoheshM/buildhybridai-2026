@@ -4,7 +4,9 @@ import { scoreSheet } from '../marking/mark';
 import { MISCONCEPTIONS, type MisconceptionId } from '../marking/misconceptions';
 import { needsCheck } from '../marking/pipeline';
 import { MIN_SHEETS } from '../privacy/aggregate';
-import { csvCell } from '../privacy/templates';
+import { csvAnswer, csvCell } from '../privacy/templates';
+import { accuracy } from '../marking/accuracy';
+import { sampleManifest } from '../app/boot';
 import { store, type SheetRec } from '../store/db';
 import { useLoad, useToast } from './hooks';
 
@@ -12,10 +14,16 @@ export function Results({ quizId }: { quizId: string }) {
   const [ctx, reload] = useLoad(async () => {
     const quiz = await store.quiz(quizId);
     const cls = quiz ? await store.class(quiz.classId) : undefined;
-    return { quiz, cls, sheets: quiz ? (await store.sheets(quiz.id)).filter((s) => s.status === 'read' || s.status === 'checked') : [] };
+    const all = quiz ? await store.sheets(quiz.id) : [];
+    return { quiz, cls, total: all.length, sheets: all.filter((s) => s.status === 'read' || s.status === 'checked') };
   }, [quizId]);
   const [toast, setToast] = useToast();
-  const view = useMemo(() => (ctx?.quiz && ctx.cls ? summarise(ctx.sheets, ctx.quiz.keys.length, ctx.quiz.unsimplifiedCredit) : null), [ctx]);
+  const view = useMemo(() => {
+    if (!ctx?.quiz || !ctx.cls) return null;
+    const v = summarise(ctx.sheets, ctx.quiz.keys.length, ctx.quiz.unsimplifiedCredit);
+    const m = ctx.cls.sample ? sampleManifest() : null;
+    return { ...v, acc: m ? accuracy(ctx.sheets, m.students) : null, deviceShare: ctx.sheets.filter((s) => s.where === 'on_device').length, checkedByTeacher: ctx.sheets.reduce((n, s) => n + s.marks.filter((x) => x.checked && x.flags.length > 0).length, 0) };
+  }, [ctx]);
   if (!ctx || !view) return <p className="muted">Loading…</p>;
   const { quiz, cls, sheets } = ctx;
   if (!quiz || !cls) return <p>This quiz no longer exists.</p>;
@@ -24,8 +32,8 @@ export function Results({ quizId }: { quizId: string }) {
 
   const exportCsv = () => {
     const head = ['Student', ...quiz.keys.map((k) => `Q${k.q}`), 'Score', 'Out of'];
-    const lines = [head, ...sheets.map((s) => { const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit); return [name(s), ...s.marks.map((m) => m.read), sc.points, sc.outOf]; })];
-    const blob = new Blob([lines.map((l) => l.map(csvCell).join(',')).join('\r\n')], { type: 'text/csv' });
+    const lines = sheets.map((s) => { const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit); return [csvCell(name(s)), ...s.marks.map((m) => csvAnswer(m.read)), sc.unreadable ? '?' : String(sc.points), String(sc.outOf)]; });
+    const blob = new Blob(['\ufeff' + [head.map(csvCell), ...lines].map((l) => l.join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = `${quiz.title.replace(/[^\w -]/g, '')} marks.csv`;
@@ -43,12 +51,23 @@ export function Results({ quizId }: { quizId: string }) {
         </div>
       </div>
 
+      {ctx.total > sheets.length && <p className="callout" style={{ marginTop: 8 }}>{sheets.length} of {ctx.total} sheets are read so far. <a href={href.scan(quizId)}>Read the rest</a> before planning a lesson.</p>}
       <div className="stats">
-        <div className="stat"><b>{sheets.length}</b><span>sheets marked</span></div>
+        <div className="stat"><b>{sheets.length}{ctx.total > sheets.length ? ` of ${ctx.total}` : ''}</b><span>sheets marked</span></div>
         <div className="stat"><b>{view.avg.toFixed(1)}/{quiz.keys.length}</b><span>class average</span></div>
-        <div className="stat"><b>{view.flagsLeft}</b><span>answers still to check</span></div>
+        <div className="stat"><b>{view.flagsLeft}</b><span>answers still to check{view.checkedByTeacher ? ` (you checked ${view.checkedByTeacher})` : ''}</span></div>
         <div className="stat"><b>{view.deviceMins}</b><span>reading on this laptop</span></div>
       </div>
+      {cls.sample && view.acc && view.acc.sheets > 0 && (
+        <section className="sheet" style={{ marginBottom: 20 }} aria-label="Reading accuracy on the sample class">
+          <h3 style={{ marginBottom: 6 }}>How well the reading went (sample class only)</h3>
+          <p className="small" style={{ margin: 0 }}>
+            The sample's correct answers are known, so Tickmark can score its own reading: <b>{view.acc.exact} of {view.acc.answers}</b> answers read exactly.
+            Of the {view.acc.misread} misreads, <b>{view.acc.flaggedMisreads}</b> were flagged for you to check and <b>{view.acc.unflagged}</b> slipped through.
+            {view.deviceShare < sheets.length ? ` ${sheets.length - view.deviceShare} of these sheets were read by cloud Gemini or from recordings.` : ''}
+          </p>
+        </section>
+      )}
       {view.flagsLeft > 0 && <p className="callout">Some answers are still flagged. The results below include Tickmark's best reading for them; <a href={href.check(quizId)}>check them</a> before sharing marks.</p>}
 
       <section className="section">
@@ -83,7 +102,7 @@ export function Results({ quizId }: { quizId: string }) {
                         {{ correct: '✓', unsimplified: '½', wrong: '✗', blank: '–', unreadable: '?' }[m.status]}
                       </td>
                     ))}
-                    <td style={{ font: '700 1rem var(--ui)', width: 'auto', padding: '0 8px' }}>{sc.points}</td>
+                    <td style={{ font: '700 1rem var(--ui)', width: 'auto', padding: '0 8px' }} title={sc.unreadable ? 'An answer is still unreadable: check it to finish the score' : undefined}>{sc.unreadable ? '?' : sc.points}</td>
                   </tr>
                 );
               })}
@@ -104,7 +123,8 @@ export function Results({ quizId }: { quizId: string }) {
 }
 
 function summarise(sheets: SheetRec[], n: number, credit: number) {
-  const avg = sheets.reduce((a, s) => a + scoreSheet(s.marks, credit).points, 0) / Math.max(1, sheets.length);
+  const scored = sheets.filter((s) => scoreSheet(s.marks, credit).unreadable === 0);
+  const avg = scored.reduce((a, s) => a + scoreSheet(s.marks, credit).points, 0) / Math.max(1, scored.length);
   const perQ = Array.from({ length: n }, (_, i) => sheets.filter((s) => s.marks[i]?.status === 'correct' || s.marks[i]?.status === 'unsimplified').length / Math.max(1, sheets.length));
   const flagsLeft = sheets.reduce((a, s) => a + s.marks.filter(needsCheck).length, 0);
   const ms = sheets.filter((s) => s.where === 'on_device').reduce((a, s) => a + (s.ms ?? 0) + (s.rereadMs ?? 0), 0);

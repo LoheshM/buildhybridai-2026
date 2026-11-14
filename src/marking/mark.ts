@@ -60,8 +60,12 @@ export function keyInfo(k: QuestionKey): KeyInfo {
 /** Does the key itself agree with the prompt? (Catches teacher typos before marking.) */
 export function keyProblem(k: QuestionKey): string | null {
   const info = keyInfo(k);
-  if (info.keyParsed.kind !== 'value') return 'The answer could not be read as a number.';
+  if (info.keyParsed.kind !== 'value') return k.prompt ? 'The answer could not be read as a number.' : null;
   if (info.expr && !eq(evaluate(info.expr), info.keyParsed.value)) return 'This answer does not equal the question.';
+  const kp = info.keyParsed;
+  if ((kp.form === 'fraction' && !isLowest(kp.value)) || (kp.form === 'mixed' && !isLowest({ n: kp.value.n % kp.value.d, d: kp.value.d }))) {
+    return 'Write the answer in simplest form (for example 2/4 → 1/2), so students who simplify get full marks.';
+  }
   return null;
 }
 
@@ -101,7 +105,8 @@ export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marke
     } else {
       status = 'wrong';
       misconception = info.expr ? detect(info.expr, v) : null;
-      if (!misconception) flags.push('unusual');
+      // "slip" and "different operation" are weak explanations: a one-digit misread looks exactly like them.
+      if (!misconception || misconception === 'slip' || misconception === 'wrong_operation') flags.push('unusual');
     }
     // "11/2" where "1 1/2" was probably written: never auto-accept, always ask.
     const alts = mixedAlternatives(p.text);
@@ -111,10 +116,10 @@ export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marke
       if (hit || keyIsMixed) { flags.push('mixed_number_check'); suggestions.push(...(hit ? [hit] : alts)); }
     }
   }
-  return { q: k.q, read: read ?? '', crossedOut: co, status, misconception, flags: dedupe(flags), suggestions: dedupe(suggestions) };
+  return { q: k.q, read: read ?? '', crossedOut: co, status, misconception, flags: dedupe(flags), suggestions: dedupe(suggestions).filter((x) => x.trim() !== '') };
 }
 
-const norm = (s: string) => (s ?? '').normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').trim();
+const norm = (s: string) => (s ?? '').normalize('NFKC').toLowerCase().replace(/[.,;:!?]+$/, '').replace(/\s+/g, ' ').trim();
 const dedupe = <T,>(xs: T[]) => [...new Set(xs)];
 
 export interface SheetScore { points: number; outOf: number; correct: number; unsimplified: number; wrong: number; blank: number; unreadable: number }
@@ -135,10 +140,11 @@ export function needsReread(k: QuestionKey, m: Marked): boolean {
   const keyMixed = keyInfo(k).keyParsed;
   const readP = parse(m.read);
   return (
+    m.status === 'blank' ||
     m.flags.length > 0 ||
     m.status === 'unreadable' ||
     (keyMixed.kind === 'value' && keyMixed.form === 'mixed') ||
     (readP.kind === 'value' && readP.form === 'mixed') ||
-    (m.status === 'wrong' && !m.misconception)
+    (m.status === 'wrong' && (!m.misconception || m.misconception === 'slip' || m.misconception === 'wrong_operation'))
   );
 }

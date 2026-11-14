@@ -13,11 +13,19 @@ export function useCounters() { return counters(useLedger()); }
 interface Device { state: DeviceState | 'checking'; progress: number | null; warming: boolean; warmMs: number | null; error: string | null }
 let device: Device = { state: 'checking', progress: null, warming: false, warmMs: null, error: null };
 const subs = new Set<() => void>();
-const setDevice = (p: Partial<Device>) => { device = { ...device, ...p }; subs.forEach((s) => s()); };
+let downloadPending = false;
+const setDevice = (p: Partial<Device>) => {
+  const before = device.state;
+  device = { ...device, ...p };
+  subs.forEach((s) => s());
+  if (before !== 'available' && device.state === 'available') warm(); // warm on every arrival at "available"
+};
 const subscribe = (s: () => void) => { subs.add(s); return () => { subs.delete(s); }; };
 
 export async function refreshDevice() {
   const s = await deviceState();
+  // While our own download is running Chrome may still answer "downloadable"; keep showing progress.
+  if (downloadPending && s === 'downloadable') return device.state as DeviceState;
   setDevice({ state: s });
   return s;
 }
@@ -33,26 +41,28 @@ async function warm() {
 
 /** Must be called from a click handler: Chrome only downloads Gemini Nano after a user gesture. */
 export async function downloadDeviceModel() {
+  downloadPending = true;
   setDevice({ error: null, progress: 0, state: 'downloading' });
   try {
     await initDeviceModel((p) => setDevice({ progress: p }));
     setDevice({ progress: 1 });
-    const s = await refreshDevice();
-    if (s === 'available') await warm();
   } catch (e) {
-    setDevice({ error: (e as Error).message, progress: null });
+    setDevice({ error: `The download didn't finish: ${(e as Error).message}. Click Download to try again.`, progress: null });
+  } finally {
+    downloadPending = false;
     await refreshDevice();
   }
 }
 
+let poller: ReturnType<typeof setInterval> | null = null;
+function ensurePolling() {
+  if (poller) return;
+  poller = setInterval(() => { if (device.state === 'downloading' || device.state === 'checking') refreshDevice(); }, 4000);
+}
+
 export function useDevice() {
   const d = useSyncExternalStore(subscribe, () => device, () => device);
-  useEffect(() => {
-    let alive = true;
-    refreshDevice().then((s) => { if (alive && s === 'available') warm(); });
-    const t = setInterval(() => { if (device.state === 'downloading' && device.progress === null) refreshDevice(); }, 4000);
-    return () => { alive = false; clearInterval(t); };
-  }, []);
+  useEffect(() => { refreshDevice(); ensurePolling(); }, []);
   return d;
 }
 

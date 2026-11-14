@@ -76,7 +76,7 @@ export function detect(expr: Expr, answer: Frac): MisconceptionId | null {
     }],
     ['whole_dropped', () => {
       const pa = props(a), pb = props(b);
-      if (!pa.w && !pb.w) return null;
+      if (!/ /.test(expr.aText) && !/ /.test(expr.bText)) return null; // only when a mixed number was written
       const f = op === '+' ? add : op === '-' ? sub : op === '×' ? mul : div;
       if (op === '÷' && pb.r.n === 0) return null;
       return f(pa.r, pb.r);

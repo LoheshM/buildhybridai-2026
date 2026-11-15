@@ -39,7 +39,7 @@ On 15 Nov we measured Gemini Nano reading whole worksheets. It **answered the pr
 The cutting is plain TypeScript (`src/img/`): corner squares, a four-point homography, an upside-down check, a printed-frame check that refuses another quiz's sheet, and per-box ink measures relative to each box's own paper. Code, not the model, decides which boxes are empty: asked about an empty box, Nano invents an answer.
 
 ## The model never decides a mark
-- **Exact answers** are marked by code (`src/marking/`): units convert (35 mm = 3.5 cm), 2/4 equals 1/2 but is flagged "not simplified", algebra is compared by value, multiple choice and words are normalised. Named mistakes include "forgot to convert", "added tops and bottoms", "sign error", "copied the question".
+- **Exact answers** are marked by code (`src/marking/`): units convert (35 mm = 3.5 cm), 2/4 equals 1/2 but is flagged "not simplified", algebra is compared by value, multiple choice and words are normalised. Named mistakes include "Wrong unit", "Added (or subtracted) tops and bottoms", "Sign error" and "Did not simplify". When code is unsure (a right value in another form, an answer the same as the question, working beside the answer) it flags the answer for the teacher instead of guessing.
 - **Open answers** (short answers with key points, paragraphs with a rubric) get Gemini Nano's suggestion, in pencil. The teacher inks it, adjusts the key points, or overrides. A pupil's answer is fenced as data in the prompt, and answers that talk to the marker get no suggestion at all.
 - **Flags** route anything doubtful to the teacher: two answers, crossed-out work, an unread box with ink in it, a reading that disagreed on a second look, a spelling Nano may have corrected, working written beside the answer, and more.
 
@@ -47,10 +47,10 @@ The cutting is plain TypeScript (`src/img/`): corner squares, a four-point homog
 
 | Measure | Result |
 |---|---|
-| Real human handwriting: MNIST digits written into the maths answer sheet, photo-processed | 81.3% read exactly (152/187); **0 wrong marks without a flag**; 25% of answers flagged; 240/240 blank decisions |
+| Real human handwriting: MNIST digits written into 24 maths answer sheets, photo-processed | 81.3% read exactly (152/187); **no wrong mark without a flag**; 25% of answers flagged; 240/240 blank decisions |
 | Suggested marks on 147 real pupils' short answers marked by people (SciEntsBank) | 58% equal to the human mark, 91% within one mark |
 | Sample classes, recorded run | Maths 83.7% of exact answers read exactly, science 66.7%, English 57.8%; after today's rules, 0 unflagged wrong marks in all three |
-| Bad photos (code only): tilt, perspective, blur, dim light with noise, soft and hard shadows, heavy JPEG | 120/120 cut, 999/1000 blank decisions |
+| Bad photos (code only): tilt, perspective, 2 px blur, dim light with noise, soft and hard shadows, heavy JPEG | 107/108 cut (one refused for a retake), no written answer judged blank; photos blurred by 2.5 px or more are refused with a retake message |
 | Long strips | 26 answer rows: 14% exact; 6–7 rows: 83%. Sheets are read in strips of at most 10 answers. |
 | Prompt injection in a pupil's answer | Nano gave full marks 3/3 even fenced, so a code rule withholds the suggestion |
 

@@ -1,11 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { currentSettings } from '../ai/firebase';
-import { setRosterTokens } from '../ai/netGuard';
 import { totalsPrompt } from '../ai/prompts';
 import type { PracticeItem, TotalsResponse } from '../ai/schemas';
 import { planFromTotals, PlanUnavailable, recordedInfo } from '../ai/tasks';
 import { dayOf } from '../ai/deviceRecording';
-import { sampleKeyOfClass } from '../app/boot';
+import { refreshGuardRoster, sampleKeyOfClass } from '../app/boot';
 import { href } from '../app/router';
 import { eq, evaluate, extractExpr, format, parse } from '../marking/fraction';
 import { scoreSheet } from '../marking/mark';
@@ -43,7 +42,7 @@ export function Reteach({ quizId }: { quizId: string }) {
   const planHeading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (ctx?.saved) setPlan(ctx.saved); }, [ctx?.saved]);
   useEffect(() => { if (d.state !== 'available') setKeepLocal(false); }, [d.state]);
-  useEffect(() => { if (ctx?.cls) setRosterTokens(rosterTokens(ctx.cls.roster.map((s) => s.name))); }, [ctx?.cls]);
+  useEffect(() => { if (ctx?.cls) void refreshGuardRoster(ctx.cls); }, [ctx?.cls]);
   const build = (quiz: QuizRec, sheets: SheetRec[], names: string[]) =>
     buildTotals(quiz.keys, sheets, currentSettings().minGroupSize, keepLocal ? ['en'] : langs, { subject: quiz.subject ?? subjectFor(quiz.keys), grade_band: quiz.gradeBand ?? '7-9', rosterTokens: rosterTokens(names) });
   const totals: ClassTotals | null = useMemo(() => (ctx?.quiz && ctx.cls ? build(ctx.quiz, ctx.sheets, ctx.cls.roster.map((r) => r.name)) : null), [ctx, langs, keepLocal]); // eslint-disable-line react-hooks/exhaustive-deps

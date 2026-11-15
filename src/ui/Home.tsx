@@ -73,7 +73,7 @@ function ClassList({ items, reload }: { items: Item[]; reload: () => void }) {
                 <div className="grow">
                   <a href={href.scan(q.id)} style={{ fontWeight: 700 }}>{q.title}</a>
                   <div className="small muted">
-                    {q.keys.length} questions · {read} of {total} sheets read
+                    {q.keys.length} questions · {c.sample ? `${read} of ${total} sheets read` : `${read} of ${c.roster.length} pupils marked`}
                     {toCheck > 0 && <> · <span className="flag soft">{toCheck} waiting for you</span></>}
                   </div>
                 </div>

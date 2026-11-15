@@ -17,7 +17,7 @@ export function AnswerSheet({ quiz, className }: { quiz: QuizRec; className?: st
     <section className="print-only printable-quiz answer-sheet" aria-hidden="true">
       {markerCentres().map(([x, y], i) => <div key={i} style={{ ...abs(x - MARKER.size / 2, y - MARKER.size / 2, MARKER.size, MARKER.size), background: '#000' }} />)}
       <div style={{ ...abs(28, 14, 150), font: '700 5.2mm/1.2 Arial, sans-serif' }}>{quiz.title}</div>
-      <div style={{ ...abs(28, 21, 85), font: '3.4mm/1.3 Arial, sans-serif', color: '#333' }}>{className ? `${className} · ` : ''}Tickmark answer sheet · {quiz.keys.length} answers</div>
+      <div style={{ ...abs(28, 21, 85), font: '3.4mm/1.3 Arial, sans-serif', color: '#333', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{className ? `${className} · ` : ''}Tickmark answer sheet · {quiz.keys.length} answers</div>
       <div style={{ ...abs(28, 28, 70), font: '3mm/1.3 Arial, sans-serif', color: '#555' }}>Write each answer in its box. Keep the four black squares in the photo.</div>
       {boxes.map((b) => (
         <div key={b.q}>

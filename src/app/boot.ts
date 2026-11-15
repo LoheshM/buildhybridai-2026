@@ -1,7 +1,8 @@
+import { rosterTokens } from '../privacy/nameCheck';
 // App start-up: sample fingerprints, recorded cloud readings, ledger persistence, settings.
 import { setSampleHashes } from '../ai/images';
 import { ledger } from '../ai/ledger';
-import { setAllowedImageHashes } from '../ai/netGuard';
+import { setAllowedImageHashes, setRosterTokens } from '../ai/netGuard';
 import { setRecorded, type Recorded } from '../ai/tasks';
 import { setDeviceRecording, type DeviceRecording } from '../ai/deviceRecording';
 import { loadRemoteSettings } from '../ai/firebase';
@@ -114,4 +115,14 @@ export async function ensureSampleClass(k: SampleKey, reset = false) {
     };
     await store.putSheet(sheet);
   }
+}
+
+/**
+ * The network guard checks every request against the class lists of all your own classes, plus the class
+ * on screen (round 6, R6-S2): a plan still queued for class A is checked against A even after you open B.
+ * Made-up classes' invented names are added only while one is open, so they never block your own plans.
+ */
+export async function refreshGuardRoster(current?: { roster: { name: string }[]; sample?: boolean }) {
+  const own = (await store.classes()).filter((c) => !c.sample);
+  setRosterTokens(rosterTokens([...own, ...(current?.sample ? [current] : [])].flatMap((c) => c.roster.map((s) => s.name))));
 }

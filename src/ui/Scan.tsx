@@ -2,8 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { currentSettings, ensureAppCheck } from '../ai/firebase';
 import { DEVICE_STATE_TEXT } from '../ai/gate';
 import { normalizeUpload } from '../ai/images';
-import { setRosterTokens, sha256Hex } from '../ai/netGuard';
-import { samplePhotoUrl, sampleKeyOfClass } from '../app/boot';
+import { sha256Hex } from '../ai/netGuard';
+import { refreshGuardRoster, samplePhotoUrl, sampleKeyOfClass } from '../app/boot';
 import { dayOf, deviceRecordingInfo } from '../ai/deviceRecording';
 import { recordedInfo } from '../ai/tasks';
 import { href } from '../app/router';
@@ -11,7 +11,6 @@ import { onRun, onSheetChanged, requeueForDevice, runQuiz, runState, stopRun, ty
 import { scoreSheet, typeOf } from '../marking/mark';
 import { markRead, needsCheck } from '../marking/pipeline';
 import { isOpen, QTYPES } from '../marking/qtypes';
-import { rosterTokens } from '../privacy/nameCheck';
 import { store, uid, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 import { downloadDeviceModel, useDevice, useLoad } from './hooks';
 import { Notice } from './App';
@@ -36,7 +35,7 @@ export function Scan({ quizId }: { quizId: string }) {
     setSheets((xs) => (xs.some((x) => x.id === s.id) ? xs.map((x) => (x.id === s.id ? s : x)) : [...xs, s]));
     if (s.status === 'read') setFresh((f) => new Set(f).add(s.id)); // stays highlighted until visited
   }), [quizId]);
-  useEffect(() => { if (ctx?.cls) setRosterTokens(rosterTokens(ctx.cls.roster.map((s) => s.name))); }, [ctx?.cls]);
+  useEffect(() => { if (ctx?.cls) void refreshGuardRoster(ctx.cls); }, [ctx?.cls]);
   useWakeLock(run.running);
   // reCAPTCHA only when a live cloud read of a made-up sheet can follow (0 by default: the recordings replay)
   useEffect(() => { if (ctx?.cls?.sample && d.state !== 'available' && d.state !== 'checking' && currentSettings().sampleLiveReads > 0) ensureAppCheck(); }, [ctx?.cls?.sample, d.state]);

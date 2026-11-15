@@ -45,6 +45,15 @@ export function Check({ quizId, sheetId, q }: { quizId: string; sheetId?: string
     store.putSheet(next).then(() => dispatchEvent(new Event('tickmark:marks-changed'))).catch((e) => dispatchEvent(new CustomEvent('tickmark:save-failed', { detail: (e as Error).message })));
   }, []);
 
+  // "Check them" opens without a question: fix the first waiting one in the URL, so deciding its last
+  // answer never moves the view (and the next Enter) to another question
+  useEffect(() => {
+    if (sheetId || q !== undefined || !ctx?.quiz || !ctx.sheets.length) return;
+    const quiz = ctx.quiz;
+    const first = quiz.keys.find((k) => ctx.sheets.some((s) => { const m = s.marks.find((x) => x.q === k.q); return m && needsCheck(m); }))?.q ?? quiz.keys[0]?.q ?? 1;
+    location.replace(href.checkQ(quizId, first));
+  }, [ctx, q, sheetId, quizId]);
+
   if (!ctx) return <p className="muted">Loading answers…</p>;
   if (!ctx.quiz || !ctx.cls) return <p>This quiz no longer exists. <a href={href.home()}>Back to classes</a></p>;
   if (!sheets.length) return (

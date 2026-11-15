@@ -27,15 +27,16 @@ export function App() {
   useEffect(() => { const on = (e: Event) => setSaveError((e as CustomEvent).detail ?? 'unknown error'); addEventListener('tickmark:save-failed', on); return () => removeEventListener('tickmark:save-failed', on); }, []);
   useEffect(() => { document.title = r.page === 'welcome' ? 'Tickmark: mark the pile on this laptop' : `${TITLES[r.page]} | Tickmark`; }, [r.page]);
   const quizId = 'quizId' in r ? r.quizId : null;
+  // each quiz page is keyed by its quiz, so no state (a plan, a focus, an order) carries over to another quiz
   const page = (() => {
     switch (r.page) {
       case 'welcome': return <Welcome />;
       case 'home': return <Home />;
       case 'new': return <NewQuiz />;
-      case 'scan': return <Scan quizId={r.quizId} />;
-      case 'check': return <Check quizId={r.quizId} sheetId={r.sheetId} q={r.q} />;
-      case 'results': return <Results quizId={r.quizId} />;
-      case 'reteach': return <Reteach quizId={r.quizId} />;
+      case 'scan': return <Scan key={r.quizId} quizId={r.quizId} />;
+      case 'check': return <Check key={r.quizId} quizId={r.quizId} sheetId={r.sheetId} q={r.q} />;
+      case 'results': return <Results key={r.quizId} quizId={r.quizId} />;
+      case 'reteach': return <Reteach key={r.quizId} quizId={r.quizId} />;
       case 'privacy': return <Privacy />;
     }
   })();

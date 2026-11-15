@@ -17,7 +17,7 @@ import { typeOf, type QuestionKey, type Suggestion } from '../marking/mark';
 import { toSuggestion } from '../marking/open';
 import { isOpen, keyPoints, parseRubric } from '../marking/qtypes';
 import { CancelledError, enqueue, TimeoutError } from './queue';
-import { capture, deviceReadFor, deviceSuggestionFor } from './deviceRecording';
+import { capture, dayOf, deviceReadFor, deviceSuggestionFor } from './deviceRecording';
 import { coerceSheetRead, passageSuggestSchema, sheetSchema, shortSuggestSchema, stripSchema, type RawSuggestion, type SheetRead, type TotalsResponse } from './schemas';
 
 export class OffDeviceAnswer extends Error {
@@ -156,7 +156,7 @@ export async function readSampleSheet(img: SampleImage, keys: QuestionKey[]): Pr
   // first choice without Nano here: Nano's own reading of this sheet, recorded on the author's laptop
   const dev = deviceReadFor(img.sampleId);
   if (dev) {
-    ledger.addCall({ task: 'Read sample sheet', dataClass: 'sample', mode: 'recorded', where: 'recorded_device', ms: dev.read.firstMs, ok: true, note: `Gemini Nano's reading, recorded on ${dev.rec.recordedAt} (${dev.rec.chrome})` });
+    ledger.addCall({ task: 'Read sample sheet', dataClass: 'sample', mode: 'recorded', where: 'recorded_device', ms: dev.read.firstMs, ok: true, note: `Gemini Nano's reading, recorded on ${dayOf(dev.rec.recordedAt)} (${dev.rec.chrome})` });
     return { read: coerceSheetRead(structuredClone(dev.read.first), questionCount), where: 'recorded_device', ms: dev.read.firstMs };
   }
   if (!cloudUnreachable && liveSampleReads < currentSettings().sampleLiveReads && currentSettings().cloudFeaturesEnabled && canCallCloud()) {
@@ -169,7 +169,7 @@ export async function readSampleSheet(img: SampleImage, keys: QuestionKey[]): Pr
   }
   const rec = recordingFor(img.sampleId)?.reads[img.sampleId];
   if (!rec) throw new Error('No recorded reading for this sample sheet.');
-  ledger.addCall({ task: 'Read sample sheet', dataClass: 'sample', mode: 'recorded', where: 'recorded', ms: 0, ok: true, note: `Recorded cloud reading from ${recordingFor(img.sampleId)!.recordedAt}` });
+  ledger.addCall({ task: 'Read sample sheet', dataClass: 'sample', mode: 'recorded', where: 'recorded', ms: 0, ok: true, note: `Recorded cloud reading from ${dayOf(recordingFor(img.sampleId)!.recordedAt)}` });
   return { read: coerceSheetRead(rec, questionCount), where: 'recorded', ms: 0 };
 }
 
@@ -217,12 +217,12 @@ export async function suggestOpen(text: string, key: QuestionKey, who: { student
   const sampleId = (who as { sample: string }).sample;
   const dev = deviceSuggestionFor(sampleId, key.q);
   if (dev) {
-    ledger.addCall({ task: 'Suggest a mark (sample)', dataClass: 'sample', mode: 'recorded', where: 'recorded_device', ms: dev.s.ms, ok: true, note: `Gemini Nano's suggestion, recorded on ${dev.rec.recordedAt}` });
+    ledger.addCall({ task: 'Suggest a mark (sample)', dataClass: 'sample', mode: 'recorded', where: 'recorded_device', ms: dev.s.ms, ok: true, note: `Gemini Nano's suggestion, recorded on ${dayOf(dev.rec.recordedAt)}` });
     return toSuggestion(key, structuredClone(dev.s.raw), 'recorded_device', dev.s.ms);
   }
   const rec = recordingFor(sampleId)?.suggestions?.[`${sampleId}:${key.q}`];
   if (!rec) return null;
-  ledger.addCall({ task: 'Suggest a mark (sample)', dataClass: 'sample', mode: 'recorded', where: 'recorded', ms: 0, ok: true, note: `Recorded cloud suggestion from ${recordingFor(sampleId)!.recordedAt}` });
+  ledger.addCall({ task: 'Suggest a mark (sample)', dataClass: 'sample', mode: 'recorded', where: 'recorded', ms: 0, ok: true, note: `Recorded cloud suggestion from ${dayOf(recordingFor(sampleId)!.recordedAt)}` });
   return toSuggestion(key, rec, 'recorded', 0);
 }
 
@@ -280,7 +280,7 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
   } catch (e) {
     const err = classifyPlanError(e as Error);
     if (o.sample && recorded?.totals && !o.keepLocal) {
-      ledger.addCall({ task: 'Reteach plan and parent notes', dataClass: 'totals', mode: 'recorded', where: 'recorded', ms: 0, ok: true, note: `Live AI unavailable (${err.message.slice(0, 80)}); showing the plan recorded on ${recorded.recordedAt}` });
+      ledger.addCall({ task: 'Reteach plan and parent notes', dataClass: 'totals', mode: 'recorded', where: 'recorded', ms: 0, ok: true, note: `Live AI unavailable (${err.message.slice(0, 80)}); showing the plan recorded on ${dayOf(recorded.recordedAt)}` });
       return { response: recorded.totals, where: 'recorded', ms: 0, mode: 'recorded', payload: recorded.totalsPayload ?? totals, note: SHORT_REASON[err.kind] };
     }
     throw err;

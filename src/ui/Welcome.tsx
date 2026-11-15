@@ -78,7 +78,7 @@ export function Welcome() {
         </div>
         <div>
           <h3><Icon name="cloud" size={18} />In the cloud</h3>
-          <p>Only class totals, like "Q6: 9 missed where the energy comes from", go to Gemini, which writes a reteach lesson and parent notes in Hindi or Tamil. Names are filled in back here.</p>
+          <p>Only class totals, such as "Q6: several missed where the energy comes from", go to Gemini, which writes a reteach lesson and parent notes in Hindi or Tamil. Names are filled in back here.</p>
         </div>
       </section>
     </>

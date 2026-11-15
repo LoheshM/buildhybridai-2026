@@ -43,7 +43,7 @@ export function Results({ quizId }: { quizId: string }) {
   return (
     <>
       {ctx.total > sheets.length && <Notice>{sheets.length} of {ctx.total} sheets are read so far. <a href={href.scan(quizId)}>Read the rest</a> before planning a lesson.</Notice>}
-      {view.waiting > 0 && <Notice tone="warn"><p>{view.waiting} mark{view.waiting === 1 ? ' is' : 's are'} still in pencil or flagged. Totals below count them as Tickmark's best guess until you <a href={href.check(quizId)}>decide them</a>.</p></Notice>}
+      {view.waiting > 0 && <Notice tone="warn"><p>{view.waiting} mark{view.waiting === 1 ? ' is' : 's are'} still in pencil or flagged. Until you <a href={href.check(quizId)}>decide them</a>, pencil marks count as 0 and flagged answers count as Tickmark read them.</p></Notice>}
 
       <p className="summary-line" aria-label="Summary">
         <b>{sheets.length}{ctx.total > sheets.length ? ` of ${ctx.total}` : ''} sheets</b> marked · class average <b>{fmtPoints(Math.round(view.avg * 2) / 2)}/{fmtPoints(outOf)}</b>{view.waiting ? ' so far' : ''}

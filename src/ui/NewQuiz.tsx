@@ -21,7 +21,7 @@ export function NewQuiz() {
   const [className, setClassName] = useState('');
   const [rosterText, setRosterText] = useState('');
   const [title, setTitle] = useState('');
-  const [subject, setSubject] = useState<Subject>('maths');
+  const [subject, setSubject] = useState<Subject | 'auto'>('auto');
   const [grade, setGrade] = useState<GradeBand>('7-9');
   const [rows, setRows] = useState<Row[]>([EMPTY, EMPTY, EMPTY]);
   const [credit, setCredit] = useState(0.5);
@@ -63,7 +63,7 @@ export function NewQuiz() {
       cls = { id: uid('c'), name: className.trim(), roster: roster.map((name) => ({ id: uid('s'), name })), createdAt: Date.now() };
       await store.putClass(cls);
     }
-    const quiz: QuizRec = { id: uid('q'), classId: cls!.id, title: title.trim(), keys, unsimplifiedCredit: credit, createdAt: Date.now(), subject, gradeBand: grade, ...(extract.trim() ? { extract: extract.trim() } : {}) };
+    const quiz: QuizRec = { id: uid('q'), classId: cls!.id, title: title.trim(), keys, unsimplifiedCredit: credit, createdAt: Date.now(), ...(subject !== 'auto' ? { subject } : {}), gradeBand: grade, ...(extract.trim() ? { extract: extract.trim() } : {}) };
     await store.putQuiz(quiz);
     go(href.scan(quiz.id));
   };
@@ -94,7 +94,7 @@ export function NewQuiz() {
               <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Plants and water" spellCheck={false} autoComplete="off" />
             </label>
             <label className="field">Subject
-              <select value={subject} onChange={(e) => { const v = e.target.value as Subject; setSubject(v); if (v === 'english') setRows(rows.map((r) => ({ ...r, spelling: true }))); }}>{SUBJECTS.map((s) => <option key={s} value={s}>{SUBJECT_NAME[s]}</option>)}</select>
+              <select value={subject} onChange={(e) => { const v = e.target.value as Subject | 'auto'; setSubject(v); if (v === 'english') setRows(rows.map((r) => ({ ...r, spelling: true }))); }}><option value="auto">Detect from the key</option>{SUBJECTS.map((s) => <option key={s} value={s}>{SUBJECT_NAME[s]}</option>)}</select>
             </label>
           </div>
           <table className="keytable">

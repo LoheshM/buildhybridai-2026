@@ -53,6 +53,8 @@ export function Reteach({ quizId }: { quizId: string }) {
   if (!quiz || !cls) return <p>This quiz no longer exists.</p>;
   if (!sheets.length) return <div className="panel"><h2>Nothing to plan from yet</h2><p className="muted">Read and check some sheets first; the plan is written from the class totals.</p><a className="btn primary" href={href.scan(quizId)}>Go to the sheets</a></div>;
   const waiting = sheets.reduce((n, s) => n + s.marks.filter(needsCheck).length, 0);
+  const pencilLeft = sheets.reduce((n, s) => n + s.marks.filter((m) => needsCheck(m) && (m.status === 'pending' || m.status === 'unreadable' || m.status === 'blank')).length, 0);
+  const flaggedLeft = waiting - pencilLeft;
   const tooFew = sheets.length < MIN_SHEETS;
   const deviceReady = d.state === 'available';
 
@@ -80,7 +82,7 @@ export function Reteach({ quizId }: { quizId: string }) {
           <span className="pill cloud"><i />{keepLocal ? 'Nothing: Gemini Nano plans it here' : 'Class totals only'}</span>
         </div>
         <p className="muted">This table is all the class data in the message: no names, photos or pupils' words, and small groups are hidden. The rest of the message is fixed instructions. Your own key text is included so the plan can teach it; any line naming someone on your class list is left out.</p>
-        {waiting > 0 && <Notice tone="warn"><p>{waiting} mark{waiting === 1 ? ' is' : 's are'} still in pencil or flagged and won't be counted. <a href={href.check(quizId)}>Decide them</a> for complete totals.</p></Notice>}
+        {waiting > 0 && <Notice tone="warn"><p>{[pencilLeft ? `${pencilLeft} pencil or unread mark${pencilLeft === 1 ? " isn't" : "s aren't"} counted yet` : '', flaggedLeft ? `${flaggedLeft} flagged answer${flaggedLeft === 1 ? ' is' : 's are'} counted as Tickmark read ${flaggedLeft === 1 ? 'it' : 'them'}` : ''].filter(Boolean).join('; ')}. <a href={href.check(quizId)}>Decide them</a> for complete totals.</p></Notice>}
         <div style={{ overflowX: 'auto' }}>
           <table className="plain">
             <thead><tr><th>Q</th><th>Type</th><th>Question and key</th><th>Full</th><th>Some</th><th>None</th><th>Mistakes</th></tr></thead>

@@ -186,7 +186,7 @@ function QuestionHead({ quiz, k }: { quiz: QuizRec; k: QuestionKey }) {
       ) : (
         <div className="keyline">Key: <b>{k.answer}</b>{k.spellingCounts ? ' (spelling must be exact)' : ''}</div>
       )}
-      {QTYPES[type].markedBy === 'suggested' && <p className="tiny muted" style={{ margin: 0 }}>Pencil marks are AI suggestions: Gemini Nano on this laptop, or recorded cloud Gemini for the made-up sheets when a browser has no Nano. On 148 real pupils' answers that people had marked, Nano's suggestion matched the human mark half the time and was within one mark 9 times in 10 (15 Nov 2026), so every one is your call.</p>}
+      {QTYPES[type].markedBy === 'suggested' && <p className="tiny muted" style={{ margin: 0 }}>Pencil marks are AI suggestions: Gemini Nano on this laptop, or a recording of Nano for the made-up sheets when a browser has no Nano. On 147 real pupils' answers that people had marked, Nano's suggestion matched the human mark 58% of the time and was within one mark 91% of the time (15 Nov 2026), so every one is your call.</p>}
       {quiz.extract && type !== 'fraction' && <details className="peek-d"><summary>Show the reading extract</summary><p className="small" style={{ marginTop: 6 }}>{quiz.extract}</p></details>}
     </div>
   );
@@ -315,8 +315,8 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
           ? <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(markWrongByTeacher(m)); onDone(); }}>Mark wrong</button>
           : <button className="btn small primary" onClick={(e) => { e.stopPropagation(); accept(); }}>Reading is right <kbd>Enter</kbd></button>)}
         {open && pending && s && <button className="btn small ink" onClick={(e) => { e.stopPropagation(); accept(); }}>Ink {fmtPoints(s.points)}/{fmtPoints(outOf)} <kbd>Enter</kbd></button>}
-        {open && pending && m.read && <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(decideOpen(k, m, { points: 0 })); onDone(); }}>No marks <kbd>0</kbd></button>}
-        {open && pending && m.read && <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(decideOpen(k, m, { points: outOf })); onDone(); }}>Full marks</button>}
+        {open && ((pending && m.read) || (m.status === 'unreadable' && !m.checked)) && <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(decideOpen(k, m, { points: 0 })); onDone(); }}>No marks <kbd>0</kbd></button>}
+        {open && ((pending && m.read) || (m.status === 'unreadable' && !m.checked)) && <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(decideOpen(k, m, { points: outOf })); onDone(); }}>Full marks</button>}
         {!editing && <button className="btn small quiet" onClick={(e) => { e.stopPropagation(); setEditing(true); }}>Edit <kbd>E</kbd></button>}
         {(sheet.sampleId || sheet.imageId) && <button className="btn small quiet" aria-expanded={peek} onClick={(e) => { e.stopPropagation(); setPeek(!peek); }}>{peek ? 'Hide sheet' : 'Sheet'} <kbd>P</kbd></button>}
       </div>

@@ -83,11 +83,11 @@ export function Scan({ quizId }: { quizId: string }) {
         ) : run.running ? (
           <p className="muted" style={{ margin: 0 }}>Another quiz is being read right now. Start this one when it finishes.</p>
         ) : pending.length > 0 ? (
-          <ReadControls n={pending.length} total={sheets.length} sample={!!cls.sample} state={d.state} progress={d.progress} onStart={start} />
+          <ReadControls n={pending.length} total={sheets.length} sample={!!cls.sample} state={d.state} progress={d.progress} onStart={start} openQs={openQs} />
         ) : read.length ? (
           <div className="row spread">
             <div>
-              <strong>All {read.length} sheets read.</strong>
+              <strong>{cls.sample ? `All ${read.length} sheets read.` : `${read.length} of ${cls.roster.length} pupils marked.`}</strong>
               <div className="small muted">{answersToCheck + namesToCheck ? `${pencil ? `${pencil} pencil mark${pencil === 1 ? '' : 's'}` : ''}${pencil && answersToCheck - pencil ? ' and ' : ''}${answersToCheck - pencil ? `${answersToCheck - pencil} flagged answer${answersToCheck - pencil === 1 ? '' : 's'}` : ''}${namesToCheck ? `${answersToCheck ? ', ' : ''}${namesToCheck} name${namesToCheck === 1 ? '' : 's'}` : ''} waiting for you.` : 'Everything is decided.'}</div>
             </div>
             <a className="btn primary" href={answersToCheck + namesToCheck ? href.check(quiz.id) : href.results(quiz.id)}>{answersToCheck + namesToCheck ? 'Check them' : 'See results'}</a>
@@ -98,16 +98,17 @@ export function Scan({ quizId }: { quizId: string }) {
         {run.error && run.quizId === quiz.id && <Notice tone="bad">{run.error}</Notice>}
       </section>
 
+      {!cls.sample && sheets.length === 0 && (
+        <Notice>
+          <p><strong>First, print the answer sheet.</strong> Pupils answer your worksheet in its numbered boxes. Tickmark finds the boxes by the four black squares and reads one box at a time, so Gemini Nano copies what each pupil wrote instead of answering the question itself.
+            {deviceReady || d.state === 'downloading' || d.state === 'downloadable' || d.state === 'checking' ? '' : " This browser has no on-device AI, so type each pupil's answers below; to read photos, open Tickmark in Chrome on a laptop that can run Gemini Nano."}</p>
+          <div className="row"><button className="btn primary small" onClick={() => printBlank()}>Print the answer sheet</button></div>
+        </Notice>
+      )}
       {!cls.sample && (d.state === 'available' || d.state === 'downloading' || d.state === 'downloadable' || d.state === 'checking'
         ? <DropPhotos quiz={quiz} existing={sheets} onAdded={reload} compact={read.length > 0 && pending.length === 0} />
         : <TypedGrid cls={cls} quiz={quiz} existing={sheets} onSaved={reload} />)}
 
-      {!cls.sample && sheets.length === 0 && (
-        <Notice>
-          <p><strong>First, print the answer sheet.</strong> Pupils answer your worksheet in its numbered boxes. Tickmark finds the boxes by the four black squares and reads one box at a time, so Gemini Nano copies what each pupil wrote instead of answering the question itself.</p>
-          <div className="row"><button className="btn primary small" onClick={() => printBlank()}>Print the answer sheet</button></div>
-        </Notice>
-      )}
       {!cls.sample && sheets.length > 0 && <div className="row mt"><button className="btn small quiet" onClick={() => printBlank()}>Print the answer sheet</button></div>}
       <AnswerSheet quiz={quiz} className={cls.sample ? undefined : cls.name} />
 
@@ -133,9 +134,10 @@ function printBlank() {
   window.print();
 }
 
-function ReadControls({ n, total, sample, state, progress, onStart }: { n: number; total: number; sample: boolean; state: string; progress: number | null; onStart: (limit?: number) => void }) {
+function ReadControls({ n, total, sample, state, progress, onStart, openQs = 0 }: { n: number; total: number; sample: boolean; state: string; progress: number | null; onStart: (limit?: number) => void; openQs?: number }) {
   const label = n === total ? 'all' : 'the rest';
-  const minutes = Math.max(1, Math.round((n * 9) / 60));
+  // about 9 s to read a sheet on this laptop, plus about 2.5 s for each suggested mark
+  const minutes = Math.max(1, Math.round((n * (9 + 2.5 * openQs)) / 60));
   if (state === 'available') {
     return (
       <div className="row spread">

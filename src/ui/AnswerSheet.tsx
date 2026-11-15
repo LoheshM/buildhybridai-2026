@@ -1,5 +1,7 @@
 // The printable Tickmark answer sheet. Drawn in millimetres from the same layout() the reader uses,
 // so the boxes Tickmark cuts out of a photo are exactly the boxes on the paper.
+import { parseQuantity } from '../marking/numeric';
+import { keyCore } from '../marking/qtypes';
 import type { CSSProperties } from 'react';
 import { typeOf } from '../marking/mark';
 import { layout, MARKER, markerCentres } from '../img/sheet';
@@ -32,5 +34,5 @@ export function AnswerSheet({ quiz, className }: { quiz: QuizRec; className?: st
 function hintFor(quiz: QuizRec, q: number) {
   const k = quiz.keys.find((x) => x.q === q);
   const t = k ? typeOf(k) : 'word';
-  return t === 'choice' ? 'letter or True/False' : t === 'fraction' ? 'fraction' : t === 'number' ? 'number and unit' : t === 'algebra' ? 'x = …' : '';
+  return t === 'choice' ? 'letter or True/False' : t === 'fraction' ? 'fraction' : t === 'number' ? (parseQuantity(keyCore(k!.answer))?.unit ? 'number and unit' : parseQuantity(keyCore(k!.answer))?.percent ? 'number and %' : 'number') : t === 'algebra' ? 'x = …' : '';
 }

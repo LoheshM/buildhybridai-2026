@@ -104,3 +104,20 @@ describe('a stuck model service never hangs the app', () => {
     delete (globalThis as unknown as { LanguageModel?: unknown }).LanguageModel;
   }, 12000);
 });
+
+describe('round 5 S3: the guard reads the whole request', () => {
+  beforeEach(() => { setAllowedImageHashes([]); setRosterTokens(rosterTokens(['Bilal Hussain'])); });
+  const img = btoa('not a sample sheet');
+  it('refuses snake_case inline_data that is not a sample', async () => {
+    expect((await inspectBody(JSON.stringify({ contents: [{ parts: [{ inline_data: { mime_type: 'image/jpeg', data: img } }] }] }))).reason).toMatch(/image/);
+  });
+  it('refuses a file reference', async () => {
+    expect((await inspectBody(JSON.stringify({ contents: [{ parts: [{ fileData: { fileUri: 'gs://x/y.jpg', mimeType: 'image/jpeg' } }] }] }))).reason).toMatch(/file reference/);
+  });
+  it('refuses a class-list name anywhere, including generationConfig', async () => {
+    expect((await inspectBody(JSON.stringify({ contents: [{ parts: [{ text: 'totals' }] }], generationConfig: { responseSchema: { description: 'notes for Bilal' } } }))).reason).toMatch(/name/);
+  });
+  it('lets ordinary totals through', async () => {
+    expect((await inspectBody(JSON.stringify({ contents: [{ parts: [{ text: 'q1 right 6' }] }], generationConfig: { responseMimeType: 'application/json' } }))).reason).toBeNull();
+  });
+});

@@ -7,7 +7,7 @@
 // Why: the SDK sends even ONLY_ON_DEVICE requests to the cloud when the browser has no
 // on-device model API (verified in @firebase/ai 3.1.0), so we must not rely on modes alone.
 import { AI_HOST } from '../config';
-import { findRosterNames, stringValues } from '../privacy/nameCheck';
+import { findRosterNames } from '../privacy/nameCheck';
 import { FIXED_VOCAB } from './prompts';
 
 export interface OutboundEvent {
@@ -71,7 +71,7 @@ async function sanitize(json: unknown, withholdText: boolean): Promise<string> {
     if (v && typeof v === 'object') {
       const out: Record<string, unknown> = {};
       for (const [k, x] of Object.entries(v as Record<string, unknown>)) {
-        if (k === 'inlineData' && x && typeof (x as { data?: unknown }).data === 'string') {
+        if ((k === 'inlineData' || k === 'inline_data') && x && typeof (x as { data?: unknown }).data === 'string') {
           const d = (x as { data: string; mimeType?: string });
           out[k] = { mimeType: d.mimeType, data: `<image sha256=${(await sha256Hex(b64ToBytes(d.data))).slice(0, 16)}… ${Math.round((d.data.length * 3) / 4 / 1024)} KB>` };
         } else if (k === 'text' && typeof x === 'string' && withholdText) out[k] = '[withheld: it contained a name from your class list]';
@@ -95,22 +95,28 @@ async function inspectJson(json: unknown): Promise<{ reason: string | null; imag
   if (studentLocks > 0) return { reason: 'a student sheet was being read on this laptop', images: 0, nonSampleImages: 0 };
   const images: string[] = [];
   const texts: string[] = [];
+  let fileRefs = 0;
+  // the whole body (contents, systemInstruction, generationConfig…), in either spelling the API accepts
+  // (inlineData / inline_data); every string in it is checked for names
   const walk = (v: unknown) => {
     if (Array.isArray(v)) v.forEach(walk);
+    else if (typeof v === 'string') texts.push(v);
     else if (v && typeof v === 'object') {
-      const o = v as Record<string, unknown>;
-      const inline = o.inlineData as { data?: string } | undefined;
-      if (inline && typeof inline.data === 'string') images.push(inline.data);
-      if (typeof o.text === 'string') texts.push(o.text);
-      for (const [k, x] of Object.entries(o)) if (k !== 'inlineData' && k !== 'text') walk(x);
+      for (const [k, x] of Object.entries(v as Record<string, unknown>)) {
+        if (k === 'inlineData' || k === 'inline_data') {
+          const d = (x as { data?: unknown } | undefined)?.data;
+          if (typeof d === 'string') images.push(d); else fileRefs++;
+        } else if (k === 'fileData' || k === 'file_data') fileRefs++; // Tickmark never sends files by reference
+        else walk(x);
+      }
     }
   };
-  walk((json as Record<string, unknown>).contents ?? json);
+  walk(json);
+  if (fileRefs) return { reason: 'a file reference (Tickmark only sends fingerprinted sample images)', images: images.length, nonSampleImages: fileRefs };
   let nonSample = 0;
   for (const img of images) if (!allowedImageHashes.has(await sha256Hex(b64ToBytes(img)))) nonSample++;
   if (nonSample) return { reason: 'an image that is not a Tickmark sample sheet', images: images.length, nonSampleImages: nonSample };
-  const sys = (json as Record<string, unknown>).systemInstruction;
-  const hits = findRosterNames([...texts, ...stringValues(sys)].join('\n'), rosterTokens, FIXED_VOCAB);
+  const hits = findRosterNames(texts.join('\n'), rosterTokens, FIXED_VOCAB);
   if (hits.length) return { reason: 'text containing a name from your class list', images: images.length, nonSampleImages: 0 };
   return { reason: null, images: images.length, nonSampleImages: 0 };
 }

@@ -34,6 +34,9 @@ let lastReason: string | undefined;
 
 /** How many requests the guard has refused so far, and why the last one was refused. */
 export const blockCount = () => blocks;
+const spentModels = new Set<string>();
+/** True once a cloud model answered 429 "per day" in this page (its free daily allowance is used up). */
+export const quotaSpent = (model: string) => spentModels.has(model);
 export const lastBlockReason = () => lastReason;
 
 export const onOutbound = (l: Listener) => { listeners.add(l); return () => listeners.delete(l); };
@@ -136,6 +139,16 @@ export function installNetGuard() {
     const ev: OutboundEvent = { at: Date.now(), path: url.pathname.replace(/^.*\/models\//, 'models/'), bytes: new Blob([body]).size, body: r.sanitized, blocked: !!reason, reason: reason ?? undefined, images: r.images, nonSampleImages: r.nonSampleImages };
     listeners.forEach((l) => l(ev));
     if (reason) { blocks++; lastReason = reason; throw new GuardBlocked(reason); }
-    return orig(input, init);
+    const res = await orig(input, init);
+    // a model whose free daily allowance is used up: remembered for this page, so the plan goes to the other model
+    // straight away (with Gemini Nano present, the SDK would otherwise fall back to a slow on-device run)
+    if (res.status === 429) {
+      try {
+        const t = await res.clone().text();
+        const model = url.pathname.match(/models\/([^:/]+)/)?.[1];
+        if (model && /per ?day/i.test(t)) spentModels.add(model);
+      } catch { /* ignore */ }
+    }
+    return res;
   };
 }

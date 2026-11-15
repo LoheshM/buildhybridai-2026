@@ -11,7 +11,7 @@ import type { SampleImage, StudentImage } from './images';
 import { ledger, type DataClass, type Where } from './ledger';
 import { canCallCloud, noteCloudCall } from './limiter';
 import { InferenceMode, model, resetModel, type Mode, type Task } from './models';
-import { blockCount, GuardBlocked, lastBlockReason, withStudentLock } from './netGuard';
+import { blockCount, GuardBlocked, lastBlockReason, quotaSpent, withStudentLock } from './netGuard';
 import { answerSheetPrompt, stripPrompt, stripRereadPrompt, suggestPassagePrompt, suggestShortPrompt, totalsPrompt, WARMUP_PROMPT } from './prompts';
 import { typeOf, type QuestionKey, type Suggestion } from '../marking/mark';
 import { toSuggestion } from '../marking/open';
@@ -260,12 +260,16 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
     try {
       // Hybrid: PREFER_IN_CLOUD lets the SDK fall back to Gemini Nano on 429, App Check failure or network
       // errors. Queued so it runs between sheets: no student lock can be held while its request leaves.
-      const r = await call('classTotals', InferenceMode.PREFER_IN_CLOUD, [totalsPrompt(totals)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: device ? PLAN_TIMEOUT_HYBRID_MS : PLAN_TIMEOUT_CLOUD_MS, what: device ? 'the AI' : 'cloud Gemini' });
-      return { response: parseJson(r.text) as TotalsResponse, where: r.where, ms: r.ms, heldBack: r.heldBack, mode: InferenceMode.PREFER_IN_CLOUD, payload: totals };
+      // a model already known to be out of today's allowance is skipped for the other allowlisted one
+      const primary = currentSettings().cloudModel, other = CLOUD_MODELS.find((m) => m !== primary);
+      const useModel = quotaSpent(primary) && other && !quotaSpent(other) ? other : primary;
+      const r = await call('classTotals', InferenceMode.PREFER_IN_CLOUD, [totalsPrompt(totals)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: device ? PLAN_TIMEOUT_HYBRID_MS : PLAN_TIMEOUT_CLOUD_MS, what: device ? 'the AI' : 'cloud Gemini', cloudModel: useModel, note: useModel !== primary ? `Written by ${useModel}: the daily allowance of ${primary} was used up` : undefined });
+      return { response: parseJson(r.text) as TotalsResponse, where: r.where, ms: r.ms, heldBack: r.heldBack, mode: InferenceMode.PREFER_IN_CLOUD, payload: totals, note: useModel !== primary && r.where === 'in_cloud' ? `written by ${useModel}` : undefined };
     } catch (e) {
       // The free daily allowance is per model: one retry, same validated totals, on the other allowlisted model.
       const alt = CLOUD_MODELS.find((m) => m !== currentSettings().cloudModel);
-      if (alt && classifyPlanError(e as Error).kind === 'quota_day' && canCallCloud()) {
+      // the quota error itself, or a timeout after the SDK fell back to Nano because of it
+      if (alt && (classifyPlanError(e as Error).kind === 'quota_day' || (quotaSpent(currentSettings().cloudModel) && !quotaSpent(alt))) && canCallCloud()) {
         noteCloudCall();
         try {
           const r = await call('classTotals', InferenceMode.ONLY_IN_CLOUD, [totalsPrompt(totals)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: PLAN_TIMEOUT_CLOUD_MS, what: 'cloud Gemini', cloudModel: alt, note: `Written by ${alt}: the daily allowance of ${currentSettings().cloudModel} was used up` });

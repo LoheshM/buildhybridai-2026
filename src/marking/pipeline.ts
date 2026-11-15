@@ -9,10 +9,11 @@ export function markRead(keys: QuestionKey[], read: FirstRead): Marked[] {
     const a = read.answers.find((x) => x.q === k.q);
     const raw = a?.finalAnswer ?? '';
     // if nothing is left, the pupil wrote the question itself: keep it, and flag it below (round 8, R8-04)
-    const cleaned = stripPrinted(raw, k.prompt) || raw.trim();
+    const stripped = stripPrinted(raw, k.prompt);
+    const cleaned = stripped || raw.trim();
     const m = markAnswer(k, cleaned, a?.crossedOutText ?? '');
     // the model copied printed text into the answer: removed by code, and the teacher is asked to look
-    return cleaned !== raw.trim() ? { ...m, flags: [...new Set([...m.flags, 'check_reading' as const])] } : m;
+    return stripped !== raw.trim() ? { ...m, flags: [...new Set([...m.flags, 'check_reading' as const])] } : m;
   });
 }
 

@@ -80,3 +80,39 @@ describe('round 9', () => {
     expect(markAnswer(k('x = 8', 'Solve 2x = 16'), 'x = 8').flags).toEqual([]);
   });
 });
+
+describe('round 9 engine', () => {
+  it('E9-01 the printed question read back is flagged', async () => {
+    const { markRead } = await import('./pipeline');
+    const r = markRead([k('chlorophyll', 'The green substance in leaves that traps light is called …')], { answers: [{ q: 1, finalAnswer: 'The green substance in leaves that traps light is called', crossedOutText: '' }] });
+    expect(r[0].flags).toContain('check_reading');
+  });
+  it('E9-02 E9-05 a form the question names', () => {
+    expect(markAnswer(k('4(x + 2)', 'Factorise 4x + 8'), '2(2x + 4)').flags).toContain('other_form');
+    expect(markAnswer(k('1 1/2', 'Write 6/4 as a mixed number'), '3/2').flags.length).toBeGreaterThan(0);
+  });
+  it('E9-03 E9-04 working then a mixed number; a value with a unit', () => {
+    expect(markAnswer(k('x = 2 1/2', 'Solve 2x = 5'), '2x = 5 2 1/2').status).toBe('correct');
+    const m = markAnswer(k('x = 2', 'Find x: the side is x cm'), 'x = 2 cm');
+    expect(m.status).toBe('correct'); expect(m.flags).toContain('other_form');
+  });
+  it('E9-06 units typed without a space', () => {
+    expect(markAnswer(k('12V'), '12 volts').status).toBe('correct');
+    expect(markAnswer(k('50Hz'), '50 Hz').status).toBe('correct');
+  });
+  it('E9-07 the same thing in other words is right and flagged', () => {
+    for (const [key, read] of [['carbon dioxide', 'CO2'], ['eight', '8'], ['sulphur', 'sulfur']]) {
+      const m = markAnswer(k(key), read);
+      expect(m.status, read).toBe('correct'); expect(m.flags, read).toContain('other_form');
+    }
+  });
+  it('E9-08 the option text instead of its letter', () => {
+    const m = markAnswer(k('A', 'Ice floats. A) True B) False'), 'True');
+    expect(m.status).toBe('correct'); expect(m.flags).toContain('other_form');
+  });
+  it('E9-09 articles and capitals when they are the point', () => {
+    const ap = markAnswer(k('an apple'), 'a apple');
+    expect(ap.status === 'correct' && ap.flags.length === 0).toBe(false);
+    expect(markAnswer(k('Monday', 'Write the day with a capital letter'), 'monday').flags).toContain('check_spelling');
+  });
+});

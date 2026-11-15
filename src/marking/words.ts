@@ -26,6 +26,15 @@ export function looksChoice(key: string): boolean {
 }
 
 export type ChoiceVerdict = { status: 'correct' | 'wrong' | 'unreadable'; picked: string | null };
+/** "carbon dioxide" or "True" written instead of the option letter printed beside it: that option (round 9, E9-08). */
+export function optionByText(read: string, prompt: string): string | null {
+  const r = normWord(read);
+  if (!r || !prompt) return null;
+  const opts = [...prompt.matchAll(/(?:^|[\s(])([A-H])[).:]\s*([^()]+?)(?=\s+\(?[A-H][).:]|$)/g)];
+  const hit = opts.find((o) => normWord(o[2]) === r);
+  return hit ? hit[1] : null;
+}
+
 /** A key that is one option letter, A to H ("F" included: true/false keys are written as words or T). */
 const isLetterKey = (key: string) => /^\(?[A-Ha-h]\)?[.)]?$/.test(key.trim());
 
@@ -42,21 +51,32 @@ export function markChoice(key: string, read: string, prompt = ''): ChoiceVerdic
   if (letters.size > 1 && /^[\s(),.;/A-H]*$/i.test(joined)) return { status: 'unreadable', picked: null, two: true };
   // a true/false word against an F or T option key: maybe a true/false question in other words ("✓ or ✗", "is this correct?"): the teacher looks
   if (letterMode && /^[FT]$/.test(k ?? '') && /^(true|false|yes|no|✓|✗)[.!]?$/i.test((read ?? '').trim())) return { status: 'unreadable', picked: null };
-  const s = normChoice(read, letterMode);
+  const s = (letterMode ? optionByText(read, prompt) : null) ?? normChoice(read, letterMode) ?? optionByText(read, prompt);
   if (!s) return { status: 'unreadable', picked: null };
   return { status: s === k ? 'correct' : 'wrong', picked: s };
 }
 
 const ARTICLES = /^(the|a|an|to)\s+/;
 /** Lower case, no accents or punctuation, no leading article: "The Nucleus." → "nucleus". */
-export function normWord(raw: string): string {
-  return (raw ?? '').normalize('NFKD').replace(/\p{M}/gu, '').normalize('NFKC').toLowerCase()
-    .replace(/[’']/g, "'").replace(/[^\p{L}\p{N}' -]+/gu, ' ').replace(/\s+/g, ' ').trim().replace(ARTICLES, '');
+export function normWord(raw: string, keepArticle = false): string {
+  const s = (raw ?? '').normalize('NFKD').replace(/\p{M}/gu, '').normalize('NFKC').toLowerCase()
+    .replace(/[’']/g, "'").replace(/[^\p{L}\p{N}' -]+/gu, ' ').replace(/\s+/g, ' ').trim();
+  return keepArticle ? s : s.replace(ARTICLES, '');
+}
+
+/** Same thing, other words: formulas, number words, British and American spellings (round 9, E9-07). Matched answers are flagged, not silently ticked. */
+const SAME: string[][] = [
+  ['carbon dioxide', 'co2'], ['oxygen', 'o2'], ['water', 'h2o'], ['nitrogen', 'n2'], ['hydrogen', 'h2'], ['salt', 'nacl', 'sodium chloride'], ['methane', 'ch4'],
+  ['sulphur', 'sulfur'], ['colour', 'color'], ['aluminium', 'aluminum'], ['vapour', 'vapor'], ['metre', 'meter'], ['litre', 'liter'], ['centre', 'center'], ['fibre', 'fiber'], ['haemoglobin', 'hemoglobin'], ['oesophagus', 'esophagus'], ['foetus', 'fetus'], ['grey', 'gray'],
+  ...['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'].map((w, i) => [w, String(i)]),
+];
+export function sameWord(a: string, b: string): boolean {
+  return a !== b && SAME.some((g) => g.includes(a) && g.includes(b));
 }
 
 /** "evaporation / evaporating | evaporate" → the accepted answers. */
 export function alternatives(key: string): string[] {
-  return key.split(/\s*(?:\/|\||\bor\b)\s*/i).map(normWord).filter(Boolean);
+  return key.split(/\s*(?:\/|\||\bor\b)\s*/i).map((x) => normWord(x)).filter(Boolean);
 }
 
 /** A key of one to three words with no sentence punctuation (and not a number). ";" and new lines mean key points, so those are short answers. */
@@ -67,7 +87,7 @@ export function looksWord(key: string): boolean {
 }
 
 export type WordMistake = 'spelling' | 'wrong_term';
-export interface WordVerdict { status: 'correct' | 'wrong' | 'unreadable'; mistake: WordMistake | null; closest?: string; extraWords?: boolean }
+export interface WordVerdict { status: 'correct' | 'wrong' | 'unreadable'; mistake: WordMistake | null; closest?: string; extraWords?: boolean; sameAs?: boolean }
 
 /** Allowed spelling distance: none for very short words, 1 up to 8 letters, 2 beyond. */
 const allowance = (w: string) => (w.length <= 3 ? 0 : w.length <= 8 ? 1 : 2); // "writed" (2 edits) is a wrong form of "written", not a misspelling
@@ -77,10 +97,13 @@ const allowance = (w: string) => (w.length <= 3 ? 0 : w.length <= 8 ? 1 : 2); //
  * spelling doesn't count, wrong when it does (a spelling test). Anything else is a wrong term.
  */
 export function markWord(key: string, read: string, spellingCounts = false): WordVerdict {
-  const s = normWord(read);
+  // when the key itself is or starts with an article ("an", "an apple"), the article is the point (round 9, E9-09)
+  const articleKey = /^(the|a|an)(\s|$)/i.test(key.trim());
+  const s = normWord(read, articleKey);
   if (!s) return { status: 'unreadable', mistake: null };
-  const alts = alternatives(key);
+  const alts = articleKey ? key.split(/\s*(?:\/|\||\bor\b)\s*/i).map((x) => normWord(x, true)).filter(Boolean) : alternatives(key);
   if (alts.includes(s)) return { status: 'correct', mistake: null };
+  if (alts.some((a) => sameWord(a, s))) return { status: 'correct', mistake: null, sameAs: true };
   // "the nucleus of the cell" for "nucleus": the key word is there, with extra words
   let best = { d: Infinity, alt: '' };
   for (const a of alts) { const d = editDistance(s, a); if (d < best.d) best = { d, alt: a }; }

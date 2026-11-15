@@ -161,7 +161,8 @@ export function markAlgebra(keyText: string, readText: string, prompt = ''): Alg
   let read = readText.trim().replace(/^=\s*/, '').replace(/\.$/, '').trim();
   // working then the answer: "x = 8/2 = 4" or "2x=8 4" (crossed-out working read together with the answer)
   // a whole equation then a value ("2x=8 4"); "x = 2 1/2" is a mixed number, not working
-  const tail = read.match(/^(.*=\s*(\S+))\s+(-?[\d./]+)$/);
+  const mixedTail = read.match(/^(.*=\s*\S+)\s+(-?\d+\s+\d+\/\d+)$/); // "2x = 5 2 1/2": working, then a mixed number
+  const tail = mixedTail ? [mixedTail[0], mixedTail[1], '', mixedTail[2]] : read.match(/^(.*=\s*(\S+))\s+(-?[\d./]+)$/);
   const head = read.match(/^(-?[\d./]+)\s+(.*=.*)$/); // the answer, then the working ("4 2x=8")
   const sum = read.match(/^[^=a-z]+=\s*(-?[\d./]+(?:\s+\d+\/\d+)?)$/i); // arithmetic then its value ("8/2 = 4")
   let working = false;

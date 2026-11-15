@@ -21,6 +21,7 @@ const ALIASES: Record<string, string> = {
   'cm2': 'cm²', 'cm²': 'cm²', 'm2': 'm²', 'm²': 'm²', 'mm2': 'mm²', 'mm²': 'mm²', 'km2': 'km²', 'km²': 'km²',
   'cm3': 'cm³', 'cm³': 'cm³', 'm3': 'm³', 'm³': 'm³', cc: 'cm³',
   '°c': '°C', 'oc': '°C', c: '°C', degrees: '°', degree: '°', '°': '°', deg: '°',
+  v: 'V', volt: 'V', volts: 'V', hz: 'Hz', hertz: 'Hz', amp: 'A', amps: 'A', ampere: 'A', amperes: 'A', kelvin: 'K', watt: 'W', watts: 'W', joule: 'J', joules: 'J', pa: 'Pa', pascal: 'Pa', pascals: 'Pa', 'm/s2': 'm/s²', 'm/s²': 'm/s²', 'm/s^2': 'm/s²',
   'km/h': 'km/h', kph: 'km/h', 'm/s': 'm/s', mph: 'mph', n: 'N', newton: 'N', newtons: 'N', j: 'J', w: 'W',
   '$': '$', '£': '£', '₹': '₹', rs: '₹', '€': '€', p: 'p', pence: 'p', cents: '¢', '¢': '¢',
 };

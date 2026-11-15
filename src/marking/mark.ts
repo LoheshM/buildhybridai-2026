@@ -7,7 +7,7 @@ import type { MistakeId } from './mistakes';
 import { markAlgebra } from './algebra';
 import { markQuantity, parseQuantity } from './numeric';
 import { detectType, isOpen, keyCore, marksFor, parseRubric, type QType } from './qtypes';
-import { markChoice, markWord } from './words';
+import { markChoice, markWord, optionByText } from './words';
 
 export interface QuestionKey {
   q: number;
@@ -177,6 +177,10 @@ export function markAnswer(kIn: QuestionKey, read: string, crossedOut = ''): Mar
   // Round 8 (R8-01): a right value in another form ("0.035 m" when the key is 35 mm, "35/100" for 0.35,
   // "3(2 + x)" when the key is expanded) may be exactly what the question told the pupil not to write. The teacher looks.
   if (exact && credited && otherForm(read, keyCore(kIn.answer), type)) return { ...m, flags: [...new Set([...m.flags, 'other_form' as const])] };
+  // a form the question names: "as a mixed number", "factorise", "expand", "simplify" (round 9, E9-02, E9-05)
+  const asks = /mixed number|factori[sz]e|expand|simplif/i.test(kIn.prompt ?? '');
+  const sameText = (a: string, b: string) => a.normalize('NFKC').toLowerCase().replace(/\s+/g, '') === b.normalize('NFKC').toLowerCase().replace(/\s+/g, '');
+  if (exact && credited && asks && !sameText(read, keyCore(kIn.answer))) return { ...m, flags: [...new Set([...m.flags, 'other_form' as const])] };
   // "Round to 2 decimal places" answered 3.140: the right value, not the precision asked for (round 9, R9-01)
   const dp = kIn.prompt?.match(/(\d+)\s*(?:decimal places?|d\.?\s*p\.?)/i);
   if (type === 'number' && credited && dp) {
@@ -208,12 +212,18 @@ function markAnswerByType(kIn: QuestionKey, read: string, crossedOut = ''): Mark
     return { ...base, status: v.status, misconception: v.mistake, note: v.note, flags };
   }
   if (type === 'algebra') {
+    // "x = 2 cm": the value with a unit the key doesn't have (round 9, E9-04)
+    const unitTail = read.match(/^(.*\d)\s*(mm|cm|km|m|kg|g|ml|l|s|°|degrees|cm²|m²|cm2|m2)\.?$/i);
+    if (unitTail && markAlgebra(keyCore(k.answer), read, k.prompt).status !== 'correct' && markAlgebra(keyCore(k.answer), unitTail[1], k.prompt).status === 'correct') {
+      return { ...base, status: 'correct', misconception: null, flags: [...base.flags, 'other_form' as const] };
+    }
     const v = markAlgebra(keyCore(k.answer), read, k.prompt);
     return { ...base, status: v.status, misconception: v.mistake, flags: [...base.flags, ...(v.status === 'unreadable' ? ['unreadable' as const] : v.working ? ['check_reading' as const] : [])] };
   }
   if (type === 'choice') {
     const v = markChoice(k.answer, read, k.prompt);
-    return { ...base, status: v.status, picked: v.picked ?? undefined, flags: [...base.flags, ...(v.two ? ['two_answers' as const] : v.status === 'unreadable' ? ['unreadable' as const] : [])] };
+    const byText = v.picked && optionByText(read, k.prompt ?? '') ? ['other_form' as const] : [];
+    return { ...base, status: v.status, picked: v.picked ?? undefined, flags: [...base.flags, ...(v.two ? ['two_answers' as const] : v.status === 'unreadable' ? ['unreadable' as const] : byText)] };
   }
   // word
   const v = markWord(keyCore(k.answer), read, !!k.spellingCounts);
@@ -222,8 +232,10 @@ function markAnswerByType(kIn: QuestionKey, read: string, crossedOut = ''): Mark
   // A near spelling may be a different term (reflection for refraction): right, but the teacher looks.
   const autocorrectRisk = (!!k.spellingCounts && v.status === 'correct' && !v.mistake) || (v.status === 'correct' && v.mistake === 'spelling');
   const stem = (w: string) => w.toLowerCase().normalize('NFKD').replace(/[^a-z]/g, '').slice(0, 5);
+  // capital letters asked for ("monday" on a capitals question): the teacher looks (round 9, E9-09)
+  const capitals = v.status === 'correct' && /capital/i.test(k.prompt ?? '') && read.trim() !== keyCore(k.answer).trim() && /[A-Z]/.test(keyCore(k.answer));
   const related = v.status === 'wrong' && v.mistake === 'wrong_term' && k.answer.split(/\s*(?:\/|\||\bor\b)\s*/i).some((alt) => alt.trim().length >= 5 && read.split(/\s+/).some((w) => w.length >= 5 && stem(w) === stem(alt)));
-  return { ...base, status: v.status, misconception: v.mistake, note: v.mistake === 'spelling' && v.status === 'correct' ? `Spelling: ${v.closest}` : undefined, flags: [...base.flags, ...(v.extraWords ? ['extra_words' as const] : []), ...(autocorrectRisk ? ['check_spelling' as const] : []), ...(related ? ['unusual' as const] : []), ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
+  return { ...base, status: v.status, misconception: v.mistake, note: v.mistake === 'spelling' && v.status === 'correct' ? `Spelling: ${v.closest}` : undefined, flags: [...base.flags, ...(v.extraWords ? ['extra_words' as const] : []), ...(autocorrectRisk ? ['check_spelling' as const] : []), ...(related ? ['unusual' as const] : []), ...(v.sameAs ? ['other_form' as const] : []), ...(capitals ? ['check_spelling' as const] : []), ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
 }
 
 function markFraction(k: QuestionKey, read: string, crossedOut = ''): Marked {

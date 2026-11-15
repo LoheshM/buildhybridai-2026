@@ -1,14 +1,16 @@
 {
  "cls": "maths",
- "errors": [],
- "sheets": 28,
+ "errors": [
+  "m22: No answer from the on-device model after 30 s. Try this sheet again."
+ ],
+ "sheets": 27,
  "onDevice": 27,
  "exact": {
-  "answers": 280,
-  "exact": 240,
-  "misread": 40,
-  "unflagged": 2,
-  "flagged": 72
+  "answers": 270,
+  "exact": 226,
+  "misread": 44,
+  "unflagged": 3,
+  "flagged": 82
  },
  "open": {
   "answers": 0,
@@ -19,66 +21,3292 @@
   "within1": 0,
   "ms": 0
  },
- "readMs": 310570,
+ "readMs": 305631,
  "suggestMs": 0,
- "names": 28,
+ "names": 27,
  "misses": [
   "m06 q7: \"12.00\" (truth \"1200\") correct",
+  "m13 q7: \"12.00\" (truth \"1200\") correct",
   "m26 q10: \"2x=8 4\" (truth \"4\") wrong"
  ],
  "openMisses": [],
  "allMisses": [
-  "q10 \"x = 4\" -> \"2x=-8 x = 4\" [flagged]",
-  "q6 \"0.85\" -> \"\" [flagged]",
+  "q2 \"5/12\" -> \"9/12\" [flagged]",
   "q4 \"1 1/2\" -> \"1/2\" [flagged]",
   "q7 \"1200\" -> \"12.00\"",
+  "q1 \"3/6\" -> \"1/2\" [flagged]",
+  "q2 \"7/12\" -> \"-5/42 7/12\" [flagged]",
   "q10 \"x = 4\" -> \"4\" [flagged]",
-  "q1 \"3/6\" -> \"5/12\" [flagged]",
-  "q2 \"5/12\" -> \"1 1/2\" [flagged]",
-  "q8 \".35\" -> \"12\" [flagged]",
-  "q2 \"5/12\" -> \"incorrect\" [flagged]",
-  "q4 \"1 1/2\" -> \"incorrect\" [flagged]",
-  "q5 \"1 1/4\" -> \"incorrect\" [flagged]",
-  "q6 \"0.85\" -> \"incorrect\" [flagged]",
-  "q7 \"12\" -> \"incorrect\" [flagged]",
-  "q8 \"0.35\" -> \"incorrect\" [flagged]",
+  "q5 \"2 2/8\" -> \"4/4 2 2/8\" [flagged]",
+  "q1 \"3/9\" -> \"1/3\" [flagged]",
+  "q2 \"5/12\" -> \"not written\" [flagged]",
+  "q4 \"1 1/2\" -> \"not written\" [flagged]",
+  "q5 \"1 1/4\" -> \"not written\" [flagged]",
+  "q7 \"12\" -> \"not written\" [flagged]",
+  "q8 \"0.35\" -> \"not written\" [flagged]",
+  "q9 \"35 mm\" -> \"not written\" [flagged]",
+  "q10 \"x = 7\" -> \"not written\" [flagged]",
   "q6 \"0.31\" -> \"0.85 0.31\" [flagged]",
-  "q7 \"1200\" -> \"12:00\" [flagged]",
+  "q7 \"1200\" -> \"12.00\"",
+  "q10 \"x = 4\" -> \"4\" [flagged]",
   "q4 \"1 1/2\" -> \"6/4 1 1/2\" [flagged]",
-  "q2 \"5/12\" -> \"1/12\" [flagged]",
-  "q1 \"10/12\" -> \"\" [flagged]",
-  "q2 \"2/4\" -> \"\" [flagged]",
-  "q4 \"3/2\" -> \"\" [flagged]",
-  "q5 \"2 1/4\" -> \"\" [flagged]",
-  "q6 \"0.31\" -> \"\" [flagged]",
-  "q7 \"1200\" -> \"\" [flagged]",
-  "q8 \"0.35\" -> \"\" [flagged]",
-  "q9 \"350 mm\" -> \"\" [flagged]",
-  "q10 \"4\" -> \"\" [flagged]",
-  "q9 \"3.5 mm\" -> \"350 mm 3.5 mm\" [flagged]",
+  "q4 \"1 1/2\" -> \"1/2\" [flagged]",
   "q1 \"5/6\" -> \"\" [flagged]",
-  "q2 \"7/12\" -> \"\" [flagged]",
+  "q3 \"3/12\" -> \"\" [flagged]",
   "q4 \"1 1/2\" -> \"\" [flagged]",
   "q5 \"2 1/4\" -> \"\" [flagged]",
   "q6 \"0.85\" -> \"\" [flagged]",
   "q7 \"12\" -> \"\" [flagged]",
-  "q8 \".35\" -> \"\" [flagged]",
+  "q8 \"0.35\" -> \"\" [flagged]",
   "q9 \"35 mm\" -> \"\" [flagged]",
-  "q10 \"4\" -> \"\" [flagged]",
+  "q10 \"x = 4\" -> \"\" [flagged]",
+  "q9 \"3.5 mm\" -> \"350 mm 3.5 mm\" [flagged]",
   "q9 \"35 mm\" -> \"35 35 mm\" [flagged]",
   "q10 \"4\" -> \"2x=8 4\"",
-  "q1 \"5/6\" -> \"\" [flagged]"
+  "q4 \"1 1/2\" -> \"1/2\" [flagged]",
+  "q5 \"1 1/4\" -> \"1/4\" [flagged]",
+  "q1 \"5/6\" -> \"\" [flagged]",
+  "q2 \"5/12\" -> \"\" [flagged]",
+  "q3 \"1/4\" -> \"\" [flagged]",
+  "q4 \"1 1/2\" -> \"\" [flagged]",
+  "q5 \"2 1/4\" -> \"\" [flagged]",
+  "q6 \"0.85\" -> \"\" [flagged]",
+  "q7 \"1200\" -> \"\" [flagged]",
+  "q8 \"0.35\" -> \"\" [flagged]",
+  "q9 \"35 mm\" -> \"\" [flagged]",
+  "q10 \"x = 4\" -> \"\" [flagged]"
  ],
  "summary": {
-  "exactPct": 85.7,
-  "unflagged": "2/280",
-  "flagRatePct": 25.7,
+  "exactPct": 83.7,
+  "unflagged": "3/270",
+  "flagRatePct": 30.4,
   "openCharsRightPct": null,
   "suggestAgree": null,
   "suggestWithin1": null,
-  "secsPerSheet": 11.1,
-  "readSecsPerSheet": 11.1,
+  "secsPerSheet": 11.3,
+  "readSecsPerSheet": 11.3,
   "suggestSecs": null,
-  "names": "28/28"
- }
+  "names": "27/27"
+ },
+ "raw": [
+  {
+   "sampleId": "m01",
+   "where": "on_device",
+   "ms": 6933,
+   "rereadMs": 2424,
+   "rereadQs": [
+    4,
+    5
+   ],
+   "read": {
+    "studentName": "Aarav S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "10/12",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "3/8"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "1200"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "3.5"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "350 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "10/12",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "3/8",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "1200",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "3.5",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "350 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m02",
+   "where": "on_device",
+   "ms": 7242,
+   "rereadMs": 4503,
+   "rereadQs": [
+    1,
+    4,
+    5,
+    7
+   ],
+   "read": {
+    "studentName": "Meera K.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "4/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "5.33"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": ".35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "2x = 8"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "5.33",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": ".35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "2x = 8",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m03",
+   "where": "on_device",
+   "ms": 6655,
+   "rereadMs": 5453,
+   "rereadQs": [
+    1,
+    2,
+    4,
+    5,
+    6,
+    10
+   ],
+   "read": {
+    "studentName": "Rohan D.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "9/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "4/9",
+      "finalAnswer": "4/9"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "3/2",
+      "finalAnswer": "3/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "9/4",
+      "finalAnswer": "9/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "2x=8 x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "9/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "4/9",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "3/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "9/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m04",
+   "where": "on_device",
+   "ms": 8115,
+   "rereadMs": 2318,
+   "rereadQs": [
+    4,
+    5
+   ],
+   "read": {
+    "studentName": "Ananya I.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "8.5",
+      "finalAnswer": "8.5"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "3.5",
+      "finalAnswer": "3.5"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "8.5",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "3.5",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m05",
+   "where": "on_device",
+   "ms": 7734,
+   "rereadMs": 4919,
+   "rereadQs": [
+    2,
+    4,
+    5,
+    7,
+    9
+   ],
+   "read": {
+    "studentName": "Kabir S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "7/12",
+      "finalAnswer": "7/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "3/12",
+      "finalAnswer": "3/12"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "3/8",
+      "finalAnswer": "3/8"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35",
+      "finalAnswer": "35"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "7/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "3/12",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "3/8",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m06",
+   "where": "on_device",
+   "ms": 8421,
+   "rereadMs": 3043,
+   "rereadQs": [
+    3,
+    4,
+    5
+   ],
+   "read": {
+    "studentName": "Diya M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "10/12",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "-5/12",
+      "finalAnswer": "-5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "13/12",
+      "finalAnswer": "13/12"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1/2",
+      "finalAnswer": "1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "9/4",
+      "finalAnswer": "9/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.31",
+      "finalAnswer": "0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12.00",
+      "finalAnswer": "12.00"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "3.5",
+      "finalAnswer": "3.5"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "10/12",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "-5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "13/12",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "9/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.31",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12.00",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "3.5",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m07",
+   "where": "on_device",
+   "ms": 5940,
+   "rereadMs": 3072,
+   "rereadQs": [
+    1,
+    4,
+    5
+   ],
+   "read": {
+    "studentName": "Arjun R",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "3/6",
+      "finalAnswer": "1/2"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "3.5"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "1/2",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "3.5",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m08",
+   "where": "on_device",
+   "ms": 7191,
+   "rereadMs": 3099,
+   "rereadQs": [
+    4,
+    5,
+    7
+   ],
+   "read": {
+    "studentName": "Ishita R.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "5.33"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 7"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "10/12",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "1 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "5.33",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 7",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m09",
+   "where": "on_device",
+   "ms": 8462,
+   "rereadMs": 4346,
+   "rereadQs": [
+    2,
+    4,
+    5,
+    10
+   ],
+   "read": {
+    "studentName": "Vihaan J.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "-5/42 7/12",
+      "finalAnswer": "-5/42 7/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "1 1/4",
+      "finalAnswer": "1 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.31",
+      "finalAnswer": "0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "3.5",
+      "finalAnswer": "3.5"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x =",
+      "finalAnswer": "4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "-5/42 7/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "1 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.31",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "3.5",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m10",
+   "where": "on_device",
+   "ms": 8199,
+   "rereadMs": 3188,
+   "rereadQs": [
+    4,
+    5,
+    9
+   ],
+   "read": {
+    "studentName": "Saanvi N.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "10/12",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "6/4",
+      "finalAnswer": "6/4"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "4/4 2 2/8",
+      "finalAnswer": "4/4 2 2/8"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "8.5",
+      "finalAnswer": "8.5"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": ".35",
+      "finalAnswer": ".35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 7",
+      "finalAnswer": "x = 7"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "10/12",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "6/4",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "4/4 2 2/8",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "8.5",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": ".35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 7",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m11",
+   "where": "on_device",
+   "ms": 7977,
+   "rereadMs": 7765,
+   "rereadQs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "read": {
+    "studentName": "Aditya K",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "3/9",
+      "finalAnswer": "1/3"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "4/9",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "1 1/4",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.86",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 7",
+      "finalAnswer": "not written"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "1/3",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "not written",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "not written",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "not written",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "not written",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "not written",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "not written",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "not written",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m12",
+   "where": "on_device",
+   "ms": 6986,
+   "rereadMs": 2343,
+   "rereadQs": [
+    4,
+    5
+   ],
+   "read": {
+    "studentName": "Myra F.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "2/1"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "4/9"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "3/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "9/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "2/1",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "4/9",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "3/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "9/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.31",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m13",
+   "where": "on_device",
+   "ms": 11576,
+   "rereadMs": 3009,
+   "rereadQs": [
+    4,
+    5,
+    6
+   ],
+   "read": {
+    "studentName": "Reyansh G.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "10/12",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "2/3",
+      "finalAnswer": "2/3"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "9/4",
+      "finalAnswer": "9/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85 0.31",
+      "finalAnswer": "0.85 0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12.00",
+      "finalAnswer": "12.00"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "4",
+      "finalAnswer": "4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "10/12",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "2/3",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "9/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85 0.31",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12.00",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m14",
+   "where": "on_device",
+   "ms": 7546,
+   "rereadMs": 2866,
+   "rereadQs": [
+    1,
+    4,
+    5
+   ],
+   "read": {
+    "studentName": "Kiara T.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "4/6",
+      "finalAnswer": "4/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.31",
+      "finalAnswer": "0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "X = 7",
+      "finalAnswer": "X = 7"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "4/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.31",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "X = 7",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m15",
+   "where": "on_device",
+   "ms": 5817,
+   "rereadMs": 3422,
+   "rereadQs": [
+    2,
+    4,
+    5,
+    7
+   ],
+   "read": {
+    "studentName": "Dhruv P.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "3/8",
+      "finalAnswer": "3/8"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": ".35",
+      "finalAnswer": ".35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "3/8",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": ".35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m16",
+   "where": "on_device",
+   "ms": 7928,
+   "rereadMs": 5174,
+   "rereadQs": [
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "read": {
+    "studentName": "Anika B.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "2/4",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "-43/42",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": ".",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "1200",
+      "finalAnswer": "1200"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "35",
+      "finalAnswer": "35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "350 mm",
+      "finalAnswer": "350 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "1200",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "350 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m17",
+   "where": "on_device",
+   "ms": 7895,
+   "rereadMs": 3330,
+   "rereadQs": [
+    4,
+    5,
+    10
+   ],
+   "read": {
+    "studentName": "Kavin R.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 2/8",
+      "finalAnswer": "2 2/8"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x =",
+      "finalAnswer": "4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 2/8",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m18",
+   "where": "on_device",
+   "ms": 7130,
+   "rereadMs": 2466,
+   "rereadQs": [
+    4,
+    5
+   ],
+   "read": {
+    "studentName": "Tara M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "6/4 1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "6/4 1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.31",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m19",
+   "where": "on_device",
+   "ms": 7585,
+   "rereadMs": 3768,
+   "rereadQs": [
+    1,
+    4,
+    5
+   ],
+   "read": {
+    "studentName": "Neil D.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "1 1/4",
+      "finalAnswer": "1 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "120",
+      "finalAnswer": "120"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "1 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "120",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m20",
+   "where": "on_device",
+   "ms": 6194,
+   "rereadMs": 4210,
+   "rereadQs": [
+    4,
+    5,
+    6,
+    7,
+    9
+   ],
+   "read": {
+    "studentName": "Zoya K.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "*",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": ".35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "2x = 8"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": ".35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "2x = 8",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m21",
+   "where": "on_device",
+   "ms": 7157,
+   "rereadMs": 7490,
+   "rereadQs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "read": {
+    "studentName": "Yash V.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "2/4",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "3/12",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": ""
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": ""
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m23",
+   "where": "on_device",
+   "ms": 6389,
+   "rereadMs": 4329,
+   "rereadQs": [
+    2,
+    3,
+    4,
+    5,
+    9
+   ],
+   "read": {
+    "studentName": "Samar M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "7/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "350 mm 3.5 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "10/12",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "7/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "350 mm 3.5 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m24",
+   "where": "on_device",
+   "ms": 6714,
+   "rereadMs": 4266,
+   "rereadQs": [
+    2,
+    3,
+    4,
+    5,
+    7
+   ],
+   "read": {
+    "studentName": "Aisha S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "13/12"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "/",
+      "finalAnswer": "6/4"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "8.5"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "350 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "13/12",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "6/4",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "8.5",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "350 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m25",
+   "where": "on_device",
+   "ms": 7740,
+   "rereadMs": 4402,
+   "rereadQs": [
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "read": {
+    "studentName": "Ved C.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "3/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "7/12",
+      "finalAnswer": "7/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "13/12",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": ".35",
+      "finalAnswer": ".35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "4",
+      "finalAnswer": "4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "5/6",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "7/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1 1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "2 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.85",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": ".35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m26",
+   "where": "on_device",
+   "ms": 6205,
+   "rereadMs": 3696,
+   "rereadQs": [
+    4,
+    5,
+    6,
+    9
+   ],
+   "read": {
+    "studentName": "Nila S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "4/9"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "3/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "2x=8 4"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "10/12",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "4/9",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "3/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "1 1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "35 35 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "2x=8 4",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m27",
+   "where": "on_device",
+   "ms": 6904,
+   "rereadMs": 7130,
+   "rereadQs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+   ],
+   "read": {
+    "studentName": "Leo M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "***",
+      "finalAnswer": "3/9"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "***",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "***",
+      "finalAnswer": "13/12"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "***",
+      "finalAnswer": "1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "***",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "***",
+      "finalAnswer": "0.86"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "***",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "***",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "***",
+      "finalAnswer": "3.5 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "***",
+      "finalAnswer": "x = 7"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "3/9",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "5/12",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "13/12",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "1/2",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "1/4",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "0.86",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "12",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "0.35",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "3.5 mm",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "x = 7",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "m28",
+   "where": "on_device",
+   "ms": 6965,
+   "rereadMs": null,
+   "rereadQs": null,
+   "read": {
+    "studentName": "Pari A.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "1200",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": ""
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": ""
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 9,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 10,
+     "modelRead": "",
+     "suggestion": null
+    }
+   ]
+  }
+ ],
+ "benchAt": "2026-11-15T12:55:38.264Z"
 }

@@ -19,6 +19,16 @@ with sync_playwright() as p:
         pg.goto('about:blank'); pg.goto(f'{URL}/#/quiz/sample-quiz-{cls}')
         pg.get_by_role('button', name=re.compile('^Read all')).click()
         pg.get_by_text(re.compile(f'All {n} sheets read')).wait_for(timeout=300000)
+    # WP2: without Nano, made-up sheets replay Gemini Nano's own recorded readings, labelled
+    pg.goto('about:blank'); pg.goto(f'{URL}/#/quiz/sample-quiz-science')
+    pg.locator('.tile .pill').first.wait_for(timeout=30000); pg.wait_for_timeout(1000)
+    chips = pg.locator('.tile .pill').all_text_contents()
+    nano = sum(1 for c in chips if 'Nano' in c)
+    check('science sheets replay Gemini Nano recordings, labelled', nano >= 23, f'{nano} of {len(chips)} chips')
+    pg.goto('about:blank'); pg.goto(f'{URL}/#/quiz/sample-quiz-science/results')
+    pg.get_by_text('needed you').first.wait_for(timeout=30000)
+    txt = pg.locator('main').inner_text()
+    check('Results separates wrong marks with no flag from same-mark misreadings, and says how many needed you', 'changed the mark with no flag' in txt and 'needed you' in txt)
     # F4-03
     pg.goto('about:blank'); pg.goto(f'{URL}/#/quiz/sample-quiz-science/check')
     pg.wait_for_url(re.compile(r'/check/q/\d+$'), timeout=20000)
@@ -30,6 +40,14 @@ with sync_playwright() as p:
         pg.keyboard.press('Enter'); pg.wait_for_timeout(250)
     head2 = pg.locator('#q-h').inner_text()
     check('deciding every row of that question stays on it', head2.startswith(f'{qn}.') and pg.url.endswith(f'/q/{qn}'), head2[:40])
+    # J5: a made-up class can be decided from its answer key, and undone
+    pg.goto('about:blank'); pg.goto(f'{URL}/#/quiz/sample-quiz-english/check')
+    pg.get_by_role('button', name='Decide the rest from the answer key').click()
+    pg.get_by_text("Decided from the made-up class's answer key").wait_for(timeout=20000)
+    done = pg.get_by_text('Everything is decided.').count()
+    check('J5: deciding from the answer key leaves nothing waiting', done == 1)
+    pg.get_by_role('button', name='Undo').click(); pg.wait_for_timeout(1500)
+    check('J5: Undo puts the waiting marks back', pg.get_by_text('Everything is decided.').count() == 0)
     # F4-04
     pg.goto('about:blank'); pg.goto(f'{URL}/#/quiz/sample-quiz-english/reteach')
     pg.get_by_role('button', name=re.compile('Send the class totals')).click()

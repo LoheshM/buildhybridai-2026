@@ -1,0 +1,2156 @@
+{
+ "recordedAt": "2026-11-15T18:25:38+0530",
+ "model": "Gemini Nano (Chrome Prompt API, through Firebase AI Logic)",
+ "chrome": "Chrome 157",
+ "promptsVersion": "v2-2026-11-15-fenced",
+ "reads": {
+  "m01": {
+   "first": {
+    "studentName": "Aarav S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "10/12",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "3/8"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "1200"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "3.5"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "350 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 6761,
+   "second": {
+    "4": {
+     "final": "3/8",
+     "crossed": "3/8"
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": "2 1/4"
+    }
+   },
+   "secondMs": 2424
+  },
+  "m02": {
+   "first": {
+    "studentName": "Meera K.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "4/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "5.33"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": ".35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "2x = 8"
+     }
+    ]
+   },
+   "firstMs": 7039,
+   "second": {
+    "1": {
+     "final": "4/6 5/6",
+     "crossed": "4/6 5/6"
+    },
+    "4": {
+     "final": "1 1/2",
+     "crossed": "1 1/2"
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": "2 1/4"
+    },
+    "7": {
+     "final": "5.33",
+     "crossed": "5.33"
+    }
+   },
+   "secondMs": 4503
+  },
+  "m03": {
+   "first": {
+    "studentName": "Rohan D.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "9/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "4/9",
+      "finalAnswer": "4/9"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "3/2",
+      "finalAnswer": "3/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "9/4",
+      "finalAnswer": "9/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "2x=8 x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 6441,
+   "second": {
+    "1": {
+     "final": "5/12",
+     "crossed": ""
+    },
+    "2": {
+     "final": "4/9",
+     "crossed": ""
+    },
+    "4": {
+     "final": "9/4",
+     "crossed": ""
+    },
+    "5": {
+     "final": "12",
+     "crossed": ""
+    },
+    "6": {
+     "final": "35 mm",
+     "crossed": ""
+    },
+    "10": {
+     "final": "2x=8 x = 4",
+     "crossed": ""
+    }
+   },
+   "secondMs": 5453
+  },
+  "m04": {
+   "first": {
+    "studentName": "Ananya I.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "8.5",
+      "finalAnswer": "8.5"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "3.5",
+      "finalAnswer": "3.5"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 7894,
+   "second": {
+    "4": {
+     "final": "1 1/2",
+     "crossed": ""
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": ""
+    }
+   },
+   "secondMs": 2318
+  },
+  "m05": {
+   "first": {
+    "studentName": "Kabir S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "7/12",
+      "finalAnswer": "7/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "3/12",
+      "finalAnswer": "3/12"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "3/8",
+      "finalAnswer": "3/8"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35",
+      "finalAnswer": "35"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 7548,
+   "second": {
+    "2": {
+     "final": "7/12",
+     "crossed": "7/12"
+    },
+    "4": {
+     "final": "3/8",
+     "crossed": "3/8"
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": "2 1/4"
+    },
+    "7": {
+     "final": "35",
+     "crossed": "35"
+    },
+    "9": {
+     "final": "x = 4",
+     "crossed": "x = 4"
+    }
+   },
+   "secondMs": 4919
+  },
+  "m06": {
+   "first": {
+    "studentName": "Diya M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "10/12",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "-5/12",
+      "finalAnswer": "-5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "13/12",
+      "finalAnswer": "13/12"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1/2",
+      "finalAnswer": "1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "9/4",
+      "finalAnswer": "9/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.31",
+      "finalAnswer": "0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12.00",
+      "finalAnswer": "12.00"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "3.5",
+      "finalAnswer": "3.5"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 8262,
+   "second": {
+    "3": {
+     "final": "13/12",
+     "crossed": ""
+    },
+    "4": {
+     "final": "1 1/2",
+     "crossed": ""
+    },
+    "5": {
+     "final": "9/4",
+     "crossed": ""
+    }
+   },
+   "secondMs": 3043
+  },
+  "m07": {
+   "first": {
+    "studentName": "Arjun R",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "3/6",
+      "finalAnswer": "1/2"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "3.5"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 5726,
+   "second": {
+    "1": {
+     "final": "3/6",
+     "crossed": ""
+    },
+    "4": {
+     "final": "1 1/2",
+     "crossed": "1 1/2"
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": ""
+    }
+   },
+   "secondMs": 3072
+  },
+  "m08": {
+   "first": {
+    "studentName": "Ishita R.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "5.33"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 7"
+     }
+    ]
+   },
+   "firstMs": 6996,
+   "second": {
+    "4": {
+     "final": "1 1/2",
+     "crossed": ""
+    },
+    "5": {
+     "final": "1 1/4",
+     "crossed": ""
+    },
+    "7": {
+     "final": "5.33",
+     "crossed": "5.33"
+    }
+   },
+   "secondMs": 3099
+  },
+  "m09": {
+   "first": {
+    "studentName": "Vihaan J.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "-5/42 7/12",
+      "finalAnswer": "-5/42 7/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "1 1/4",
+      "finalAnswer": "1 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.31",
+      "finalAnswer": "0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "3.5",
+      "finalAnswer": "3.5"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x =",
+      "finalAnswer": "4"
+     }
+    ]
+   },
+   "firstMs": 8239,
+   "second": {
+    "2": {
+     "final": "7/12",
+     "crossed": "-5/42"
+    },
+    "4": {
+     "final": "1 1/2",
+     "crossed": "1 1/2"
+    },
+    "5": {
+     "final": "1 1/4",
+     "crossed": "1 1/4"
+    },
+    "10": {
+     "final": "x = 4",
+     "crossed": "x = 4"
+    }
+   },
+   "secondMs": 4346
+  },
+  "m10": {
+   "first": {
+    "studentName": "Saanvi N.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "10/12",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "6/4",
+      "finalAnswer": "6/4"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "4/4 2 2/8",
+      "finalAnswer": "4/4 2 2/8"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "8.5",
+      "finalAnswer": "8.5"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": ".35",
+      "finalAnswer": ".35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 7",
+      "finalAnswer": "x = 7"
+     }
+    ]
+   },
+   "firstMs": 8034,
+   "second": {
+    "4": {
+     "final": "",
+     "crossed": "6/4"
+    },
+    "5": {
+     "final": "",
+     "crossed": "4/4 2 2/8"
+    },
+    "9": {
+     "final": "",
+     "crossed": "35 mm 35"
+    }
+   },
+   "secondMs": 3188
+  },
+  "m11": {
+   "first": {
+    "studentName": "Aditya K",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "3/9",
+      "finalAnswer": "1/3"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "4/9",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "1 1/4",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.86",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "not written"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 7",
+      "finalAnswer": "not written"
+     }
+    ]
+   },
+   "firstMs": 7782,
+   "second": {
+    "1": {
+     "final": "3/9",
+     "crossed": ""
+    },
+    "2": {
+     "final": "5/12",
+     "crossed": ""
+    },
+    "3": {
+     "final": "4/9 1/4",
+     "crossed": ""
+    },
+    "4": {
+     "final": "1 1/2",
+     "crossed": ""
+    },
+    "5": {
+     "final": "1 1/4",
+     "crossed": ""
+    },
+    "6": {
+     "final": "0.86 0.85",
+     "crossed": ""
+    },
+    "7": {
+     "final": "12",
+     "crossed": ""
+    },
+    "8": {
+     "final": "0.35",
+     "crossed": ""
+    },
+    "9": {
+     "final": "35 mm",
+     "crossed": ""
+    },
+    "10": {
+     "final": "x = 7",
+     "crossed": ""
+    }
+   },
+   "secondMs": 7765
+  },
+  "m12": {
+   "first": {
+    "studentName": "Myra F.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "2/1"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "4/9"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "3/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "9/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 6770,
+   "second": {
+    "4": {
+     "final": "",
+     "crossed": "3/2"
+    }
+   },
+   "secondMs": 2343
+  },
+  "m13": {
+   "first": {
+    "studentName": "Reyansh G.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "10/12",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "2/3",
+      "finalAnswer": "2/3"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "9/4",
+      "finalAnswer": "9/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85 0.31",
+      "finalAnswer": "0.85 0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12.00",
+      "finalAnswer": "12.00"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "4",
+      "finalAnswer": "4"
+     }
+    ]
+   },
+   "firstMs": 11366,
+   "second": {
+    "4": {
+     "final": "2/3",
+     "crossed": ""
+    },
+    "5": {
+     "final": "9/4",
+     "crossed": ""
+    },
+    "6": {
+     "final": "0.85 0.31",
+     "crossed": ""
+    }
+   },
+   "secondMs": 3009
+  },
+  "m14": {
+   "first": {
+    "studentName": "Kiara T.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "4/6",
+      "finalAnswer": "4/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.31",
+      "finalAnswer": "0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "X = 7",
+      "finalAnswer": "X = 7"
+     }
+    ]
+   },
+   "firstMs": 7335,
+   "second": {
+    "1": {
+     "final": "4/6",
+     "crossed": ""
+    },
+    "4": {
+     "final": "1/2",
+     "crossed": ""
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": ""
+    }
+   },
+   "secondMs": 2866
+  },
+  "m15": {
+   "first": {
+    "studentName": "Dhruv P.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "3/8",
+      "finalAnswer": "3/8"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": ".35",
+      "finalAnswer": ".35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 5625,
+   "second": {
+    "2": {
+     "final": "5/6",
+     "crossed": ""
+    },
+    "4": {
+     "final": "3/8",
+     "crossed": ""
+    },
+    "5": {
+     "final": "1 1/2",
+     "crossed": ""
+    },
+    "7": {
+     "final": "35 mm",
+     "crossed": ""
+    }
+   },
+   "secondMs": 3422
+  },
+  "m16": {
+   "first": {
+    "studentName": "Anika B.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "2/4",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "-43/42",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": ".",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "1200",
+      "finalAnswer": "1200"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "35",
+      "finalAnswer": "35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "350 mm",
+      "finalAnswer": "350 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 7743,
+   "second": {
+    "2": {
+     "final": "2/4 5/12",
+     "crossed": "2/4 5/12"
+    },
+    "3": {
+     "final": "-43/42 1/4",
+     "crossed": "-43/42 1/4"
+    },
+    "4": {
+     "final": "1 1/2",
+     "crossed": ""
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": "2 1/4"
+    },
+    "6": {
+     "final": "0.85",
+     "crossed": ""
+    }
+   },
+   "secondMs": 5174
+  },
+  "m17": {
+   "first": {
+    "studentName": "Kavin R.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 2/8",
+      "finalAnswer": "2 2/8"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x =",
+      "finalAnswer": "4"
+     }
+    ]
+   },
+   "firstMs": 7712,
+   "second": {
+    "4": {
+     "final": "1 1/2",
+     "crossed": ""
+    }
+   },
+   "secondMs": 3330
+  },
+  "m18": {
+   "first": {
+    "studentName": "Tara M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "6/4 1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 6929,
+   "second": {
+    "4": {
+     "final": "6/4 1 1/2",
+     "crossed": ""
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": ""
+    }
+   },
+   "secondMs": 2466
+  },
+  "m19": {
+   "first": {
+    "studentName": "Neil D.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "1 1/4",
+      "finalAnswer": "1 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "120",
+      "finalAnswer": "120"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 7376,
+   "second": {
+    "1": {
+     "final": "undefined",
+     "crossed": "a fraction such as 3/4, or a mixed number such as 1 1/2."
+    },
+    "4": {
+     "final": "undefined",
+     "crossed": "1 1/2"
+    },
+    "5": {
+     "final": "undefined",
+     "crossed": "1 1/4"
+    }
+   },
+   "secondMs": 3768
+  },
+  "m20": {
+   "first": {
+    "studentName": "Zoya K.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "*",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": ".35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "2x = 8"
+     }
+    ]
+   },
+   "firstMs": 5983,
+   "second": {
+    "4": {
+     "final": "",
+     "crossed": "1 1/2"
+    },
+    "5": {
+     "final": "",
+     "crossed": "2 1/4"
+    },
+    "6": {
+     "final": "0.85",
+     "crossed": ""
+    },
+    "7": {
+     "final": "0.35",
+     "crossed": ""
+    },
+    "9": {
+     "final": "35",
+     "crossed": ""
+    }
+   },
+   "secondMs": 4210
+  },
+  "m21": {
+   "first": {
+    "studentName": "Yash V.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "2/4",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "3/12",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": ""
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": ""
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "firstMs": 6959,
+   "second": {
+    "1": {
+     "final": "5/6",
+     "crossed": ""
+    },
+    "2": {
+     "final": "",
+     "crossed": "2/4 5/12"
+    },
+    "3": {
+     "final": "",
+     "crossed": "3/12"
+    },
+    "4": {
+     "final": "",
+     "crossed": "1 1/2"
+    },
+    "5": {
+     "final": "",
+     "crossed": "2 1/4"
+    },
+    "6": {
+     "final": "",
+     "crossed": "0.85"
+    },
+    "7": {
+     "final": "12",
+     "crossed": ""
+    },
+    "8": {
+     "final": "",
+     "crossed": "0.35"
+    },
+    "9": {
+     "final": "35 mm",
+     "crossed": ""
+    },
+    "10": {
+     "final": "x = 4",
+     "crossed": ""
+    }
+   },
+   "secondMs": 7490
+  },
+  "m22": {
+   "first": {
+    "studentName": "Riya P.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "2/4"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "3/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.25 0.31"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "1200"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "350 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x=4 4",
+      "finalAnswer": "x=4"
+     }
+    ]
+   },
+   "firstMs": 6317
+  },
+  "m23": {
+   "first": {
+    "studentName": "Samar M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "7/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "350 mm 3.5 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 6193,
+   "second": {
+    "2": {
+     "final": "7/12",
+     "crossed": ""
+    },
+    "3": {
+     "final": "1 1/2",
+     "crossed": ""
+    },
+    "4": {
+     "final": "1 1/2",
+     "crossed": ""
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": ""
+    },
+    "9": {
+     "final": "3.5 mm",
+     "crossed": "350 mm"
+    }
+   },
+   "secondMs": 4329
+  },
+  "m24": {
+   "first": {
+    "studentName": "Aisha S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "13/12"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "/",
+      "finalAnswer": "6/4"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "8.5"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "350 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "x = 4"
+     }
+    ]
+   },
+   "firstMs": 6524,
+   "second": {
+    "2": {
+     "final": "13/12",
+     "crossed": ""
+    },
+    "3": {
+     "final": "13/12",
+     "crossed": ""
+    },
+    "4": {
+     "final": "6/4",
+     "crossed": "6/4"
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": ""
+    },
+    "7": {
+     "final": "x = 4",
+     "crossed": ""
+    }
+   },
+   "secondMs": 4266
+  },
+  "m25": {
+   "first": {
+    "studentName": "Ved C.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "3/6",
+      "finalAnswer": "5/6"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "7/12",
+      "finalAnswer": "7/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "13/12",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": "1 1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": "2 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": "0.85"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "12",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": ".35",
+      "finalAnswer": ".35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": "35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "4",
+      "finalAnswer": "4"
+     }
+    ]
+   },
+   "firstMs": 7544,
+   "second": {
+    "1": {
+     "final": "5/6",
+     "crossed": "3/6"
+    },
+    "2": {
+     "final": "",
+     "crossed": "7/12"
+    },
+    "3": {
+     "final": "1/4",
+     "crossed": "13/12"
+    },
+    "4": {
+     "final": "1 1/2",
+     "crossed": ""
+    },
+    "5": {
+     "final": "2 1/4",
+     "crossed": ""
+    }
+   },
+   "secondMs": 4402
+  },
+  "m26": {
+   "first": {
+    "studentName": "Nila S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "10/12"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "4/9"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "3/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "1 1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "",
+      "finalAnswer": "35 35 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "",
+      "finalAnswer": "2x=8 4"
+     }
+    ]
+   },
+   "firstMs": 6008,
+   "second": {
+    "4": {
+     "final": "3/2",
+     "crossed": "3/2"
+    },
+    "5": {
+     "final": "1 1/4",
+     "crossed": "1 1/4"
+    },
+    "6": {
+     "final": "6",
+     "crossed": ""
+    },
+    "9": {
+     "final": "35 35 mm",
+     "crossed": ""
+    }
+   },
+   "secondMs": 3696
+  },
+  "m27": {
+   "first": {
+    "studentName": "Leo M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "***",
+      "finalAnswer": "3/9"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "***",
+      "finalAnswer": "5/12"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "***",
+      "finalAnswer": "13/12"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "***",
+      "finalAnswer": "1/2"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "***",
+      "finalAnswer": "1/4"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "***",
+      "finalAnswer": "0.86"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "***",
+      "finalAnswer": "12"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "***",
+      "finalAnswer": "0.35"
+     },
+     {
+      "q": 9,
+      "crossedOutText": "***",
+      "finalAnswer": "3.5 mm"
+     },
+     {
+      "q": 10,
+      "crossedOutText": "***",
+      "finalAnswer": "x = 7"
+     }
+    ]
+   },
+   "firstMs": 6762,
+   "second": {
+    "1": {
+     "final": "3/9",
+     "crossed": ""
+    },
+    "2": {
+     "final": "5/12",
+     "crossed": ""
+    },
+    "3": {
+     "final": "13/12",
+     "crossed": ""
+    },
+    "4": {
+     "final": "1/2",
+     "crossed": ""
+    },
+    "5": {
+     "final": "1/4",
+     "crossed": ""
+    },
+    "6": {
+     "final": "0.86",
+     "crossed": ""
+    },
+    "7": {
+     "final": "12",
+     "crossed": ""
+    },
+    "8": {
+     "final": "0.35",
+     "crossed": ""
+    },
+    "9": {
+     "final": "3.5 mm",
+     "crossed": ""
+    },
+    "10": {
+     "final": "x = 7",
+     "crossed": ""
+    }
+   },
+   "secondMs": 7130
+  },
+  "m28": {
+   "first": {
+    "studentName": "Pari A.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "5/6",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "5/12",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "1/4",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "1 1/2",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "2 1/4",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "0.85",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "1200",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "0.35",
+      "finalAnswer": ""
+     },
+     {
+      "q": 9,
+      "crossedOutText": "35 mm",
+      "finalAnswer": ""
+     },
+     {
+      "q": 10,
+      "crossedOutText": "x = 4",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "firstMs": 6819
+  }
+ },
+ "suggestions": {},
+ "missing": []
+}

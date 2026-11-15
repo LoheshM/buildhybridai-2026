@@ -40,6 +40,8 @@ try {
     check(`${cls}: every sample photo matches its fingerprint`, hashes === n, `${hashes}/${n}`);
     const rec = await (await fetch(`${site}/samples/${cls}/recorded-cloud.json`, { cache: 'no-store' })).json();
     check(`${cls}: recorded cloud readings complete`, Object.keys(rec.reads).length === n && !!rec.totals);
+    const dev = await (await fetch(`${site}/samples/${cls}/recorded-device.json`, { cache: 'no-store' })).json();
+    check(`${cls}: recorded Gemini Nano run present (at most 1 sheet left out)`, Object.keys(dev.reads).length >= n - 1, `${Object.keys(dev.reads).length}/${n}`);
   }
   const missing = await fetch(site + '/no-such-file.js');
   check('missing files are 404, not the app', missing.status === 404);

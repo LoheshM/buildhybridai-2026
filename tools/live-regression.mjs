@@ -35,8 +35,8 @@ try {
     await page.getByRole('button', { name: /^Read all/ }).click();
     await page.getByText(new RegExp(`All ${n} sheets read`)).waitFor({ timeout: 300000 });
     const chips = await page.locator('.tile .pill').allTextContents();
-    const cloud = chips.filter((c) => /^Cloud/.test(c)).length, recorded = chips.filter((c) => /Recorded/.test(c)).length;
-    check(`${cls}: all ${n} sheets read without on-device AI; at most 3 live cloud reads`, cloud <= 3 && cloud + recorded === n, `${cloud} cloud, ${recorded} recorded`);
+    const cloud = chips.filter((c) => /^Cloud/.test(c)).length, nano = chips.filter((c) => /Nano/.test(c)).length, recorded = chips.filter((c) => /Recorded/.test(c)).length;
+    check(`${cls}: all ${n} sheets read without on-device AI, no live cloud reads; Gemini Nano's recorded readings replayed`, cloud === 0 && nano + recorded === n && nano >= n - 1, `${nano} Nano recorded, ${recorded} cloud recorded, ${cloud} live cloud`);
     const errors = await page.locator('.tile.error').count();
     check(`${cls}: no sheet failed (corner squares found on every photo)`, errors === 0, `${errors} errors`);
     await page.goto('about:blank');
@@ -61,7 +61,7 @@ try {
   const totalsBodies = aiBodies.filter((b) => !b.includes('inlineData'));
   const leaked = roster.filter((w) => totalsBodies.some((b) => new RegExp(`\\b${w}\\b`, 'i').test(b.replace(/\\n/g, ' '))));
   check('no class-list name in any non-image request', leaked.length === 0, leaked.join(','));
-  check('AI requests made, few of them', aiBodies.length >= 1 && aiBodies.length <= 12, `${aiBodies.length}`);
+  check('AI requests: only the lesson plans (no live reads of sample photos)', aiBodies.length >= 1 && aiBodies.length <= 6 && imgs.length === 0, `${aiBodies.length} requests, ${imgs.length} images`);
   check('no CSP violations', cspErrors.length === 0, cspErrors[0] ?? '');
   const photos = await page.locator('.facts li').filter({ hasText: 'pupil photos sent' }).locator('b').textContent();
   check('Privacy page: 0 pupil photos sent', photos?.trim() === '0');

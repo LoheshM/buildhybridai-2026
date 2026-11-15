@@ -45,6 +45,8 @@ export function AnswerMark({ m, draw = false }: { m: Marked; draw?: boolean }) {
     const st = s.points >= s.outOf ? 'suggest-full' : s.points <= 0 ? 'suggest-none' : 'suggest-part';
     return <Mk status={st} hand="pencil" needs />;
   }
+  // a flagged exact answer is code's guess until the teacher decides it: pencil, not ink (round 9, R9-04)
+  if (needsCheck(m) && m.status !== 'pending') return <Mk status={m.status} hand="pencil" needs />;
   return <Mk status={m.status} hand="ink" draw={draw} needs={needsCheck(m)} />;
 }
 

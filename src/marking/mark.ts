@@ -153,7 +153,12 @@ export function otherForm(read: string, key: string, type: QType): boolean {
   const n = (s: string) => (s ?? '').normalize('NFKC').replace(/\u2044/g, '/').toLowerCase().replace(/\s+/g, '');
   const r = n(read), k = n(key);
   if (!r || r === k) return false;
-  if (type === 'algebra') { const rhs = (s: string) => (s.includes('=') ? s.slice(s.lastIndexOf('=') + 1) : s); return rhs(r).includes('(') !== rhs(k).includes('('); }
+  if (type === 'algebra') {
+    const rhs = (s: string) => (s.includes('=') ? s.slice(s.lastIndexOf('=') + 1) : s);
+    const terms = (s: string) => s.replace(/^[-+]/, '').split(/[-+]/).filter(Boolean).length;
+    const shapeA = (s: string) => (/^-?\d+\/\d+$/.test(s) ? 'fraction' : /^-?\d*\.\d+$/.test(s) ? 'decimal' : 'other');
+    return rhs(r).includes('(') !== rhs(k).includes('(') || terms(rhs(r)) > terms(rhs(k)) || (shapeA(rhs(r)) !== shapeA(rhs(k)) && shapeA(rhs(r)) !== 'other');
+  }
   const rq = parseQuantity(read), kq = parseQuantity(key);
   if (rq && kq && (rq.unit || kq.unit) && rq.unit !== kq.unit) return true;
   if (r.includes('%') !== k.includes('%')) return true;
@@ -172,6 +177,12 @@ export function markAnswer(kIn: QuestionKey, read: string, crossedOut = ''): Mar
   // Round 8 (R8-01): a right value in another form ("0.035 m" when the key is 35 mm, "35/100" for 0.35,
   // "3(2 + x)" when the key is expanded) may be exactly what the question told the pupil not to write. The teacher looks.
   if (exact && credited && otherForm(read, keyCore(kIn.answer), type)) return { ...m, flags: [...new Set([...m.flags, 'other_form' as const])] };
+  // "Round to 2 decimal places" answered 3.140: the right value, not the precision asked for (round 9, R9-01)
+  const dp = kIn.prompt?.match(/(\d+)\s*(?:decimal places?|d\.?\s*p\.?)/i);
+  if (type === 'number' && credited && dp) {
+    const shown = (read.match(/\.(\d+)/)?.[1] ?? '').length;
+    if (shown !== Number(dp[1])) return { ...m, flags: [...new Set([...m.flags, 'other_form' as const])] };
+  }
   return m;
 }
 
@@ -210,7 +221,9 @@ function markAnswerByType(kIn: QuestionKey, read: string, crossedOut = ''): Mark
   // letter by letter. When spelling counts, a reading that equals the key is exactly that risk: ask.
   // A near spelling may be a different term (reflection for refraction): right, but the teacher looks.
   const autocorrectRisk = (!!k.spellingCounts && v.status === 'correct' && !v.mistake) || (v.status === 'correct' && v.mistake === 'spelling');
-  return { ...base, status: v.status, misconception: v.mistake, note: v.mistake === 'spelling' && v.status === 'correct' ? `Spelling: ${v.closest}` : undefined, flags: [...base.flags, ...(v.extraWords ? ['extra_words' as const] : []), ...(autocorrectRisk ? ['check_spelling' as const] : []), ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
+  const stem = (w: string) => w.toLowerCase().normalize('NFKD').replace(/[^a-z]/g, '').slice(0, 5);
+  const related = v.status === 'wrong' && v.mistake === 'wrong_term' && k.answer.split(/\s*(?:\/|\||\bor\b)\s*/i).some((alt) => alt.trim().length >= 5 && read.split(/\s+/).some((w) => w.length >= 5 && stem(w) === stem(alt)));
+  return { ...base, status: v.status, misconception: v.mistake, note: v.mistake === 'spelling' && v.status === 'correct' ? `Spelling: ${v.closest}` : undefined, flags: [...base.flags, ...(v.extraWords ? ['extra_words' as const] : []), ...(autocorrectRisk ? ['check_spelling' as const] : []), ...(related ? ['unusual' as const] : []), ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
 }
 
 function markFraction(k: QuestionKey, read: string, crossedOut = ''): Marked {

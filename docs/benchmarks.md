@@ -89,7 +89,7 @@ The IAM worksheets above had questions unrelated to their answers, which hid thi
 | Strip length (same 104 boxes) | 26-row strips 14.4% exact; 6–7-row strips 82.7% → sheets are read in strips of at most 10 answers | `tools/samples/out/strip-length.json` |
 | Sample classes, recorded run (replayed for browsers without Nano) | Maths 83.7% exact, 3/270 unflagged misreads; science 66.7%, 6/132 (spelling or form, same mark); English 57.8%, 3/90; suggestions equal to reference: science 30/38, English 16/30 | `tools/samples/out/bench-*.json`, `public/samples/*/recorded-device.json` |
 | Real human handwriting: MNIST digits written into the maths answer sheet, photo-processed | 81.3% exact (152/187), **0 wrong marks without a flag**, 4 misreads with the same mark, 25% flagged, 240/240 blank decisions | `tools/samples/out/mnist2/bench.json` |
-| Bad photos (code only): tilt ±10°, perspective, blur, low light, shadow, JPEG 50 | 84/84 sheets cut, 700/700 blank decisions right | `tools/distort-check.py` |
+| Bad photos (code only): tilt ±10°, perspective, 2 px blur, low light, soft and hard shadows, dim light with noise, JPEG 50 | 107/108 sheets cut (one refused for a retake), no written answer judged blank; photos blurred 2.5 px or more are refused with a retake message (round 8) | `tools/distort-check.py` |
 | Other quiz's answer sheet | refused 12/12 (frame check); an identical layout can't be told apart | `tools/cut-check.py` |
 
 Not measured: children's handwriting on real phone photos (no real pupils available).

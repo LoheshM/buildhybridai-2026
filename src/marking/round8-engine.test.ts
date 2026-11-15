@@ -64,3 +64,19 @@ describe('round 8', () => {
     expect(flagged / total).toBeLessThan(0.06);
   });
 });
+
+describe('round 9', () => {
+  it('R9-01 the precision a rounding question asks for', () => {
+    expect(markAnswer(k('3.14', 'Round 3.14159 to 2 decimal places'), '3.140').flags).toContain('other_form');
+    expect(markAnswer(k('3.14', 'Round 3.14159 to 2 decimal places'), '3.14').flags).toEqual([]);
+  });
+  it('R9-02 a related word is not a silent wrong', () => {
+    const m = markAnswer(k('gravity', 'What pulls objects towards the Earth?'), 'gravitational force');
+    expect(m.status === 'wrong' && m.flags.length === 0).toBe(false);
+  });
+  it('R9-03 R9-07 unsimplified algebra is flagged', () => {
+    expect(markAnswer(k('5x', 'Simplify 4x + 3x - 2x'), '7x - 2x').flags).toContain('other_form');
+    expect(markAnswer(k('x = 8', 'Solve 2x = 16'), 'x = 16/2').flags).toContain('other_form');
+    expect(markAnswer(k('x = 8', 'Solve 2x = 16'), 'x = 8').flags).toEqual([]);
+  });
+});

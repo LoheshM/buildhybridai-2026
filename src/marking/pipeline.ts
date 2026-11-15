@@ -104,6 +104,11 @@ export function applyCorrection(key: QuestionKey, before: Marked, corrected: str
   return { ...m, flags: changed ? ['teacher_changed'] : [], suggestions: changed && before.read.trim() ? [before.read] : [], checked: true };
 }
 
+/** The teacher decides a doubtful answer is right: full marks, their decision. */
+export function markRightByTeacher(before: Marked): Marked {
+  return { ...before, status: 'correct', misconception: null, flags: ['teacher_changed'], checked: true };
+}
+
 /** The teacher decides an unreadable answer is wrong: their decision, not the model's. */
 export function markWrongByTeacher(before: Marked): Marked {
   return { ...before, status: 'wrong', misconception: null, flags: ['teacher_changed'], checked: true };

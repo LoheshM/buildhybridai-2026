@@ -6,7 +6,7 @@ import { onSheetChanged, runState } from '../app/runner';
 import { FLAG_TEXT, outOfFor, scoreSheet, typeOf, type Marked, type QuestionKey } from '../marking/mark';
 import { mistakeLabel } from '../marking/mistakes';
 import { adjustSuggestion, decideOpen } from '../marking/open';
-import { applyCorrection, markWrongByTeacher, needsCheck, openFlags } from '../marking/pipeline';
+import { applyCorrection, markRightByTeacher, markWrongByTeacher, needsCheck, openFlags } from '../marking/pipeline';
 import { isOpen, keyPoints, parseRubric, QTYPES } from '../marking/qtypes';
 import { store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 import { sampleKeyOfClass, sampleManifest } from '../app/boot';
@@ -169,6 +169,7 @@ function ByQuestion({ quiz, cls, sheets, q, save }: { quiz: QuizRec; cls: ClassR
             <span><kbd>Enter</kbd> {isOpen(type) ? 'ink the suggestion' : 'the reading is right'}</span>
             {isOpen(type) && type === 'short' && <span><kbd>1</kbd>–<kbd>{Math.min(6, keyPoints(key.answer).length)}</kbd> key point</span>}
             {isOpen(type) && <span><kbd>0</kbd> no marks</span>}
+            {!isOpen(type) && <span><kbd>R</kbd>/<kbd>W</kbd> right or wrong</span>}
             <span><kbd>E</kbd> edit the reading</span>
             <span><kbd>N</kbd> next question</span>
           </p>
@@ -260,6 +261,9 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
       else if (e.key === 'e') { e.preventDefault(); setEditing(true); }
       else if (e.key === 'p') { e.preventDefault(); setPeek((x) => !x); }
       else if (open && e.key === '0') { e.preventDefault(); onChange(decideOpen(k, m, { points: 0 })); onDone(); }
+      // a doubtful exact answer: R right, W wrong (round 9, R9-04/05)
+      else if (!open && needsCheck(m) && e.key === 'r') { e.preventDefault(); onChange(markRightByTeacher(m)); onDone(); }
+      else if (!open && needsCheck(m) && e.key === 'w') { e.preventDefault(); onChange(markWrongByTeacher(m)); onDone(); }
       else if (open && type === 'short' && /^[1-6]$/.test(e.key) && Number(e.key) <= pts.length) { e.preventDefault(); toggle(Number(e.key) - 1); }
       else if (!open && /^[1-3]$/.test(e.key) && m.suggestions[Number(e.key) - 1]) { e.preventDefault(); correct(m.suggestions[Number(e.key) - 1]); }
     };
@@ -335,9 +339,9 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
       </div>
       <div className="actions" onMouseDown={keep}>
         {!open && needsCheck(m) && m.suggestions.slice(0, 3).map((x, j) => <button key={x} className="btn small" onClick={(e) => { e.stopPropagation(); correct(x); }}>It says {x} <kbd>{j + 1}</kbd></button>)}
-        {!open && needsCheck(m) && (m.status === 'unreadable'
-          ? <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(markWrongByTeacher(m)); onDone(); }}>Mark wrong</button>
-          : <button className="btn small primary" onClick={(e) => { e.stopPropagation(); accept(); }}>Reading is right <kbd>Enter</kbd></button>)}
+        {!open && needsCheck(m) && m.status !== 'unreadable' && <button className="btn small primary" title="Keep the mark code gave this reading" onClick={(e) => { e.stopPropagation(); accept(); }}>Keep {m.status === 'correct' ? '✓' : m.status === 'wrong' ? '✗' : 'the mark'} <kbd>Enter</kbd></button>}
+        {!open && needsCheck(m) && m.status !== 'correct' && <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(markRightByTeacher(m)); onDone(); }}>Right <kbd>R</kbd></button>}
+        {!open && needsCheck(m) && m.status !== 'wrong' && <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(markWrongByTeacher(m)); onDone(); }}>Wrong <kbd>W</kbd></button>}
         {open && pending && s && <button className="btn small ink" onClick={(e) => { e.stopPropagation(); accept(); }}>Ink {fmtPoints(s.points)}/{fmtPoints(outOf)} <kbd>Enter</kbd></button>}
         {open && ((pending && m.read) || (m.status === 'unreadable' && !m.checked)) && <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(decideOpen(k, m, { points: 0 })); onDone(); }}>No marks <kbd>0</kbd></button>}
         {open && ((pending && m.read) || (m.status === 'unreadable' && !m.checked)) && <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(decideOpen(k, m, { points: outOf })); onDone(); }}>Full marks</button>}

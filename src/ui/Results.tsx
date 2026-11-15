@@ -32,7 +32,7 @@ export function Results({ quizId }: { quizId: string }) {
 
   const exportCsv = () => {
     const head = ['Pupil', ...quiz.keys.map((k) => `Q${k.q}`), 'Score', 'Out of'];
-    const lines = sheets.map((s) => { const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit); return [csvCell(name(s)), ...s.marks.map((m) => csvAnswer(m.read)), sc.unreadable + sc.pending ? '?' : String(sc.points), String(sc.outOf)]; });
+    const lines = sheets.map((s) => { const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit); return [csvCell(name(s)), ...s.marks.map((m) => csvAnswer(m.read)), s.marks.some(needsCheck) ? '?' : String(sc.points), String(sc.outOf)]; });
     const blob = new Blob(['﻿' + [head.map(csvCell), ...lines].map((l) => l.join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -72,7 +72,7 @@ export function Results({ quizId }: { quizId: string }) {
                         {(m.outOf ?? 1) > 1 && m.status !== 'pending' && m.status !== 'blank' ? <span className="hand" style={{ color: 'var(--red)', fontWeight: 700 }}>{fmtPoints(pointsFor(m, quiz.unsimplifiedCredit))}</span> : <AnswerMark m={m} />}
                       </td>
                     ))}
-                    <td className="total"><span className="hand" style={{ color: sc.pending + sc.unreadable ? 'var(--pencil)' : 'var(--red)', fontSize: '1.05rem' }}>{fmtPoints(sc.points)}{sc.pending + sc.unreadable ? '?' : ''}</span><span className="quiet small">/{fmtPoints(sc.outOf)}</span></td>
+                    <td className="total"><span className="hand" style={{ color: s.marks.some(needsCheck) ? 'var(--pencil)' : 'var(--red)', fontSize: '1.05rem' }}>{fmtPoints(sc.points)}{s.marks.some(needsCheck) ? '?' : ''}</span><span className="quiet small">/{fmtPoints(sc.outOf)}</span></td>
                   </tr>
                 );
               })}

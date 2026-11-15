@@ -25,7 +25,7 @@ Tickmark routes every AI call by **what data it carries**, not by how hard the t
 |---|---|---|---|
 | A real pupil's answer boxes, second reads and suggested marks | This laptop only | `ONLY_ON_DEVICE` | Device gate, pupil-sheet lock and network guard; **no cloud fallback, ever** |
 | A laptop without on-device AI | Nowhere: the teacher types answers into a grid | none | Marking still runs in plain code |
-| Made-up sample sheets | Laptop when Gemini Nano is ready; otherwise Nano's own readings recorded on 15 Nov are replayed, labelled "Gemini Nano · recorded" | `ONLY_ON_DEVICE` | Each photo's SHA-256 must match a sample sheet |
+| Made-up sample sheets | Laptop when Gemini Nano is ready; otherwise Nano's own readings recorded on 15 Nov are replayed, labelled "Gemini Nano · recorded" | `ONLY_ON_DEVICE` (`PREFER_ON_DEVICE` for a sample suggestion when a sheet came from a recording) | Each photo's SHA-256 must match a sample sheet |
 | Anonymous class totals | Cloud, with a compact on-device plan if the cloud fails and one retry on a second model if the free daily allowance runs out; or kept on the laptop when the teacher asks | `PREFER_IN_CLOUD`, `ONLY_IN_CLOUD`, `ONLY_ON_DEVICE` | Closed schema, small groups hidden, class-list name checks, shown before sending |
 | Parent-note personalisation | This laptop, plain code | none | Placeholder validation |
 
@@ -39,7 +39,7 @@ On 15 Nov we measured Gemini Nano reading whole worksheets. It **answered the pr
 The cutting is plain TypeScript (`src/img/`): corner squares, a four-point homography, an upside-down check, a printed-frame check that refuses another quiz's sheet, and per-box ink measures relative to each box's own paper. Code, not the model, decides which boxes are empty: asked about an empty box, Nano invents an answer.
 
 ## The model never decides a mark
-- **Exact answers** are marked by code (`src/marking/`): units convert (35 mm = 3.5 cm), 2/4 equals 1/2 but is flagged "not simplified", algebra is compared by value, multiple choice and words are normalised. Named mistakes include "Wrong unit", "Added (or subtracted) tops and bottoms", "Sign error" and "Did not simplify". When code is unsure (a right value in another form, an answer the same as the question, working beside the answer) it flags the answer for the teacher instead of guessing.
+- **Exact answers** are marked by code (`src/marking/`): units convert (35 mm = 3.5 cm), 2/4 equals 1/2 but earns the half credit the teacher chose ("Did not simplify"), algebra is compared by value, multiple choice and words are normalised. Named mistakes include "Wrong unit", "Added (or subtracted) tops and bottoms", "Sign error" and "Did not simplify". When code is unsure (a right value in another form, an answer the same as the question, working beside the answer) it flags the answer for the teacher instead of guessing.
 - **Open answers** (short answers with key points, paragraphs with a rubric) get Gemini Nano's suggestion, in pencil. The teacher inks it, adjusts the key points, or overrides. A pupil's answer is fenced as data in the prompt, and answers that talk to the marker get no suggestion at all.
 - **Flags** route anything doubtful to the teacher: two answers, crossed-out work, an unread box with ink in it, a reading that disagreed on a second look, a spelling Nano may have corrected, working written beside the answer, and more.
 
@@ -75,7 +75,7 @@ npm run dev         # http://localhost:5173
 ## Firebase products
 - **Firebase AI Logic:** hybrid inference, routed by data class.
 - **App Check:** reCAPTCHA Enterprise, enforced, with limited-use tokens. It loads only when a cloud request may follow.
-- **Hosting:** strict Content Security Policy and security headers.
+- **Hosting:** a Content Security Policy (scripts only from this site and reCAPTCHA) and security headers.
 - **Remote Config:** the cloud model (from an allowlist), the smallest group shown (3 or more), live sample reads (0 by default) and a cloud kill switch. It can't send pupils' data or lower the group size below 3.
 
 **Deliberately not used:** Firestore, Auth, Analytics and AI monitoring. Nothing about a pupil is stored server-side.

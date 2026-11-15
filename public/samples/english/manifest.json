@@ -22,12 +22,14 @@
    {
     "q": 3,
     "prompt": "Yesterday we ... (go) to the market.",
-    "key": "went"
+    "key": "went",
+    "spellingCounts": true
    },
    {
     "q": 4,
     "prompt": "She has ... (write) three letters.",
-    "key": "written"
+    "key": "written",
+    "spellingCounts": true
    },
    {
     "q": 5,
@@ -104,7 +106,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "dc939a59eb4746d1771c1145fa9828fdbbd42ef765896fa821d0b6341a76c07c"
+   "sha256": "2e77d6f464e71f639de0742b0cb4d1d1980926ca57ae706e9613105eb87649b8"
   },
   {
    "id": "e02",
@@ -162,7 +164,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "fe7afa619a74fe166b45c40ef646f5f06f472d0ad5c799a7429a5019464c8adf"
+   "sha256": "d9a2bc8ab057fbc62d2446e9fa2edccc388df6cdde3acc2e19b70a09cf0798c3"
   },
   {
    "id": "e03",
@@ -220,7 +222,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "2de8ce7328c27ebca0b020fd3804d71fb72017042d9e984588aa79ae8b9684d6"
+   "sha256": "5879ad154782fb2d5f06470036ada70607b8488258554412906d8dfd9689efb7"
   },
   {
    "id": "e04",
@@ -278,7 +280,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "6b48021cd9f80a9c6c9277ddee6a14c898ba95c4e40bb9e4ee46008f4c71d5bf"
+   "sha256": "968e2db649ea095f08b15fed3fd12e647cdc3bb653645d880326a2e75c4c8c67"
   },
   {
    "id": "e05",
@@ -336,7 +338,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "e37cc978ca639b9232c11b083cb552d75331508d9f41f5d4dc29a76de975d681"
+   "sha256": "8b74caa8cd9929f95603e4ad9d45c6221571aaeb4df399de3b8c1a99399bdc61"
   },
   {
    "id": "e06",
@@ -394,7 +396,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "84f06702146176712714c3c2b5e56e313fe1348e8852317dcd309cf561931a28"
+   "sha256": "8cb1456ad79f5d964a4d797051f958552c33ae528d607dccab2b389eb12b990f"
   },
   {
    "id": "e07",
@@ -452,7 +454,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "ee7b6b352615d92e818a1ee516671fae2934f11d3c62145b05eefd100d67bcd4"
+   "sha256": "ee40a3fb7b76527f6dabdba6bff27a9ffef360762cbe99a6c37d0d5074335feb"
   },
   {
    "id": "e08",
@@ -510,7 +512,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "cfda385d58a8896b0306b6c139991cd6035d2ef2a16434d2cfec95f5825caeed"
+   "sha256": "43bdf8e74cf847d40f53125d9c1bcbd625945e8fad97be7662b86a5a9773a67e"
   },
   {
    "id": "e09",
@@ -568,7 +570,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "c6ceca6f3c236a7055fa127515eedddab9b022eec7386d1d1a6c61576d2fae49"
+   "sha256": "4257070b0d1d9df2c454e40b4196d366bc282629235cce7f12c9f233d85c9d0a"
   },
   {
    "id": "e10",
@@ -626,7 +628,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "85689d7c9aba9843d4ee73724e423817e0e9eec31667fb51180fbf6bbc5ea6fc"
+   "sha256": "6c3bb6ead0a01cd08964f769f7c67b4eac13e7bcee5fbb8fe2e69a41bb690cd3"
   },
   {
    "id": "e11",
@@ -684,7 +686,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "70d156d15b6bf658fe0435778c5609cb3c19adb07d3b7e3bc7b9c89bad1d2dc9"
+   "sha256": "afb63efd0c8f2e625d2b0bab6904607bb4bb86ee1433cfe78af842cf0ac0c460"
   },
   {
    "id": "e12",
@@ -742,7 +744,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "2376480a58b5d3c05c1c23ab990d87f7ad630e842c77415d37139cc7ba8f0bd1"
+   "sha256": "6a9003537b2a771dbf2e0022ad7ce2bd8ecdbcd6fb1e850780d1b70648f91e88"
   },
   {
    "id": "e13",
@@ -800,7 +802,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "93fe64aaf434124a9eb717b1aad0168776f3817b20b7f0c7f31c61ade9304a9f"
+   "sha256": "2bb390f02deb3ae8fe5e328e86fb885d23c5e111f87b43afd5472c5a3e184ac3"
   },
   {
    "id": "e14",
@@ -858,7 +860,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "ac1f9e71433979654442768889641750a10dd06a0003b55e72f311f417be5d5c"
+   "sha256": "01ea0ffc2a222243d182360e18783ace3aa38955c16ae32d901546152f6bf578"
   },
   {
    "id": "e15",
@@ -916,7 +918,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "c81a341d3325e52f825a236743a321a690113d679c0fa0409fef145596260147"
+   "sha256": "dc27ee03cc988f2d4357779d91969121fb0c6869421ddf6a6beeed55218444f7"
   },
   {
    "id": "e16",
@@ -974,7 +976,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "c7a2235bd2e0b982017bfea6847c903a8ac1379420ff365e9eaf817c7fc9dacc"
+   "sha256": "36ae9265abe11a8ba7fe4afcda5b1182714e53bea9378ee82c7789866779c6e7"
   },
   {
    "id": "e17",
@@ -1032,7 +1034,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "bbcaf635f249544c90e8bcb2eb52948897fba634210e5aba4d504aad60a94bd8"
+   "sha256": "32a88b91bc0c29479d047c1b955f23c11ced3d45b754aedeafe0f35752020c7f"
   },
   {
    "id": "e18",
@@ -1090,7 +1092,7 @@
      "crossedOut": ""
     }
    ],
-   "sha256": "58c71b8c8e7852a2ed9587c69d466b4db949f5e0818b208989054363e468234a"
+   "sha256": "cffccb165cbf7063879cf89cbcf4aab531745d4a219d51eb6fd2dfe078ff12cf"
   }
  ],
  "note": "Synthetic, fictional students. Ground truth for a Tickmark sample class.",

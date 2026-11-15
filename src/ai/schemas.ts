@@ -38,6 +38,14 @@ export function passageSuggestSchema(max: number[]) {
 /** What the model returns (kept raw in recordings; code turns it into a Suggestion). */
 export type RawSuggestion = { missing?: number[]; mark?: string; reason?: string } & Record<string, unknown>;
 
+/** The strip: the name plus one required field per box that has handwriting in it. */
+export function stripSchema(qs: number[]) {
+  const item = { type: 'object', properties: { crossedOut: { type: 'string' }, answer: { type: 'string' } }, required: ['crossedOut', 'answer'] };
+  const props: Record<string, object> = { studentName: { type: 'string' } };
+  for (const q of qs) props[`q${q}`] = item;
+  return { type: 'object', properties: props, required: Object.keys(props) };
+}
+
 /** v1 shape, kept for the recorded v1 readings and the second read. */
 export const SHEET_SCHEMA = {
   type: 'object',

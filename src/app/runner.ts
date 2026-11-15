@@ -2,7 +2,9 @@
 // code, ask for a second read where needed, match the name to the roster, save.
 // The runner lives at module level, so a run keeps going while the teacher moves between pages.
 import { classify, isSample, type SampleImage, type StudentImage } from '../ai/images';
-import { readSampleSheet, readStudentSheet, rereadSampleQuestions, rereadStudentQuestions, resetLiveSampleReads, suggestOpen } from '../ai/tasks';
+import { noteSampleDeviceFailure, readSampleSheet, readStrip, rereadStrip, resetLiveSampleReads, sampleDeviceUsable, suggestOpen, type ReadResult } from '../ai/tasks';
+import { CancelledError } from '../ai/queue';
+import { cutAnswerSheet } from '../img/crop';
 import { cancelQueued } from '../ai/queue';
 import { resetAllModels } from '../ai/models';
 import { markRead, mergeReread, rereadQuestions, stampModelRead } from '../marking/pipeline';
@@ -45,6 +47,7 @@ async function imageFor(sheet: SheetRec): Promise<Blob> {
 
 const RETRYABLE = new Set(['TimeoutError', 'SyntaxError', 'AbortError']);
 const STOPS_BATCH = new Set(['DeviceUnavailable', 'GuardBlocked', 'OffDeviceAnswer', 'OutOfSpace']);
+// NoMarkers (corner squares not found) fails only that sheet: the teacher retakes its photo
 
 export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): Promise<void> {
   if (state.running) return;
@@ -70,27 +73,53 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
       for (let attempt = 0; attempt < 2 && !stopRequested; attempt++) {
         try {
           lastErr = null;
-          const img = await classify(await imageFor(sheet));
+          const photo = await imageFor(sheet);
+          const img = await classify(photo);
           if (sheet.source === 'sample' && !isSample(img)) throw new Error('Sample photo does not match its fingerprint; refusing to send it anywhere.');
-          const first = isSample(img) ? await readSampleSheet(img, quiz.keys) : await readStudentSheet(img as StudentImage, quiz.keys);
+          const sample = isSample(img);
+          let first: ReadResult;
+          let strip: StudentImage | null = null;
+          // Code, on this laptop, for every sheet: find the answer boxes, keep each box's handwriting, decide which are empty.
+          const cut = await cutAnswerSheet(photo, quiz.keys);
+          const cutMs = cut.ms;
+          const crops: Record<number, string> = {};
+          for (const [q, blob] of cut.crops) { const id = `${sheet.id}#q${q}`; await store.putImage(id, blob); crops[q] = id; }
+          if (!sample || (await sampleDeviceUsable())) {
+            // Gemini Nano reads the boxes with writing in them, as one strip, on this laptop.
+            strip = (await classify(cut.strip)) as StudentImage; // a strip never matches a sample fingerprint: it can only be read on-device
+            try {
+              first = await readStrip(strip, quiz.keys, cut.blank, sample ? 'sample' : 'student');
+            } catch (e) {
+              if (!sample || e instanceof CancelledError || (e as Error).name === 'AbortError') throw e;
+              noteSampleDeviceFailure(); // made-up sheets only: fall back to the cloud path below
+              strip = null;
+              first = await readSampleSheet(img as SampleImage, quiz.keys);
+            }
+          } else {
+            first = await readSampleSheet(img as SampleImage, quiz.keys);
+          }
+          // an empty box is empty, whatever any model says about it
+          for (const a of first.read.answers) if (cut.blank.includes(a.q)) { a.finalAnswer = ''; a.crossedOutText = ''; }
           let marks = markRead(quiz.keys, first.read);
           const qs = rereadQuestions(quiz.keys, marks);
           let rereadMs: number | undefined;
-          if (qs.length && first.where === 'on_device') {
-            const second = isSample(img) ? await rereadSampleQuestions(img as SampleImage, qs, quiz.keys) : await rereadStudentQuestions(img as StudentImage, qs, quiz.keys);
-            if (second) { marks = mergeReread(marks, second.answers, quiz.keys); rereadMs = second.ms; }
+          if (qs.length && strip && first.where === 'on_device') {
+            const second = await rereadStrip(strip, qs, quiz.keys, sample ? 'sample' : 'student');
+            marks = mergeReread(marks, second.answers, quiz.keys); rereadMs = second.ms;
           }
+          // a box with ink in it that came back empty was not read, whatever the model says: the teacher looks
+          marks = marks.map((m) => (!m.read.trim() && !cut.blank.includes(m.q) ? { ...m, status: 'unreadable' as const, flags: [...new Set([...m.flags, 'unreadable' as const])] } : m));
           marks = stampModelRead(marks);
           // Open answers: Gemini Nano suggests a mark from the text it read; the teacher decides.
           for (let i = 0; i < marks.length; i++) {
             if (marks[i].status !== 'pending' || stopRequested) continue;
             const key = quiz.keys.find((k) => k.q === marks[i].q)!;
-            const sug = await suggestOpen(marks[i].read, key, isSample(img) ? { sample: (img as SampleImage).sampleId } : { student: true });
+            const sug = await suggestOpen(marks[i].read, key, sample ? { sample: (img as SampleImage).sampleId, deviceOnly: !!strip } : { student: true });
             if (sug) marks[i] = { ...marks[i], suggestion: sug };
           }
           const match = matchName(first.read.studentName, cls.roster, taken);
           if (match.studentId) taken.add(match.studentId);
-          s = { ...s, status: 'read', read: first.read, readName: first.read.studentName, studentId: match.studentId, nameConfident: match.confident, marks, where: first.where, ms: first.ms, rereadQs: qs, rereadMs };
+          s = { ...s, status: 'read', read: first.read, readName: first.read.studentName, studentId: match.studentId, nameConfident: match.confident, marks, where: first.where, ms: first.ms + cutMs, rereadQs: qs, rereadMs, crops };
           break;
         } catch (e) {
           lastErr = e as Error;

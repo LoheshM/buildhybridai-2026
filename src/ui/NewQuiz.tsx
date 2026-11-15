@@ -90,7 +90,7 @@ export function NewQuiz() {
               <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Plants and water" spellCheck={false} autoComplete="off" />
             </label>
             <label className="field">Subject
-              <select value={subject} onChange={(e) => setSubject(e.target.value as Subject)}>{SUBJECTS.map((s) => <option key={s} value={s}>{SUBJECT_NAME[s]}</option>)}</select>
+              <select value={subject} onChange={(e) => { const v = e.target.value as Subject; setSubject(v); if (v === 'english') setRows(rows.map((r) => ({ ...r, spelling: true }))); }}>{SUBJECTS.map((s) => <option key={s} value={s}>{SUBJECT_NAME[s]}</option>)}</select>
             </label>
           </div>
           <table className="keytable">
@@ -122,7 +122,7 @@ export function NewQuiz() {
                       {has && (
                         <div className="detected">
                           <span className={`chip ${QTYPES[t].markedBy === 'code' ? 'code' : 'pencil'}`}>{QTYPES[t].markedBy === 'code' ? 'Marked by code' : 'Nano suggests, you decide'}</span>
-                          {t === 'word' && <label className="check-line tiny"><input type="checkbox" checked={r.spelling} onChange={(e) => set(i, { spelling: e.target.checked })} />Spelling must be exact</label>}
+                          {t === 'word' && <label className="check-line tiny" title="Gemini Nano tends to read a misspelt word as the right word, so when spelling counts you check each answer that reads as the key against the pupil's handwriting."><input type="checkbox" checked={r.spelling} onChange={(e) => set(i, { spelling: e.target.checked })} />Spelling or exact form counts</label>}
                         </div>
                       )}
                     </td>
@@ -132,7 +132,7 @@ export function NewQuiz() {
             </tbody>
           </table>
           <div className="row mt">
-            <button className="btn small" onClick={() => setRows([...rows, EMPTY])}>Add question</button>
+            <button className="btn small" onClick={() => setRows([...rows, { ...EMPTY, spelling: subject === 'english' }])}>Add question</button>
             {rows.length > 1 && <button className="btn small quiet" onClick={() => setRows(rows.slice(0, -1))}>Remove last</button>}
           </div>
           {(subject === 'english' || extract) && (

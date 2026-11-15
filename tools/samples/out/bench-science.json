@@ -1,0 +1,50 @@
+{
+ "cls": "science",
+ "errors": [
+  "c01: Tickmark couldn't find the four black corner squares. Retake the photo with the whole answer sheet in view, flat and in good light.",
+  "c11: Tickmark couldn't find the four black corner squares. Retake the photo with the whole answer sheet in view, flat and in good light."
+ ],
+ "sheets": 22,
+ "onDevice": 22,
+ "exact": {
+  "answers": 132,
+  "exact": 95,
+  "misread": 37,
+  "unflagged": 7,
+  "flagged": 46
+ },
+ "open": {
+  "answers": 43,
+  "chars": 2054,
+  "errors": 2,
+  "suggested": 43,
+  "agree": 37,
+  "within1": 43,
+  "ms": 66655
+ },
+ "readMs": 219275,
+ "suggestMs": 66655,
+ "names": 22,
+ "misses": [
+  "c08 q3: \"\" (truth \"chlorophyll\") blank",
+  "c10 q3: \"chlorophyll\" (truth \"clorophyll\") correct",
+  "c10 q4: \"evaporation\" (truth \"evaperation\") correct",
+  "c18 q8: \"\" (truth \"C\") blank",
+  "c19 q4: \"evaporation\" (truth \"evaperation\") correct",
+  "c20 q4: \"evaporation\" (truth \"evaperation\") correct",
+  "c22 q3: \"chlorophyll\" (truth \"chlorophyl\") correct"
+ ],
+ "openMisses": [],
+ "summary": {
+  "exactPct": 72,
+  "unflagged": "7/132",
+  "flagRatePct": 34.8,
+  "openCharsRightPct": 99.9,
+  "suggestAgree": "37/43",
+  "suggestWithin1": "43/43",
+  "secsPerSheet": 13,
+  "readSecsPerSheet": 10,
+  "suggestSecs": 1.6,
+  "names": "22/22"
+ }
+}

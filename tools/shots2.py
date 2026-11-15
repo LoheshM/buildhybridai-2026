@@ -26,10 +26,21 @@ def shot(page, name, w):
     print("shot", name, w, theme, f"OVERFLOW {sw}" if sw > w else "", flush=True)
 
 
-with sync_playwright() as p:
-    b = p.chromium.launch(channel="chrome", headless=True)
-    ctx = b.new_context(viewport={"width": 1440, "height": 900}, color_scheme=theme)
-    page = ctx.new_page()
+from contextlib import nullcontext
+use_profile = "--profile" in sys.argv  # the dedicated Chrome profile with Gemini Nano (demo_video/profile.py)
+if use_profile:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent.parent / "demo_video"))
+    from profile import chrome  # noqa: E402
+
+with sync_playwright() as p, (chrome(p) if use_profile else nullcontext()) as cp:
+    if use_profile:
+        b, ctx = cp
+        page = ctx.pages[0] if ctx.pages else ctx.new_page()
+        page.set_viewport_size({"width": 1440, "height": 900})
+    else:
+        b = p.chromium.launch(channel="chrome", headless=True)
+        ctx = b.new_context(viewport={"width": 1440, "height": 900}, color_scheme=theme)
+        page = ctx.new_page()
     page.set_default_timeout(120000)
     page.goto(base + "/#/")
     page.evaluate(f"localStorage.setItem('tickmark.theme', '{theme}')")
@@ -61,4 +72,5 @@ with sync_playwright() as p:
             page.goto("about:blank"); page.goto(f"{base}/{route}")
             page.wait_for_timeout(3500)
             shot(page, name, w)
-    b.close()
+    if not use_profile:
+        b.close()

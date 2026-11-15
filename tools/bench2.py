@@ -34,9 +34,12 @@ with sync_playwright() as p, chrome(p) as (browser, ctx):
         page.wait_for_selector("text=Gemini Nano ready", timeout=120000)
         page.get_by_role("button", name="Read all").click()
         t0 = time.time()
+        idle = 0
         while True:
             time.sleep(5)
-            done = page.locator("text=/All \\d+ sheets read/").count() > 0
+            running = page.get_by_role("button", name="Stop").count() > 0
+            idle = 0 if running else idle + 1
+            done = page.locator("text=/All \\d+ sheets read/").count() > 0 or idle >= 3  # finished, possibly with errors
             status = page.locator("[role=status]").first.inner_text() if page.locator("[role=status]").count() else ""
             print(f"  {cls} {int(time.time() - t0)} s  {status[:70]!r}", flush=True)
             if done:
@@ -47,6 +50,8 @@ with sync_playwright() as p, chrome(p) as (browser, ctx):
         r = page.evaluate(JS, cls)
         (HERE / "samples" / "out" / f"bench-{cls}.json").write_text(json.dumps(r, indent=1), encoding="utf8")
         print(cls, json.dumps(r["summary"]), flush=True)
+        for x in r["errors"][:10]:
+            print("   error:", x, flush=True)
         for x in r["misses"][:10]:
             print("   unflagged:", x, flush=True)
         for x in r["openMisses"][:8]:

@@ -31,7 +31,8 @@ const photoDir = new Map<string, SampleKey>(); // sample id -> class folder
 export const sampleManifest = (k: SampleKey = 'maths') => manifests.get(k) ?? null;
 export const sampleKeyOfQuiz = (quizId: string): SampleKey | null => SAMPLES.find((k) => sampleQuizId(k) === quizId) ?? null;
 export const sampleKeyOfClass = (classId: string): SampleKey | null => SAMPLES.find((k) => sampleClassId(k) === classId) ?? null;
-export const samplePhotoUrl = (sampleId: string) => `/samples/${photoDir.get(sampleId) ?? 'maths'}/${sampleId}.jpg`;
+const photoVersion = new Map<string, string>(); // sample id -> first 8 hex of its SHA-256, so a changed photo is never served from cache
+export const samplePhotoUrl = (sampleId: string) => `/samples/${photoDir.get(sampleId) ?? 'maths'}/${sampleId}.jpg${photoVersion.has(sampleId) ? `?v=${photoVersion.get(sampleId)}` : ''}`;
 /** Every made-up name in every sample class (the guard's "test it yourself" uses them). */
 export const sampleNames = () => [...manifests.values()].flatMap((m) => m.students.map((s) => s.name));
 
@@ -54,7 +55,7 @@ export async function boot() {
     return;
   }
   const hashes = new Map<string, string>();
-  for (const [k, m] of manifests) for (const s of m.students) { hashes.set(s.sha256, s.id); photoDir.set(s.id, k); }
+  for (const [k, m] of manifests) for (const s of m.students) { hashes.set(s.sha256, s.id); photoDir.set(s.id, k); photoVersion.set(s.id, s.sha256.slice(0, 8)); }
   setSampleHashes(hashes);
   setAllowedImageHashes(hashes.keys());
   await Promise.all(SAMPLES.map(async (k) => {

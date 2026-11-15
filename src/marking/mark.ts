@@ -34,6 +34,7 @@ export type Flag =
   | 'reread_disagreed'
   | 'extra_words'
   | 'check_reading'
+  | 'check_spelling'
   | 'teacher_changed';
 
 export const FLAG_TEXT: Record<Flag, string> = {
@@ -46,6 +47,7 @@ export const FLAG_TEXT: Record<Flag, string> = {
   reread_disagreed: 'Second read disagreed',
   extra_words: 'Key word plus extra words',
   check_reading: 'Check the reading',
+  check_spelling: 'Check the spelling',
   teacher_changed: 'Changed by you',
 };
 
@@ -142,7 +144,10 @@ export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marke
   }
   // word
   const v = markWord(k.answer, read, !!k.spellingCounts);
-  return { ...base, status: v.status, misconception: v.mistake, note: v.mistake === 'spelling' && v.status === 'correct' ? `Spelling: ${v.closest}` : undefined, flags: [...base.flags, ...(v.extraWords ? ['extra_words' as const] : []), ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
+  // Day-1 bench: Gemini Nano reads a misspelt word as the correct word ("necesary" → "necessary"), even
+  // letter by letter. When spelling counts, a reading that equals the key is exactly that risk: ask.
+  const autocorrectRisk = !!k.spellingCounts && v.status === 'correct' && !v.mistake;
+  return { ...base, status: v.status, misconception: v.mistake, note: v.mistake === 'spelling' && v.status === 'correct' ? `Spelling: ${v.closest}` : undefined, flags: [...base.flags, ...(v.extraWords ? ['extra_words' as const] : []), ...(autocorrectRisk ? ['check_spelling' as const] : []), ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
 }
 
 function markFraction(k: QuestionKey, read: string, crossedOut = ''): Marked {
@@ -232,7 +237,8 @@ export function needsReread(k: QuestionKey, m: Marked): boolean {
   const type = typeOf(k);
   // open answers: the teacher reads the text against the photo anyway; only a missing answer gets a second look
   if (isOpen(type)) return m.status === 'blank';
-  if (type !== 'fraction') return m.status === 'blank' || m.status === 'unreadable' || m.flags.length > 0 || (m.status === 'wrong' && !m.misconception) || (m.status === 'partial');
+  // a second read can't settle a spelling: the same model makes the same correction
+  if (type !== 'fraction') return m.status === 'blank' || m.status === 'unreadable' || m.flags.some((f) => f !== 'check_spelling') || (m.status === 'wrong' && !m.misconception) || (m.status === 'partial');
   const keyMixed = keyInfo(k).keyParsed;
   const readP = parse(m.read);
   return (

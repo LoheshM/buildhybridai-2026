@@ -8,12 +8,14 @@ async (cls) => {
   const db = await new Promise((res, rej) => { const r = indexedDB.open('tickmark'); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
   const sheets = await new Promise((res) => { const q = db.transaction('sheets').objectStore('sheets').getAll(); q.onsuccess = () => res(q.result); });
   const rows = sheets.filter((s) => s.quizId === `sample-quiz-${cls}` && (s.status === 'read' || s.status === 'checked'));
-  const norm = (s) => (s || '').normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').replace(/\s*\/\s*/g, '/').replace(/\s*([=°%])\s*/g, '$1').replace(/[.!]+$/, '').trim();
+  // same written answer: case, spacing, a trailing full stop and a leading "0" before a decimal point don't count
+  const norm = (s) => (s || '').normalize('NFKC').toLowerCase().replace(/\s+/g, ' ').replace(/\s*\/\s*/g, '/').replace(/\s*([=°%])\s*/g, '$1').replace(/[.!]+$/, '').trim().replace(/(^|[^\d])0+(\.\d)/g, '$1$2');
   const words = (s) => (s || '').toLowerCase().replace(/[^\p{L}\p{N}' ]+/gu, ' ').replace(/\s+/g, ' ').trim();
   const lev = (a, b) => { let p = Array.from({ length: b.length + 1 }, (_, i) => i); for (let i = 1; i <= a.length; i++) { const c = [i]; for (let j = 1; j <= b.length; j++) c.push(Math.min(p[j] + 1, c[j - 1] + 1, p[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1))); p = c; } return p[b.length]; };
   const qs = Object.fromEntries(m.quiz.questions.map((q) => [q.q, q]));
   const rubricMax = (key) => key.replace(/^\s*rubric\s*[:-]?\s*/i, '').split(/\s*(?:\n|;)\s*/).map((x) => Number((x.match(/(\d{1,2})\s*\)?\s*$/) || [])[1] || 0));
-  const out = { cls, sheets: rows.length, onDevice: rows.filter((s) => s.where === 'on_device').length, exact: { answers: 0, exact: 0, misread: 0, unflagged: 0, flagged: 0 }, open: { answers: 0, chars: 0, errors: 0, suggested: 0, agree: 0, within1: 0, ms: 0 }, readMs: 0, suggestMs: 0, names: 0, misses: [], openMisses: [] };
+  const errors = sheets.filter((s) => s.quizId === `sample-quiz-${cls}` && s.status === 'error').map((s) => `${s.sampleId}: ${s.error}`);
+  const out = { cls, errors, sheets: rows.length, onDevice: rows.filter((s) => s.where === 'on_device').length, exact: { answers: 0, exact: 0, misread: 0, unflagged: 0, flagged: 0 }, open: { answers: 0, chars: 0, errors: 0, suggested: 0, agree: 0, within1: 0, ms: 0 }, readMs: 0, suggestMs: 0, names: 0, misses: [], openMisses: [] };
   for (const s of rows) {
     const t = truth[s.sampleId];
     if (s.studentId === s.sampleId) out.names++;

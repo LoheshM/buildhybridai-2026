@@ -6,7 +6,7 @@
 // Resumable: a rerun keeps what is already recorded. Usage: npx -y tsx tools/record-cloud.ts [maths science english] [--totals-only]
 import { existsSync, readFileSync, renameSync, writeFileSync } from 'node:fs';
 import { FIREBASE_CONFIG } from '../src/config';
-import { readSheetPrompt, suggestPassagePrompt, suggestShortPrompt, totalsPrompt } from '../src/ai/prompts';
+import { answerSheetPrompt, suggestPassagePrompt, suggestShortPrompt, totalsPrompt } from '../src/ai/prompts';
 import { coerceSheetRead, passageSuggestSchema, sheetSchema, shortSuggestSchema, TOTALS_SCHEMA_CLOUD } from '../src/ai/schemas';
 import { buildTotals } from '../src/privacy/aggregate';
 import { markAnswer, outOfFor, typeOf, type QuestionKey } from '../src/marking/mark';
@@ -31,11 +31,14 @@ async function generate(parts: object[], schema: object, temperature: number) {
   if (Date.now() - acAt > 40 * 60 * 1000) { ac = await appCheckToken(); acAt = Date.now(); }
   const url = `https://firebasevertexai.googleapis.com/v1beta/projects/${FIREBASE_CONFIG.projectId}/models/${MODEL}:generateContent`;
   for (let attempt = 0; attempt < 5; attempt++) {
-    const r = await fetch(url, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-goog-api-key': FIREBASE_CONFIG.apiKey, 'X-Firebase-AppCheck': ac },
-      body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { temperature, responseMimeType: 'application/json', responseJsonSchema: schema } }),
-    });
+    let r: Response;
+    try {
+      r = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-goog-api-key': FIREBASE_CONFIG.apiKey, 'X-Firebase-AppCheck': ac },
+        body: JSON.stringify({ contents: [{ role: 'user', parts }], generationConfig: { temperature, responseMimeType: 'application/json', responseJsonSchema: schema } }),
+      });
+    } catch (e) { console.log(`  network error (${(e as Error).message}); retrying`); await sleep(10000); continue; }
     if (r.status === 429 || r.status >= 500) { console.log(`  retry after ${r.status}`); await sleep(20000); continue; }
     if (!r.ok) throw new Error(`${r.status} ${await r.text()}`);
     const j = await r.json();
@@ -66,7 +69,7 @@ for (const cls of classes.length ? classes : ['maths', 'science', 'english']) {
     if (!out.reads[s.id]) {
       const data = readFileSync(`public/samples/${cls}/${s.id}.jpg`).toString('base64');
       const t0 = Date.now();
-      out.reads[s.id] = coerceSheetRead(await generate([{ text: readSheetPrompt(keys) }, { inlineData: { mimeType: 'image/jpeg', data } }], sheetSchema(keys.length), 0), keys.length);
+      out.reads[s.id] = coerceSheetRead(await generate([{ text: answerSheetPrompt(keys) }, { inlineData: { mimeType: 'image/jpeg', data } }], sheetSchema(keys.length), 0), keys.length);
       console.log(`${cls} ${s.id} read in ${Date.now() - t0} ms`);
       save();
     }

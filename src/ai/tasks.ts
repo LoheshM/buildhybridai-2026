@@ -12,12 +12,12 @@ import { ledger, type DataClass, type Where } from './ledger';
 import { canCallCloud, noteCloudCall } from './limiter';
 import { InferenceMode, model, resetModel, type Mode, type Task } from './models';
 import { blockCount, GuardBlocked, lastBlockReason, withStudentLock } from './netGuard';
-import { readSheetPrompt, rereadPrompt, suggestPassagePrompt, suggestShortPrompt, totalsPrompt, WARMUP_PROMPT } from './prompts';
+import { answerSheetPrompt, stripPrompt, stripRereadPrompt, suggestPassagePrompt, suggestShortPrompt, totalsPrompt, WARMUP_PROMPT } from './prompts';
 import { typeOf, type QuestionKey, type Suggestion } from '../marking/mark';
 import { toSuggestion } from '../marking/open';
 import { isOpen, keyPoints, parseRubric } from '../marking/qtypes';
 import { CancelledError, enqueue, TimeoutError } from './queue';
-import { coerceSheetRead, passageSuggestSchema, sheetSchema, shortSuggestSchema, type RawSuggestion, type SheetRead, type TotalsResponse } from './schemas';
+import { coerceSheetRead, passageSuggestSchema, sheetSchema, shortSuggestSchema, stripSchema, type RawSuggestion, type SheetRead, type TotalsResponse } from './schemas';
 
 export class OffDeviceAnswer extends Error {
   constructor() { super('A student sheet was answered somewhere other than this laptop. Tickmark stopped the batch.'); this.name = 'OffDeviceAnswer'; }
@@ -87,22 +87,10 @@ export async function warmUp(): Promise<number> {
   return r.ms;
 }
 
-// ---------------- student sheets: this laptop only ----------------
+// ---------------- pupils' sheets: this laptop only, as a strip of answer boxes (readStrip below) ----------------
 export interface ReadResult { read: SheetRead; where: Where; ms: number }
 
-export async function readStudentSheet(img: StudentImage, keys: QuestionKey[]): Promise<ReadResult> {
-  await assertDeviceReady(); // the SDK would silently use the cloud if the model were missing
-  const r = await call('readSheet', InferenceMode.ONLY_ON_DEVICE, [readSheetPrompt(keys), imagePart(img)], 'student', 'Read sheet', { queue: true, timeoutMs: DEVICE_TIMEOUT_MS, studentLock: true, schema: sheetSchema(keys.length) });
-  if (r.where !== 'on_device') throw new OffDeviceAnswer();
-  return { read: coerceSheetRead(parseJson(r.text), keys.length), where: r.where, ms: r.ms };
-}
 
-export async function rereadStudentQuestions(img: StudentImage, qs: number[], keys: QuestionKey[] = []): Promise<{ answers: Map<number, SecondRead>; ms: number }> {
-  await assertDeviceReady();
-  const r = await call('reread', InferenceMode.ONLY_ON_DEVICE, [rereadPrompt(qs, keys), imagePart(img)], 'student', 'Second read', { queue: true, timeoutMs: DEVICE_TIMEOUT_MS, studentLock: true });
-  if (r.where !== 'on_device') throw new OffDeviceAnswer();
-  return { answers: rereadMap(parseJson(r.text), qs), ms: r.ms };
-}
 
 export interface SecondRead { final: string; crossed: string }
 function rereadMap(x: unknown, qs: number[]): Map<number, SecondRead> {
@@ -111,6 +99,29 @@ function rereadMap(x: unknown, qs: number[]): Map<number, SecondRead> {
   const str = (v: unknown) => (typeof v === 'string' || typeof v === 'number' ? String(v).replace(/\s+/g, ' ').trim().slice(0, 1200) : '');
   for (const a of arr) { const q = Number(a?.q); if (qs.includes(q) && !out.has(q)) out.set(q, { final: str(a.finalAnswer), crossed: str(a.crossedOutText) }); }
   return out;
+}
+
+// ---------------- the strip: answer boxes cut from a Tickmark answer sheet ----------------
+/**
+ * Reads the strip of answer boxes on this laptop only. Used for pupils' sheets (always) and for the
+ * made-up sample sheets when Gemini Nano is ready. Boxes code found empty are not sent at all and
+ * come back as blank answers; a model asked about an empty box invents one.
+ */
+export async function readStrip(img: StudentImage, keys: QuestionKey[], blank: number[], dataClass: 'student' | 'sample'): Promise<ReadResult> {
+  await assertDeviceReady();
+  const written = keys.filter((k) => !blank.includes(k.q));
+  const r = await call('readSheet', InferenceMode.ONLY_ON_DEVICE, [stripPrompt(written), imagePart(img)], dataClass, dataClass === 'student' ? 'Read sheet' : 'Read sample sheet', { queue: true, timeoutMs: DEVICE_TIMEOUT_MS, studentLock: true, schema: stripSchema(written.map((k) => k.q)) });
+  if (r.where !== 'on_device') throw new OffDeviceAnswer();
+  const read = coerceSheetRead(parseJson(r.text), Math.max(0, ...keys.map((k) => k.q)));
+  for (const a of read.answers) if (blank.includes(a.q)) { a.finalAnswer = ''; a.crossedOutText = ''; }
+  return { read, where: r.where, ms: r.ms };
+}
+
+export async function rereadStrip(img: StudentImage, qs: number[], keys: QuestionKey[], dataClass: 'student' | 'sample'): Promise<{ answers: Map<number, SecondRead>; ms: number }> {
+  await assertDeviceReady();
+  const r = await call('reread', InferenceMode.ONLY_ON_DEVICE, [stripRereadPrompt(qs, keys), imagePart(img)], dataClass, 'Second read', { queue: true, timeoutMs: DEVICE_TIMEOUT_MS, studentLock: true });
+  if (r.where !== 'on_device') throw new OffDeviceAnswer();
+  return { answers: rereadMap(parseJson(r.text), qs), ms: r.ms };
 }
 
 // ---------------- synthetic sample sheets ----------------
@@ -130,24 +141,18 @@ const recordingFor = (sampleId: string) => [...recordings.values()].find((r) => 
 export const recordedInfo = (cls: string) => recordings.get(cls) ?? null;
 export const resetLiveSampleReads = () => { liveSampleReads = 0; cloudUnreachable = false; deviceFailures = 0; };
 
+/**
+ * A made-up sample sheet when Gemini Nano can't read it here (missing, downloading, or failed twice):
+ * a few live cloud reads of the sample photo itself (its fingerprint is on the allowlist), then the
+ * cloud readings recorded on 16 Nov. The on-device path for samples is the strip (runner + readStrip).
+ */
 export async function readSampleSheet(img: SampleImage, keys: QuestionKey[]): Promise<ReadResult> {
   const questionCount = keys.length;
-  if ((await deviceState()) === 'available' && deviceFailures < 2) {
-    try {
-      const r = await call('readSheet', InferenceMode.PREFER_ON_DEVICE, [readSheetPrompt(keys), imagePart(img)], 'sample', 'Read sample sheet', { queue: true, timeoutMs: DEVICE_TIMEOUT_MS, schema: sheetSchema(questionCount) });
-      deviceFailures = 0;
-      return { read: coerceSheetRead(parseJson(r.text), questionCount), where: r.where, ms: r.ms };
-    } catch (e) {
-      if (e instanceof CancelledError || (e as Error).name === 'AbortError') throw e;
-      deviceFailures++; // a slow or broken on-device model falls back for made-up sheets only
-    }
-  }
   if (!cloudUnreachable && liveSampleReads < currentSettings().sampleLiveReads && currentSettings().cloudFeaturesEnabled && canCallCloud()) {
     liveSampleReads++;
     noteCloudCall();
     try {
-      // The device just failed or is missing: this read goes to the cloud explicitly (sample sheets only).
-      const r = await call('readSheet', InferenceMode.ONLY_IN_CLOUD, [readSheetPrompt(keys), imagePart(img)], 'sample', 'Read sample sheet', { queue: false, timeoutMs: CLOUD_READ_TIMEOUT_MS, what: 'cloud Gemini', schema: sheetSchema(questionCount) });
+      const r = await call('readSheet', InferenceMode.ONLY_IN_CLOUD, [answerSheetPrompt(keys), imagePart(img)], 'sample', 'Read sample sheet', { queue: false, timeoutMs: CLOUD_READ_TIMEOUT_MS, what: 'cloud Gemini', schema: sheetSchema(questionCount) });
       return { read: coerceSheetRead(parseJson(r.text), questionCount), where: r.where, ms: r.ms };
     } catch { cloudUnreachable = true; /* use the recording for the rest of this run */ }
   }
@@ -157,14 +162,10 @@ export async function readSampleSheet(img: SampleImage, keys: QuestionKey[]): Pr
   return { read: coerceSheetRead(rec, questionCount), where: 'recorded', ms: 0 };
 }
 
-/** Second read of a sample sheet: on this laptop only (it would cost shared cloud quota otherwise). */
-export async function rereadSampleQuestions(img: SampleImage, qs: number[], keys: QuestionKey[] = []): Promise<{ answers: Map<number, SecondRead>; ms: number } | null> {
-  if ((await deviceState()) !== 'available' || deviceFailures >= 2) return null;
-  try {
-    const r = await call('reread', InferenceMode.PREFER_ON_DEVICE, [rereadPrompt(qs, keys), imagePart(img)], 'sample', 'Second read (sample)', { queue: true, timeoutMs: DEVICE_TIMEOUT_MS });
-    return { answers: rereadMap(parseJson(r.text), qs), ms: r.ms };
-  } catch (e) { if (e instanceof CancelledError) throw e; return null; }
-}
+/** The runner calls this when Nano fails on a sample strip, so the rest of the run uses the cloud path. */
+export const noteSampleDeviceFailure = () => { deviceFailures++; };
+export const sampleDeviceUsable = async () => (await deviceState()) === 'available' && deviceFailures < 2;
+
 
 // ---------------- open answers: a suggested mark, the teacher decides ----------------
 /**
@@ -173,20 +174,21 @@ export async function rereadSampleQuestions(img: SampleImage, qs: number[], keys
  * when it is ready, otherwise the suggestion recorded from cloud Gemini. Returns null when there is
  * no suggestion (the teacher marks it by hand); a wedged model never blocks the batch.
  */
-export async function suggestOpen(text: string, key: QuestionKey, who: { student: true } | { sample: string }): Promise<Suggestion | null> {
+export async function suggestOpen(text: string, key: QuestionKey, who: { student: true } | { sample: string; deviceOnly?: boolean }): Promise<Suggestion | null> {
   const type = typeOf(key);
   if (!text.trim() || !isOpen(type)) return null;
   const rubric = parseRubric(key.answer) ?? [];
   const prompt = type === 'passage' ? suggestPassagePrompt(key.prompt, rubric, text) : suggestShortPrompt(key.prompt, keyPoints(key.answer), text);
   const schema = type === 'passage' ? passageSuggestSchema(rubric.map((r) => r.max)) : shortSuggestSchema(keyPoints(key.answer).length || 1);
   const student = 'student' in who;
-  if (student) await assertDeviceReady();
-  const live = student || ((await deviceState()) === 'available' && deviceFailures < 2);
+  const deviceOnly = student || !!(who as { deviceOnly?: boolean }).deviceOnly; // a strip read on the laptop is suggested on the laptop too
+  if (deviceOnly) await assertDeviceReady();
+  const live = deviceOnly || ((await deviceState()) === 'available' && deviceFailures < 2);
   if (live) {
     for (let attempt = 0; attempt < 2; attempt++) {
       try {
-        const r = await call('suggest', student ? InferenceMode.ONLY_ON_DEVICE : InferenceMode.PREFER_ON_DEVICE, [prompt], student ? 'student' : 'sample', student ? 'Suggest a mark' : 'Suggest a mark (sample)', { queue: true, timeoutMs: SUGGEST_TIMEOUT_MS, studentLock: student, schema });
-        if (student && r.where !== 'on_device') throw new OffDeviceAnswer();
+        const r = await call('suggest', deviceOnly ? InferenceMode.ONLY_ON_DEVICE : InferenceMode.PREFER_ON_DEVICE, [prompt], student ? 'student' : 'sample', student ? 'Suggest a mark' : 'Suggest a mark (sample)', { queue: true, timeoutMs: SUGGEST_TIMEOUT_MS, studentLock: deviceOnly, schema });
+        if (deviceOnly && r.where !== 'on_device') throw new OffDeviceAnswer();
         return toSuggestion(key, parseJson(r.text) as RawSuggestion, r.where === 'on_device' ? 'on_device' : 'in_cloud', r.ms);
       } catch (e) {
         if (e instanceof CancelledError || (e as Error).name === 'AbortError' || (e as Error).name === 'OffDeviceAnswer' || (e as Error).name === 'GuardBlocked') throw e;
@@ -195,6 +197,7 @@ export async function suggestOpen(text: string, key: QuestionKey, who: { student
     }
     if (student) return null;
     deviceFailures++;
+    if (deviceOnly) return null;
   }
   const sampleId = (who as { sample: string }).sample;
   const rec = recordingFor(sampleId)?.suggestions?.[`${sampleId}:${key.q}`];

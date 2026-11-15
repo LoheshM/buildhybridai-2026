@@ -238,6 +238,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
           {nameNeedsCheck(sheet) && <span className="flag soft">name to confirm</span>}
           {m.flags.includes('teacher_changed') && <span className="tiny quiet">changed by you</span>}
         </div>
+        {sheet.crops?.[m.q] && <Crop id={sheet.crops[m.q]} label={`Q${m.q} as the pupil wrote it`} />}
         {editing ? (
           <div className="row" style={{ marginTop: 4 }}>
             {open ? <textarea data-student autoFocus value={text} onChange={(e) => setText(e.target.value)} aria-label="Corrected reading" style={{ minHeight: 70 }} />
@@ -259,7 +260,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
         {open && s && pending && (
           <div className="sugg">
             <span className="why">{s.reason || 'No reason given.'}</span>
-            <span className="tiny">Suggested by Gemini Nano {s.where === 'on_device' ? `on this laptop in ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? '(recorded cloud suggestion; this browser has no on-device AI)' : 'in the cloud (made-up sheet)'}. In our test on 146 real pupils' answers that people had marked, Nano's suggestion matched the human mark half the time and was within one mark 9 times in 10, so it is always your call.</span>
+            <span className="tiny">Suggested by Gemini Nano {s.where === 'on_device' ? `on this laptop in ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? '(recorded cloud suggestion; this browser has no on-device AI)' : 'in the cloud (made-up sheet)'}. On 148 real pupils' answers that people had marked, Nano's suggestion matched the human mark half the time and was within one mark 9 times in 10, so it is always your call.</span>
           </div>
         )}
         {open && !s && pending && m.read && <div className="sugg"><span className="tiny">No suggestion for this answer. Tick the key points it states, or set the rubric scores.</span></div>}
@@ -301,6 +302,17 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
       </div>
     </li>
   );
+}
+
+/** The pupil's own handwriting for this answer, cut from the answer sheet: always beside Nano's reading. */
+function Crop({ id, label }: { id: string; label: string }) {
+  const [url, setUrl] = useState<string | null>(null);
+  useEffect(() => {
+    let alive = true, u: string | null = null;
+    store.image(id).then((b) => { if (b && alive) { u = URL.createObjectURL(b); setUrl(u); } });
+    return () => { alive = false; if (u) URL.revokeObjectURL(u); };
+  }, [id]);
+  return url ? <img className="crop" src={url} alt={label} /> : <div className="crop" aria-hidden="true" />;
 }
 
 function Peek({ sheet }: { sheet: SheetRec }) {

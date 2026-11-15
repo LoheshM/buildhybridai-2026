@@ -22,12 +22,14 @@
    {
     "q": 3,
     "prompt": "Yesterday we ... (go) to the market.",
-    "key": "went"
+    "key": "went",
+    "spellingCounts": true
    },
    {
     "q": 4,
     "prompt": "She has ... (write) three letters.",
-    "key": "written"
+    "key": "written",
+    "spellingCounts": true
    },
    {
     "q": 5,

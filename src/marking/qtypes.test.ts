@@ -135,3 +135,14 @@ describe('equations with instruction words', () => {
     expect(markAlgebra('x = 4', 'x = 7', 'Solve 2x + 3 = 11')).toEqual({ status: 'wrong', mistake: 'inverse_operation' });
   });
 });
+
+describe('spelling: Nano corrects misspellings, so a spelling answer that reads as the key is checked', async () => {
+  const { markAnswer } = await import('./mark');
+  it('flags a spelling-counts answer read as exactly the key', () => {
+    const k = { q: 1, prompt: "Write the correct spelling of 'neccessary'.", answer: 'necessary', spellingCounts: true };
+    expect(markAnswer(k, 'necessary').flags).toContain('check_spelling');
+    expect(markAnswer(k, 'necesary').flags).not.toContain('check_spelling'); // a misspelling read as one is not a correction
+    expect(markAnswer(k, 'dog').flags).not.toContain('check_spelling');
+    expect(markAnswer({ ...k, spellingCounts: false }, 'necessary').flags).not.toContain('check_spelling');
+  });
+});

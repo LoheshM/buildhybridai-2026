@@ -18,6 +18,8 @@ export interface SheetRec {
   id: string; quizId: string; imageId?: string; imageSha?: string; source: 'photo' | 'typed' | 'sample'; sampleId?: string; fileName?: string;
   status: SheetStatus; studentId: string | null; nameConfident: boolean; readName: string;
   marks: Marked[]; read?: SheetRead; where?: Where; ms?: number; rereadQs?: number[]; rereadMs?: number; error?: string;
+  /** Image ids of each answer box cut from the answer sheet (question number → image id). */
+  crops?: Record<number, string>;
   createdAt: number; checkedAt?: number;
 }
 export interface PlanRec { quizId: string; at: number; payload: ClassTotals; response: TotalsResponse; where: Where; ms: number; heldBack?: string; note?: string; mode?: string; cloudTried?: boolean }
@@ -63,7 +65,7 @@ export const store = {
   async putQuiz(q: QuizRec) { await (await db()).put('quizzes', q); },
   async sheets(quizId: string) { return (await (await db()).getAllFromIndex('sheets', 'byQuiz', quizId)).sort((a, b) => a.createdAt - b.createdAt); },
   async putSheet(s: SheetRec) { await (await db()).put('sheets', s); },
-  async deleteSheet(s: SheetRec) { const d = await db(); await d.delete('sheets', s.id); if (s.imageId) await d.delete('images', s.imageId); },
+  async deleteSheet(s: SheetRec) { const d = await db(); await d.delete('sheets', s.id); if (s.imageId) await d.delete('images', s.imageId); for (const id of Object.values(s.crops ?? {})) await d.delete('images', id); },
   async image(id: string) { return (await (await db()).get('images', id))?.blob; },
   async putImage(id: string, blob: Blob) { await (await db()).put('images', { id, blob }); },
   async plan(quizId: string) { return (await db()).get('plans', quizId); },
@@ -75,7 +77,7 @@ export const store = {
   async deleteClass(classId: string) {
     const d = await db();
     for (const q of await d.getAllFromIndex('quizzes', 'byClass', classId)) {
-      for (const s of await d.getAllFromIndex('sheets', 'byQuiz', q.id)) { await d.delete('sheets', s.id); if (s.imageId) await d.delete('images', s.imageId); }
+      for (const s of await d.getAllFromIndex('sheets', 'byQuiz', q.id)) { await d.delete('sheets', s.id); if (s.imageId) await d.delete('images', s.imageId); for (const id of Object.values(s.crops ?? {})) await d.delete('images', id); }
       await d.delete('plans', q.id);
       await d.delete('quizzes', q.id);
     }
@@ -86,7 +88,10 @@ export const store = {
   async deletePhotos(quizId: string) {
     const d = await db();
     for (const s of await d.getAllFromIndex('sheets', 'byQuiz', quizId)) {
-      if (s.imageId) { await d.delete('images', s.imageId); await d.put('sheets', { ...s, imageId: undefined }); }
+      // the photo and every cut-out answer box: both are the pupil's handwriting
+      for (const id of Object.values(s.crops ?? {})) await d.delete('images', id);
+      if (s.imageId || s.crops) await d.put('sheets', { ...s, imageId: undefined, crops: undefined });
+      if (s.imageId) await d.delete('images', s.imageId);
     }
   },
 

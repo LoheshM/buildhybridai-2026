@@ -30,8 +30,9 @@ export function Welcome() {
         <div>
           <h1 id="hero-h">Mark the whole pile on this laptop.</h1>
           <p className="lede">
-            Type the answer key once. Tickmark reads every pupil's worksheet with Gemini Nano, here in Chrome, and works out what kind of question each one is.
-            Then it marks, shows you what the class got wrong, and plans tomorrow's lesson from totals with no names in them.
+            Use any worksheet. Pupils write their answers on a Tickmark answer sheet; you photograph the pile.
+            Tickmark finds every answer box, Gemini Nano reads the handwriting here in Chrome, and the key you typed decides how each answer is marked.
+            Then it shows what the class got wrong and plans tomorrow's lesson from totals with no names in them.
           </p>
           <ul className="rule-line" aria-label="Who marks what">
             <li><span className="chip code">Ink</span>Code marks what it can check exactly</li>
@@ -62,13 +63,13 @@ export function Welcome() {
         <div className="doors">
           {SAMPLES.map((k) => <ClassDoor key={k} k={k} />)}
         </div>
-        <p className="small muted mt">The three classes are made up: invented pupils, handwriting drawn from open-licence handwriting fonts, mistakes planted on purpose. With Gemini Nano they are read live on this laptop; without it, cloud Gemini readings recorded on 16 Nov stand in.</p>
+        <p className="small muted mt">The three classes are made up: invented pupils, answer sheets filled in with open-licence handwriting fonts, mistakes planted on purpose. With Gemini Nano they are read live on this laptop; without it, cloud Gemini readings recorded on 16 Nov stand in.</p>
       </section>
 
       <section className="where" aria-label="Where the work happens">
         <div>
           <h3><Icon name="laptop" size={18} />On this laptop</h3>
-          <p>Gemini Nano reads every photo and suggests marks for sentences and paragraphs. Code marks the rest and names each mistake. Photos, names and answers stay here.</p>
+          <p>Code finds each answer box in the photo and decides which are empty. Gemini Nano reads the rest and suggests marks for sentences and paragraphs; code marks exact answers and names each mistake. Photos, names and answers stay here.</p>
         </div>
         <div>
           <h3><Icon name="pen" size={18} />You</h3>
@@ -90,10 +91,10 @@ function ClassDoor({ k }: { k: SampleKey }) {
   const types = [...new Set(keys.map((q) => typeOf(q)))] as QType[];
   const open = types.some((t) => QTYPES[t].markedBy === 'suggested');
   return (
-    <button className={`door ${k}`} onClick={() => go(href.scan(sampleQuizId(k)))} aria-label={`Open ${m.quiz.className}, ${m.quiz.title}: ${m.students.length} worksheets`}>
+    <button className={`door ${k}`} onClick={() => go(href.scan(sampleQuizId(k)))} aria-label={`Open ${m.quiz.className}, ${m.quiz.title}: ${m.students.length} answer sheets`}>
       <div className="label">
         <h3>{m.quiz.className}</h3>
-        <div className="sub">{m.quiz.title} · {m.students.length} worksheets · {keys.length} questions</div>
+        <div className="sub">{m.quiz.title} · {m.students.length} answer sheets · {keys.length} questions</div>
         <div className="types">{types.map((t) => <span key={t} className={`chip ${QTYPES[t].markedBy === 'code' ? 'code' : 'pencil'}`}>{QTYPES[t].label}</span>)}</div>
         <div className="small muted">{open ? 'Some answers are suggested in pencil for you to decide.' : 'Every answer is marked by code.'}</div>
       </div>

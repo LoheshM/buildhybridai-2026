@@ -1,0 +1,51 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Renders one filled-in Tickmark answer sheet (the same geometry as src/ui/AnswerSheet.tsx, from
+     src/img/sheet.ts layout()). Data comes from the URL hash (base64 JSON). 6 px per mm.
+     Handwriting fonts are SIL Open Font License fonts from Google Fonts. -->
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Kalam&family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&family=Shadows+Into+Light&family=Reenie+Beanie&display=block" rel="stylesheet">
+<style>
+  html,body{margin:0;background:#fff}
+  .page{width:1260px;height:1782px;position:relative;background:#fdfdfb;font-family:Arial,Helvetica,sans-serif;color:#111;overflow:hidden}
+  .abs{position:absolute}
+  .box{position:absolute;border:2.4px solid #222;border-radius:6px;box-sizing:border-box}
+  .w{display:inline-block;margin-right:.3em;position:relative;white-space:nowrap}
+  .strike{position:absolute;left:-4px;right:-4px;top:55%;height:3px;border-radius:2px}
+</style></head>
+<body><div class="page" id="p"></div>
+<script>
+const d = JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(1)))));
+const S = 6; // px per mm
+let seed = d.seed; const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff); const r = (a, b) => a + rnd() * (b - a);
+const p = document.getElementById('p');
+const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+const at = (x, y) => `left:${x * S}px;top:${y * S}px`;
+for (const [x, y] of d.layout.markers) p.insertAdjacentHTML('beforeend', `<div class="abs" style="${at(x - d.layout.markerSize / 2, y - d.layout.markerSize / 2)};width:${d.layout.markerSize * S}px;height:${d.layout.markerSize * S}px;background:#000"></div>`);
+p.insertAdjacentHTML('beforeend', `<div class="abs" style="${at(28, 14)};font:700 ${5.2 * S}px/1.2 Arial">${esc(d.title)}</div>`);
+p.insertAdjacentHTML('beforeend', `<div class="abs" style="${at(28, 21)};font:${3.4 * S}px/1.3 Arial;color:#333">${esc(d.className)} · Tickmark answer sheet · ${d.layout.boxes.length - 1} answers</div>`);
+p.insertAdjacentHTML('beforeend', `<div class="abs" style="${at(28, 28)};width:${70 * S}px;font:${3 * S}px/1.3 Arial;color:#555">Write each answer in its box. Keep the four black squares in the photo.</div>`);
+for (const b of d.layout.boxes) {
+  p.insertAdjacentHTML('beforeend', `<div class="abs" style="${at(b.q === 0 ? b.x - 14 : b.x - 7, b.y + 1.5)};font:700 ${(b.q === 0 ? 3.4 : 4.2) * S}px/1 Arial">${b.q === 0 ? 'Name' : b.q}</div>`);
+  const lines = b.lines > 1 ? `background-image:repeating-linear-gradient(transparent 0 ${8.6 * S}px, #cfcfcf ${8.6 * S}px ${9 * S}px);background-position:0 ${2 * S}px;` : '';
+  p.insertAdjacentHTML('beforeend', `<div class="box" style="${at(b.x, b.y)};width:${b.w * S}px;height:${b.h * S}px;${lines}"></div>`);
+}
+function hand(text, b, crossed) {
+  const el = document.createElement('div');
+  el.className = 'abs';
+  const lh = 9 * S;
+  el.style.cssText = `${at(b.x + 3 + r(0, 2), b.y + (b.lines > 1 ? 1.2 : (b.h - 8) / 2 - 1))};width:${(b.w - 7) * S}px;font-family:'${d.font}';font-size:${d.size}px;line-height:${lh}px;color:${d.ink}`;
+  const add = (t, strike) => {
+    const w = document.createElement('span'); w.className = 'w'; w.textContent = t;
+    w.style.transform = `translateY(${r(-3, 3)}px) rotate(${r(-3, 3)}deg)`;
+    if (strike) { const s = document.createElement('span'); s.className = 'strike'; s.style.background = d.ink; s.style.transform = `rotate(${r(-7, 7)}deg)`; w.appendChild(s); w.style.marginRight = '1.2em'; }
+    el.appendChild(w);
+  };
+  if (crossed) add(crossed, true);
+  for (const t of text.split(/\s+/).filter(Boolean)) add(t, false);
+  p.appendChild(el);
+}
+const boxes = Object.fromEntries(d.layout.boxes.map((b) => [b.q, b]));
+hand(d.name, boxes[0]);
+for (const a of d.answers) if (a.written || a.crossedOut) hand(a.written || '', boxes[a.q], a.crossedOut);
+document.fonts.ready.then(() => { document.title = 'ready'; });
+</script></body></html>

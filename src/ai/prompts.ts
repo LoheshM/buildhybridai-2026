@@ -30,13 +30,41 @@ export const readSheetPrompt = (keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer
   keys.map((k, i) => `q${i + 1}: the answer to "${k.q}) ${(k.prompt || '').slice(0, 90)}" (${HINT[typeOf(k as QuestionKey)]})`).join('\n') +
   `\nAlso copy the handwritten student name (empty string if there is none).`;
 
+const COPY_ONLY = 'Copy the student\'s handwriting exactly as written, letter by letter, keeping every spelling mistake and every wrong answer; never correct, complete or answer anything yourself. ' +
+  'Use "a/b" for a fraction and "w a/b" with a space for a mixed number. If the student struck an answer through with a line, put it in crossedOut and the other answer in answer.';
+
+/**
+ * The strip: each answer box cut out of a Tickmark answer sheet, on its own labelled row. No
+ * question text anywhere (16 Nov bench: shown the question, Gemini Nano answered it instead of
+ * copying the pupil; per-box reading brought unflagged wrong marks from 15-40% to a few percent).
+ */
+export const stripPrompt = (keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer' | 'type'>[]) =>
+  `This image shows boxes cut from one student's answer sheet. Each row starts with a printed label, "Name" or a box number, and then the box. ` +
+  `For each label, ${COPY_ONLY.charAt(0).toLowerCase()}${COPY_ONLY.slice(1)}\n` +
+  `studentName: the handwriting in the row labelled Name\n` +
+  keys.map((k) => `q${k.q}: the handwriting in the row labelled ${k.q} (${HINT[typeOf(k as QuestionKey)]})`).join('\n');
+
+/** Second look at a few rows of the strip. */
+export const stripRereadPrompt = (qs: number[], keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer' | 'type'>[]) =>
+  `This image shows boxes cut from one student's answer sheet, each row labelled with its box number. Look carefully at the rows labelled ${qs.join(', ')} only. ` +
+  `For each of them, ${COPY_ONLY.charAt(0).toLowerCase()}${COPY_ONLY.slice(1).replace('in crossedOut', 'in crossedOutText').replace('in answer', 'in finalAnswer')}\n` +
+  keys.filter((k) => qs.includes(k.q)).map((k) => `Row ${k.q}: ${HINT[typeOf(k as QuestionKey)]}.`).join('\n');
+
+/** A whole answer-sheet photo (cloud reads of the made-up sample sheets only). Boxes, never questions. */
+export const answerSheetPrompt = (keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer' | 'type'>[]) =>
+  `This is a photo of a student's Tickmark answer sheet: a "Name" box and numbered answer boxes. ${COPY_ONLY} Use an empty string for an empty box.\n` +
+  `studentName: the handwriting in the Name box\n` +
+  keys.map((k) => `q${k.q}: the handwriting in box ${k.q} (${HINT[typeOf(k as QuestionKey)]})`).join('\n');
+
 /** Second, targeted read of a few questions, anchored to their printed questions when the keys are given. */
 export const rereadPrompt = (qs: number[], keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer' | 'type'>[] = []) =>
   `This is a photo of a student's worksheet. Look carefully at questions ${qs.join(', ')} only. ` +
   `For each of them, copy the student's final handwritten answer exactly as written. ` +
   `If a whole number is written to the left of a fraction, include it with a space, for example "1 1/2". ` +
   `If an answer has a line through it, it is crossed out: put it in crossedOutText (empty string if nothing is crossed out) and use the other answer as finalAnswer. Use an empty string if there is no answer.` +
-  (keys.length ? '\n' + keys.filter((k) => qs.includes(k.q)).map((k) => `Question ${k.q} is "${(k.prompt || '').slice(0, 90)}" (${HINT[typeOf(k as QuestionKey)]}).`).join('\n') : '');
+  ' You are copying, not answering: never answer a question yourself, and copy a wrong answer as it is.' +
+  // the question's text is NOT given: with it, Nano answered the question instead of copying (bench, 16 Nov)
+  (keys.length ? '\n' + keys.filter((k) => qs.includes(k.q)).map((k) => `Question ${k.q}: the student's answer is ${HINT[typeOf(k as QuestionKey)]}.`).join('\n') : '');
 
 /**
  * A suggested mark for one short answer. Day-1 probe (SciEntsBank, real grade 3-6 answers marked by

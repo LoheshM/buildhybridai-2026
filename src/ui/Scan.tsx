@@ -14,6 +14,7 @@ import { store, uid, type ClassRec, type QuizRec, type SheetRec } from '../store
 import { downloadDeviceModel, useDevice, useLoad } from './hooks';
 import { Notice } from './App';
 import { AnswerMark, Icon, ScoreRing, WhereChip } from './Marks';
+import { AnswerSheet } from './AnswerSheet';
 
 export function Scan({ quizId }: { quizId: string }) {
   const [ctx, reload] = useLoad(async () => {
@@ -56,7 +57,7 @@ export function Scan({ quizId }: { quizId: string }) {
     <>
       {cls.sample && (
         <Notice>
-          <p>These {sheets.length} worksheets are made up: invented names, handwriting from open-licence fonts, mistakes planted on purpose.
+          <p>These {sheets.length} answer sheets are made up: invented names, handwriting from open-licence fonts, mistakes planted on purpose.
             {deviceReady ? ' Gemini Nano reads them on this laptop, exactly like a real class.' : ' Without on-device AI here, the first 3 are read live by cloud Gemini (allowed only because they are made up) and the rest use cloud readings recorded on 16 Nov.'}</p>
         </Notice>
       )}
@@ -90,7 +91,7 @@ export function Scan({ quizId }: { quizId: string }) {
             <a className="btn primary" href={answersToCheck + namesToCheck ? href.check(quiz.id) : href.results(quiz.id)}>{answersToCheck + namesToCheck ? 'Check them' : 'See results'}</a>
           </div>
         ) : (
-          <p className="muted" style={{ margin: 0 }}>{deviceReady || d.state === 'downloading' || d.state === 'downloadable' ? 'Add one photo per pupil below.' : "Type each pupil's answers below."}</p>
+          <p className="muted" style={{ margin: 0 }}>{deviceReady || d.state === 'downloading' || d.state === 'downloadable' ? 'Add one photo of each answer sheet below.' : "Type each pupil's answers below."}</p>
         )}
         {run.error && run.quizId === quiz.id && <Notice tone="bad">{run.error}</Notice>}
       </section>
@@ -99,8 +100,14 @@ export function Scan({ quizId }: { quizId: string }) {
         ? <DropPhotos quiz={quiz} existing={sheets} onAdded={reload} compact={read.length > 0 && pending.length === 0} />
         : <TypedGrid cls={cls} quiz={quiz} existing={sheets} onSaved={reload} />)}
 
-      {!cls.sample && <div className="row mt"><button className="btn small quiet" onClick={() => printBlank()}>Print a blank copy of this quiz</button></div>}
-      <PrintableQuiz quiz={quiz} className={cls.sample ? undefined : cls.name} />
+      {!cls.sample && sheets.length === 0 && (
+        <Notice>
+          <p><strong>First, print the answer sheet.</strong> Pupils answer your worksheet in its numbered boxes. Tickmark finds the boxes by the four black squares and reads one box at a time, so Gemini Nano copies what each pupil wrote instead of answering the question itself.</p>
+          <div className="row"><button className="btn primary small" onClick={() => printBlank()}>Print the answer sheet</button></div>
+        </Notice>
+      )}
+      {!cls.sample && sheets.length > 0 && <div className="row mt"><button className="btn small quiet" onClick={() => printBlank()}>Print the answer sheet</button></div>}
+      <AnswerSheet quiz={quiz} className={cls.sample ? undefined : cls.name} />
 
       {sheets.length > 0 && (
         <section className="section" aria-labelledby="sheets-h">
@@ -237,8 +244,8 @@ function DropPhotos({ quiz, existing, onAdded, compact = false }: { quiz: QuizRe
     <section className="section">
       <div className={`dropzone${over ? ' over' : ''}`} onDragOver={(e) => { e.preventDefault(); setOver(true); }} onDragLeave={() => setOver(false)}
         onDrop={(e) => { e.preventDefault(); setOver(false); add(e.dataTransfer.files); }}>
-        <p style={{ fontWeight: 700 }}>{compact ? 'Add more sheets' : 'Add the sheets: one photo per pupil'}</p>
-        {!compact && <p className="muted small">JPEG, PNG or WebP. Each photo is straightened, resized and stripped of its location data on this device, then kept in this browser only. Phone photos: AirDrop, Nearby Share or a cable move them without a cloud album.</p>}
+        <p style={{ fontWeight: 700 }}>{compact ? 'Add more answer sheets' : 'Add the answer sheets: one photo per pupil'}</p>
+        {!compact && <p className="muted small">Photograph each answer sheet flat, with all four black squares in view. JPEG, PNG or WebP. Each photo is resized and stripped of its location data on this device, then kept in this browser only. Phone photos: AirDrop, Nearby Share or a cable move them without a cloud album.</p>}
         <div className="row" style={{ justifyContent: 'center' }}>
           {touch && <button className="btn primary" onClick={() => camera.current?.click()} disabled={!!adding}><Icon name="camera" size={18} />Take a photo</button>}
           <button className={`btn${touch ? '' : ' primary'}`} onClick={() => input.current?.click()} disabled={!!adding}>{adding ? `Adding ${adding.done} of ${adding.total}…` : 'Choose photos'}</button>
@@ -313,14 +320,4 @@ function useWakeLock(on: boolean) {
     nav.wakeLock?.request('screen').then((l) => { lock = l; }).catch(() => undefined);
     return () => { lock?.release().catch(() => undefined); };
   }, [on]);
-}
-
-function PrintableQuiz({ quiz, className }: { quiz: QuizRec; className?: string }) {
-  return (
-    <section className="print-only printable-quiz" aria-hidden="true">
-      <div className="pq-head"><b>{quiz.title}{className ? ` (${className})` : ''}</b><span>Name: ______________________</span></div>
-      {quiz.extract && <p style={{ border: '1px solid #999', padding: 8 }}>{quiz.extract}</p>}
-      <ol>{quiz.keys.map((k) => <li key={k.q}>{k.prompt || '____________'} <span>{isOpen(typeOf(k)) ? <><br />________________________________________________<br />________________________________________________</> : ' ____________'}</span></li>)}</ol>
-    </section>
-  );
 }

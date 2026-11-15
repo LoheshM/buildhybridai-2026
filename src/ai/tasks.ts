@@ -23,7 +23,7 @@ export class OffDeviceAnswer extends Error {
   constructor() { super('A student sheet was answered somewhere other than this laptop. Tickmark stopped the batch.'); this.name = 'OffDeviceAnswer'; }
 }
 
-export type PlanProblem = 'limit' | 'offline' | 'quota' | 'blocked' | 'timeout' | 'device' | 'other';
+export type PlanProblem = 'limit' | 'offline' | 'quota' | 'blocked' | 'timeout' | 'device' | 'other' | 'quota_day';
 export class PlanUnavailable extends Error {
   kind: PlanProblem;
   detail: string;
@@ -33,6 +33,7 @@ const PLAN_TEXT: Record<PlanProblem, string> = {
   limit: 'This browser has reached its share of free cloud requests for now. Try again in a minute.',
   offline: "You're offline and this laptop has no on-device AI to write the plan instead.",
   quota: 'The free cloud AI is busy (rate limit). Try again in a minute.',
+  quota_day: "Today's free cloud allowance for Tickmark is used up; it resets at midnight Pacific time (13:30 in India). On a laptop with Gemini Nano the plan is written on the laptop instead.",
   blocked: 'Tickmark held the request back because it contained something that looked like a name from your class list.',
   timeout: 'The AI took too long to answer. Try again.',
   device: 'The on-device model is not ready on this laptop.',
@@ -245,7 +246,7 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
       throw e;
     }
   } catch (e) {
-    const err = classify(e as Error);
+    const err = classifyPlanError(e as Error);
     if (o.sample && recorded?.totals && !o.keepLocal) {
       ledger.addCall({ task: 'Reteach plan and parent notes', dataClass: 'totals', mode: 'recorded', where: 'recorded', ms: 0, ok: true, note: `Live AI unavailable (${err.message.slice(0, 80)}); showing the plan recorded on ${recorded.recordedAt}` });
       return { response: recorded.totals, where: 'recorded', ms: 0, mode: 'recorded', payload: recorded.totalsPayload ?? totals, note: err.message };
@@ -254,13 +255,14 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
   }
 }
 
-function classify(e: Error): PlanUnavailable {
+export function classifyPlanError(e: Error): PlanUnavailable {
   if (e instanceof PlanUnavailable) return e;
   if (e.name === 'GuardBlocked') return new PlanUnavailable('blocked', e.message);
   if (e.name === 'TimeoutError') return new PlanUnavailable('timeout', e.message);
   if (e.name === 'DeviceUnavailable') return new PlanUnavailable('device', e.message);
   const status = (e as { customErrorData?: { status?: number } }).customErrorData?.status;
-  if (status === 429 || /429|RESOURCE_EXHAUSTED|quota/i.test(e.message)) return new PlanUnavailable('quota', e.message);
+  const details = JSON.stringify((e as { customErrorData?: unknown }).customErrorData ?? '');
+  if (status === 429 || /429|RESOURCE_EXHAUSTED|quota/i.test(e.message)) return new PlanUnavailable(/PerDay|per day|daily/i.test(`${e.message} ${details}`) ? 'quota_day' : 'quota', e.message);
   return new PlanUnavailable('other', e.message);
 }
 

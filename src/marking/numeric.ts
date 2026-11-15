@@ -45,7 +45,10 @@ const unitOf = (raw: string) => {
 
 /** Parses "3.5 cm", "-12", "45%", "£4.50", "1,250 g", "0.75". Returns null if it is not one quantity. */
 export function parseQuantity(raw: string | null | undefined): Quantity | null {
-  let s = (raw ?? '').normalize('NFKC').replace(/[−–—]/g, '-').trim().replace(/[.;:]+$/, '');
+  let s = (raw ?? '').normalize('NFKC').replace(/[−–—]/g, '-').trim().replace(/[.;:]+$/, '')
+    // Indian money: "Rs 50", "₹50/-", "₹ 50 (only)", "1,20,000"
+    .replace(/^(?:rs\.?|inr)\s*/i, '₹').replace(/\s*\/-$/, '').replace(/\s*\(?only\)?$/i, '').replace(/^(₹?\s*-?\d{1,2})((?:,\d{2})+),(\d{3})(?!\d)/, (_, a: string, b: string, c: string) => a + b.replace(/,/g, '') + c);
+  if (/\(\s*[a-z]\s*\)\s*$/i.test(s)) return null; // "3 (c)": a part letter, not a unit
   if (!s) return null;
   let unit = '';
   const cur = s.match(/^([$£€₹])\s*/);
@@ -90,7 +93,7 @@ export function markQuantity(keyText: string, readText: string, tolerance = 0, p
   if (!k.unit && !s.unit && k.percent !== s.percent && eq(k.value, s.value)) {
     if (k.percent) return { status: 'partial', mistake: 'missing_unit', note: 'The % sign is missing' };
     // a percentage question (any wording, Hindi and Tamil too), or no question text: the sign is fine
-    if (!prompt.trim() || /%|per\s*cent|प्रतिशत|சதவீத|शतांश/i.test(prompt)) return { status: 'correct', mistake: null, note: 'Written as a percentage' };
+    if (!prompt.trim() || /(?:as|in)\s+(?:a\s+)?per\s*cent(?:age)?|what\s+per\s*cent(?:age)?|\bpercentage\b|प्रतिशत|சதவீத|शतांश/i.test(prompt)) return { status: 'correct', mistake: null, note: 'Written as a percentage' };
     return { status: 'wrong', mistake: 'wrong_unit', note: 'Check: a % sign on a question that is not about percentages' };
   }
 

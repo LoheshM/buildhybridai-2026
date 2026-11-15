@@ -5,7 +5,7 @@ import { eq, evaluate, isLowest, mixedAlternatives, parse, parseExpr, type Expr,
 import { detect, type MisconceptionId } from './misconceptions';
 import type { MistakeId } from './mistakes';
 import { markAlgebra } from './algebra';
-import { markQuantity } from './numeric';
+import { markQuantity, parseQuantity } from './numeric';
 import { detectType, isOpen, keyCore, marksFor, parseRubric, type QType } from './qtypes';
 import { markChoice, markWord } from './words';
 
@@ -36,6 +36,8 @@ export type Flag =
   | 'check_reading'
   | 'check_spelling'
   | 'talks_to_marker'
+  | 'same_as_question'
+  | 'other_form'
   | 'teacher_changed';
 
 export const FLAG_TEXT: Record<Flag, string> = {
@@ -50,6 +52,8 @@ export const FLAG_TEXT: Record<Flag, string> = {
   check_reading: 'Check the reading',
   check_spelling: 'Check the spelling',
   talks_to_marker: 'Talks to the marker: no suggestion',
+  same_as_question: 'Same as written in the question',
+  other_form: 'Right value, different form from the key',
   teacher_changed: 'Changed by you',
 };
 
@@ -135,18 +139,39 @@ export function keyProblem(kIn: QuestionKey): string | null {
  * same value as the key but not the form asked for. It is never full marks: wrong, named "Copied the question".
  */
 export function copiedFromPrompt(read: string, prompt: string, key: string): boolean {
-  const norm = (s: string) => (s ?? '').normalize('NFKC').toLowerCase().replace(/[−–—]/g, '-').replace(/\s+/g, ' ').trim();
+  const norm = (s: string) => (s ?? '').normalize('NFKC').replace(/\u2044/g, '/').toLowerCase().replace(/[−–—]/g, '-').replace(/\s+/g, ' ').trim();
   const r = norm(read).replace(/\s+/g, ''), p = norm(prompt), kk = norm(key).replace(/\s+/g, '');
-  if (!r || !p || r === kk) return false;
+  // the key's own value ("4" for "x = 4") is the answer, wherever else it appears
+  const rhs = kk.includes('=') ? kk.slice(kk.lastIndexOf('=') + 1) : kk;
+  if (!r || !p || r === kk || r === rhs) return false;
   const body = [...r].map((c) => c.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')).join('\\s*');
   return new RegExp(`(^|[^0-9a-z.])${body}(?![0-9]|\\.\\d)${/[a-z]$/.test(r) ? '(?![a-z])' : ''}`).test(p);
+}
+
+/** The written form of an exact answer: unit, %, fraction, decimal, brackets. */
+export function otherForm(read: string, key: string, type: QType): boolean {
+  const n = (s: string) => (s ?? '').normalize('NFKC').replace(/\u2044/g, '/').toLowerCase().replace(/\s+/g, '');
+  const r = n(read), k = n(key);
+  if (!r || r === k) return false;
+  if (type === 'algebra') { const rhs = (s: string) => (s.includes('=') ? s.slice(s.lastIndexOf('=') + 1) : s); return rhs(r).includes('(') !== rhs(k).includes('('); }
+  const rq = parseQuantity(read), kq = parseQuantity(key);
+  if (rq && kq && (rq.unit || kq.unit) && rq.unit !== kq.unit) return true;
+  if (r.includes('%') !== k.includes('%')) return true;
+  const shape = (s: string) => (s.includes('/') ? 'fraction' : s.includes('.') ? 'decimal' : 'whole');
+  return shape(r.replace(/[^\d./]/g, '')) !== shape(k.replace(/[^\d./]/g, ''));
 }
 
 export function markAnswer(kIn: QuestionKey, read: string, crossedOut = ''): Marked {
   const m = markAnswerByType(kIn, read, crossedOut);
   const type = m.type ?? typeOf(kIn);
-  if ((type === 'number' || type === 'fraction' || type === 'algebra') && (m.status === 'correct' || m.status === 'partial' || m.status === 'unsimplified') && copiedFromPrompt(read, kIn.prompt, keyCore(kIn.answer)))
-    return { ...m, status: 'wrong', misconception: 'copied_question' as Marked['misconception'], note: undefined };
+  // Round 8 (E8-01): re-marking it as wrong marked right answers wrong ("4" on "Solve x + 4 = 8"). The teacher looks instead.
+  const exact = type === 'number' || type === 'fraction' || type === 'algebra';
+  const credited = m.status === 'correct' || m.status === 'partial' || m.status === 'unsimplified';
+  if (exact && credited && copiedFromPrompt(read, kIn.prompt, keyCore(kIn.answer)))
+    return { ...m, flags: [...new Set([...m.flags, 'same_as_question' as const])] };
+  // Round 8 (R8-01): a right value in another form ("0.035 m" when the key is 35 mm, "35/100" for 0.35,
+  // "3(2 + x)" when the key is expanded) may be exactly what the question told the pupil not to write. The teacher looks.
+  if (exact && credited && otherForm(read, keyCore(kIn.answer), type)) return { ...m, flags: [...new Set([...m.flags, 'other_form' as const])] };
   return m;
 }
 
@@ -160,6 +185,11 @@ function markAnswerByType(kIn: QuestionKey, read: string, crossedOut = ''): Mark
   if (!(read ?? '').trim()) return base;
   if (isOpen(type)) return { ...base, status: 'pending' };
   if (type === 'number') {
+    // working then the answer ("4.2 x 1000 = 4200"): the last value counts, and the teacher glances (round 8, R8-05)
+    if (read.includes('=') && markQuantity(keyCore(k.answer), read, 0, '').status === 'unreadable') {
+      const last = read.slice(read.lastIndexOf('=') + 1).trim();
+      if (last && markQuantity(keyCore(k.answer), last, 0, '').status !== 'unreadable') { const m = markAnswerByType(kIn, last, crossedOut); return { ...m, read, flags: [...new Set([...m.flags, 'check_reading' as const])] }; }
+    }
     const v = markQuantity(keyCore(k.answer), read, k.tolerance ?? 0, k.prompt);
     // Nano sometimes adds a decimal point ("1200" read as "12.00"): a reading ending in ".00" is checked
     const zeroPoint = /\d\.0+(?!\d)/.test(read) && !/\.\d/.test(k.answer) && !/[$£€₹]/.test(read + k.answer); // £4.00 is how money is written (E7-12)

@@ -51,7 +51,7 @@ JS = """async () => {
         try {
           const c = await C.cutAnswerSheet(blob, keys); out.found++; out.byKind[kind].ok++;
           for (const a of s.answers) { const isBlank = !a.written && !a.crossedOut; if (isBlank === c.blank.includes(a.q)) out.blankRight++; else { out.blankWrong++; (out.blankBy ??= {})[kind] = (out.blankBy[kind] ?? 0) + 1; if (!isBlank) out.inkMissed = (out.inkMissed ?? 0) + 1; } }
-        } catch (e) { out.byKind[kind].fail++; if (e.name === 'LayoutMismatch') out.mismatch++; else out.other.push(`${s.id} ${kind}: ${e.name}`); }
+        } catch (e) { out.byKind[kind].fail++; if (e.name === 'LayoutMismatch') out.mismatch++; else if (e.name === 'BlurredPhoto') out.blurred = (out.blurred ?? 0) + 1; else out.other.push(`${s.id} ${kind}: ${e.name}`); }
         if (globalThis.__frames) { try { const bx = await C.answerBoxes(blob, keys); (out.frames ??= {})[kind] = Math.min(out.frames[kind] ?? 1, ...bx.map((x) => x.frame)); } catch { /* no corners */ } }
       }
     }
@@ -64,7 +64,7 @@ with sync_playwright() as p:
     pg.goto(URL + ("/#/frames" if "--frames" in sys.argv else "/#/")); pg.wait_for_timeout(2000)
     r = pg.evaluate(JS)
     b.close()
-print(f"cut {r['found']}/{r['total']} distorted photos; refused as another quiz {r['mismatch']}; other failures {len(r['other'])}; blank decisions {r['blankRight']} right, {r['blankWrong']} wrong")
+print(f"cut {r['found']}/{r['total']} distorted photos; refused as blurred {r.get('blurred', 0)} (expected: the 3 px blur set); refused as another quiz {r['mismatch']}; other failures {len(r['other'])}; blank decisions {r['blankRight']} right, {r['blankWrong']} wrong")
 for k, v in r["byKind"].items(): print(f"  {k}: {v['ok']} ok, {v['fail']} failed")
 for x in r["other"][:10]: print("  ", x)
 print("wrong blank decisions by distortion:", r.get("blankBy"), "written boxes called blank:", r.get("inkMissed", 0))

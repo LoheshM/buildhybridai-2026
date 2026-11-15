@@ -298,7 +298,7 @@ function TypedGrid({ cls, quiz, existing, onSaved }: { cls: ClassRec; quiz: Quiz
       const answers = vals[st.id];
       if (!answers.some((a) => a.trim())) continue;
       const prev = existing.find((s) => s.studentId === st.id && s.source === 'typed');
-      const marks = markRead(quiz.keys, { answers: answers.map((a, i) => ({ q: quiz.keys[i].q, crossedOutText: '', finalAnswer: a })) }).map((m) => ({ ...m, checked: m.status !== 'unreadable' && m.status !== 'pending' }));
+      const marks = markRead(quiz.keys, { answers: answers.map((a, i) => ({ q: quiz.keys[i].q, crossedOutText: '', finalAnswer: a })) }).map((m) => ({ ...m, checked: m.status !== 'unreadable' && m.status !== 'pending' && m.flags.length === 0 })); // flagged answers wait for the teacher (round 8, R8-03)
       await store.putSheet({ id: prev?.id ?? uid('sh'), quizId: quiz.id, source: 'typed', status: marks.every((m) => m.checked) ? 'checked' : 'read', studentId: st.id, nameConfident: true, readName: st.name, marks, where: 'local', createdAt: prev?.createdAt ?? Date.now() });
       n++;
     }

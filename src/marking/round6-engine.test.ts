@@ -75,8 +75,8 @@ describe('round 7 J7-01: copying the question is not the answer', () => {
     ];
     for (const [answer, prompt, read] of cases) {
       const m = markAnswer({ q: 1, prompt, answer }, read);
-      expect(m.status, `${prompt} ${read}`).toBe('wrong');
-      expect(m.misconception, prompt).toBe('copied_question');
+      // round 8 (E8-01): flagged for the teacher, never re-marked by code
+      expect(m.flags, `${prompt} ${read}`).toContain('same_as_question');
     }
   });
   it('the right answer, or the key itself appearing in the question, is still right', () => {

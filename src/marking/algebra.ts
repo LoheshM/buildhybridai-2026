@@ -165,7 +165,8 @@ export function markAlgebra(keyText: string, readText: string, prompt = ''): Alg
   const head = read.match(/^(-?[\d./]+)\s+(.*=.*)$/); // the answer, then the working ("4 2x=8")
   const sum = read.match(/^[^=a-z]+=\s*(-?[\d./]+(?:\s+\d+\/\d+)?)$/i); // arithmetic then its value ("8/2 = 4")
   let working = false;
-  if (tail && !(/^\d+$/.test(tail[2]) && /^\d+\/\d+$/.test(tail[3])) && compile(tail[3])) { read = tail[3]; working = true; }
+  const mixed = tail && /^\d+$/.test(tail[2]) && /^(\d+)\/(\d+)$/.test(tail[3]) && Number(tail[3].split('/')[0]) < Number(tail[3].split('/')[1]);
+  if (tail && !mixed && compile(tail[3])) { read = tail[3]; working = true; }
   else if (head && compile(head[1])) { read = head[1]; working = true; }
   else if ((read.match(/=/g) ?? []).length >= 2) { read = read.slice(read.lastIndexOf('=') + 1).trim(); working = true; }
   else if (sum && splitAssignment(keyText).variable && !/[a-z]/i.test(read)) { read = sum[1]; working = true; }

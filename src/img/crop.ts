@@ -14,6 +14,12 @@ const FRAME_MIN = 0.6;
 /** A frame pixel is at least 13% darker than the paper: a 3 px blur leaves the printed line about that dark (round 7, E7-16). */
 const FRAME_DARK = 0.87;
 
+export class BlurredPhoto extends Error {
+  constructor() { super('This photo is too blurred to read safely: thin letters fade into the paper. Retake it with the phone held still, in good light.'); this.name = 'BlurredPhoto'; }
+}
+/** Median frame darkness above this is a photo blurred by 2.5 px or more (sample photos: 0.36 sharp, 0.74 at 2 px, 0.78 at 2.5 px). */
+const BLUR_MAX = 0.785;
+
 export class NoMarkers extends Error {
   constructor() { super("Tickmark couldn't find the four black corner squares. Retake the photo with the whole answer sheet in view, flat and in good light."); this.name = 'NoMarkers'; }
 }
@@ -35,23 +41,25 @@ export function inkShare(c: OffscreenCanvas, borderPx = 13, ratio = 0.7): number
   const { data, width: w, height: h } = ctx.getImageData(0, 0, c.width, c.height);
   const iw = w - 2 * borderPx, ih = h - 2 * borderPx;
   if (iw <= 0 || ih <= 0) return 0;
-  let lum = new Float32Array(iw * ih);
+  const lum = new Float32Array(iw * ih);
   for (let y = 0; y < ih; y++) for (let x = 0; x < iw; x++) { const p = ((y + borderPx) * w + x + borderPx) * 4; lum[y * iw + x] = (data[p] * 299 + data[p + 1] * 587 + data[p + 2] * 114) / 1000; }
-  // the faint-pencil pass looks at a lightly blurred image: a pencil stroke survives, pixel noise in a dim photo doesn't (round 7, E7-08)
-  if (ratio > 0.75) {
-    const b = new Float32Array(iw * ih);
-    for (let y = 0; y < ih; y++) for (let x = 0; x < iw; x++) {
-      let sum = 0, n = 0;
-      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < iw && yy < ih) { sum += lum[yy * iw + xx]; n++; } }
-      b[y * iw + x] = sum / n;
-    }
-    lum = b;
-  }
   const sorted = Float32Array.from(lum).sort();
   const paper = sorted[Math.floor(sorted.length * 0.6)]; // the page's own brightness in this box
   const dark = new Uint8Array(iw * ih);
   // relative to the box's own paper, so a dim photo's ink still counts (round 5 distortion check)
   for (let i = 0; i < lum.length; i++) dark[i] = lum[i] < paper * ratio ? 1 : 0;
+  // The faint-pencil pass keeps only pixels that belong to a stroke (3 or more of their 8 neighbours dark too): a pencil
+  // line passes, scattered noise in a dim photo doesn't (round 8: blurring first lost pencil 25% darker than the paper).
+  if (ratio > 0.75) {
+    const kept = new Uint8Array(iw * ih);
+    for (let y = 1; y < ih - 1; y++) for (let x = 1; x < iw - 1; x++) {
+      if (!dark[y * iw + x]) continue;
+      let n = 0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) if ((dx || dy) && dark[(y + dy) * iw + x + dx]) n++;
+      if (n >= 3) kept[y * iw + x] = 1;
+    }
+    dark.set(kept);
+  }
   // Straight printed lines (a box edge left in by a slightly skewed photo) are thin: only runs of at most 4 dark
   // rows are removed. A shadow across the box is a wide band, and erasing it erased the handwriting in it (round 7, E7-05);
   // left in, the box counts as written and goes to Nano, and an empty reading is flagged for the teacher.
@@ -113,10 +121,39 @@ export function frameScore(c: OffscreenCanvas, padPx = Math.round(1.5 * PX_PER_M
   // relative to this box's own paper: a dim or blurred photo keeps the frame about 25% darker than the paper
   const dark = (x: number, y: number) => x >= 0 && y >= 0 && x < w && y < h && lum(x, y) < paper * FRAME_DARK;
   let hit = 0, n = 0;
-  const near = (x0: number, y0: number, horiz: boolean) => { for (let d = -band; d <= band; d++) if (horiz ? dark(x0, y0 + d) : dark(x0 + d, y0)) return true; return false; };
+  // a printed line is at least 2 px thick across the band; noise in a dim photo is single pixels (round 8, E8-05)
+  const near = (x0: number, y0: number, horiz: boolean) => { for (let d = -band; d < band; d++) if (horiz ? dark(x0, y0 + d) && dark(x0, y0 + d + 1) : dark(x0 + d, y0) && dark(x0 + d + 1, y0)) return true; return false; };
   for (let x = padPx + 6; x < w - padPx - 6; x += 2) { n += 2; if (near(x, padPx, true)) hit++; if (near(x, h - 1 - padPx, true)) hit++; }
   for (let y = padPx + 6; y < h - padPx - 6; y += 2) { n += 2; if (near(padPx, y, false)) hit++; if (near(w - 1 - padPx, y, false)) hit++; }
   return n ? hit / n : 0;
+}
+
+/**
+ * How dark the printed frame line is, relative to the box's paper (median over the frame; ~0.2 sharp, nearer 1 blurred).
+ * A blurred photo spreads the 0.4 mm line out; the same blur fades a pupil's thin letters until they look like empty paper.
+ */
+export function frameDarkness(c: OffscreenCanvas, padPx = Math.round(1.5 * PX_PER_MM), band = 4): number {
+  const ctx = c.getContext('2d', { willReadFrequently: true })!;
+  const { data, width: w, height: h } = ctx.getImageData(0, 0, c.width, c.height);
+  const lum = (x: number, y: number) => { const p = (y * w + x) * 4; return (data[p] * 299 + data[p + 1] * 587 + data[p + 2] * 114) / 1000; };
+  const sample: number[] = [];
+  for (let y = 0; y < h; y += 3) for (let x = 0; x < w; x += 3) sample.push(lum(x, y));
+  sample.sort((a, b) => a - b);
+  const paper = sample[Math.floor(sample.length * 0.6)] || 1;
+  const mins: number[] = [];
+  for (let x = padPx + 6; x < w - padPx - 6; x += 3) for (const y0 of [padPx, h - 1 - padPx]) {
+    let m = 255; for (let d = -band; d <= band; d++) { const y = y0 + d; if (y >= 0 && y < h) m = Math.min(m, lum(x, y)); }
+    mins.push(m / paper);
+  }
+  mins.sort((a, b) => a - b);
+  return mins[Math.floor(mins.length / 2)] ?? 1;
+}
+
+/** For calibration: the median frame darkness of a photo's boxes. */
+export async function photoSharpness(photo: Blob, keys: QuestionKey[]): Promise<number> {
+  const boxes = await answerBoxes(photo, keys);
+  const v = boxes.map((b) => frameDarkness(b.c)).sort((a, b) => a - b);
+  return v[Math.floor(v.length / 2)];
 }
 
 export const BLANK_BELOW = 0.002;
@@ -167,6 +204,9 @@ export async function cutAnswerSheet(photo: Blob, keys: QuestionKey[]): Promise<
   // box scores 1.0; a photo of another quiz's sheet has at least one box below 0.6. A sheet with the same layout
   // from another quiz can't be told apart this way.
   if ([nameCanvas, ...answers.map(({ c }) => c)].some((c) => frameScore(c) < FRAME_MIN)) throw new LayoutMismatch();
+  // Round 8 (E8-03): at 2.5 px of blur a single letter fades below the faint-pencil threshold and would read as a blank
+  const darkness = answers.map(({ c }) => frameDarkness(c)).sort((a, b) => a - b);
+  if (darkness.length && darkness[Math.floor(darkness.length / 2)] > BLUR_MAX) throw new BlurredPhoto();
   // blank only if there is no ink at all, faint pencil included (round 6, E6-08): a faint answer goes to Nano,
   // and if it comes back empty the teacher is asked (unread ink), never a silent 0
   const blank = answers.filter(({ c }) => inkShare(c) < BLANK_BELOW && inkShare(c, 13, FAINT) < BLANK_BELOW).map(({ b }) => b.q);

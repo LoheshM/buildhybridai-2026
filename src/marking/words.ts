@@ -31,7 +31,7 @@ const isLetterKey = (key: string) => /^\(?[A-Ha-h]\)?[.)]?$/.test(key.trim());
 
 /** The key's letter mode: an option letter, except "F" (or "T") on a true/false question. */
 // "F" is False on a true/false question (or with no question text); otherwise it is option F
-export const choiceLetterMode = (key: string, prompt = '') => isLetterKey(key) && !(/^\(?f\)?[.)]?$/i.test(key.trim()) && (!prompt.trim() || /\btrue\s*(?:or|\/)\s*false\b|\bT\s*(?:or|\/)\s*F\b|\bfalse\b/i.test(prompt)));
+export const choiceLetterMode = (key: string, prompt = '') => isLetterKey(key) && !(/^\(?f\)?[.)]?$/i.test(key.trim()) && (!prompt.trim() || /\btrue\s*(?:or|\/)\s*false\b|\bT\s*(?:or|\/)\s*F\b|\bfalse\b|✓\s*(?:or|\/)\s*✗|\bright or wrong\b|\bis (?:this|the statement) (?:correct|true)\b/i.test(prompt)));
 
 export function markChoice(key: string, read: string, prompt = ''): ChoiceVerdict & { two?: boolean } {
   const letterMode = choiceLetterMode(key, prompt);
@@ -40,6 +40,8 @@ export function markChoice(key: string, read: string, prompt = ''): ChoiceVerdic
   const joined = (read ?? '').replace(/\b(?:and|or|then|plus|also|&)\b|[+&]/gi, ' ');
   const letters = new Set((joined.toUpperCase().match(/(?:^|[^A-Z])([A-H])(?=[^A-Z]|$)/g) ?? []).map((x) => x.replace(/[^A-H]/g, '')));
   if (letters.size > 1 && /^[\s(),.;/A-H]*$/i.test(joined)) return { status: 'unreadable', picked: null, two: true };
+  // a true/false word against an F or T option key: maybe a true/false question in other words ("✓ or ✗", "is this correct?"): the teacher looks
+  if (letterMode && /^[FT]$/.test(k ?? '') && /^(true|false|yes|no|✓|✗)[.!]?$/i.test((read ?? '').trim())) return { status: 'unreadable', picked: null };
   const s = normChoice(read, letterMode);
   if (!s) return { status: 'unreadable', picked: null };
   return { status: s === k ? 'correct' : 'wrong', picked: s };

@@ -49,8 +49,8 @@ export function deviceOnlyAi(): AI {
 
 // ---- Remote Config: operator settings only. It can tighten behaviour, never loosen privacy. ----
 export interface Settings { cloudModel: string; minGroupSize: number; cloudFeaturesEnabled: boolean; sampleLiveReads: number; source: 'default' | 'remote' }
-const DEFAULTS = { cloud_model: DEFAULT_CLOUD_MODEL, min_group_size: 3, cloud_features_enabled: true, sample_cloud_live_reads: 3 };
-let settings: Settings = { cloudModel: DEFAULT_CLOUD_MODEL, minGroupSize: 3, cloudFeaturesEnabled: true, sampleLiveReads: 3, source: 'default' };
+const DEFAULTS = { cloud_model: DEFAULT_CLOUD_MODEL, min_group_size: 3, cloud_features_enabled: true, sample_cloud_live_reads: 0 };
+let settings: Settings = { cloudModel: DEFAULT_CLOUD_MODEL, minGroupSize: 3, cloudFeaturesEnabled: true, sampleLiveReads: 0, source: 'default' };
 
 export const currentSettings = () => settings;
 
@@ -58,7 +58,7 @@ export const currentSettings = () => settings;
 export function clampSettings(raw: { cloud_model?: string; min_group_size?: number; cloud_features_enabled?: boolean; sample_cloud_live_reads?: number }, source: Settings['source']): Settings {
   const model = (CLOUD_MODELS as readonly string[]).includes(raw.cloud_model ?? '') ? raw.cloud_model! : DEFAULT_CLOUD_MODEL;
   const k = Number.isFinite(raw.min_group_size) ? Math.min(10, Math.max(3, Math.floor(raw.min_group_size!))) : 3;
-  const live = Number.isFinite(raw.sample_cloud_live_reads) ? Math.min(3, Math.max(0, Math.floor(raw.sample_cloud_live_reads!))) : 3;
+  const live = Number.isFinite(raw.sample_cloud_live_reads) ? Math.min(3, Math.max(0, Math.floor(raw.sample_cloud_live_reads!))) : 0;
   return { cloudModel: model, minGroupSize: k, cloudFeaturesEnabled: raw.cloud_features_enabled !== false, sampleLiveReads: live, source };
 }
 

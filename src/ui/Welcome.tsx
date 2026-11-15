@@ -53,7 +53,7 @@ export function Welcome() {
         <div className="doors">
           {SAMPLES.map((k) => <ClassDoor key={k} k={k} />)}
         </div>
-        <p className="small muted mt">The three classes are made up: invented pupils, answer sheets filled in with open-licence handwriting fonts, mistakes planted on purpose. With Gemini Nano they are read live on this laptop; without it, cloud Gemini readings recorded on 15 Nov stand in.</p>
+        <p className="small muted mt">The three classes are made up: invented pupils, answer sheets filled in with open-licence handwriting fonts, mistakes planted on purpose. With Gemini Nano they are read live on this laptop; without it, Gemini Nano's own readings, recorded on the author's laptop, are replayed and labelled as recordings.</p>
       </section>
 
       {st && d.state !== 'available' && (

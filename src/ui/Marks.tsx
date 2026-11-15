@@ -89,6 +89,7 @@ export function WhereChip({ where, ms, short = false }: { where?: string; ms?: n
   const secs = ms ? ` · ${(ms / 1000).toFixed(1)} s` : '';
   if (where === 'on_device') return <span className="pill device" title="Read by Gemini Nano on this laptop"><i />{short ? 'Laptop' : 'On this laptop'}{secs}</span>;
   if (where === 'in_cloud') return <span className="pill cloud" title="Read by Gemini in the cloud (made-up sample sheets only)"><i />{short ? 'Cloud' : 'Cloud Gemini'}{secs}</span>;
+  if (where === 'recorded_device') return <span className="pill device recorded" title="Gemini Nano's own reading of this made-up sheet, recorded on the author's laptop; this browser has no on-device AI"><i />{short ? 'Nano, rec.' : 'Gemini Nano · recorded'}{secs}</span>;
   if (where === 'recorded') return <span className="pill cloud" title="A cloud reading recorded earlier, used when this browser has no on-device AI"><i />{short ? 'Recorded' : 'Recorded cloud reading'}</span>;
   if (where === 'typed' || where === 'local') return <span className="pill">Typed in</span>;
   return null;

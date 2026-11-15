@@ -59,7 +59,7 @@ export interface Suggestion {
   contradicts?: boolean;
   lines?: { score: number; max: number }[]; // paragraphs: one per rubric line
   reason: string;
-  where: 'on_device' | 'in_cloud' | 'recorded';
+  where: 'on_device' | 'in_cloud' | 'recorded' | 'recorded_device';
   ms: number;
   adjusted?: boolean; // the teacher changed the pencil before inking it
 }

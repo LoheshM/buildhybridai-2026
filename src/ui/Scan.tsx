@@ -3,7 +3,9 @@ import { ensureAppCheck } from '../ai/firebase';
 import { DEVICE_STATE_TEXT } from '../ai/gate';
 import { normalizeUpload } from '../ai/images';
 import { setRosterTokens, sha256Hex } from '../ai/netGuard';
-import { samplePhotoUrl } from '../app/boot';
+import { samplePhotoUrl, sampleKeyOfClass } from '../app/boot';
+import { dayOf, deviceRecordingInfo } from '../ai/deviceRecording';
+import { recordedInfo } from '../ai/tasks';
 import { href } from '../app/router';
 import { onRun, onSheetChanged, requeueForDevice, runQuiz, runState, stopRun, type RunState } from '../app/runner';
 import { scoreSheet, typeOf } from '../marking/mark';
@@ -58,7 +60,7 @@ export function Scan({ quizId }: { quizId: string }) {
       {cls.sample && (
         <Notice>
           <p>These {sheets.length} answer sheets are made up: invented names, handwriting from open-licence fonts, mistakes planted on purpose.
-            {deviceReady ? ' Gemini Nano reads them on this laptop, exactly like a real class.' : ' Without on-device AI here, the first 3 are read live by cloud Gemini (allowed only because they are made up) and the rest use cloud readings recorded on 15 Nov.'}</p>
+            {deviceReady ? ' Gemini Nano reads them on this laptop, exactly like a real class.' : <> {fallbackText(cls.id)}</>}</p>
         </Notice>
       )}
       {!run.running && cls.sample && deviceReady && notDevice > 0 && (
@@ -341,4 +343,13 @@ function useWakeLock(on: boolean) {
     nav.wakeLock?.request('screen').then((l) => { lock = l; }).catch(() => undefined);
     return () => { lock?.release().catch(() => undefined); };
   }, [on]);
+}
+
+/** What a browser without Gemini Nano sees for a made-up class, with the dates from the recordings themselves. */
+function fallbackText(classId: string): string {
+  const k = sampleKeyOfClass(classId);
+  const dev = k ? deviceRecordingInfo(k) : null;
+  const cloud = k ? recordedInfo(k) : null;
+  if (dev) return `This browser has no on-device AI, so Tickmark replays Gemini Nano's own readings of these sheets, recorded on the author's laptop on ${dayOf(dev.recordedAt)} (${dev.chrome}). Its slips are kept, so you see what Nano really reads; the marking code runs here.`;
+  return `This browser has no on-device AI, so these sheets use cloud Gemini readings recorded on ${cloud ? dayOf(cloud.recordedAt) : 'an earlier date'}. Cloud Gemini reads them more accurately than Gemini Nano does, and pupils' sheets are only ever read by Nano.`;
 }

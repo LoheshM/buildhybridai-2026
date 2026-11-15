@@ -280,7 +280,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
         {open && s && pending && (
           <p className="sugg">
             <span className="why">{s.reason || 'No reason given.'}</span>{' '}
-            <span className="src">({s.where === 'on_device' ? `Gemini Nano on this laptop, ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? 'cloud Gemini, recorded' : 'cloud Gemini, made-up sheet'}{s.adjusted ? '; changed by you' : ''})</span>
+            <span className="src">({s.where === 'on_device' ? `Gemini Nano on this laptop, ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded_device' ? `Gemini Nano, recorded on the author's laptop, ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? 'cloud Gemini, recorded' : 'cloud Gemini, made-up sheet'}{s.adjusted ? '; changed by you' : ''})</span>
           </p>
         )}
         {open && !s && pending && m.read && <div className="sugg"><span className="tiny">No suggestion for this answer. Tick the key points it states, or set the rubric scores.</span></div>}

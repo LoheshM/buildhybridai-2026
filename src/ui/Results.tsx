@@ -159,8 +159,9 @@ function summarise(sheets: SheetRec[], quiz: QuizRec, cls: ClassRec) {
       return Math.round(((ref as boolean[]).filter(Boolean).length / n) * out * 2) / 2;
     }),
   } : null;
+  const nanoRec = sheets.filter((s) => s.where === 'recorded_device').length;
   const recorded = sheets.filter((s) => s.where === 'recorded').length, cloud = sheets.filter((s) => s.where === 'in_cloud').length, typed = sheets.filter((s) => s.where === 'local').length;
-  const sourceLabel = [cloud ? `${cloud} cloud` : '', recorded ? `${recorded} recorded` : '', typed ? `${typed} typed` : ''].filter(Boolean).join(' · ') || '–';
+  const sourceLabel = [nanoRec ? `${nanoRec} Gemini Nano readings recorded on the author's laptop` : '', cloud ? `${cloud} cloud` : '', recorded ? `${recorded} recorded cloud` : '', typed ? `${typed} typed` : ''].filter(Boolean).join(' · ') || '–';
   return { avg, waiting, deviceTime, onDevice: sheets.filter((s) => s.where === 'on_device').length, sourceLabel, questions, acc };
 }
 

@@ -4,6 +4,7 @@
 import { classify, isSample, type SampleImage, type StudentImage } from '../ai/images';
 import { noteSampleDeviceFailure, noteSampleDeviceSuccess, readSampleSheet, readStrip, rereadStrip, resetLiveSampleReads, sampleDeviceUsable, suggestOpen, type ReadResult } from '../ai/tasks';
 import { CancelledError } from '../ai/queue';
+import { capture, deviceReadFor } from '../ai/deviceRecording';
 import { cutAnswerSheet } from '../img/crop';
 import { cancelQueued } from '../ai/queue';
 import { resetAllModels } from '../ai/models';
@@ -93,6 +94,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
             try {
               first = await readStrip(strip, quiz.keys, cut.blank, sample ? 'sample' : 'student');
               if (sample) noteSampleDeviceSuccess();
+              if (capture && sample) capture.reads[(img as SampleImage).sampleId] = { first: structuredClone(first.read), firstMs: first.ms };
             } catch (e) {
               if (!sample || e instanceof CancelledError || (e as Error).name === 'AbortError') throw e;
               noteSampleDeviceFailure(); // made-up sheets only: fall back to the cloud path below
@@ -110,6 +112,13 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           if (qs.length && strip && first.where === 'on_device') {
             const second = await rereadStrip(strip, qs, quiz.keys, sample ? 'sample' : 'student');
             marks = mergeReread(marks, second.answers, quiz.keys); rereadMs = second.ms;
+            const got = capture && sample ? capture.reads[(img as SampleImage).sampleId] : undefined;
+            if (got) { got.second = Object.fromEntries(second.answers); got.secondMs = second.ms; }
+          } else if (qs.length && first.where === 'recorded_device') {
+            // Nano's recorded second read, for the questions today's code asks about and the recording holds
+            const rec = deviceReadFor((img as SampleImage).sampleId)?.read;
+            const answers = new Map(Object.entries(rec?.second ?? {}).map(([q, v]) => [Number(q), v] as const).filter(([q]) => qs.includes(q)));
+            if (answers.size) { marks = mergeReread(marks, answers, quiz.keys); rereadMs = rec!.secondMs; }
           }
           // a box with ink in it that came back empty was not read, whatever the model says: the teacher looks
           marks = marks.map((m) => (!m.read.trim() && !cut.blank.includes(m.q) ? { ...m, status: 'unreadable' as const, flags: [...new Set([...m.flags, 'unreadable' as const])] } : m));

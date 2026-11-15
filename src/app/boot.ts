@@ -3,6 +3,7 @@ import { setSampleHashes } from '../ai/images';
 import { ledger } from '../ai/ledger';
 import { setAllowedImageHashes } from '../ai/netGuard';
 import { setRecorded, type Recorded } from '../ai/tasks';
+import { setDeviceRecording, type DeviceRecording } from '../ai/deviceRecording';
 import { loadRemoteSettings } from '../ai/firebase';
 import type { QuestionKey } from '../marking/mark';
 import type { QType } from '../marking/qtypes';
@@ -62,6 +63,10 @@ export async function boot() {
     try {
       const r = await fetch(`/samples/${k}/recorded-cloud.json`);
       if (r.ok) setRecorded(k, (await r.json()) as Recorded);
+    } catch { /* optional */ }
+    try {
+      const r = await fetch(`/samples/${k}/recorded-device.json`);
+      if (r.ok) setDeviceRecording(k, (await r.json()) as DeviceRecording);
     } catch { /* optional */ }
   }));
   for (const k of SAMPLES) await ensureSampleClass(k);

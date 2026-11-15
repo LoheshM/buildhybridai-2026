@@ -3,7 +3,8 @@
 import { onOutbound, type OutboundEvent } from './netGuard';
 
 export type DataClass = 'student' | 'sample' | 'totals' | 'system';
-export type Where = 'on_device' | 'in_cloud' | 'recorded' | 'local' | 'blocked';
+/** recorded_device: Gemini Nano's own output, recorded on the author's laptop (sample sheets only). recorded: cloud Gemini's. */
+export type Where = 'on_device' | 'in_cloud' | 'recorded' | 'recorded_device' | 'local' | 'blocked';
 
 export interface CallEvent {
   kind: 'call';

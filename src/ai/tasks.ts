@@ -17,6 +17,7 @@ import { typeOf, type QuestionKey, type Suggestion } from '../marking/mark';
 import { toSuggestion } from '../marking/open';
 import { isOpen, keyPoints, parseRubric } from '../marking/qtypes';
 import { CancelledError, enqueue, TimeoutError } from './queue';
+import { capture, deviceReadFor, deviceSuggestionFor } from './deviceRecording';
 import { coerceSheetRead, passageSuggestSchema, sheetSchema, shortSuggestSchema, stripSchema, type RawSuggestion, type SheetRead, type TotalsResponse } from './schemas';
 
 export class OffDeviceAnswer extends Error {
@@ -149,6 +150,12 @@ export const resetLiveSampleReads = () => { liveSampleReads = 0; cloudUnreachabl
  */
 export async function readSampleSheet(img: SampleImage, keys: QuestionKey[]): Promise<ReadResult> {
   const questionCount = keys.length;
+  // first choice without Nano here: Nano's own reading of this sheet, recorded on the author's laptop
+  const dev = deviceReadFor(img.sampleId);
+  if (dev) {
+    ledger.addCall({ task: 'Read sample sheet', dataClass: 'sample', mode: 'recorded', where: 'recorded_device', ms: dev.read.firstMs, ok: true, note: `Gemini Nano's reading, recorded on ${dev.rec.recordedAt} (${dev.rec.chrome})` });
+    return { read: coerceSheetRead(structuredClone(dev.read.first), questionCount), where: 'recorded_device', ms: dev.read.firstMs };
+  }
   if (!cloudUnreachable && liveSampleReads < currentSettings().sampleLiveReads && currentSettings().cloudFeaturesEnabled && canCallCloud()) {
     liveSampleReads++;
     noteCloudCall();
@@ -192,7 +199,9 @@ export async function suggestOpen(text: string, key: QuestionKey, who: { student
       try {
         const r = await call('suggest', deviceOnly ? InferenceMode.ONLY_ON_DEVICE : InferenceMode.PREFER_ON_DEVICE, [prompt], student ? 'student' : 'sample', student ? 'Suggest a mark' : 'Suggest a mark (sample)', { queue: true, timeoutMs: SUGGEST_TIMEOUT_MS, studentLock: deviceOnly, schema });
         if (deviceOnly && r.where !== 'on_device') throw new OffDeviceAnswer();
-        return toSuggestion(key, parseJson(r.text) as RawSuggestion, r.where === 'on_device' ? 'on_device' : 'in_cloud', r.ms);
+        const raw = parseJson(r.text) as RawSuggestion;
+        if (capture && !student && r.where === 'on_device') capture.suggestions[`${(who as { sample: string }).sample}:${key.q}`] = { raw: structuredClone(raw), ms: r.ms };
+        return toSuggestion(key, raw, r.where === 'on_device' ? 'on_device' : 'in_cloud', r.ms);
       } catch (e) {
         if (e instanceof CancelledError || (e as Error).name === 'AbortError' || (e as Error).name === 'OffDeviceAnswer' || (e as Error).name === 'GuardBlocked') throw e;
         if ((e as Error).name !== 'TimeoutError' && (e as Error).name !== 'SyntaxError') break;
@@ -203,6 +212,11 @@ export async function suggestOpen(text: string, key: QuestionKey, who: { student
     if (deviceOnly) return null;
   }
   const sampleId = (who as { sample: string }).sample;
+  const dev = deviceSuggestionFor(sampleId, key.q);
+  if (dev) {
+    ledger.addCall({ task: 'Suggest a mark (sample)', dataClass: 'sample', mode: 'recorded', where: 'recorded_device', ms: dev.s.ms, ok: true, note: `Gemini Nano's suggestion, recorded on ${dev.rec.recordedAt}` });
+    return toSuggestion(key, structuredClone(dev.s.raw), 'recorded_device', dev.s.ms);
+  }
   const rec = recordingFor(sampleId)?.suggestions?.[`${sampleId}:${key.q}`];
   if (!rec) return null;
   ledger.addCall({ task: 'Suggest a mark (sample)', dataClass: 'sample', mode: 'recorded', where: 'recorded', ms: 0, ok: true, note: `Recorded cloud suggestion from ${recordingFor(sampleId)!.recordedAt}` });

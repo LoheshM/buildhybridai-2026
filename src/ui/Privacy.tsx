@@ -8,7 +8,7 @@ import { BUILD } from '../config';
 import { storageEstimate, store } from '../store/db';
 import { useLedger, useLoad } from './hooks';
 
-const WHERE_TEXT: Record<CallEvent['where'], string> = { on_device: 'On this laptop', in_cloud: 'Cloud AI', recorded: 'Recorded reading', local: 'Not completed', blocked: 'Blocked' };
+const WHERE_TEXT: Record<CallEvent['where'], string> = { on_device: 'On this laptop', in_cloud: 'Cloud AI', recorded: 'Recorded cloud reading', recorded_device: 'Gemini Nano, recorded', local: 'Not completed', blocked: 'Blocked' };
 const DATA_TEXT: Record<CallEvent['dataClass'], string> = { student: 'Student sheet', sample: 'Sample sheet (made up)', totals: 'Class totals', system: 'Set-up' };
 const time = (t: number) => new Date(t).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 

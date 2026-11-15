@@ -14,7 +14,7 @@ Tickmark is for maths teachers in grades 4–8 who mark paper worksheets. It sta
 **Try it:** https://buildhybridai-lohe.web.app. It's free and needs no sign-in. Built for #BuildHybridAI 2026 on Firebase AI Logic hybrid inference.
 
 ## Why
-- **Marking takes hours every week.** Teachers spend a median 5 hours a week on grading and feedback (EdWeek Research Center, 2022). With Tickmark the reading runs unattended (about 11 s a sheet) and the teacher looks only at the flagged answers: 17–24% of answers in our runs. We have not yet timed teachers end to end.
+- **Marking takes hours every week.** Teachers spend a median 5 hours a week on grading and feedback (EdWeek Research Center, 2022). With Tickmark the reading runs unattended (about 12 s a sheet) and the teacher looks only at the flagged answers: 14–24% of answers in our runs. We have not yet timed teachers end to end.
 - **Feedback that names the mistake is what helps,** and that's exactly what nobody has time to tally by hand.
 - **The work being marked is children's personal data.**
   - UK DfE guidance recommends that "personal data is not used in generative AI tools".
@@ -67,13 +67,13 @@ Tickmark routes every AI call by **what data it carries**, not by how hard the t
 ## Measured (Chrome 157 on a 16 GB laptop, 15 Nov 2026)
 | | Sample class (handwriting fonts) | Real handwritten digits (MNIST) |
 |---|---|---|
-| Answers read exactly by Gemini Nano on the laptop | 84–90% across runs | 78.6% (220 of 280) |
+| Answers read exactly by Gemini Nano on the laptop | 89.3% (250 of 280) in the final run; 84–90% across runs | 78.6% (220 of 280) |
 | **Misreads the teacher was not asked to check** | **0 of 280** | **0 of 280** |
-| Answers flagged for the teacher (how many were real misreads) | 16.8% (45 of 47) | 24.3% (60 of 68) |
-| Names matched to the class list (confident) | 28 of 28 (24) | 26 of 28 confident |
-| Time per sheet on the laptop, including the second read | 11 s | 11 s |
+| Answers flagged for the teacher (how many were real misreads) | 13.9% (30 of 39) | 24.3% (60 of 68) |
+| Names matched to the class list (confident) | 28 of 28 | 26 of 28 confident |
+| Time per sheet on the laptop, including the second read | 12 s | 11 s |
 | Same sheets read by cloud Gemini (`gemini-3.5-flash-lite`) | 279 of 280 | not sent: real-student path |
-| Lesson plan | cloud 9–17 s; on the laptop 13 s | |
+| Lesson plan | cloud 9–17 s; on the laptop 13–60 s (it waits up to 2 minutes) | |
 
 **What these numbers mean:**
 - **Sample class:** generated sheets (`tools/samples/`): made-up students, handwriting rendered from open-licence fonts, and planted mistakes.

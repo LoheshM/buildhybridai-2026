@@ -31,7 +31,8 @@ export const readSheetPrompt = (keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer
   `\nAlso copy the handwritten student name (empty string if there is none).`;
 
 const COPY_ONLY = 'Copy the student\'s handwriting exactly as written, letter by letter, keeping every spelling mistake and every wrong answer; never correct, complete or answer anything yourself. ' +
-  'Use "a/b" for a fraction and "w a/b" with a space for a mixed number. If the student struck an answer through with a line, put it in crossedOut and the other answer in answer.';
+  // no literal placeholders ("a/b", "answer"): Nano echoed them back instead of reading (16 Nov bench)
+  'Write a fraction with a slash, and a whole number before a fraction with a space, as the student wrote them; never simplify. If the student struck something through with a line, give it as crossed out.';
 
 /**
  * The strip: each answer box cut out of a Tickmark answer sheet, on its own labelled row. No
@@ -39,7 +40,7 @@ const COPY_ONLY = 'Copy the student\'s handwriting exactly as written, letter by
  * copying the pupil; per-box reading brought unflagged wrong marks from 15-40% to a few percent).
  */
 export const stripPrompt = (keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer' | 'type'>[]) =>
-  `This image shows boxes cut from one student's answer sheet. Each row starts with a printed label, "Name" or a box number, and then the box. ` +
+  `This image shows boxes cut from one student's answer sheet. Each row starts with a printed label, "Name" or a box number, and then the box. Every box in the image has handwriting in it. ` +
   `For each label, ${COPY_ONLY.charAt(0).toLowerCase()}${COPY_ONLY.slice(1)}\n` +
   `studentName: the handwriting in the row labelled Name\n` +
   keys.map((k) => `q${k.q}: the handwriting in the row labelled ${k.q} (${HINT[typeOf(k as QuestionKey)]})`).join('\n');

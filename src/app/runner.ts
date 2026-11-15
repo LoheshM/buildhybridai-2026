@@ -2,7 +2,7 @@
 // code, ask for a second read where needed, match the name to the roster, save.
 // The runner lives at module level, so a run keeps going while the teacher moves between pages.
 import { classify, isSample, type SampleImage, type StudentImage } from '../ai/images';
-import { noteSampleDeviceFailure, readSampleSheet, readStrip, rereadStrip, resetLiveSampleReads, sampleDeviceUsable, suggestOpen, type ReadResult } from '../ai/tasks';
+import { noteSampleDeviceFailure, noteSampleDeviceSuccess, readSampleSheet, readStrip, rereadStrip, resetLiveSampleReads, sampleDeviceUsable, suggestOpen, type ReadResult } from '../ai/tasks';
 import { CancelledError } from '../ai/queue';
 import { cutAnswerSheet } from '../img/crop';
 import { cancelQueued } from '../ai/queue';
@@ -89,6 +89,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
             strip = (await classify(cut.strip)) as StudentImage; // a strip never matches a sample fingerprint: it can only be read on-device
             try {
               first = await readStrip(strip, quiz.keys, cut.blank, sample ? 'sample' : 'student');
+              if (sample) noteSampleDeviceSuccess();
             } catch (e) {
               if (!sample || e instanceof CancelledError || (e as Error).name === 'AbortError') throw e;
               noteSampleDeviceFailure(); // made-up sheets only: fall back to the cloud path below

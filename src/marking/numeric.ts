@@ -82,6 +82,8 @@ export function markQuantity(keyText: string, readText: string, tolerance = 0, p
   const kv = asNumber(k), sv = asNumber(s);
   const close = (a: Frac, b: Frac) => (tolerance > 0 ? Math.abs(toNum(a) - toNum(b)) <= tolerance + 1e-12 : eq(a, b));
 
+  // "100 °" for a key of "100 °C": the C was not written (or not read); the degree sign says what is meant
+  if (k.unit === '°C' && s.unit === '°') s.unit = '°C';
   // units first: the same quantity in a different unit of the same family is right
   if (k.unit && s.unit && k.unit !== s.unit) {
     const fk = FAMILY[k.unit], fs = FAMILY[s.unit];

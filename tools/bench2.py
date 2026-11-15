@@ -22,7 +22,15 @@ JS = (HERE / "bench2.js").read_text(encoding="utf8")
 with sync_playwright() as p, chrome(p) as (browser, ctx):
     page = ctx.pages[0] if ctx.pages else ctx.new_page()
     page.set_default_timeout(60000)
-    for cls in classes:
+    eval_only = "--eval-only" in sys.argv
+    for cls in [c for c in classes if not c.startswith("--")]:
+        if eval_only:
+            page.goto(f"{base}/#/classes"); page.wait_for_timeout(2000)
+            r = page.evaluate(JS, cls)
+            print(cls, json.dumps(r["summary"]), flush=True)
+            for x in r.get("allMisses", [])[:80]:
+                print("   ", x, flush=True)
+            continue
         page.goto("about:blank")
         page.goto(f"{base}/#/classes")
         page.wait_for_selector("text=Sample classes")

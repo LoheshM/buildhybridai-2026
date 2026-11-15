@@ -8,14 +8,14 @@ import { looksChoice, looksWord } from './words';
 
 export type QType = 'fraction' | 'number' | 'algebra' | 'choice' | 'word' | 'short' | 'passage';
 
-export const QTYPES: Record<QType, { label: string; example: string; markedBy: 'code' | 'suggested' }> = {
-  fraction: { label: 'Fraction', example: '3/4, 1 1/2', markedBy: 'code' },
-  number: { label: 'Number or measurement', example: '0.75, -12, 3.5 cm, 45%', markedBy: 'code' },
-  algebra: { label: 'Algebra', example: 'x = 4, 2x + 3', markedBy: 'code' },
-  choice: { label: 'Multiple choice or true/false', example: 'B, True', markedBy: 'code' },
-  word: { label: 'One word', example: 'photosynthesis, Paris', markedBy: 'code' },
-  short: { label: 'Short answer (key points)', example: 'makes food; uses sunlight', markedBy: 'suggested' },
-  passage: { label: 'Paragraph (rubric)', example: 'Rubric: Ideas 3; Organisation 2', markedBy: 'suggested' },
+export const QTYPES: Record<QType, { label: string; short: string; example: string; markedBy: 'code' | 'suggested' }> = {
+  fraction: { short: 'Fraction', label: 'Fraction', example: '3/4, 1 1/2', markedBy: 'code' },
+  number: { short: 'Number', label: 'Number or measurement', example: '0.75, -12, 3.5 cm, 45%', markedBy: 'code' },
+  algebra: { short: 'Algebra', label: 'Algebra', example: 'x = 4, 2x + 3', markedBy: 'code' },
+  choice: { short: 'Choice', label: 'Multiple choice or true/false', example: 'B, True', markedBy: 'code' },
+  word: { short: 'Word', label: 'One word', example: 'photosynthesis, Paris', markedBy: 'code' },
+  short: { short: 'Short answer', label: 'Short answer (key points)', example: 'makes food; uses sunlight', markedBy: 'suggested' },
+  passage: { short: 'Paragraph', label: 'Paragraph (rubric)', example: 'Rubric: Ideas 3; Organisation 2', markedBy: 'suggested' },
 };
 
 export const isOpen = (t: QType) => QTYPES[t].markedBy === 'suggested';

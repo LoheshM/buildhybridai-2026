@@ -146,3 +146,14 @@ describe('spelling: Nano corrects misspellings, so a spelling answer that reads 
     expect(markAnswer({ ...k, spellingCounts: false }, 'necessary').flags).not.toContain('check_spelling');
   });
 });
+
+describe('bench fixes, 16 Nov', () => {
+  it('two option letters are two answers', () => {
+    expect(markChoice('C', 'D C')).toMatchObject({ status: 'unreadable', two: true });
+    expect(markChoice('C', 'B or C')).toMatchObject({ status: 'unreadable', two: true });
+    expect(markChoice('C', '(c)')).toMatchObject({ status: 'correct' });
+  });
+  it('a bare degree sign is the key\'s degrees Celsius', () => {
+    expect(markQuantity('100 °C', '100 °').status).toBe('correct');
+  });
+});

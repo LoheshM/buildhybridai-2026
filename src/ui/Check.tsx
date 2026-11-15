@@ -121,7 +121,7 @@ function ByQuestion({ quiz, cls, sheets, q, save }: { quiz: QuizRec; cls: ClassR
           return (
             <button key={k.q} aria-current={k.q === key.q} onClick={() => go(href.checkQ(quiz.id, k.q))}>
               <span className="qn">Q{k.q}</span>
-              <span className="clip small">{QTYPES[typeOf(k)].label}</span>
+              <span className="clip small">{QTYPES[typeOf(k)].short}</span>
               {w > 0 ? <span className="flag soft" aria-label={`${w} waiting`}>{w}</span> : <span style={{ color: 'var(--ok)' }} aria-label="all decided"><Icon name="check" size={16} /></span>}
             </button>
           );
@@ -175,6 +175,7 @@ function QuestionHead({ quiz, k }: { quiz: QuizRec; k: QuestionKey }) {
       ) : (
         <div className="keyline">Key: <b>{k.answer}</b>{k.spellingCounts ? ' (spelling must be exact)' : ''}</div>
       )}
+      {QTYPES[type].markedBy === 'suggested' && <p className="tiny muted" style={{ margin: 0 }}>Pencil marks are Gemini Nano's suggestions. On 148 real pupils' answers that people had marked, its suggestion matched the human mark half the time and was within one mark 9 times in 10, so every one is your call.</p>}
       {quiz.extract && type !== 'fraction' && <details className="peek-d"><summary>Show the reading extract</summary><p className="small" style={{ marginTop: 6 }}>{quiz.extract}</p></details>}
     </div>
   );
@@ -260,7 +261,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
         {open && s && pending && (
           <div className="sugg">
             <span className="why">{s.reason || 'No reason given.'}</span>
-            <span className="tiny">Suggested by Gemini Nano {s.where === 'on_device' ? `on this laptop in ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? '(recorded cloud suggestion; this browser has no on-device AI)' : 'in the cloud (made-up sheet)'}. On 148 real pupils' answers that people had marked, Nano's suggestion matched the human mark half the time and was within one mark 9 times in 10, so it is always your call.</span>
+            <span className="tiny">Suggested by Gemini Nano {s.where === 'on_device' ? `on this laptop, ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? '(a recorded cloud suggestion: this browser has no on-device AI)' : 'in the cloud (made-up sheet)'}</span>
           </div>
         )}
         {open && !s && pending && m.read && <div className="sugg"><span className="tiny">No suggestion for this answer. Tick the key points it states, or set the rubric scores.</span></div>}

@@ -164,7 +164,9 @@ export async function readSampleSheet(img: SampleImage, keys: QuestionKey[]): Pr
 
 /** The runner calls this when Nano fails on a sample strip, so the rest of the run uses the cloud path. */
 export const noteSampleDeviceFailure = () => { deviceFailures++; };
-export const sampleDeviceUsable = async () => (await deviceState()) === 'available' && deviceFailures < 2;
+/** A good on-device read clears the count: only a run of failures (a broken model) switches the samples to the cloud. */
+export const noteSampleDeviceSuccess = () => { deviceFailures = 0; };
+export const sampleDeviceUsable = async () => (await deviceState()) === 'available' && deviceFailures < 3;
 
 
 // ---------------- open answers: a suggested mark, the teacher decides ----------------

@@ -45,7 +45,7 @@ async (cls) => {
       out.exact.answers++;
       if (flagged) out.exact.flagged++;
       if (norm(read) === norm(want.written)) out.exact.exact++;
-      else { out.exact.misread++; if (!flagged) { out.exact.unflagged++; out.misses.push(`${s.sampleId} q${mk.q}: "${read}" (truth "${want.written}") ${mk.status}`); } }
+      else { out.exact.misread++; (out.allMisses ??= []).push(`q${mk.q} "${want.written}" -> "${read}"${flagged ? ' [flagged]' : ''}`); if (!flagged) { out.exact.unflagged++; out.misses.push(`${s.sampleId} q${mk.q}: "${read}" (truth "${want.written}") ${mk.status}`); } }
     }
   }
   out.summary = {

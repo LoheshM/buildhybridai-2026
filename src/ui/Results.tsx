@@ -66,13 +66,13 @@ export function Results({ quizId }: { quizId: string }) {
                 <div className="counts"><span className={`chip ${QTYPES[q.type].markedBy === 'code' ? 'code' : 'pencil'}`}>{QTYPES[q.type].label}</span> key: {q.keyText}</div>
               </div>
               <div>
-                <div className="qbar" role="img" aria-label={`${q.right} right, ${q.partial} partly right, ${q.wrong} wrong, ${q.other} blank or waiting`}>
-                  <i className="r" style={{ width: `${pct(q.right, q.n)}%` }} /><i className="p" style={{ width: `${pct(q.partial, q.n)}%` }} /><i className="w" style={{ width: `${pct(q.wrong, q.n)}%` }} /><i className="o" style={{ width: `${pct(q.other, q.n)}%` }} />
+                <div className="qbar" role="img" aria-label={`${q.right} right, ${q.partial} partly right, ${q.wrong} wrong, ${q.other} blank, ${q.waiting} waiting for you`}>
+                  <i className="r" style={{ width: `${pct(q.right, q.n)}%` }} /><i className="p" style={{ width: `${pct(q.partial, q.n)}%` }} /><i className="w" style={{ width: `${pct(q.wrong, q.n)}%` }} /><i className="o" style={{ width: `${pct(q.other, q.n)}%` }} /><i className="pen" style={{ width: `${pct(q.waiting, q.n)}%` }} />
                 </div>
-                <div className="counts">{q.right} right{q.partial ? ` · ${q.partial} partly` : ''} · {q.wrong} wrong{q.other ? ` · ${q.other} blank or waiting` : ''}</div>
+                <div className="counts">{q.waiting === q.n ? `All ${q.n} waiting for you` : <>{q.right} right{q.partial ? ` · ${q.partial} partly` : ''} · {q.wrong} wrong{q.other ? ` · ${q.other} blank` : ''}{q.waiting ? ` · ${q.waiting} waiting for you` : ''}</>}</div>
               </div>
               <div className="mistakes">
-                {q.groups.length === 0 ? <span className="small muted">{q.wrong + q.partial ? 'No common pattern' : 'Nothing to reteach'}</span> : q.groups.map((g) => (
+                {q.groups.length === 0 ? <span className="small muted">{q.waiting && !(q.wrong + q.partial) ? <a href={href.checkQ(quizId, q.k.q)}>Decide the pencil marks first</a> : q.wrong + q.partial ? 'No common pattern' : 'Nothing to reteach'}</span> : q.groups.map((g) => (
                   <span key={g.id} className="mistake" title={g.names.join(', ')}><b>{g.count}</b>{g.label}</span>
                 ))}
                 {q.options.length > 0 && <span className="small muted">Wrong picks: {q.options.map(([o, n]) => `${o} ${n}`).join(' · ')}</span>}
@@ -164,7 +164,7 @@ function summarise(sheets: SheetRec[], quiz: QuizRec, cls: ClassRec) {
 
 function qsummary(k: QuestionKey, sheets: SheetRec[], nameOf: (s: SheetRec) => string) {
   const type = typeOf(k);
-  let right = 0, partial = 0, wrong = 0, other = 0;
+  let right = 0, partial = 0, wrong = 0, other = 0, waiting = 0;
   const groups = new Map<string, string[]>();
   const options = new Map<string, number>();
   const pts = keyPoints(k.answer), rubric = (parseRubric(k.answer) ?? []).map((l) => l.line);
@@ -174,13 +174,13 @@ function qsummary(k: QuestionKey, sheets: SheetRec[], nameOf: (s: SheetRec) => s
     if (m.status === 'correct' || m.status === 'unsimplified') { right++; continue; }
     if (m.status === 'partial') partial++;
     else if (m.status === 'wrong') wrong++;
-    else { other++; continue; }
+    else { if (m.status === 'pending' || (m.status === 'unreadable' && !m.checked)) waiting++; else other++; continue; }
     if (type === 'choice' && m.picked) options.set(m.picked, (options.get(m.picked) ?? 0) + 1);
     const labels = m.mistakes?.length ? m.mistakes : m.misconception ? [m.misconception] : type === 'choice' ? [] : ['other'];
     for (const g of labels) groups.set(g, [...(groups.get(g) ?? []), nameOf(s)]);
   }
   return {
-    k, type, right, partial, wrong, other, n: right + partial + wrong + other,
+    k, type, right, partial, wrong, other, waiting, n: right + partial + wrong + other + waiting,
     keyText: type === 'short' ? `${pts.length} key point${pts.length === 1 ? '' : 's'}` : type === 'passage' ? `${rubric.length}-line rubric` : k.answer,
     groups: [...groups.entries()].map(([id, names]) => ({ id, label: mistakeLabel(id, pts, rubric), count: names.length, names })).sort((a, b) => Number(a.id === 'other') - Number(b.id === 'other') || b.count - a.count),
     options: [...options.entries()].sort((a, b) => b[1] - a[1]),

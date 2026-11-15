@@ -140,7 +140,7 @@ export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marke
   }
   if (type === 'choice') {
     const v = markChoice(k.answer, read);
-    return { ...base, status: v.status, picked: v.picked ?? undefined, flags: [...base.flags, ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
+    return { ...base, status: v.status, picked: v.picked ?? undefined, flags: [...base.flags, ...(v.two ? ['two_answers' as const] : v.status === 'unreadable' ? ['unreadable' as const] : [])] };
   }
   // word
   const v = markWord(k.answer, read, !!k.spellingCounts);

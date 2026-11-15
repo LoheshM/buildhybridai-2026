@@ -282,6 +282,7 @@ input[type='checkbox'], input[type='radio'] { width: 18px; height: 18px; accent-
 .qbar .p { background: repeating-linear-gradient(135deg, var(--red) 0 3px, color-mix(in srgb, var(--red) 45%, var(--sheet)) 3px 6px); }
 .qbar .w { background: var(--red); }
 .qbar .o { background: var(--rule-2); }
+.qbar .pen { background: repeating-linear-gradient(135deg, var(--pencil-soft) 0 3px, var(--pencil) 3px 4px); }
 
 /* ---------- welcome ---------- */
 .hero { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 48px; align-items: center; padding: 12px 0 8px; }

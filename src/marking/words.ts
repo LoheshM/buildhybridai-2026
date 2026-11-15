@@ -20,8 +20,11 @@ export function looksChoice(key: string): boolean {
 }
 
 export type ChoiceVerdict = { status: 'correct' | 'wrong' | 'unreadable'; picked: string | null };
-export function markChoice(key: string, read: string): ChoiceVerdict {
+export function markChoice(key: string, read: string): ChoiceVerdict & { two?: boolean } {
   const k = normChoice(key);
+  // two different option letters ("D C", "B or C") is two answers, never the first one
+  const letters = new Set(((read ?? '').toUpperCase().match(/(?:^|[^A-Z])([A-H])(?=[^A-Z]|$)/g) ?? []).map((x) => x.replace(/[^A-H]/g, '')));
+  if (letters.size > 1 && /^[\s(),.;/&A-Hor]*$/i.test(read ?? '')) return { status: 'unreadable', picked: null, two: true };
   const s = normChoice(read);
   if (!s) return { status: 'unreadable', picked: null };
   return { status: s === k ? 'correct' : 'wrong', picked: s };

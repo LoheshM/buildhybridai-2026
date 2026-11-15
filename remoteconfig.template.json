@@ -1,0 +1,8 @@
+{
+  "parameters": {
+    "cloud_model": { "defaultValue": { "value": "gemini-3.5-flash-lite" }, "description": "Cloud model for the plan and live sample reads; the app accepts only its allowlist", "valueType": "STRING" },
+    "min_group_size": { "defaultValue": { "value": "3" }, "description": "Smallest group size shown in the class totals (the app never goes below 3)", "valueType": "NUMBER" },
+    "cloud_features_enabled": { "defaultValue": { "value": "true" }, "description": "Kill switch for every cloud call", "valueType": "BOOLEAN" },
+    "sample_cloud_live_reads": { "defaultValue": { "value": "0" }, "description": "Live cloud reads of made-up sample sheets per run (0 to 3); 0 keeps the shared free quota for lesson plans", "valueType": "NUMBER" }
+  }
+}

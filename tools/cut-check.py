@@ -36,6 +36,16 @@ with sync_playwright() as p:
         }
       }
       out.unshift(`upside-down photos turned upright (blank decisions match): ${upsideAllBlank}/${upside}`);
+      // F4-02: a photo of another quiz's answer sheet is refused, never scored
+      const K = {};
+      for (const cls of ['maths', 'science', 'english']) { const m = await (await fetch(`/samples/${cls}/manifest.json`, {cache:'no-store'})).json(); K[cls] = m.quiz.questions.map((q) => ({ q: q.q, prompt: q.prompt, answer: q.key })); }
+      let cross = 0, crossRefused = 0;
+      for (const [id, cls] of [['m01','maths'],['m09','maths'],['c01','science'],['c09','science'],['e01','english'],['e09','english']]) {
+        const blob = await (await fetch(`/samples/${cls}/${id}.jpg`, {cache:'no-store'})).blob();
+        for (const other of Object.keys(K)) { if (other === cls) continue; cross++;
+          try { await C.cutAnswerSheet(blob, K[other]); out.push(`${id} with the ${other} key was NOT refused`); } catch (e) { if (e.name === 'LayoutMismatch') crossRefused++; else out.push(`${id} as ${other}: ${e.name}`); } }
+      }
+      out.unshift(`photos of another quiz's sheet refused: ${crossRefused}/${cross}`);
       out.unshift(`sheets found ${ok}/${n}; blank decisions right ${blankRight}, wrong ${blankWrong}; ${Math.round(ms / ok)} ms per sheet`);
       return out;
     }""")

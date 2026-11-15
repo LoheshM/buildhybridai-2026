@@ -7,6 +7,11 @@ import { apply, findMarkers, layout, pageToImage, type Box, type H } from './she
 const PX_PER_MM = 5; // ~127 dpi: plenty for handwriting, small enough for the on-device model
 const DETECT_WIDTH = 1000;
 
+export class LayoutMismatch extends Error {
+  constructor() { super("The answer boxes in this photo aren't where this quiz's answer sheet has them. It may be the answer sheet for a different quiz, or badly cut off. Retake it, or check it belongs to this quiz."); this.name = 'LayoutMismatch'; }
+}
+const FRAME_MIN = 0.6;
+
 export class NoMarkers extends Error {
   constructor() { super("Tickmark couldn't find the four black corner squares. Retake the photo with the whole answer sheet in view, flat and in good light."); this.name = 'NoMarkers'; }
 }
@@ -79,6 +84,26 @@ function darkShare(c: OffscreenCanvas): number {
   return lum.filter((v) => v < paper - 70).length / lum.length;
 }
 
+/**
+ * How much of a box's printed frame is where the layout says (0-1). The cut keeps a 1.5 mm margin, so the
+ * frame sits about 7 px inside each edge of the box canvas. Boxes cut from another quiz's sheet miss it.
+ */
+export function frameScore(c: OffscreenCanvas, padPx = Math.round(1.5 * PX_PER_MM), band = 4): number {
+  const ctx = c.getContext('2d', { willReadFrequently: true })!;
+  const { data, width: w, height: h } = ctx.getImageData(0, 0, c.width, c.height);
+  const lum = (x: number, y: number) => { const p = (y * w + x) * 4; return (data[p] * 299 + data[p + 1] * 587 + data[p + 2] * 114) / 1000; };
+  const sample: number[] = [];
+  for (let y = 0; y < h; y += 3) for (let x = 0; x < w; x += 3) sample.push(lum(x, y));
+  sample.sort((a, b) => a - b);
+  const paper = sample[Math.floor(sample.length * 0.6)];
+  const dark = (x: number, y: number) => x >= 0 && y >= 0 && x < w && y < h && lum(x, y) < paper - 60;
+  let hit = 0, n = 0;
+  const near = (x0: number, y0: number, horiz: boolean) => { for (let d = -band; d <= band; d++) if (horiz ? dark(x0, y0 + d) : dark(x0 + d, y0)) return true; return false; };
+  for (let x = padPx + 6; x < w - padPx - 6; x += 2) { n += 2; if (near(x, padPx, true)) hit++; if (near(x, h - 1 - padPx, true)) hit++; }
+  for (let y = padPx + 6; y < h - padPx - 6; y += 2) { n += 2; if (near(padPx, y, false)) hit++; if (near(w - 1 - padPx, y, false)) hit++; }
+  return n ? hit / n : 0;
+}
+
 export const BLANK_BELOW = 0.002; // blank boxes measure 0; one handwritten letter about 0.0065
 
 async function bitmapOf(b: Blob) { return createImageBitmap(b, { imageOrientation: 'from-image' }); }
@@ -116,6 +141,10 @@ export async function cutAnswerSheet(photo: Blob, keys: QuestionKey[]): Promise<
   const nameCanvas = cut(boxes[0]);
   const name = await nameCanvas.convertToBlob({ type: 'image/png' });
   const answers = boxes.slice(1).map((b) => ({ b, c: cut(b) }));
+  // Round 5 (F4-02): every printed frame must be where this quiz's layout puts it. On all 70 sample photos every
+  // box scores 1.0; a photo of another quiz's sheet has at least one box below 0.6. A sheet with the same layout
+  // from another quiz can't be told apart this way.
+  if ([nameCanvas, ...answers.map(({ c }) => c)].some((c) => frameScore(c) < FRAME_MIN)) throw new LayoutMismatch();
   const blank = answers.filter(({ c }) => inkShare(c) < BLANK_BELOW).map(({ b }) => b.q);
   const written = answers.filter(({ b }) => !blank.includes(b.q));
   // the name box rides on the same strip, so one on-device call reads the whole sheet
@@ -137,7 +166,7 @@ export async function cutAnswerSheet(photo: Blob, keys: QuestionKey[]): Promise<
 const boxCanvas = (full: ImageData, h: H, b: Box, pad = 1.5) => warp(full, h, b.x - pad, b.y - pad, b.w + 2 * pad, b.h + 2 * pad);
 
 /** For benches: every answer box of a photo as the canvas the strip is built from (same cut as cutAnswerSheet). */
-export async function answerBoxes(photo: Blob, keys: QuestionKey[]): Promise<{ q: number; c: OffscreenCanvas; blank: boolean }[]> {
+export async function answerBoxes(photo: Blob, keys: QuestionKey[]): Promise<{ q: number; c: OffscreenCanvas; blank: boolean; frame: number }[]> {
   const bmp = await bitmapOf(photo);
   const scale = Math.min(1, DETECT_WIDTH / bmp.width);
   const dw = Math.round(bmp.width * scale), dh = Math.round(bmp.height * scale);
@@ -155,7 +184,7 @@ export async function answerBoxes(photo: Blob, keys: QuestionKey[]): Promise<{ q
   cctx.drawImage(bmp, 0, 0);
   const full = cctx.getImageData(0, 0, bmp.width, bmp.height);
   bmp.close();
-  return layout(keys).slice(1).map((b) => { const c = boxCanvas(full, h, b); return { q: b.q, c, blank: inkShare(c) < BLANK_BELOW }; });
+  return layout(keys).slice(1).map((b) => { const c = boxCanvas(full, h, b); return { q: b.q, c, blank: inkShare(c) < BLANK_BELOW, frame: frameScore(c) }; });
 }
 
 /** For benches: the strip image for any list of labelled boxes. */

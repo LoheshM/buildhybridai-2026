@@ -101,3 +101,20 @@ describe('round 5 S8: answers that talk to the marker get no suggestion', () => 
       expect(talksToMarker(t), t).toBe(false);
   });
 });
+
+import { frameScore } from '../img/crop';
+describe('round 5 F4-02: printed frames', () => {
+  // a 74 x 16 mm box canvas at 5 px/mm, with or without its 0.4 mm frame 1.5 mm inside the edge
+  const canvas = (framed: boolean) => {
+    const W = 385, H = 95, d = new Uint8ClampedArray(W * H * 4).fill(240);
+    if (framed) for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const onX = (x >= 7 && x <= 8) || (x >= W - 9 && x <= W - 8), onY = (y >= 7 && y <= 8) || (y >= H - 9 && y <= H - 8);
+      if ((onX && y >= 7 && y <= H - 8) || (onY && x >= 7 && x <= W - 8)) { const p = (y * W + x) * 4; d[p] = d[p + 1] = d[p + 2] = 30; }
+    }
+    return { width: W, height: H, getContext: () => ({ getImageData: () => ({ data: d, width: W, height: H }) }) } as unknown as OffscreenCanvas;
+  };
+  it('a box with its frame scores high, bare paper scores 0', () => {
+    expect(frameScore(canvas(true))).toBeGreaterThan(0.9);
+    expect(frameScore(canvas(false))).toBe(0);
+  });
+});

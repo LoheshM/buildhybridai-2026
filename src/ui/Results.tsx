@@ -1,16 +1,17 @@
 import { useMemo } from 'react';
 import { href } from '../app/router';
-import { scoreSheet, type QuestionKey } from '../marking/mark';
-import { ScoreRing, Tick } from './Marks';
-import { Steps } from './Steps';
-import { MISCONCEPTIONS, type MisconceptionId } from '../marking/misconceptions';
+import { sampleKeyOfClass, sampleManifest } from '../app/boot';
+import { accuracy, openAccuracy } from '../marking/accuracy';
+import { outOfFor, pointsFor, scoreSheet, typeOf, type QuestionKey } from '../marking/mark';
+import { mistakeLabel } from '../marking/mistakes';
 import { needsCheck } from '../marking/pipeline';
+import { keyPoints, parseRubric, QTYPES } from '../marking/qtypes';
 import { MIN_SHEETS } from '../privacy/aggregate';
 import { csvAnswer, csvCell } from '../privacy/templates';
-import { accuracy } from '../marking/accuracy';
-import { sampleManifest } from '../app/boot';
-import { store, type SheetRec } from '../store/db';
+import { store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 import { useLoad, useToast } from './hooks';
+import { Notice } from './App';
+import { AnswerMark, fmtPoints, ScoreRing } from './Marks';
 
 export function Results({ quizId }: { quizId: string }) {
   const [ctx, reload] = useLoad(async () => {
@@ -20,22 +21,18 @@ export function Results({ quizId }: { quizId: string }) {
     return { quiz, cls, total: all.length, sheets: all.filter((s) => s.status === 'read' || s.status === 'checked') };
   }, [quizId]);
   const [toast, setToast] = useToast();
-  const view = useMemo(() => {
-    if (!ctx?.quiz || !ctx.cls) return null;
-    const v = summarise(ctx.sheets, ctx.quiz.keys, ctx.quiz.unsimplifiedCredit);
-    const m = ctx.cls.sample ? sampleManifest() : null;
-    return { ...v, onDevice: ctx.sheets.filter((s) => s.where === 'on_device').length, acc: m ? accuracy(ctx.sheets, m.students) : null, deviceShare: ctx.sheets.filter((s) => s.where === 'on_device').length, checkedByTeacher: ctx.sheets.reduce((n, s) => n + s.marks.filter((x) => x.checked && x.flags.length > 0).length, 0) };
-  }, [ctx]);
-  if (!ctx || !view) return <p className="muted">Loading…</p>;
+  const view = useMemo(() => (ctx?.quiz && ctx.cls ? summarise(ctx.sheets, ctx.quiz, ctx.cls) : null), [ctx]);
+  if (!ctx || !view) return <p className="muted">Loading results…</p>;
   const { quiz, cls, sheets } = ctx;
   if (!quiz || !cls) return <p>This quiz no longer exists.</p>;
-  const name = (s: SheetRec) => cls.roster.find((r) => r.id === s.studentId)?.name ?? `"${s.readName || 'unknown'}"`;
-  if (!sheets.length) return <div className="sheet"><h1>No results yet</h1><p className="muted">Read some sheets first.</p><a className="btn primary" href={href.scan(quizId)}>Go to sheets</a></div>;
+  if (!sheets.length) return <div className="panel"><h2>No results yet</h2><p className="muted">Read some sheets first.</p><a className="btn primary" href={href.scan(quizId)}>Go to the sheets</a></div>;
+  const name = (s: SheetRec) => cls.roster.find((r) => r.id === s.studentId)?.name ?? `"${s.readName || 'name not read'}"`;
+  const outOf = quiz.keys.reduce((a, k) => a + outOfFor(k), 0);
 
   const exportCsv = () => {
-    const head = ['Student', ...quiz.keys.map((k) => `Q${k.q}`), 'Score', 'Out of'];
-    const lines = sheets.map((s) => { const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit); return [csvCell(name(s)), ...s.marks.map((m) => csvAnswer(m.read)), sc.unreadable ? '?' : String(sc.points), String(sc.outOf)]; });
-    const blob = new Blob(['\ufeff' + [head.map(csvCell), ...lines].map((l) => l.join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    const head = ['Pupil', ...quiz.keys.map((k) => `Q${k.q}`), 'Score', 'Out of'];
+    const lines = sheets.map((s) => { const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit); return [csvCell(name(s)), ...s.marks.map((m) => csvAnswer(m.read)), sc.unreadable + sc.pending ? '?' : String(sc.points), String(sc.outOf)]; });
+    const blob = new Blob(['﻿' + [head.map(csvCell), ...lines].map((l) => l.join(',')).join('\r\n')], { type: 'text/csv;charset=utf-8' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = `${quiz.title.replace(/[^\w -]/g, '')} marks.csv`;
@@ -45,78 +42,85 @@ export function Results({ quizId }: { quizId: string }) {
 
   return (
     <>
-      <Steps quizId={quizId} at="results" className={cls.name} />
-      <div className="row" style={{ justifyContent: 'space-between', alignItems: 'flex-end' }}>
-        <h1 style={{ margin: 0 }}>{quiz.title}: results</h1>
-        <div className="row noprint">
-          <a className="btn" href={href.check(quizId)}>Check answers</a>
+      {ctx.total > sheets.length && <Notice>{sheets.length} of {ctx.total} sheets are read so far. <a href={href.scan(quizId)}>Read the rest</a> before planning a lesson.</Notice>}
+      {view.waiting > 0 && <Notice tone="warn"><p>{view.waiting} mark{view.waiting === 1 ? ' is' : 's are'} still in pencil or flagged. Totals below count them as Tickmark's best guess until you <a href={href.check(quizId)}>decide them</a>.</p></Notice>}
+
+      <ul className="facts" aria-label="Summary">
+        <li><b>{sheets.length}{ctx.total > sheets.length ? ` of ${ctx.total}` : ''}</b><span>sheets marked</span></li>
+        <li><ScoreRing points={+view.avg.toFixed(1)} outOf={outOf} open={view.waiting > 0} /><span>class average</span></li>
+        <li><b>{view.waiting}</b><span>marks waiting for you</span></li>
+        <li><b>{view.onDevice}/{sheets.length}</b><span>sheets read on this laptop{view.deviceTime ? ` (${view.deviceTime})` : ''}</span></li>
+      </ul>
+
+      <section aria-labelledby="qmap-h">
+        <div className="panel-head">
+          <h2 id="qmap-h">What the class got wrong</h2>
           <a className={`btn ${sheets.length >= MIN_SHEETS ? 'primary' : ''}`} href={href.reteach(quizId)} aria-disabled={sheets.length < MIN_SHEETS}>Plan tomorrow's lesson</a>
         </div>
-      </div>
-
-      {ctx.total > sheets.length && <p className="callout" style={{ marginTop: 8 }}>{sheets.length} of {ctx.total} sheets are read so far. <a href={href.scan(quizId)}>Read the rest</a> before planning a lesson.</p>}
-      <div className="stats">
-        <div className="stat"><b>{sheets.length}{ctx.total > sheets.length ? ` of ${ctx.total}` : ''}</b><span>sheets marked</span></div>
-        <div className="stat"><ScoreRing big={false} draw={false} points={+view.avg.toFixed(1)} outOf={quiz.keys.length} /><span style={{ display: 'block' }}>class average{view.flagsLeft ? ' (provisional until checked)' : ''}</span></div>
-        <div className="stat"><b>{view.flagsLeft ? <a href={href.check(quizId)}><span className="flag" style={{ fontSize: '1.2rem' }}>{view.flagsLeft}</span></a> : 0}</b><span>answers still to check{view.checkedByTeacher ? ` (you checked ${view.checkedByTeacher})` : ''}</span></div>
-        <div className="stat"><b>{view.deviceMins}</b><span>reading on this laptop</span></div>
-      </div>
-      <p className="small" style={{ margin: '0 0 16px' }}>
-        <span className="pill device"><span className="dot" />{view.onDevice} of {sheets.length} sheets read on this laptop</span>{' '}
-        <a href={href.privacy()} className="small">What left this browser</a>
-      </p>
-      {cls.sample && view.acc && view.acc.sheets > 0 && (
-        <section className="sheet" style={{ marginBottom: 20 }} aria-label="Reading accuracy on the sample class">
-          <h3 style={{ marginBottom: 6 }}>How well the reading went (sample class only)</h3>
-          <p className="small" style={{ margin: 0 }}>
-            The sample's correct answers are known, so Tickmark can score its own reading: <b>{view.acc.exact} of {view.acc.answers}</b> answers read exactly.
-            Of the {view.acc.misread} misreads, <b>{view.acc.flaggedMisreads}</b> were flagged for you to check and <b>{view.acc.unflagged}</b> slipped through.
-            {view.deviceShare < sheets.length ? ` ${sheets.length - view.deviceShare} of these sheets were read by cloud Gemini or from recordings.` : ''}
-          </p>
-        </section>
-      )}
-      {view.flagsLeft > 0 && <p className="muted small">Flagged answers are counted with Tickmark's best reading until you <a href={href.check(quizId)}>check them</a>.</p>}
-
-      <section className="section">
-        <h2>Mistakes to reteach</h2>
-        <p className="muted">Tickmark recomputes each wrong answer with common wrong methods. When one matches, the mistake gets a name.</p>
-        <div className="groups">
-          {view.groups.filter((g) => g.id !== 'secure').map((g) => (
-            <div key={g.id} className="sheet group">
-              <h3>{g.label}</h3>
-              {g.example && <p className="example">{g.example.prompt} = <b style={{ color: 'var(--pen)', fontVariantNumeric: 'tabular-nums' }}>{g.example.read}</b> <span className="markcell no" style={{ fontSize: '1.1rem' }}>✗</span></p>}
-              <p className="muted small">{g.teacher}</p>
-              <p><b>{g.students.length} student{g.students.length === 1 ? '' : 's'}</b>{g.qs.length ? `, on Q${g.qs.join(', Q')}` : ''}</p>
-              <p className="small muted">{g.students.map((s) => name(s)).join(', ')}</p>
+        <div className="panel flush qmap">
+          {view.questions.map((q) => (
+            <div key={q.k.q} className="qrow">
+              <span className="qn" aria-label={`Question ${q.k.q}`}>{q.k.q}</span>
+              <div style={{ minWidth: 0 }}>
+                <div className="prompt clip" title={q.k.prompt}>{q.k.prompt || `Question ${q.k.q}`}</div>
+                <div className="counts"><span className={`chip ${QTYPES[q.type].markedBy === 'code' ? 'code' : 'pencil'}`}>{QTYPES[q.type].label}</span> key: {q.keyText}</div>
+              </div>
+              <div>
+                <div className="qbar" role="img" aria-label={`${q.right} right, ${q.partial} partly right, ${q.wrong} wrong, ${q.other} blank or waiting`}>
+                  <i className="r" style={{ width: `${pct(q.right, q.n)}%` }} /><i className="p" style={{ width: `${pct(q.partial, q.n)}%` }} /><i className="w" style={{ width: `${pct(q.wrong, q.n)}%` }} /><i className="o" style={{ width: `${pct(q.other, q.n)}%` }} />
+                </div>
+                <div className="counts">{q.right} right{q.partial ? ` · ${q.partial} partly` : ''} · {q.wrong} wrong{q.other ? ` · ${q.other} blank or waiting` : ''}</div>
+              </div>
+              <div className="mistakes">
+                {q.groups.length === 0 ? <span className="small muted">{q.wrong + q.partial ? 'No common pattern' : 'Nothing to reteach'}</span> : q.groups.map((g) => (
+                  <span key={g.id} className="mistake" title={g.names.join(', ')}><b>{g.count}</b>{g.label}</span>
+                ))}
+                {q.options.length > 0 && <span className="small muted">Wrong picks: {q.options.map(([o, n]) => `${o} ${n}`).join(' · ')}</span>}
+              </div>
             </div>
           ))}
         </div>
-        {view.groups.some((g) => g.id === 'secure') && <p style={{ marginTop: 12 }}><span style={{ color: 'var(--green)' }}><Tick /></span> All correct: {view.groups.find((g) => g.id === 'secure')!.students.map((s) => name(s)).join(', ')}</p>}
       </section>
 
-      <section className="section">
-        <h2>Every answer</h2>
-        <div style={{ overflowX: 'auto' }} className="sheet">
-          <table className="heat">
-            <thead><tr><th className="who">Student</th>{quiz.keys.map((k) => <th key={k.q} title={`${k.prompt} = ${k.answer}`}>Q{k.q}</th>)}<th>Score</th></tr></thead>
+      {view.acc && (
+        <section className="section" aria-labelledby="acc-h">
+          <h2 id="acc-h">How well the reading went</h2>
+          <p className="muted">This class is made up, so its right answers are known and Tickmark can score its own run. Measured on the sheets you just read.</p>
+          <ul className="facts">
+            <li><b>{view.acc.exact.exact}/{view.acc.exact.answers}</b><span>exact answers read exactly</span></li>
+            <li><b>{view.acc.exact.unflagged}</b><span>misreads that weren't flagged for you</span></li>
+            {view.acc.open.answers > 0 && <li><b>{(100 - (100 * view.acc.open.charErrors) / Math.max(1, view.acc.open.chars)).toFixed(1)}%</b><span>of characters right in {view.acc.open.answers} sentences and paragraphs</span></li>}
+            {view.acc.open.suggested > 0 && <li><b>{view.acc.open.agree}/{view.acc.open.suggested}</b><span>suggested marks equal to the reference mark ({view.acc.open.within1} within one mark)</span></li>}
+          </ul>
+        </section>
+      )}
+
+      <section className="section" aria-labelledby="reg-h">
+        <div className="panel-head">
+          <h2 id="reg-h">The register</h2>
+          <span className="small muted">Pencil: suggested, not decided yet. Hatched: waiting for you. Click a name to open the sheet.</span>
+        </div>
+        <div className="register-wrap">
+          <table className="register">
+            <thead><tr><th className="who" scope="col">Pupil</th>{quiz.keys.map((k) => <th key={k.q} scope="col" title={k.prompt}>Q{k.q}<span className="qt">{outOfFor(k) > 1 ? `/${outOfFor(k)}` : QTYPES[typeOf(k)].label.split(' ')[0]}</span></th>)}<th scope="col">Score</th></tr></thead>
             <tbody>
               {sheets.map((s) => {
                 const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit);
                 return (
                   <tr key={s.id}>
-                    <th className="who"><a href={href.check(quizId, s.id)}>{name(s)}</a></th>
+                    <th className="who" scope="row"><a href={href.check(quizId, s.id)}>{name(s)}</a></th>
                     {s.marks.map((m) => (
-                      <td key={m.q} className={{ correct: 'c', unsimplified: 'u', wrong: 'w', blank: 'b', unreadable: 'x' }[m.status]}
-                        title={`Read as "${m.read}"${m.misconception ? `: ${MISCONCEPTIONS[m.misconception].label}` : ''}${needsCheck(m) ? ' (still to check)' : ''}`}>
-                        {{ correct: '✓', unsimplified: '½', wrong: '✗', blank: '–', unreadable: '?' }[m.status]}
+                      <td key={m.q} className={`cell ${m.status === 'pending' ? 'pending' : m.status === 'wrong' ? 'wrong' : m.status === 'partial' || m.status === 'unsimplified' ? 'partial' : ''}${needsCheck(m) ? ' needs' : ''}`}
+                        title={`${m.read ? `"${m.read.slice(0, 120)}"` : 'Blank'}${m.misconception ? `: ${mistakeLabel(m.misconception)}` : ''}${needsCheck(m) ? ' (waiting for you)' : ''}`}>
+                        {(m.outOf ?? 1) > 1 && m.status !== 'pending' && m.status !== 'blank' ? <span className="hand" style={{ color: 'var(--red)', fontWeight: 700 }}>{fmtPoints(pointsFor(m, quiz.unsimplifiedCredit))}</span> : <AnswerMark m={m} />}
                       </td>
                     ))}
-                    <td style={{ font: '700 1rem var(--ui)', width: 'auto', padding: '0 8px' }} title={sc.unreadable ? 'An answer is still unreadable: check it to finish the score' : undefined}>{sc.unreadable ? '?' : sc.points}</td>
+                    <td className="total"><span className="hand" style={{ color: sc.pending + sc.unreadable ? 'var(--pencil)' : 'var(--red)', fontSize: '1.05rem' }}>{fmtPoints(sc.points)}{sc.pending + sc.unreadable ? '?' : ''}</span><span className="quiet small">/{fmtPoints(sc.outOf)}</span></td>
                   </tr>
                 );
               })}
             </tbody>
-            <tfoot><tr><td>Correct</td>{view.perQ.map((p, i) => <td key={i}>{Math.round(p * 100)}%</td>)}<td /></tr></tfoot>
+            <tfoot><tr><th className="who" scope="row">Full marks</th>{view.questions.map((q) => <td key={q.k.q}>{Math.round(pct(q.right, q.n))}%</td>)}<td /></tr></tfoot>
           </table>
         </div>
       </section>
@@ -124,36 +128,61 @@ export function Results({ quizId }: { quizId: string }) {
       <div className="row section noprint">
         <button className="btn" onClick={exportCsv}>Download marks (CSV)</button>
         <button className="btn" onClick={() => window.print()}>Print</button>
-        {!cls.sample && <button className="btn danger" onClick={async () => { await store.deletePhotos(quizId); setToast('Photos deleted from this laptop. Marks are kept.'); reload(); }}>Delete the photos, keep the marks</button>}
+        {!cls.sample && <button className="btn danger" onClick={async () => { await store.deletePhotos(quizId); setToast('Photos deleted from this browser. Marks are kept.'); reload(); }}>Delete the photos, keep the marks</button>}
       </div>
       {toast && <div className="toast" role="status">{toast}</div>}
     </>
   );
 }
 
-function summarise(sheets: SheetRec[], keys: QuestionKey[], credit: number) {
-  const n = keys.length;
-  const scored = sheets.filter((s) => scoreSheet(s.marks, credit).unreadable === 0);
-  const avg = scored.reduce((a, s) => a + scoreSheet(s.marks, credit).points, 0) / Math.max(1, scored.length);
-  const perQ = Array.from({ length: n }, (_, i) => sheets.filter((s) => s.marks[i]?.status === 'correct' || s.marks[i]?.status === 'unsimplified').length / Math.max(1, sheets.length));
-  const flagsLeft = sheets.reduce((a, s) => a + s.marks.filter(needsCheck).length, 0);
-  const ms = sheets.filter((s) => s.where === 'on_device').reduce((a, s) => a + (s.ms ?? 0) + (s.rereadMs ?? 0), 0);
-  const deviceMins = ms ? `${Math.floor(ms / 60000)} min ${Math.round((ms % 60000) / 1000)} s` : 'none';
-  const map = new Map<string, { students: Set<SheetRec>; qs: Set<number>; example?: { prompt: string; read: string } }>();
-  for (const s of sheets) for (const m of s.marks) {
-    if (m.status !== 'wrong') continue;
-    const id = m.misconception ?? 'other';
-    const g = map.get(id) ?? { students: new Set(), qs: new Set() };
-    if (!g.example && keys[m.q - 1]) g.example = { prompt: keys[m.q - 1].prompt, read: m.read };
-    g.students.add(s); g.qs.add(m.q); map.set(id, g);
+const pct = (a: number, n: number) => (n ? (100 * a) / n : 0);
+
+function summarise(sheets: SheetRec[], quiz: QuizRec, cls: ClassRec) {
+  const credit = quiz.unsimplifiedCredit;
+  const scored = sheets.map((s) => scoreSheet(s.marks, credit));
+  const avg = scored.reduce((a, s) => a + s.points, 0) / Math.max(1, scored.length);
+  const waiting = sheets.reduce((a, s) => a + s.marks.filter(needsCheck).length, 0);
+  const ms = sheets.filter((s) => s.where === 'on_device').reduce((a, s) => a + (s.ms ?? 0) + (s.rereadMs ?? 0) + s.marks.reduce((b, m) => b + (m.suggestion?.where === 'on_device' ? m.suggestion.ms : 0), 0), 0);
+  const deviceTime = ms ? `${Math.floor(ms / 60000)} min ${Math.round((ms % 60000) / 1000)} s` : '';
+  const nameOf = (s: SheetRec) => cls.roster.find((r) => r.id === s.studentId)?.name ?? s.readName ?? '?';
+  const questions = quiz.keys.map((k) => qsummary(k, sheets, nameOf));
+  const sk = sampleKeyOfClass(cls.id);
+  const man = sk ? sampleManifest(sk) : null;
+  const acc = man ? {
+    exact: accuracy(sheets, man.students, true),
+    open: openAccuracy(sheets, man.students, (q, ref) => {
+      const k = quiz.keys.find((x) => x.q === q);
+      if (!k) return null;
+      const out = outOfFor(k);
+      if (typeOf(k) === 'passage') { const r = parseRubric(k.answer) ?? []; const max = r.reduce((a, l) => a + l.max, 0) || 1; return Math.round(((ref as number[]).reduce((a, b) => a + b, 0) / max) * out * 2) / 2; }
+      const n = keyPoints(k.answer).length || 1;
+      return Math.round(((ref as boolean[]).filter(Boolean).length / n) * out * 2) / 2;
+    }),
+  } : null;
+  return { avg, waiting, deviceTime, onDevice: sheets.filter((s) => s.where === 'on_device').length, questions, acc };
+}
+
+function qsummary(k: QuestionKey, sheets: SheetRec[], nameOf: (s: SheetRec) => string) {
+  const type = typeOf(k);
+  let right = 0, partial = 0, wrong = 0, other = 0;
+  const groups = new Map<string, string[]>();
+  const options = new Map<string, number>();
+  const pts = keyPoints(k.answer), rubric = (parseRubric(k.answer) ?? []).map((l) => l.line);
+  for (const s of sheets) {
+    const m = s.marks.find((x) => x.q === k.q);
+    if (!m) continue;
+    if (m.status === 'correct' || m.status === 'unsimplified') { right++; continue; }
+    if (m.status === 'partial') partial++;
+    else if (m.status === 'wrong') wrong++;
+    else { other++; continue; }
+    if (type === 'choice' && m.picked) options.set(m.picked, (options.get(m.picked) ?? 0) + 1);
+    const labels = m.mistakes?.length ? m.mistakes : m.misconception ? [m.misconception] : type === 'choice' ? [] : ['other'];
+    for (const g of labels) groups.set(g, [...(groups.get(g) ?? []), nameOf(s)]);
   }
-  const groups = [...map.entries()].map(([id, g]) => ({
-    id,
-    label: id === 'other' ? 'Other wrong answers' : MISCONCEPTIONS[id as MisconceptionId].label,
-    teacher: id === 'other' ? 'No common wrong method matched. Worth a look at the working.' : MISCONCEPTIONS[id as MisconceptionId].teacher,
-    students: [...g.students], qs: [...g.qs].sort((a, b) => a - b), example: g.example,
-  })).sort((a, b) => Number(a.id === 'other') - Number(b.id === 'other') || b.students.length - a.students.length); // named mistakes first
-  const secure = sheets.filter((s) => s.marks.every((m) => m.status === 'correct'));
-  if (secure.length) groups.push({ id: 'secure', label: 'All correct', teacher: 'Every answer right and simplified.', students: secure, qs: [], example: undefined });
-  return { avg, perQ, flagsLeft, deviceMins, groups };
+  return {
+    k, type, right, partial, wrong, other, n: right + partial + wrong + other,
+    keyText: type === 'short' ? `${pts.length} key point${pts.length === 1 ? '' : 's'}` : type === 'passage' ? `${rubric.length}-line rubric` : k.answer,
+    groups: [...groups.entries()].map(([id, names]) => ({ id, label: mistakeLabel(id, pts, rubric), count: names.length, names })).sort((a, b) => Number(a.id === 'other') - Number(b.id === 'other') || b.count - a.count),
+    options: [...options.entries()].sort((a, b) => b[1] - a[1]),
+  };
 }

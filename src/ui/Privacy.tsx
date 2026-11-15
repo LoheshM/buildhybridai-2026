@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { currentSettings } from '../ai/firebase';
 import { testGuard } from '../ai/tasks';
-import { sampleManifest } from '../app/boot';
+import { sampleNames } from '../app/boot';
+import { Icon } from './Marks';
 import { counters, ledger, type CallEvent, type NetEvent } from '../ai/ledger';
 import { BUILD } from '../config';
 import { storageEstimate, store } from '../store/db';
@@ -26,41 +27,42 @@ export function Privacy() {
 
   return (
     <>
-      <h1>Privacy &amp; data</h1>
-      <p className="muted" style={{ maxWidth: '72ch' }}>Student photos, names and answers stay on this laptop. The only thing a real class ever sends to the AI service is the class-totals table you see before you send it. This page lists every request this browser sent to the AI service, captured just before it left.</p>
+      <div className="page-head"><h1>Privacy and data</h1></div>
+      <p className="lede">Pupils' photos, names and words stay on this laptop. The only thing a real class ever sends to the AI service is the class-totals table you see before you send it. This page lists every request this browser sent to the AI service, captured just before it left.</p>
 
-      <div className="stats">
-        <div className="stat"><b>{c.cloudRequests}</b><span>requests sent to cloud AI</span></div>
-        <div className="stat"><b style={{ color: c.studentPhotosSent ? 'var(--red)' : 'var(--green)' }}>{c.studentPhotosSent}</b><span>student photos sent{c.studentPhotosBlocked ? ` (${c.studentPhotosBlocked} blocked)` : ''}</span></div>
-        {studentCalls.length > 0 && <div className="stat"><b>{studentOnDevice}/{studentCalls.length}</b><span>reads of your students' sheets done on this laptop</span></div>}
-        <div className="stat"><b style={{ color: c.blocked ? 'var(--red)' : undefined }}>{c.blocked}</b><span>requests blocked by Tickmark</span></div>
-      </div>
+      <ul className="facts" aria-label="Counts from this browser">
+        <li><b>{c.cloudRequests}</b><span>requests sent to cloud AI</span></li>
+        <li><b style={{ color: c.studentPhotosSent ? 'var(--red)' : 'var(--ok)' }}>{c.studentPhotosSent}</b><span>pupil photos sent{c.studentPhotosBlocked ? ` (${c.studentPhotosBlocked} blocked)` : ''}</span></li>
+        {studentCalls.length > 0 && <li><b>{studentOnDevice}/{studentCalls.length}</b><span>AI calls on your pupils' work made on this laptop</span></li>}
+        <li><b style={{ color: c.blocked ? 'var(--red)' : undefined }}>{c.blocked}</b><span>requests blocked by Tickmark</span></li>
+      </ul>
 
-      <section className="grid2 section" aria-label="Where the work happened">
-        <div className="sheet" style={{ borderTop: '4px solid var(--device)' }}>
-          <h2>On this laptop</h2>
-          <ul className="plain-list">
+      <section className="ledger-split section" aria-label="Where the work happened">
+        <div>
+          <h2><Icon name="laptop" />On this laptop</h2>
+          <ul>
             <li><b>{calls.filter((e) => e.where === 'on_device' && /Read sheet|Read sample/.test(e.task)).length}</b> sheet readings by Gemini Nano</li>
+            <li><b>{calls.filter((e) => e.where === 'on_device' && /Suggest/.test(e.task)).length}</b> suggested marks for sentences and paragraphs</li>
             <li><b>{calls.filter((e) => e.where === 'on_device' && /Second read/.test(e.task)).length}</b> second readings of doubtful answers</li>
             <li><b>{calls.filter((e) => e.where === 'on_device' && /Reteach/.test(e.task)).length}</b> lesson plans written on the laptop</li>
-            <li>All marking, mistake names, names and parent-note filling: plain code, here</li>
+            <li>Every exact mark, every mistake name, name matching and parent-note filling: plain code, here</li>
           </ul>
         </div>
-        <div className="sheet" style={{ borderTop: '4px solid var(--cloud)' }}>
-          <h2>In the cloud</h2>
-          <ul className="plain-list">
+        <div>
+          <h2><Icon name="cloud" />In the cloud</h2>
+          <ul>
             <li><b>{net.filter((e) => !e.blocked && !e.images).length}</b> class-totals requests ({(net.filter((e) => !e.blocked && !e.images).reduce((a, e) => a + e.bytes, 0) / 1024).toFixed(1)} KB, no names)</li>
             <li><b>{net.filter((e) => !e.blocked && e.images).length}</b> made-up sample sheets read without on-device AI</li>
-            <li><b>{c.studentPhotosSent}</b> photos of your students</li>
+            <li><b>{c.studentPhotosSent}</b> photos or words of your pupils</li>
             <li><b>{c.blocked}</b> requests refused by Tickmark's guard</li>
           </ul>
         </div>
       </section>
 
-      <section className="sheet section">
+      <section className="panel section">
         <h2>Test the guard yourself</h2>
         <p className="muted small">Tickmark checks every request to the AI service before it leaves this browser. This button tries to send two things that must never leave: a photo that isn't one of the made-up sample sheets, and a sentence containing a name from the sample class list. Both should be refused, and appear in the Outbox as blocked.</p>
-        <button className="btn" disabled={guardBusy} onClick={async () => { setGuardBusy(true); try { setGuardResult(await testGuard(sampleManifest()?.students.map((s) => s.name) ?? [])); } finally { setGuardBusy(false); } }}>{guardBusy ? 'Testing…' : 'Try to send them'}</button>
+        <button className="btn" disabled={guardBusy} onClick={async () => { setGuardBusy(true); try { setGuardResult(await testGuard(sampleNames())); } finally { setGuardBusy(false); } }}>{guardBusy ? 'Testing…' : 'Try to send them'}</button>
         {guardResult && (
           <ul className="plain-list" style={{ marginTop: 10 }} aria-live="polite">
             {guardResult.map((r) => <li key={r.what}>{r.blocked ? <b style={{ color: 'var(--green)' }}>Refused:</b> : <b style={{ color: 'var(--red)' }}>Not refused:</b>} {r.what}. <span className="muted small">{r.reason}</span></li>)}
@@ -68,7 +70,7 @@ export function Privacy() {
         )}
       </section>
 
-      <section className="sheet section">
+      <section className="panel section">
         <h2>Outbox</h2>
         <p className="muted small">What was sent to Firebase AI Logic, captured in the browser just before sending. Images are shown by their fingerprint; only made-up sample sheets may ever be among them.</p>
         {net.length === 0 ? <p className="muted">Nothing has been sent to the AI service yet.</p> : net.slice(0, 100).map((e) => {
@@ -87,7 +89,7 @@ export function Privacy() {
         })}
       </section>
 
-      <section className="sheet section">
+      <section className="panel section">
         <h2>Every AI call</h2>
         <div style={{ overflowX: 'auto', maxHeight: 420 }}>
           <table className="plain">
@@ -106,8 +108,8 @@ export function Privacy() {
         </div>
       </section>
 
-      <div className="grid2 section">
-        <section className="sheet">
+      <div className="split section">
+        <section className="panel">
           <h2>Check it yourself</h2>
           <ol>
             <li>Open Chrome DevTools (<kbd>F12</kbd>) and choose <b>Network</b>.</li>
@@ -124,7 +126,7 @@ export function Privacy() {
           </ul>
           <p className="small muted">Cloud requests use the free tier of the Gemini Developer API, where Google may use inputs to improve its services. That is why only anonymous class totals and made-up sample sheets are ever sent. A school deploying Tickmark can switch the project to paid Vertex AI.</p>
         </section>
-        <section className="sheet">
+        <section className="panel">
           <h2>Data on this laptop</h2>
           <p>{est ? `${est.usedMB.toFixed(1)} MB stored in this browser${est.persisted ? ', protected from automatic clean-up' : ''}.` : '…'}</p>
           <p className="small muted">Classes, photos, marks and this log live in this browser's storage for this site. Clearing site data, or the button below, removes them.</p>

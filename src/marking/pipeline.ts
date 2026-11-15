@@ -7,8 +7,41 @@ export interface FirstRead { answers: { q: number; crossedOutText: string; final
 export function markRead(keys: QuestionKey[], read: FirstRead): Marked[] {
   return keys.map((k) => {
     const a = read.answers.find((x) => x.q === k.q);
-    return markAnswer(k, a?.finalAnswer ?? '', a?.crossedOutText ?? '');
+    const raw = a?.finalAnswer ?? '';
+    const cleaned = stripPrinted(raw, k.prompt);
+    const m = markAnswer(k, cleaned, a?.crossedOutText ?? '');
+    // the model copied printed text into the answer: removed by code, and the teacher is asked to look
+    return cleaned !== raw.trim() ? { ...m, flags: [...new Set([...m.flags, 'check_reading' as const])] } : m;
   });
+}
+
+const tokens = (s: string) => (s ?? '').toLowerCase().normalize('NFKC').replace(/[^\p{L}\p{N}/.%° ]+/gu, ' ').split(/\s+/).filter(Boolean);
+
+/**
+ * Day-1 probe: Gemini Nano sometimes starts an answer with the printed question ("Why do plants
+ * need light? They need light to make food."). If the answer opens with most of the printed
+ * question, that part is removed. Exported for tests.
+ */
+export function stripPrinted(answer: string, prompt: string): string {
+  const a = (answer ?? '').trim();
+  const p = tokens(prompt).filter((t) => !/^[a-h]\)?$/.test(t)); // option letters alone don't count
+  if (p.length < 3 || !a) return a;
+  const words = a.split(/\s+/);
+  // the answer must open with the printed question's own opening, in order (one word may be skipped
+  // or misread); a pupil re-using a few of the question's words does not match
+  let j = 0, cut = 0, hits = 0, misses = 0;
+  for (let i = 0; i < words.length && j < p.length; i++) {
+    const t = tokens(words[i]);
+    if (!t.length) { cut = i + 1; continue; }
+    if (t.every((x, n) => p[j + n] === x)) { j += t.length; hits += t.length; cut = i + 1; }
+    else if (p[j + 1] !== undefined && t[0] === p[j + 1]) { j += 2; hits++; cut = i + 1; misses++; }
+    else if (hits > 0 && misses === 0) { j++; misses++; cut = i + 1; }
+    else break;
+    if (misses > 1) return a;
+  }
+  if (hits < Math.max(3, Math.ceil(p.length * 0.6))) return a;
+  const rest = words.slice(cut).join(' ').replace(/^[\s:;,.?!=-]+/, '');
+  return rest;
 }
 
 export function rereadQuestions(keys: QuestionKey[], marks: Marked[]): number[] {
@@ -65,6 +98,8 @@ export function applyCorrection(key: QuestionKey, before: Marked, corrected: str
   const changed = before.read.replace(/\s+/g, ' ').trim() !== corrected.replace(/\s+/g, ' ').trim();
   // Still unreadable (e.g. two answers typed back): keep it open for the teacher.
   if (m.status === 'unreadable') return { ...m, checked: false };
+  // an open answer whose reading changed waits for the teacher's mark (the old suggestion was for other words)
+  if (m.status === 'pending') return { ...m, flags: changed ? ['teacher_changed'] : [], suggestions: [], checked: false };
   return { ...m, flags: changed ? ['teacher_changed'] : [], suggestions: changed && before.read.trim() ? [before.read] : [], checked: true };
 }
 
@@ -76,7 +111,7 @@ export function markWrongByTeacher(before: Marked): Marked {
 /** Flags still waiting for the teacher. */
 export const openFlags = (m: Marked) => (m.checked ? [] : m.flags.filter((f) => f !== 'teacher_changed'));
 /** An answer waits for the teacher while it has open flags or is still unreadable. */
-export const needsCheck = (m: Marked) => (m.status === 'unreadable' && !m.checked) || openFlags(m).length > 0;
+export const needsCheck = (m: Marked) => ((m.status === 'unreadable' || m.status === 'pending') && !m.checked) || openFlags(m).length > 0;
 
 /** Stamps the model's reading onto each mark after the second read, before any teacher change. */
 export const stampModelRead = (marks: Marked[]): Marked[] => marks.map((m) => ({ ...m, modelRead: m.read, modelFlagged: needsCheck(m) }));

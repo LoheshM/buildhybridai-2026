@@ -82,6 +82,8 @@ export interface Marked {
   picked?: string; // multiple choice: the option chosen
   note?: string; // what code noticed, e.g. "Same amount in mm"
   suggestion?: Suggestion; // open questions only
+  met?: boolean[]; // short answers: the key points the teacher credited
+  lines?: { score: number; max: number }[]; // paragraphs: the teacher's rubric scores
 }
 
 export interface KeyInfo {

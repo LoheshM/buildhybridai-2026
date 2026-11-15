@@ -69,5 +69,7 @@ export function decideOpen(key: QuestionKey, m: Marked, d: { points?: number; me
   const status = statusFromPoints(points, outOf);
   const mistakes = status === 'correct' ? [] : openMistakes(key, { met: status === 'wrong' && !met ? undefined : met, contradicts: !d.met && !d.points && s?.contradicts, lines });
   const changed = !!s && (points !== s.points || (!!d.met && JSON.stringify(d.met) !== JSON.stringify(s.met)));
-  return { ...m, status, points, mistakes, misconception: null, checked: true, flags: changed ? [...new Set([...m.flags.filter((f) => f === 'crossed_out'), 'teacher_changed' as const])] : m.flags.filter((f) => f !== 'teacher_changed') };
+  const keepMet = d.met ?? (d.points === undefined && !d.lines ? s?.met : undefined);
+  const keepLines = d.lines ?? (d.points === undefined && !d.met ? s?.lines : undefined);
+  return { ...m, status, points, mistakes, misconception: null, checked: true, met: keepMet, lines: keepLines, flags: changed ? [...new Set([...m.flags.filter((f) => f === 'crossed_out'), 'teacher_changed' as const])] : m.flags.filter((f) => f !== 'teacher_changed') };
 }

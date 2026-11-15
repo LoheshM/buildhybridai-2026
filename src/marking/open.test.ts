@@ -84,3 +84,16 @@ describe('stripPrinted: printed text copied into an answer is removed by code', 
     expect(m.flags).toContain('check_reading');
   });
 });
+
+describe('adjustSuggestion: the teacher edits the pencil, Enter inks it', async () => {
+  const { adjustSuggestion } = await import('./open');
+  it('keeps the answer pending and recomputes the pencil points', () => {
+    const p = { ...markAnswer(SHORT, 'They need light to make food.'), suggestion: toSuggestion(SHORT, { mark: 'partial', missing: [1], reason: 'x' }, 'on_device', 1)! };
+    const a = adjustSuggestion(SHORT, p, { met: [true, true] });
+    expect(a.status).toBe('pending');
+    expect(a.suggestion).toMatchObject({ points: 2, adjusted: true });
+    const inked = decideOpen(SHORT, a);
+    expect(inked).toMatchObject({ status: 'correct', points: 2 });
+    expect(inked.flags).toContain('teacher_changed');
+  });
+});

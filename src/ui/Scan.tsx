@@ -8,7 +8,7 @@ import { href } from '../app/router';
 import { onRun, onSheetChanged, requeueForDevice, runQuiz, runState, stopRun, type RunState } from '../app/runner';
 import { scoreSheet, typeOf } from '../marking/mark';
 import { markRead, needsCheck } from '../marking/pipeline';
-import { isOpen } from '../marking/qtypes';
+import { isOpen, QTYPES } from '../marking/qtypes';
 import { rosterTokens } from '../privacy/nameCheck';
 import { store, uid, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 import { downloadDeviceModel, useDevice, useLoad } from './hooks';
@@ -28,7 +28,7 @@ export function Scan({ quizId }: { quizId: string }) {
   const [run, setRun] = useState<RunState>(runState());
   const d = useDevice();
   useEffect(() => { if (ctx) setSheets(ctx.sheets); }, [ctx]);
-  useEffect(() => onRun((r) => { setRun(r); if (!r.running) reload(); }), [reload]);
+  useEffect(() => onRun((r) => { setRun(r); if (!r.running) { reload(); setFresh(new Set()); } }), [reload]);
   useEffect(() => onSheetChanged((s) => {
     if (s.quizId !== quizId) return;
     setSheets((xs) => (xs.some((x) => x.id === s.id) ? xs.map((x) => (x.id === s.id ? s : x)) : [...xs, s]));
@@ -49,7 +49,7 @@ export function Scan({ quizId }: { quizId: string }) {
   const pencil = sheets.reduce((n, s) => n + s.marks.filter((m) => m.status === 'pending').length, 0);
   const deviceReady = d.state === 'available';
   const notDevice = read.filter((s) => s.where !== 'on_device' && s.source === 'sample').length;
-  const remaining = Math.round(((run.total - run.done) * (run.avgMs || 9000)) / 1000);
+  const remaining = run.done >= 2 && run.avgMs ? Math.round(((run.total - run.done) * run.avgMs) / 1000) : null;
   const start = (limit?: number) => runQuiz(cls, quiz, limit);
   const openQs = quiz.keys.filter((k) => isOpen(typeOf(k))).length;
 
@@ -73,7 +73,7 @@ export function Scan({ quizId }: { quizId: string }) {
           <div className="stack" role="status" aria-live="polite">
             <div className="row spread">
               <strong>Reading sheet {Math.min(run.done + 1, run.total || 1)} of {run.total || '…'}{deviceReady ? ' on this laptop' : ''}</strong>
-              <span className="small muted">about {remaining >= 60 ? `${Math.round(remaining / 60)} min` : `${remaining} s`} left{openQs ? `, including ${openQs} suggested mark${openQs === 1 ? '' : 's'} per sheet` : ''}</span>
+              <span className="small muted">{remaining === null ? 'Timing the first sheets…' : `about ${remaining >= 60 ? `${Math.round(remaining / 60)} min` : `${remaining} s`} left`}{openQs ? ` · ${openQs} suggested mark${openQs === 1 ? '' : 's'} per sheet` : ''}</span>
               <button className="btn small" onClick={stopRun}>Stop</button>
             </div>
             <div className="progress"><i style={{ width: `${(run.done / Math.max(1, run.total)) * 100}%` }} /></div>
@@ -116,7 +116,7 @@ export function Scan({ quizId }: { quizId: string }) {
             <span className="small muted">Ink: decided · pencil: suggested, waiting for you · highlighter: needs a look</span>
           </div>
           <div className="tiles">
-            {sheets.map((s) => <Tile key={s.id} s={s} cls={cls} quiz={quiz} fresh={fresh.has(s.id)} onRetry={() => start()} canRetry={!run.running} />)}
+            {sheets.map((s) => <Tile key={s.id} s={s} cls={cls} quiz={quiz} fresh={fresh.has(s.id)} onRetry={() => start()} canRetry={!run.running} onRemove={async () => { await store.deleteSheet(s); reload(); }} />)}
           </div>
         </section>
       )}
@@ -169,7 +169,7 @@ function ReadControls({ n, total, sample, state, progress, onStart }: { n: numbe
   return <p className="muted" style={{ margin: 0 }}>{n} photo{n === 1 ? '' : 's'} saved. Pupils' sheets are only ever read by on-device AI, which isn't available in this browser; type the answers in below instead.</p>;
 }
 
-function Tile({ s, cls, quiz, fresh, onRetry, canRetry }: { s: SheetRec; cls: ClassRec; quiz: QuizRec; fresh: boolean; onRetry: () => void; canRetry: boolean }) {
+function Tile({ s, cls, quiz, fresh, onRetry, canRetry, onRemove }: { s: SheetRec; cls: ClassRec; quiz: QuizRec; fresh: boolean; onRetry: () => void; canRetry: boolean; onRemove: () => void }) {
   const url = usePhoto(s);
   const student = cls.roster.find((r) => r.id === s.studentId);
   const done = s.status === 'read' || s.status === 'checked';
@@ -192,7 +192,17 @@ function Tile({ s, cls, quiz, fresh, onRetry, canRetry }: { s: SheetRec; cls: Cl
       {s.status === 'error' && <span className="small" style={{ color: 'var(--red)' }}>{s.error}</span>}
     </>
   );
-  if (!done) return <div className={`tile ${s.status}`}>{body}{s.status === 'error' && canRetry && <button className="btn small" onClick={onRetry}>Try again</button>}</div>;
+  if (!done) return (
+    <div className={`tile ${s.status}`}>{body}
+      {(s.status === 'error' || s.status === 'queued') && canRetry && !s.sampleId && (
+        <div className="row" style={{ gap: 6 }}>
+          {s.status === 'error' && <button className="btn small" onClick={onRetry}>Try again</button>}
+          <button className="btn small quiet danger" onClick={() => { if (window.confirm('Remove this photo from the quiz? You can add a new photo of the same sheet.')) onRemove(); }}>Remove photo</button>
+        </div>
+      )}
+      {s.status === 'error' && canRetry && s.sampleId && <button className="btn small" onClick={onRetry}>Try again</button>}
+    </div>
+  );
   return <a className={`tile ${s.status}${fresh ? ' fresh' : ''}`} href={href.check(quiz.id, s.id)}>{body}</a>;
 }
 
@@ -239,7 +249,7 @@ function DropPhotos({ quiz, existing, onAdded, compact = false }: { quiz: QuizRe
     setMsg([`Added ${n} photo${n === 1 ? '' : 's'}.${dup ? ` Skipped ${dup} already added.` : ''}`, ...errs]);
     onAdded();
   };
-  const touch = typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches;
+  const touch = typeof matchMedia !== 'undefined' && matchMedia('(any-pointer: coarse)').matches;
   return (
     <section className="section">
       <div className={`dropzone${over ? ' over' : ''}`} onDragOver={(e) => { e.preventDefault(); setOver(true); }} onDragLeave={() => setOver(false)}
@@ -269,7 +279,16 @@ function TypedGrid({ cls, quiz, existing, onSaved }: { cls: ClassRec; quiz: Quiz
   }, [cls, quiz, existing]);
   const [vals, setVals] = useState(initial);
   const [saved, setSaved] = useState<string | null>(null);
+  const [dirty, setDirty] = useState(false);
+  // typed answers live in memory until saved: warn before a reload or a stray pull-to-refresh loses them
+  useEffect(() => {
+    if (!dirty) return;
+    const warn = (e: BeforeUnloadEvent) => { e.preventDefault(); };
+    addEventListener('beforeunload', warn);
+    return () => removeEventListener('beforeunload', warn);
+  }, [dirty]);
   const save = async () => {
+    setDirty(false);
     let n = 0;
     for (const st of cls.roster) {
       const answers = vals[st.id];
@@ -286,17 +305,19 @@ function TypedGrid({ cls, quiz, existing, onSaved }: { cls: ClassRec; quiz: Quiz
     <section className="panel section">
       <h2>Type the answers in</h2>
       <p className="muted">This browser can't read photos on the device, and pupils' sheets are never sent to the cloud. Type what each pupil wrote: code still marks every exact answer and names the mistake. Sentences and paragraphs wait for you to mark them in Check.</p>
+      {typeof matchMedia !== 'undefined' && matchMedia('(pointer: coarse)').matches && <p className="small muted">On a phone? Take the photos with the camera app and move them to a laptop with Chrome and Gemini Nano (AirDrop, Nearby Share or a cable) to have them read there. Nothing goes through a cloud album.</p>}
       <div className="register-wrap">
         <table className="register">
-          <thead><tr><th className="who" scope="col">Pupil</th>{quiz.keys.map((k) => <th key={k.q} scope="col" title={k.prompt}>Q{k.q}</th>)}</tr></thead>
+          <thead><tr><th className="who" scope="col">Pupil</th>{quiz.keys.map((k) => <th key={k.q} scope="col" title={k.prompt}>Q{k.q}<span className="qt">{QTYPES[typeOf(k)].short}</span></th>)}</tr></thead>
           <tbody>
             {cls.roster.map((st) => (
               <tr key={st.id}>
                 <th className="who" scope="row">{st.name}</th>
                 {quiz.keys.map((k, i) => (
                   <td key={k.q} style={{ padding: '3px 4px' }}>
-                    <input data-student aria-label={`${st.name}, question ${k.q}`} value={vals[st.id]?.[i] ?? ''} spellCheck={false} autoComplete="off" style={{ width: isOpen(typeOf(k)) ? '16em' : '6em', minHeight: 32, padding: '4px 6px' }}
-                      onChange={(e) => setVals({ ...vals, [st.id]: (vals[st.id] ?? quiz.keys.map(() => '')).map((v, j) => (j === i ? e.target.value : v)) })} />
+                    <input data-student data-grid aria-label={`${st.name}, question ${k.q}: ${k.prompt}`} value={vals[st.id]?.[i] ?? ''} spellCheck={false} autoComplete="off" autoCorrect="off" autoCapitalize="off" enterKeyHint="next"
+                      onKeyDown={(e) => { if (e.key !== 'Enter') return; e.preventDefault(); const all = [...document.querySelectorAll<HTMLInputElement>('input[data-grid]')]; all[all.indexOf(e.currentTarget) + 1]?.focus(); }} style={{ width: isOpen(typeOf(k)) ? '16em' : '6em', minHeight: 32, padding: '4px 6px' }}
+                      onChange={(e) => { setDirty(true); setVals({ ...vals, [st.id]: (vals[st.id] ?? quiz.keys.map(() => '')).map((v, j) => (j === i ? e.target.value : v)) }); }} />
                   </td>
                 ))}
               </tr>

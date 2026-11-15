@@ -17,8 +17,12 @@ export type Hand = 'ink' | 'pencil';
 export function Mk({ status, hand = 'ink', draw = false, needs = false, label }: { status: Status | 'suggest-full' | 'suggest-part' | 'suggest-none'; hand?: Hand; draw?: boolean; needs?: boolean; label?: string }) {
   const cls = `mk ${hand}${draw ? ' draw' : ''}${needs ? ' needs' : ''}`;
   const aria = label ?? ARIA[status] ?? status;
+  // pathLength only on ink: it also stretches a dash pattern, which hid the pencil's dashes
   const svg = (paths: string[]) => (
-    <svg viewBox="0 0 26 26" aria-hidden="true">{paths.map((d) => <path key={d} pathLength={1} d={d} />)}</svg>
+    <>
+      {draw && hand === 'ink' && <svg className="ghost" viewBox="0 0 26 26" aria-hidden="true">{paths.map((d) => <path key={d} d={d} />)}</svg>}
+      <svg viewBox="0 0 26 26" aria-hidden="true">{paths.map((d) => (hand === 'ink' ? <path key={d} pathLength={1} d={d} /> : <path key={d} d={d} />))}</svg>
+    </>
   );
   switch (status) {
     case 'correct': case 'suggest-full': return <span className={cls} role="img" aria-label={aria}>{svg([TICK])}</span>;
@@ -61,8 +65,8 @@ export function ScoreRing({ points, outOf, open = false, big = false, draw = fal
   const p = fmtPoints(points);
   return (
     <span className={`score${big ? ' big' : ''}${open ? ' open' : ''}${draw ? ' draw' : ''}`} role="img" aria-label={open ? `Score so far ${points} of ${outOf}, not final` : `Score ${points} out of ${outOf}`}>
-      <svg viewBox="0 0 100 56" preserveAspectRatio="none" aria-hidden="true"><path pathLength={1} d={RING} /></svg>
-      <span>{open ? `${p}?` : p}<small>/{fmtPoints(outOf)}</small></span>
+      <svg viewBox="0 0 100 56" preserveAspectRatio="none" aria-hidden="true">{open ? <path d={RING} /> : <path pathLength={1} d={RING} />}</svg>
+      <span>{p}<small>/{fmtPoints(outOf)}</small>{open && <span className="sofar">so far</span>}</span>
     </span>
   );
 }

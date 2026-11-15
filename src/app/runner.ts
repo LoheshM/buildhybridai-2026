@@ -61,7 +61,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
     const all = await store.sheets(quiz.id);
     const queued = all.filter((s) => s.status === 'queued' || s.status === 'error' || s.status === 'reading').slice(0, limit);
     const taken = new Set(all.filter((s) => !queued.includes(s)).map((s) => s.studentId).filter((x): x is string => !!x));
-    emit({ total: queued.length, avgMs: state.avgMs || 11000 });
+    emit({ total: queued.length, avgMs: 0 }); // no estimate until real sheets are timed
     for (const sheet of queued) {
       if (stopRequested) break;
       if (!(await store.quiz(quiz.id))) break; // the quiz was deleted mid-run

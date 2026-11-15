@@ -49,10 +49,40 @@ export function Results({ quizId }: { quizId: string }) {
         <li><b>{sheets.length}{ctx.total > sheets.length ? ` of ${ctx.total}` : ''}</b><span>sheets marked</span></li>
         <li><ScoreRing points={+view.avg.toFixed(1)} outOf={outOf} open={view.waiting > 0} /><span>class average</span></li>
         <li><b>{view.waiting}</b><span>marks waiting for you</span></li>
-        <li><b>{view.onDevice}/{sheets.length}</b><span>sheets read on this laptop{view.deviceTime ? ` (${view.deviceTime})` : ''}</span></li>
+        <li><b>{view.onDevice ? `${view.onDevice}/${sheets.length}` : view.sourceLabel}</b><span>{view.onDevice ? `sheets read on this laptop${view.deviceTime ? ` (${view.deviceTime})` : ''}` : 'no on-device AI in this browser'}</span></li>
       </ul>
 
-      <section aria-labelledby="qmap-h">
+      <section aria-labelledby="reg-h">
+        <div className="panel-head">
+          <h2 id="reg-h">The register</h2>
+          <span className="small muted">Pencil: suggested, not decided yet. Hatched: waiting for you. Click a name to open the sheet.</span>
+        </div>
+        <div className="register-wrap">
+          <table className="register">
+            <thead><tr><th className="who" scope="col">Pupil</th>{quiz.keys.map((k) => <th key={k.q} scope="col" title={k.prompt}>Q{k.q}<span className="qt">{outOfFor(k) > 1 ? `out of ${outOfFor(k)}` : QTYPES[typeOf(k)].short}</span></th>)}<th scope="col">Score</th></tr></thead>
+            <tbody>
+              {sheets.map((s) => {
+                const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit);
+                return (
+                  <tr key={s.id}>
+                    <th className="who" scope="row"><a href={href.check(quizId, s.id)}>{name(s)}</a></th>
+                    {s.marks.map((m) => (
+                      <td key={m.q} className={`cell ${m.status === 'pending' ? 'pending' : m.status === 'wrong' ? 'wrong' : m.status === 'partial' || m.status === 'unsimplified' ? 'partial' : ''}${needsCheck(m) ? ' needs' : ''}`}
+                        title={`${m.read ? `"${m.read.slice(0, 120)}"` : 'Blank'}${m.misconception ? `: ${mistakeLabel(m.misconception)}` : ''}${needsCheck(m) ? ' (waiting for you)' : ''}`}>
+                        {(m.outOf ?? 1) > 1 && m.status !== 'pending' && m.status !== 'blank' ? <span className="hand" style={{ color: 'var(--red)', fontWeight: 700 }}>{fmtPoints(pointsFor(m, quiz.unsimplifiedCredit))}</span> : <AnswerMark m={m} />}
+                      </td>
+                    ))}
+                    <td className="total"><span className="hand" style={{ color: sc.pending + sc.unreadable ? 'var(--pencil)' : 'var(--red)', fontSize: '1.05rem' }}>{fmtPoints(sc.points)}{sc.pending + sc.unreadable ? '?' : ''}</span><span className="quiet small">/{fmtPoints(sc.outOf)}</span></td>
+                  </tr>
+                );
+              })}
+            </tbody>
+            <tfoot><tr><th className="who" scope="row">Full marks</th>{view.questions.map((q) => { const decided = q.n - q.waiting; return <td key={q.k.q} title={q.waiting ? `${q.waiting} still waiting for you` : undefined}>{decided ? `${Math.round(pct(q.right, decided))}%` : '–'}</td>; })}<td /></tr></tfoot>
+          </table>
+        </div>
+      </section>
+
+      <section className="section" aria-labelledby="qmap-h">
         <div className="panel-head">
           <h2 id="qmap-h">What the class got wrong</h2>
           <a className={`btn ${sheets.length >= MIN_SHEETS ? 'primary' : ''}`} href={href.reteach(quizId)} aria-disabled={sheets.length < MIN_SHEETS}>Plan tomorrow's lesson</a>
@@ -62,7 +92,7 @@ export function Results({ quizId }: { quizId: string }) {
             <div key={q.k.q} className="qrow">
               <span className="qn" aria-label={`Question ${q.k.q}`}>{q.k.q}</span>
               <div style={{ minWidth: 0 }}>
-                <div className="prompt clip" title={q.k.prompt}>{q.k.prompt || `Question ${q.k.q}`}</div>
+                <div className="prompt" title={q.k.prompt}>{q.k.prompt || `Question ${q.k.q}`}</div>
                 <div className="counts"><span className={`chip ${QTYPES[q.type].markedBy === 'code' ? 'code' : 'pencil'}`}>{QTYPES[q.type].label}</span> key: {q.keyText}</div>
               </div>
               <div>
@@ -72,10 +102,11 @@ export function Results({ quizId }: { quizId: string }) {
                 <div className="counts">{q.waiting === q.n ? `All ${q.n} waiting for you` : <>{q.right} right{q.partial ? ` · ${q.partial} partly` : ''} · {q.wrong} wrong{q.other ? ` · ${q.other} blank` : ''}{q.waiting ? ` · ${q.waiting} waiting for you` : ''}</>}</div>
               </div>
               <div className="mistakes">
-                {q.groups.length === 0 ? <span className="small muted">{q.waiting && !(q.wrong + q.partial) ? <a href={href.checkQ(quizId, q.k.q)}>Decide the pencil marks first</a> : q.wrong + q.partial ? 'No common pattern' : 'Nothing to reteach'}</span> : q.groups.map((g) => (
+                {q.options.length > 0 ? (
+                  <span className="picks"><span className="small muted">Wrong picks:</span>{q.options.map(([o, n]) => <span key={o} className="pick" title={`${n} pupils picked ${o}`}>{o === 'true' ? 'True' : o === 'false' ? 'False' : o}<b>{n}</b></span>)}</span>
+                ) : q.groups.length === 0 ? <span className="small muted">{q.waiting && !(q.wrong + q.partial) ? <a href={href.checkQ(quizId, q.k.q)}>Decide the pencil marks first</a> : q.wrong + q.partial ? 'No common pattern' : 'Nothing to reteach'}</span> : q.groups.map((g) => (
                   <span key={g.id} className="mistake" title={g.names.join(', ')}><b>{g.count}</b>{g.label}</span>
                 ))}
-                {q.options.length > 0 && <span className="small muted">Wrong picks: {q.options.map(([o, n]) => `${o} ${n}`).join(' · ')}</span>}
               </div>
             </div>
           ))}
@@ -95,35 +126,6 @@ export function Results({ quizId }: { quizId: string }) {
         </section>
       )}
 
-      <section className="section" aria-labelledby="reg-h">
-        <div className="panel-head">
-          <h2 id="reg-h">The register</h2>
-          <span className="small muted">Pencil: suggested, not decided yet. Hatched: waiting for you. Click a name to open the sheet.</span>
-        </div>
-        <div className="register-wrap">
-          <table className="register">
-            <thead><tr><th className="who" scope="col">Pupil</th>{quiz.keys.map((k) => <th key={k.q} scope="col" title={k.prompt}>Q{k.q}<span className="qt">{outOfFor(k) > 1 ? `/${outOfFor(k)}` : QTYPES[typeOf(k)].label.split(' ')[0]}</span></th>)}<th scope="col">Score</th></tr></thead>
-            <tbody>
-              {sheets.map((s) => {
-                const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit);
-                return (
-                  <tr key={s.id}>
-                    <th className="who" scope="row"><a href={href.check(quizId, s.id)}>{name(s)}</a></th>
-                    {s.marks.map((m) => (
-                      <td key={m.q} className={`cell ${m.status === 'pending' ? 'pending' : m.status === 'wrong' ? 'wrong' : m.status === 'partial' || m.status === 'unsimplified' ? 'partial' : ''}${needsCheck(m) ? ' needs' : ''}`}
-                        title={`${m.read ? `"${m.read.slice(0, 120)}"` : 'Blank'}${m.misconception ? `: ${mistakeLabel(m.misconception)}` : ''}${needsCheck(m) ? ' (waiting for you)' : ''}`}>
-                        {(m.outOf ?? 1) > 1 && m.status !== 'pending' && m.status !== 'blank' ? <span className="hand" style={{ color: 'var(--red)', fontWeight: 700 }}>{fmtPoints(pointsFor(m, quiz.unsimplifiedCredit))}</span> : <AnswerMark m={m} />}
-                      </td>
-                    ))}
-                    <td className="total"><span className="hand" style={{ color: sc.pending + sc.unreadable ? 'var(--pencil)' : 'var(--red)', fontSize: '1.05rem' }}>{fmtPoints(sc.points)}{sc.pending + sc.unreadable ? '?' : ''}</span><span className="quiet small">/{fmtPoints(sc.outOf)}</span></td>
-                  </tr>
-                );
-              })}
-            </tbody>
-            <tfoot><tr><th className="who" scope="row">Full marks</th>{view.questions.map((q) => <td key={q.k.q}>{Math.round(pct(q.right, q.n))}%</td>)}<td /></tr></tfoot>
-          </table>
-        </div>
-      </section>
 
       <div className="row section noprint">
         <button className="btn" onClick={exportCsv}>Download marks (CSV)</button>
@@ -159,7 +161,9 @@ function summarise(sheets: SheetRec[], quiz: QuizRec, cls: ClassRec) {
       return Math.round(((ref as boolean[]).filter(Boolean).length / n) * out * 2) / 2;
     }),
   } : null;
-  return { avg, waiting, deviceTime, onDevice: sheets.filter((s) => s.where === 'on_device').length, questions, acc };
+  const recorded = sheets.filter((s) => s.where === 'recorded').length, cloud = sheets.filter((s) => s.where === 'in_cloud').length, typed = sheets.filter((s) => s.where === 'local').length;
+  const sourceLabel = [cloud ? `${cloud} cloud` : '', recorded ? `${recorded} recorded` : '', typed ? `${typed} typed` : ''].filter(Boolean).join(' · ') || '–';
+  return { avg, waiting, deviceTime, onDevice: sheets.filter((s) => s.where === 'on_device').length, sourceLabel, questions, acc };
 }
 
 function qsummary(k: QuestionKey, sheets: SheetRec[], nameOf: (s: SheetRec) => string) {

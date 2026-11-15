@@ -109,7 +109,12 @@ export const subjectFor = (keys: QuestionKey[]): Subject => (keys.every((k) => M
 /** Rebuilt from the number, never the typed text, for maths keys. */
 function keyText(k: QuestionKey, type: QType): string {
   if (type === 'fraction') { const v = keyInfo(k).value; return v ? format(v) : ''; }
-  if (type === 'number') { const q = parseQuantity(k.answer); return q ? `${format(q.value)}${q.percent ? '%' : q.unit ? ` ${q.unit}` : ''}`.replace(/^(.*) ([$£€₹])$/, '$2$1') : ''; }
+  if (type === 'number') {
+    const q = parseQuantity(k.answer);
+    if (!q) return '';
+    const v = q.decimals > 0 ? (q.value.n / q.value.d).toFixed(q.decimals) : format(q.value); // 3.6 g stays 3.6, never 3 3/5
+    return `${v}${q.percent ? '%' : q.unit ? ` ${q.unit}` : ''}`.replace(/^(.*) ([$£€₹])$/, '$2$1');
+  }
   if (type === 'choice') return normChoice(k.answer) ?? '';
   if (type === 'short' || type === 'passage') return '';
   return teacherText(k.answer, 80);

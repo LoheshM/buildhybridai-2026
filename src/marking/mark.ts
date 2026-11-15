@@ -61,6 +61,7 @@ export interface Suggestion {
   reason: string;
   where: 'on_device' | 'in_cloud' | 'recorded';
   ms: number;
+  adjusted?: boolean; // the teacher changed the pencil before inking it
 }
 
 export interface Marked {
@@ -109,6 +110,8 @@ export function keyProblem(k: QuestionKey): string | null {
   if (type === 'algebra' && markAlgebra(k.answer, k.answer).status !== 'correct') return 'The answer could not be read as algebra (for example x = 4 or 2x + 3).';
   if (type === 'choice' && markChoice(k.answer, k.answer).status !== 'correct') return 'Use one option letter (A to H) or True/False.';
   if (type === 'passage' && !parseRubric(k.answer)) return 'Write the rubric as lines with marks, for example "Ideas 3; Organisation 2".';
+  if (type === 'short' && k.answer.split(/\s*(?:\n|;)\s*/).filter((x) => x.trim()).length > 6) return 'Use at most 6 key points (separate them with ;).';
+  if (type === 'passage' && (parseRubric(k.answer)?.length ?? 0) > 4) return 'Use at most 4 rubric lines.';
   if (type !== 'fraction') return null;
   const info = keyInfo(k);
   if (info.keyParsed.kind !== 'value') return k.prompt ? 'The answer could not be read as a number.' : null;

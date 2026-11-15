@@ -5,7 +5,7 @@ import { go, href } from '../app/router';
 import { onSheetChanged, runState } from '../app/runner';
 import { FLAG_TEXT, outOfFor, scoreSheet, typeOf, type Marked, type QuestionKey } from '../marking/mark';
 import { mistakeLabel } from '../marking/mistakes';
-import { decideOpen } from '../marking/open';
+import { adjustSuggestion, decideOpen } from '../marking/open';
 import { applyCorrection, markWrongByTeacher, needsCheck, openFlags } from '../marking/pipeline';
 import { isOpen, keyPoints, parseRubric, QTYPES } from '../marking/qtypes';
 import { store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
@@ -113,6 +113,7 @@ function ByQuestion({ quiz, cls, sheets, q, save }: { quiz: QuizRec; cls: ClassR
   });
 
   const waiting = waitingIn(key);
+  const allDecided = quiz.keys.every((k) => waitingIn(k) === 0) && sheets.every((s) => !nameNeedsCheck(s));
   return (
     <div className="check-layout">
       <nav className="qnav" aria-label="Questions">
@@ -148,6 +149,7 @@ function ByQuestion({ quiz, cls, sheets, q, save }: { quiz: QuizRec; cls: ClassR
               onDone={() => { const n = rows.findIndex((x, j) => j > i && needsCheck(x.marks.find((mm) => mm.q === key.q)!)); if (n >= 0) setFocus(n); }} />;
           })}
         </ol>
+        {allDecided && <DoneMoment quiz={quiz} sheets={sheets} />}
         <div className="row spread" style={{ padding: '14px 20px', borderTop: '1px solid var(--rule)' }}>
           <span className="small muted">Question {quiz.keys.findIndex((k) => k.q === key.q) + 1} of {quiz.keys.length}</span>
           <button className="btn primary" onClick={nextQ}>{quiz.keys.some((k) => k.q !== key.q && waitingIn(k) > 0) ? 'Next question with marks waiting' : 'See results'} <kbd>N</kbd></button>
@@ -190,23 +192,31 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
   const [text, setText] = useState(m.read);
   const [peek, setPeek] = useState(false);
   useEffect(() => setText(m.read), [m.read]);
-  useEffect(() => { if (focus) ref.current?.scrollIntoView({ block: 'nearest' }); }, [focus]);
+  const first = useRef(true);
+  useEffect(() => {
+    if (focus) { ref.current?.focus({ preventScroll: true }); if (!first.current) ref.current?.scrollIntoView({ block: 'nearest' }); }
+    first.current = false;
+  }, [focus]);
   const decided = !needsCheck(m);
   const draw = useInkMoment(`${sheet.id}:${m.q}`, decided);
   const pts = keyPoints(k.answer);
   const rubric = parseRubric(k.answer) ?? [];
   const outOf = m.outOf ?? outOfFor(k);
-  const met = m.met ?? (m.checked ? undefined : m.suggestion?.met) ?? pts.map(() => false);
+  const met = (m.checked ? m.met : m.suggestion?.met) ?? m.met ?? pts.map(() => false);
   const lines = m.lines ?? m.suggestion?.lines ?? rubric.map((r) => ({ score: 0, max: r.max }));
 
   const accept = useCallback(() => {
-    if (open) { if (m.suggestion || m.checked) onChange(decideOpen(k, m)); }
+    if (open) { if (m.suggestion || m.checked) onChange(decideOpen(k, m)); else return; }
     else if (m.status !== 'unreadable') onChange({ ...m, checked: true });
     else return;
     onDone();
   }, [k, m, open, onChange, onDone]);
-  const toggle = (i: number) => onChange(decideOpen(k, m, { met: met.map((v, j) => (j === i ? !v : v)) }));
-  const setLine = (i: number, v: number) => onChange(decideOpen(k, m, { lines: lines.map((l, j) => (j === i ? { ...l, score: Math.max(0, Math.min(l.max, v)) } : l)) }));
+  const undecided = m.status === 'pending' && !m.checked;
+  // undecided: the teacher adjusts the pencil and inks it with Enter; decided: the change is in ink
+  const toggle = (i: number) => { const nm = met.map((v, j) => (j === i ? !v : v)); onChange(undecided ? adjustSuggestion(k, m, { met: nm }) : decideOpen(k, m, { met: nm })); };
+  const setLine = (i: number, v: number) => { const nl = lines.map((l, j) => (j === i ? { ...l, score: Math.max(0, Math.min(l.max, v)) } : l)); onChange(undecided ? adjustSuggestion(k, m, { lines: nl }) : decideOpen(k, m, { lines: nl })); };
+  // clicking a chip must not take keyboard focus away from the row (E3)
+  const keep = (e: React.MouseEvent) => e.preventDefault();
   const correct = (t: string) => { onChange(applyCorrection(k, m, t)); setEditing(false); };
 
   useEffect(() => {
@@ -228,22 +238,22 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
   const pending = m.status === 'pending' && !m.checked;
   const shownPoints = m.points ?? (pending ? s?.points : undefined);
   return (
-    <li ref={ref} className={`ans${focus ? ' focus' : ''}${decided ? ' done' : ''}`} onClick={onFocus} aria-current={focus ? 'true' : undefined}>
+    <li ref={ref} tabIndex={-1} className={`ans${focus ? ' focus' : ''}${decided ? ' done' : ''}`} onClick={onFocus} aria-current={focus ? 'true' : undefined}>
       <div className="margin">
         <AnswerMark m={m} draw={draw} />
         {open && shownPoints !== undefined && <span className={`pts${pending ? ' pencil' : ''}`}>{fmtPoints(shownPoints)}/{fmtPoints(outOf)}</span>}
       </div>
       <div style={{ minWidth: 0 }}>
         <div className="row" style={{ gap: 8 }}>
-          {whoHref ? <a className="who" href={whoHref}>{who}</a> : <span className="who">{who}</span>}
-          {nameNeedsCheck(sheet) && <span className="flag soft">name to confirm</span>}
+          {whoHref ? <a className="who" href={whoHref}>{who}</a> : <span className="who who-q">{who}</span>}
+          {whoHref && nameNeedsCheck(sheet) && <span className="flag soft">name to confirm</span>}
           {m.flags.includes('teacher_changed') && <span className="tiny quiet">changed by you</span>}
         </div>
         {sheet.crops?.[m.q] && <Crop id={sheet.crops[m.q]} label={`Q${m.q} as the pupil wrote it`} />}
         {editing ? (
           <div className="row" style={{ marginTop: 4 }}>
-            {open ? <textarea data-student autoFocus value={text} onChange={(e) => setText(e.target.value)} aria-label="Corrected reading" style={{ minHeight: 70 }} />
-              : <input data-student autoFocus value={text} onChange={(e) => setText(e.target.value)} aria-label="Corrected reading" style={{ maxWidth: 260 }} onKeyDown={(e) => { if (e.key === 'Enter') correct(text); if (e.key === 'Escape') setEditing(false); }} />}
+            {open ? <textarea data-student autoFocus spellCheck={false} autoCorrect="off" autoCapitalize="off" value={text} onChange={(e) => setText(e.target.value)} aria-label="Corrected reading" style={{ minHeight: 70 }} />
+              : <input data-student autoFocus spellCheck={false} autoCorrect="off" autoCapitalize="off" value={text} onChange={(e) => setText(e.target.value)} aria-label="Corrected reading" style={{ maxWidth: 260 }} onKeyDown={(e) => { if (e.key === 'Enter') correct(text); if (e.key === 'Escape') setEditing(false); }} />}
             <button className="btn small primary" onClick={() => correct(text)}>Save reading</button>
             <button className="btn small quiet" onClick={() => { setEditing(false); setText(m.read); }}>Cancel</button>
           </div>
@@ -268,8 +278,8 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
         {open && type === 'short' && m.read && (
           <div className="row" style={{ gap: 6, marginTop: 8 }} role="group" aria-label="Key points stated">
             {pts.map((p, i) => (
-              <button key={i} className="kptoggle" aria-pressed={!!met[i] && (!pending || !!s)} onClick={(e) => { e.stopPropagation(); toggle(i); }} title={p}>
-                <Icon name={met[i] && (!pending || s) ? 'check' : 'x'} />{i + 1}. <span className="clip" style={{ maxWidth: 220 }}>{p}</span>
+              <button key={i} className={`kptoggle${undecided ? ' pencil' : ''}`} aria-pressed={!!met[i]} onMouseDown={keep} onClick={(e) => { e.stopPropagation(); toggle(i); }}>
+                <Icon name={met[i] ? 'check' : 'x'} />{i + 1}. {p}
               </button>
             ))}
           </div>
@@ -280,9 +290,9 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
               <div key={i} className="line">
                 <span>{r.line}</span>
                 <span className="stepper" role="group" aria-label={`${r.line} score`}>
-                  <button aria-label={`Lower ${r.line}`} onClick={(e) => { e.stopPropagation(); setLine(i, (lines[i]?.score ?? 0) - 1); }}>−</button>
+                  <button aria-label={`Lower ${r.line}`} onMouseDown={keep} onClick={(e) => { e.stopPropagation(); setLine(i, (lines[i]?.score ?? 0) - 1); }}>−</button>
                   <span className={pending ? 'hand' : ''} style={{ color: pending ? 'var(--pencil)' : 'var(--red)' }}>{lines[i]?.score ?? 0}/{r.max}</span>
-                  <button aria-label={`Raise ${r.line}`} onClick={(e) => { e.stopPropagation(); setLine(i, (lines[i]?.score ?? 0) + 1); }}>+</button>
+                  <button aria-label={`Raise ${r.line}`} onMouseDown={keep} onClick={(e) => { e.stopPropagation(); setLine(i, (lines[i]?.score ?? 0) + 1); }}>+</button>
                 </span>
               </div>
             ))}
@@ -290,7 +300,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
         )}
         {peek && <Peek sheet={sheet} />}
       </div>
-      <div className="actions">
+      <div className="actions" onMouseDown={keep}>
         {!open && needsCheck(m) && m.suggestions.slice(0, 3).map((x, j) => <button key={x} className="btn small" onClick={(e) => { e.stopPropagation(); correct(x); }}>It says {x} <kbd>{j + 1}</kbd></button>)}
         {!open && needsCheck(m) && (m.status === 'unreadable'
           ? <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(markWrongByTeacher(m)); onDone(); }}>Mark wrong</button>
@@ -302,6 +312,22 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
         {(sheet.sampleId || sheet.imageId) && <button className="btn small quiet" aria-expanded={peek} onClick={(e) => { e.stopPropagation(); setPeek(!peek); }}>{peek ? 'Hide sheet' : 'Sheet'} <kbd>P</kbd></button>}
       </div>
     </li>
+  );
+}
+
+function DoneMoment({ quiz, sheets }: { quiz: QuizRec; sheets: SheetRec[] }) {
+  const scores = sheets.map((s) => scoreSheet(s.marks, quiz.unsimplifiedCredit));
+  const avg = scores.reduce((a, s) => a + s.points, 0) / Math.max(1, scores.length);
+  const outOf = scores[0]?.outOf ?? 0;
+  return (
+    <div className="done-moment" role="status">
+      <ScoreRing points={Math.round(avg * 2) / 2} outOf={outOf} big draw />
+      <div className="grow">
+        <p><strong>Every mark is in ink.</strong> {sheets.length} sheets, class average {fmtPoints(Math.round(avg * 2) / 2)} out of {fmtPoints(outOf)}.</p>
+        <p className="small muted">See what the class got wrong, then plan tomorrow's lesson from totals with no names in them.</p>
+      </div>
+      <a className="btn primary" href={href.results(quiz.id)}>See results</a>
+    </div>
   );
 }
 
@@ -371,16 +397,16 @@ function BySheet({ quiz, cls, sheets, sheetId, save }: { quiz: QuizRec; cls: Cla
         <ol className="answers">
           {sheet.marks.map((m, i) => {
             const k = quiz.keys.find((x) => x.q === m.q)!;
-            return <AnswerRow key={`${sheet.id}-${m.q}`} k={k} m={m} sheet={sheet} who={`Q${m.q} · ${k.prompt ? k.prompt.slice(0, 80) : QTYPES[typeOf(k)].label}`} focus={i === focus} onFocus={() => setFocus(i)} onChange={setMark}
+            return <AnswerRow key={`${sheet.id}-${m.q}`} k={k} m={m} sheet={sheet} who={`Q${m.q} · ${k.prompt || QTYPES[typeOf(k)].label}`} focus={i === focus} onFocus={() => setFocus(i)} onChange={setMark}
               onDone={() => { const n = sheet.marks.findIndex((x, j) => j > i && needsCheck(x)); if (n >= 0) setFocus(n); }} />;
           })}
         </ol>
         <div className="row spread" style={{ padding: '14px 20px', borderTop: '1px solid var(--rule)' }}>
           <span className="small muted">Sheet {Math.max(1, ordered.findIndex((x) => x.id === sheet.id) + 1)} of {sheets.length} · <kbd>Z</kbd> zoom the photo</span>
-          <div className="row">
-            <button className="btn small quiet danger" onClick={async () => { if (!window.confirm('Remove this sheet and its photo from the quiz? This cannot be undone.')) return; await store.deleteSheet(sheet); location.reload(); }}>Remove sheet</button>
-            <button className="btn primary" onClick={next}>Next sheet to check <kbd>N</kbd></button>
-          </div>
+          <button className="btn primary" onClick={next}>Next sheet to check <kbd>N</kbd></button>
+        </div>
+        <div className="row" style={{ padding: '0 20px 14px' }}>
+          <button className="btn small quiet danger" onClick={async () => { if (!window.confirm('Remove this sheet and its photo from the quiz? This cannot be undone.')) return; await store.deleteSheet(sheet); location.reload(); }}>Remove this sheet</button>
         </div>
       </section>
     </div>

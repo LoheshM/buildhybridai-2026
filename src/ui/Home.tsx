@@ -12,7 +12,7 @@ export function Home() {
   const [data, reload] = useLoad(async () => {
     const classes = await store.classes();
     return Promise.all(classes.map(async (c) => {
-      const quizzes = await store.quizzes(c.id);
+      const quizzes = (await store.quizzes(c.id)).sort((a, b) => a.createdAt - b.createdAt);
       const qs = await Promise.all(quizzes.map(async (q) => {
         const sheets = await store.sheets(q.id);
         return { q, total: sheets.length, read: sheets.filter((s) => s.status === 'read' || s.status === 'checked').length, toCheck: sheets.reduce((n, s) => n + s.marks.filter(needsCheck).length, 0) };
@@ -62,7 +62,7 @@ function ClassList({ items, reload }: { items: Item[]; reload: () => void }) {
           <div className="body">
             <div className="row spread">
               <div className="grow">
-                <h3 id={`c-${c.id}`} style={{ margin: 0 }} className="clip">{c.name}</h3>
+                <h3 id={`c-${c.id}`} style={{ margin: 0 }} className="clip" title={c.name}>{c.name}</h3>
                 <span className="small muted">{c.roster.length} pupils{c.sample ? ' · made up' : ''}</span>
               </div>
               {c.sample ? <ResetSample classId={c.id} onDone={reload} /> : (
@@ -102,7 +102,7 @@ function ResetSample({ classId, onDone }: { classId: string; onDone: () => void 
   return (
     <button className="btn small" disabled={busy || runState().running || !k} aria-busy={busy}
       title={runState().running ? 'Wait for the current reading to finish' : 'Start this sample class again from unread sheets'}
-      onClick={async () => { setBusy(true); try { await ensureSampleClass(k!, true); } finally { setBusy(false); onDone(); } }}>
+      onClick={async () => { if (!window.confirm('Start this sample class again? Its readings and every mark you decided are cleared.')) return; setBusy(true); try { await ensureSampleClass(k!, true); } finally { setBusy(false); onDone(); } }}>
       {busy ? 'Resetting…' : 'Reset'}
     </button>
   );

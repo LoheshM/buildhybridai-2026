@@ -68,8 +68,28 @@ export function decideOpen(key: QuestionKey, m: Marked, d: { points?: number; me
   points = clamp(half(points), 0, outOf);
   const status = statusFromPoints(points, outOf);
   const mistakes = status === 'correct' ? [] : openMistakes(key, { met: status === 'wrong' && !met ? undefined : met, contradicts: !d.met && !d.points && s?.contradicts, lines });
-  const changed = !!s && (points !== s.points || (!!d.met && JSON.stringify(d.met) !== JSON.stringify(s.met)));
+  const changed = !!s && (!!s.adjusted || points !== s.points || (!!d.met && JSON.stringify(d.met) !== JSON.stringify(s.met)));
   const keepMet = d.met ?? (d.points === undefined && !d.lines ? s?.met : undefined);
   const keepLines = d.lines ?? (d.points === undefined && !d.met ? s?.lines : undefined);
   return { ...m, status, points, mistakes, misconception: null, checked: true, met: keepMet, lines: keepLines, flags: changed ? [...new Set([...m.flags.filter((f) => f === 'crossed_out'), 'teacher_changed' as const])] : m.flags.filter((f) => f !== 'teacher_changed') };
+}
+
+/**
+ * The teacher adjusts the pencil before inking it: which key points are stated, or a rubric score.
+ * Still a suggestion (still pencil); Enter inks it. Code computes the points.
+ */
+export function adjustSuggestion(key: QuestionKey, m: Marked, d: { met?: boolean[]; lines?: { score: number; max: number }[] }): Marked {
+  const outOf = m.outOf ?? outOfFor(key);
+  const base: Suggestion = m.suggestion ?? { points: 0, outOf, reason: '', where: 'on_device', ms: 0 };
+  if (d.met) {
+    const n = Math.max(1, d.met.length);
+    const points = clamp(half((d.met.filter(Boolean).length / n) * outOf), 0, outOf);
+    return { ...m, suggestion: { ...base, met: d.met, points, contradicts: false, adjusted: true } };
+  }
+  if (d.lines) {
+    const max = d.lines.reduce((a, l) => a + l.max, 0) || 1;
+    const points = clamp(half((d.lines.reduce((a, l) => a + l.score, 0) / max) * outOf), 0, outOf);
+    return { ...m, suggestion: { ...base, lines: d.lines, points, adjusted: true } };
+  }
+  return m;
 }

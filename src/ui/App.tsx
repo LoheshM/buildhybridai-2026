@@ -97,12 +97,12 @@ function QuizBar({ quizId, at }: { quizId: string; at: 'scan' | 'check' | 'resul
       <div className="ctxbar-in">
         <div className="ctx-title">
           <a className="cls" href={href.home()}>{ctx.cls.name}{ctx.cls.sample ? ' · made-up class' : ''}</a>
-          <h1 className="clip">{ctx.quiz.title}</h1>
+          <h1 className="clip" title={ctx.quiz.title}>{ctx.quiz.title}</h1>
         </div>
         <nav aria-label="Marking steps" className="grow">
           <ul className="tabs">
             {tabs.map(([k, label]) => (
-              <li key={k}><a href={href[k](quizId)} aria-current={k === at ? 'page' : undefined}>{label}{k === 'check' && ctx.toCheck > 0 && <span className="count" aria-label={`${ctx.toCheck} waiting`}>{ctx.toCheck}</span>}</a></li>
+              <li key={k}><a href={href[k](quizId)} aria-current={k === at ? 'page' : undefined} ref={k === at ? (el) => { el?.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } : undefined}>{label}{k === 'check' && ctx.toCheck > 0 && <span className="count" aria-label={`${ctx.toCheck} waiting`}>{ctx.toCheck}</span>}</a></li>
             ))}
           </ul>
         </nav>
@@ -114,7 +114,7 @@ function QuizBar({ quizId, at }: { quizId: string; at: 'scan' | 'check' | 'resul
 function DeviceLight() {
   const d = useDevice();
   if (d.state === 'checking') return <span className="light"><i /><span className="lt">Checking on-device AI</span></span>;
-  if (d.state === 'available') return <span className="light device" title="Gemini Nano runs in Chrome on this laptop"><i /><span className="lt">{d.warming ? 'Warming up Gemini Nano' : 'Gemini Nano ready'}</span></span>;
+  if (d.state === 'available') return <span className="light device" title="Gemini Nano runs in Chrome on this laptop"><i /><span className="lt">{d.warming ? 'Warming up Gemini Nano' : 'Gemini Nano ready'}</span><span className="lts" aria-hidden="true">Nano</span></span>;
   if (d.state === 'downloading') {
     const pct = d.progress !== null ? Math.round(d.progress * 100) : null;
     return <span className="light warn" role="status"><i /><span className="lt">{pct !== null && pct >= 90 ? 'Unpacking Gemini Nano' : `Downloading Gemini Nano${pct !== null ? ` ${pct}%` : ''}`}</span></span>;
@@ -122,7 +122,7 @@ function DeviceLight() {
   if (d.state === 'downloadable') return <button className="light warn" onClick={() => downloadDeviceModel()}><i />Download Gemini Nano</button>;
   if (d.state === 'not_responding') return <button className="light bad" onClick={() => location.reload()} title="Chrome's on-device model stopped answering"><i />Gemini Nano stuck: reload</button>;
   if (d.state === 'no_image') return <a className="light warn" href={href.welcome()} title="Turn on image input in chrome://flags"><i /><span className="lt">Image reading off</span></a>;
-  return <a className="light" href={href.welcome()} title="This browser can't run Gemini Nano. The sample classes still work; your own classes use typed answers."><i /><span className="lt">No on-device AI</span></a>;
+  return <a className="light" href={href.welcome()} title="This browser can't run Gemini Nano. The sample classes still work; your own classes use typed answers."><i /><span className="lt">No on-device AI</span><span className="lts" aria-hidden="true">No Nano</span></a>;
 }
 
 function CloudCounter() {
@@ -130,7 +130,7 @@ function CloudCounter() {
   return (
     <a className="counter" href={href.privacy()} title="Requests sent to the AI service from this browser. Open to see each one.">
       <span className="long">Sent to cloud<b>{c.cloudRequests}</b></span>
-      <span>Pupil photos sent<b className={c.studentPhotosSent ? '' : 'zero'}>{c.studentPhotosSent}</b></span>
+      <span><span className="long">Pupil photos sent</span><span className="short">Photos sent</span><b className={c.studentPhotosSent ? '' : 'zero'}>{c.studentPhotosSent}</b></span>
     </a>
   );
 }
@@ -139,7 +139,7 @@ function ThemeToggle() {
   const [t, setT] = useState<Theme>(currentTheme());
   const next: Theme = t === 'dark' ? 'light' : 'dark';
   return (
-    <button className="iconbtn" aria-pressed={t === 'dark'} aria-label={t === 'dark' ? 'Use the light look' : 'Use the dark look'} title={t === 'dark' ? 'Light look' : 'Dark look'} onClick={() => { setTheme(next); setT(next); }}>
+    <button className="iconbtn theme" aria-pressed={t === 'dark'} aria-label={t === 'dark' ? 'Use the light look' : 'Use the dark look'} title={t === 'dark' ? 'Light look' : 'Dark look'} onClick={() => { setTheme(next); setT(next); }}>
       <Icon name={t === 'dark' ? 'sun' : 'moon'} />
     </button>
   );

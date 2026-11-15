@@ -47,6 +47,15 @@ export function Welcome() {
         <DemoRegister />
       </section>
 
+
+      <section aria-labelledby="doors-h" className="mt-l">
+        <h2 id="doors-h" className="sr-only">Classes to try</h2>
+        <div className="doors">
+          {SAMPLES.map((k) => <ClassDoor key={k} k={k} />)}
+        </div>
+        <p className="small muted mt">The three classes are made up: invented pupils, answer sheets filled in with open-licence handwriting fonts, mistakes planted on purpose. With Gemini Nano they are read live on this laptop; without it, cloud Gemini readings recorded on 16 Nov stand in.</p>
+      </section>
+
       {st && d.state !== 'available' && (
         <div className="mt-l">
           <Notice tone={d.state === 'unsupported' || d.state === 'unavailable' ? undefined : 'warn'}>
@@ -57,14 +66,6 @@ export function Welcome() {
           </Notice>
         </div>
       )}
-
-      <section aria-labelledby="doors-h" className="mt-l">
-        <h2 id="doors-h" className="sr-only">Classes to try</h2>
-        <div className="doors">
-          {SAMPLES.map((k) => <ClassDoor key={k} k={k} />)}
-        </div>
-        <p className="small muted mt">The three classes are made up: invented pupils, answer sheets filled in with open-licence handwriting fonts, mistakes planted on purpose. With Gemini Nano they are read live on this laptop; without it, cloud Gemini readings recorded on 16 Nov stand in.</p>
-      </section>
 
       <section className="where" aria-label="Where the work happens">
         <div>
@@ -130,7 +131,7 @@ function DemoRegister() {
                   const s = isInk && c.becomes ? c.becomes : c.s;
                   return <td key={ci} className={`cell ${!isInk ? 'pending' : s === 'wrong' ? 'wrong' : s === 'partial' ? 'partial' : ''}`}><Mk status={s} hand={isInk ? 'ink' : 'pencil'} draw={isInk && !!c.pencil} /></td>;
                 })}
-                <td className="total"><span className="hand" style={{ color: r.total === '?' ? 'var(--pencil)' : 'var(--red)', fontSize: '1.1rem' }}>{r.total}</span></td>
+                <td className="total"><span className="hand" style={{ color: r.total === '?' || r.cells.some((c, ci) => c.pencil && !done.has(`${ri}-${ci}`)) ? 'var(--pencil)' : 'var(--red)', fontSize: '1.1rem' }}>{r.total}</span></td>
               </tr>
             ))}
           </tbody>

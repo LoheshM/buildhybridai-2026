@@ -36,6 +36,9 @@ export function Reteach({ quizId }: { quizId: string }) {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<{ msg: string; detail?: string } | null>(null);
   const [showText, setShowText] = useState(false);
+  const [startedAt, setStartedAt] = useState<number | null>(null);
+  const [now, setNow] = useState(Date.now());
+  useEffect(() => { if (!busy) return; const t = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(t); }, [busy]);
   const planHeading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (ctx?.saved) setPlan(ctx.saved); }, [ctx?.saved]);
   useEffect(() => { if (d.state !== 'available') setKeepLocal(false); }, [d.state]);
@@ -47,12 +50,13 @@ export function Reteach({ quizId }: { quizId: string }) {
   if (!ctx || !totals) return <p className="muted">Loading…</p>;
   const { quiz, cls, sheets } = ctx;
   if (!quiz || !cls) return <p>This quiz no longer exists.</p>;
+  if (!sheets.length) return <div className="panel"><h2>Nothing to plan from yet</h2><p className="muted">Read and check some sheets first; the plan is written from the class totals.</p><a className="btn primary" href={href.scan(quizId)}>Go to the sheets</a></div>;
   const waiting = sheets.reduce((n, s) => n + s.marks.filter(needsCheck).length, 0);
   const tooFew = sheets.length < MIN_SHEETS;
   const deviceReady = d.state === 'available';
 
   const send = async () => {
-    setBusy(true); setErr(null);
+    setBusy(true); setErr(null); setStartedAt(Date.now()); setNow(Date.now());
     try {
       const fresh = build(quiz, sheets, cls.roster.map((r) => r.name)); // rebuilt with the settings in force when it is sent
       const r = await planFromTotals(fresh, { sample: !!cls.sample, sampleClass: sampleKeyOfClass(cls.id) ?? undefined, keepLocal, minK: currentSettings().minGroupSize, sheets: sheets.length });
@@ -87,7 +91,7 @@ export function Reteach({ quizId }: { quizId: string }) {
                   <td className="small">{q.question || <span className="quiet">(question not sent)</span>}{q.answer ? <> · <b>{q.answer}</b></> : null}{q.key_points?.length ? <div className="quiet">{q.key_points.map((p, i) => p ? `${i + 1}. ${p}` : `${i + 1}. (left out: names someone)`).join('  ')}</div> : null}{q.rubric?.length ? <div className="quiet">{q.rubric.join(' · ')}</div> : null}</td>
                   <td><C c={q.right} /></td><td><C c={q.partial} /></td><td><C c={q.wrong} /></td>
                   <td className="small">
-                    {Object.keys(q.mistakes).length === 0 && !q.wrong_options ? <span className="quiet">none listed</span> : Object.entries(q.mistakes).map(([k, v]) => <span key={k} style={{ marginRight: 10 }}>{mistakeLabel(k, q.key_points ?? [], (q.rubric ?? []).map((r) => r.replace(/ \(\d+\)$/, '')))}: <C c={v!} /></span>)}
+                    {Object.keys(q.mistakes).length === 0 && !q.wrong_options ? <span className="quiet">{q.wrong === 0 && q.partial === 0 ? 'none' : 'breakdown withheld (small groups)'}</span> : Object.entries(q.mistakes).map(([k, v]) => <span key={k} style={{ marginRight: 10 }}>{mistakeLabel(k, q.key_points ?? [], (q.rubric ?? []).map((r) => r.replace(/ \(\d+\)$/, '')))}: <C c={v!} /></span>)}
                     {q.wrong_options && Object.entries(q.wrong_options).map(([o, v]) => <span key={o} style={{ marginRight: 10 }}>picked {o}: <C c={v!} /></span>)}
                   </td>
                 </tr>
@@ -118,7 +122,7 @@ export function Reteach({ quizId }: { quizId: string }) {
           {tooFew && <span className="muted small">Needs at least {MIN_SHEETS} marked sheets, so totals can't point to one child.</span>}
         </div>
         <p className="small muted" aria-live="polite" style={{ minHeight: '1.5em', marginTop: 8 }}>
-          {busy ? (keepLocal ? 'Gemini Nano is writing the plan on this laptop (up to 2 minutes)…' : `Asking cloud Gemini…${deviceReady ? " If it can't be reached, Gemini Nano writes the plan here instead (up to 2 minutes)." : ''}`) : ''}
+          {busy ? `${keepLocal ? 'Gemini Nano is writing the plan on this laptop' : 'Cloud Gemini is writing the plan from the class totals'} · ${Math.max(0, Math.round((now - (startedAt ?? now)) / 1000))} s${keepLocal ? ' (usually 15-60 s, at most 2 minutes)' : deviceReady ? " (usually 6-17 s; if the cloud can't answer, Gemini Nano takes over here)" : ' (usually 6-17 s)'}` : ''}
         </p>
         {showText && <pre className="json">{totalsPrompt(totals, keepLocal)}</pre>}
         {err && <Notice tone="bad"><p>{err.msg}</p>{err.detail && <details className="small"><summary>Details</summary>{err.detail}</details>}</Notice>}

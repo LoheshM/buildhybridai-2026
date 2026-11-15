@@ -28,6 +28,7 @@ export function NewQuiz() {
   const [extract, setExtract] = useState('');
 
   const roster = useMemo(() => parseRoster(rosterText), [rosterText]);
+  const skipped = useMemo(() => rosterText.split(/\r?\n/).map((l) => l.trim()).filter((l) => l.length > 60), [rosterText]);
   const filled = rows.map((r, i) => ({ r, i })).filter(({ r }) => r.prompt.trim() || r.answer.trim());
   const keys: QuestionKey[] = filled.map(({ r }, n) => ({
     q: n + 1, prompt: r.prompt.trim(), answer: r.answer.trim(),
@@ -87,7 +88,7 @@ export function NewQuiz() {
           </div>
           <div className="row" style={{ alignItems: 'flex-end', marginBottom: 14 }}>
             <label className="field grow">Quiz title
-              <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Plants and water" spellCheck={false} autoComplete="off" />
+              <input value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Plants and water" spellCheck={false} autoComplete="off" />
             </label>
             <label className="field">Subject
               <select value={subject} onChange={(e) => { const v = e.target.value as Subject; setSubject(v); if (v === 'english') setRows(rows.map((r) => ({ ...r, spelling: true }))); }}>{SUBJECTS.map((s) => <option key={s} value={s}>{SUBJECT_NAME[s]}</option>)}</select>
@@ -99,17 +100,17 @@ export function NewQuiz() {
               {rows.map((r, i) => {
                 const prob = problemOf(i);
                 const has = !!(r.prompt.trim() || r.answer.trim());
-                const detected = detectType(r.answer, r.prompt);
+                const detected = r.answer.trim() ? detectType(r.answer, r.prompt) : 'word'; // an empty key isn't a short answer yet
                 const t = r.type === 'auto' ? detected : r.type;
                 const k: QuestionKey = { q: i + 1, prompt: r.prompt, answer: r.answer, type: t };
                 return (
                   <tr key={i}>
                     <td className="n">{i + 1}</td>
-                    <td><textarea rows={r.prompt.length > 34 ? 2 : 1} style={{ minHeight: 40 }} aria-label={`Question ${i + 1} as printed`} value={r.prompt} placeholder={i === 0 ? '2/3 + 1/6' : i === 1 ? 'Why do plants need light?' : 'Which gas do plants take in? A) oxygen B) carbon dioxide'} onChange={(e) => set(i, { prompt: e.target.value })} spellCheck={false} /></td>
-                    <td>
+                    <td><span className="m-label">Question {i + 1} as printed</span><textarea rows={r.prompt.length > 34 ? 2 : 1} style={{ minHeight: 40 }} aria-label={`Question ${i + 1} as printed`} value={r.prompt} placeholder={i === 0 ? 'e.g. 2/3 + 1/6' : i === 1 ? 'e.g. Why do plants need light?' : 'e.g. Which gas do plants take in? A) oxygen B) carbon dioxide'} onChange={(e) => set(i, { prompt: e.target.value })} spellCheck={false} /></td>
+                    <td><span className="m-label">Answer key</span>
                       {t === 'short' || t === 'passage'
-                        ? <textarea aria-label={`Answer key ${i + 1}`} rows={3} style={{ minHeight: 84 }} value={r.answer} placeholder={t === 'passage' ? 'Rubric: Ideas 3; Organisation 2' : 'key points, separated by ;'} onChange={(e) => set(i, { answer: e.target.value })} className={prob ? 'bad' : ''} spellCheck={false} />
-                        : <input aria-label={`Answer key ${i + 1}`} value={r.answer} placeholder={i === 0 ? '5/6' : i === 1 ? 'light gives energy; to make food' : 'B'} onChange={(e) => set(i, { answer: e.target.value })} className={prob ? 'bad' : ''} spellCheck={false} />}
+                        ? <textarea aria-label={`Answer key ${i + 1}`} rows={3} style={{ minHeight: 84 }} value={r.answer} placeholder={t === 'passage' ? 'e.g. Rubric: Ideas 3; Organisation 2' : 'e.g. light gives energy; to make food'} onChange={(e) => set(i, { answer: e.target.value })} className={prob ? 'bad' : ''} spellCheck={false} />
+                        : <input aria-label={`Answer key ${i + 1}`} value={r.answer} placeholder={i === 0 ? 'e.g. 5/6' : i === 1 ? 'e.g. light gives energy; to make food' : 'e.g. B'} onChange={(e) => set(i, { answer: e.target.value })} className={prob ? 'bad' : ''} spellCheck={false} />}
                       {has && prob && <div className="problem" role="alert">{prob}</div>}
                       {has && !prob && t === 'short' && <div className="tiny muted" style={{ marginTop: 4 }}>{keyPoints(r.answer).length} key point{keyPoints(r.answer).length === 1 ? '' : 's'}, {outOfFor(k)} mark{outOfFor(k) === 1 ? '' : 's'}</div>}
                       {has && !prob && t === 'passage' && <div className="tiny muted" style={{ marginTop: 4 }}>{(parseRubric(r.answer) ?? []).map((l) => `${l.line} ${l.max}`).join(' · ')}</div>}
@@ -157,12 +158,12 @@ export function NewQuiz() {
             {classId === 'new' && (
               <>
                 <label className="field">Class name
-                  <input data-student value={className} onChange={(e) => setClassName(e.target.value)} placeholder="7A science" spellCheck={false} autoComplete="off" />
+                  <input data-student value={className} onChange={(e) => setClassName(e.target.value)} placeholder="e.g. 7A science" spellCheck={false} autoComplete="off" />
                 </label>
                 <label className="field">Class list
                   <span className="hint">One pupil per line, as they write their names. Copy a column from your register.</span>
-                  <textarea data-student value={rosterText} onChange={(e) => setRosterText(e.target.value)} spellCheck={false} autoComplete="off" placeholder={'Aanya Kapoor\nBen Okafor\nमीरा शर्मा'} />
-                  <span className="hint">{roster.length} pupil{roster.length === 1 ? '' : 's'}{roster.length > 0 && roster.length < 5 ? '. Planning a lesson needs at least 5 marked sheets.' : ''}</span>
+                  <textarea data-student value={rosterText} onChange={(e) => setRosterText(e.target.value)} spellCheck={false} autoComplete="off" placeholder={'e.g.\nAanya Kapoor\nBen Okafor\nमीरा शर्मा'} />
+                  <span className="hint">{roster.length} pupil{roster.length === 1 ? '' : 's'}{roster.length > 0 && roster.length < 5 ? '. Planning a lesson needs at least 5 marked sheets.' : ''}{skipped.length ? ` Left out, longer than 60 characters: ${skipped.map((x) => `"${x.slice(0, 24)}…"`).join(', ')}.` : ''}</span>
                 </label>
               </>
             )}

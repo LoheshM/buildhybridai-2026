@@ -60,5 +60,8 @@ async (cls) => {
     suggestSecs: out.open.suggested ? +(out.open.ms / 1000 / out.open.suggested).toFixed(1) : null,
     names: `${out.names}/${rows.length}`,
   };
+  // the raw on-device results, so a run can be replayed (labelled) for browsers without Gemini Nano
+  out.raw = rows.map((s) => ({ sampleId: s.sampleId, where: s.where, ms: s.ms, rereadMs: s.rereadMs, rereadQs: s.rereadQs, read: s.read, marks: s.marks.map((mk) => ({ q: mk.q, modelRead: mk.modelRead ?? mk.read, suggestion: mk.suggestion })) }));
+  out.benchAt = new Date().toISOString();
   return out;
 }

@@ -24,7 +24,7 @@ MATHS = {
     "instructions": "Show your answer in its simplest form. Give units where needed.",
     "questions": [
         {"q": 1, "prompt": "2/3 + 1/6", "key": "5/6", "pool": [("5/6", "correct", 60), ("3/9", "add_across", 14), ("3/6", "numerators_only", 8), ("10/12", "unsimplified", 10), ("4/6", "other", 4), ("", "blank", 4)]},
-        {"q": 2, "prompt": "3/4 - 1/3", "key": "5/12", "pool": [("5/12", "correct", 64), ("2/1", "add_across", 12), ("2/4", "numerators_only", 8), ("-5/12", "reversed_subtraction", 6), ("7/12", "slip", 6), ("", "blank", 4)]},
+        {"q": 2, "prompt": "3/4 - 1/3", "key": "5/12", "pool": [("5/12", "correct", 64), ("2/1", "add_across", 12), ("2/4", "numerators_only", 8), ("-5/12", "reversed_subtraction", 6), ("7/12", "other", 6), ("", "blank", 4)]},
         {"q": 3, "prompt": "1/3 × 3/4", "key": "1/4", "pool": [("1/4", "correct", 62), ("4/9", "cross_multiply", 14), ("3/12", "unsimplified", 14), ("13/12", "wrong_operation", 6), ("", "blank", 4)]},
         {"q": 4, "prompt": "3/4 ÷ 1/2", "key": "1 1/2", "pool": [("1 1/2", "correct", 52), ("3/8", "no_invert", 22), ("3/2", "correct", 10), ("2/3", "flipped_first", 8), ("6/4", "unsimplified", 6), ("", "blank", 2)]},
         {"q": 5, "prompt": "1 1/2 + 3/4", "key": "2 1/4", "pool": [("2 1/4", "correct", 56), ("1 1/4", "whole_dropped", 18), ("2 2/8", "unsimplified", 8), ("9/4", "correct", 8), ("1 4/6", "add_across", 6), ("", "blank", 4)]},

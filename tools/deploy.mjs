@@ -29,16 +29,18 @@ try {
   const js = html.match(/\/assets\/[^"]+\.js/)?.[0];
   const jr = js ? await fetch(site + js) : null;
   check('JS served as JavaScript', !!jr && /javascript/.test(jr.headers.get('content-type') ?? ''));
-  const m = await (await fetch(site + '/samples/manifest.json', { cache: 'no-store' })).json();
-  check('manifest has 28 sheets', m.students.length === 28);
-  let hashes = 0;
-  for (const s of m.students) {
-    const buf = Buffer.from(await (await fetch(`${site}/samples/${s.id}.jpg`)).arrayBuffer());
-    if (createHash('sha256').update(buf).digest('hex') === s.sha256) hashes++;
+  for (const [cls, n] of [['maths', 28], ['science', 24], ['english', 18]]) {
+    const m = await (await fetch(`${site}/samples/${cls}/manifest.json`, { cache: 'no-store' })).json();
+    check(`${cls}: manifest has ${n} sheets`, m.students.length === n);
+    let hashes = 0;
+    for (const s of m.students) {
+      const buf = Buffer.from(await (await fetch(`${site}/samples/${cls}/${s.id}.jpg`)).arrayBuffer());
+      if (createHash('sha256').update(buf).digest('hex') === s.sha256) hashes++;
+    }
+    check(`${cls}: every sample photo matches its fingerprint`, hashes === n, `${hashes}/${n}`);
+    const rec = await (await fetch(`${site}/samples/${cls}/recorded-cloud.json`, { cache: 'no-store' })).json();
+    check(`${cls}: recorded cloud readings complete`, Object.keys(rec.reads).length === n && !!rec.totals);
   }
-  check('every sample photo matches its fingerprint', hashes === 28, `${hashes}/28`);
-  const rec = await (await fetch(site + '/samples/recorded-cloud.json', { cache: 'no-store' })).json();
-  check('recorded cloud readings complete', Object.keys(rec.reads).length === 28 && !!rec.totals);
   const missing = await fetch(site + '/no-such-file.js');
   check('missing files are 404, not the app', missing.status === 404);
 } catch (e) {

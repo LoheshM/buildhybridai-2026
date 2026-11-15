@@ -126,3 +126,12 @@ describe('choice and words', () => {
     expect(markWord('café', 'cafe').status).toBe('correct');
   });
 });
+
+describe('equations with instruction words', () => {
+  it('ignores Solve / for x:', () => {
+    expect(linearEquation('Solve 2x + 3 = 11')?.solution).toBe(4);
+    expect(linearEquation('Solve for x: 2x = 8')?.solution).toBe(4);
+    expect(linearEquation('Solve x + 5 = 9')?.solution).toBe(4);
+    expect(markAlgebra('x = 4', 'x = 7', 'Solve 2x + 3 = 11')).toEqual({ status: 'wrong', mistake: 'inverse_operation' });
+  });
+});

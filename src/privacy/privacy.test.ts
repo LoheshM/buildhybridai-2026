@@ -5,7 +5,7 @@ import { buildTotals, suppressRow, validatePayload, type Cell } from './aggregat
 import { findRosterNames, rosterTokens, stringValues } from './nameCheck';
 import { csvCell, fillTemplate, validTemplate } from './templates';
 
-const m = JSON.parse(readFileSync(new URL('../../public/samples/manifest.json', import.meta.url), 'utf8'));
+const m = JSON.parse(readFileSync(new URL('../../public/samples/maths/manifest.json', import.meta.url), 'utf8'));
 const keys: QuestionKey[] = m.quiz.questions.map((q: { q: number; prompt: string; key: string }) => ({ q: q.q, prompt: q.prompt, answer: q.key }));
 const sheets = m.students.map((s: { answers: { q: number; written: string }[] }) => ({ marks: s.answers.map((a) => markAnswer(keys[a.q - 1], a.written)) }));
 const names: string[] = m.students.map((s: { name: string }) => s.name);
@@ -25,10 +25,10 @@ describe('class totals payload', () => {
     validatePayload(p);
     const text = JSON.stringify(p);
     expect(findRosterNames(text, rosterTokens(names))).toEqual([]);
-    expect(stringValues(p).every((v) => /^[0-9a-z ./+×÷_-]*$/.test(v))).toBe(true);
+    expect(stringValues(p).every((v) => /^[0-9a-z ./+×÷_=%-]*$/.test(v))).toBe(true);
   });
   it('counts add up and small cells are hidden', () => {
-    const q2 = p.questions.find((q) => q.q === 2)!;
+    const q2 = p.questions.find((q) => q.q === 1)!;
     expect(q2.question).toBe('2/3 + 1/6');
     const cells: Cell[] = [q2.right, q2.wrong];
     for (const c of cells) if (typeof c === 'number') expect(c === 0 || c >= 3).toBe(true);

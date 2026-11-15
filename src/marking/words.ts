@@ -48,8 +48,8 @@ export function looksWord(key: string): boolean {
 export type WordMistake = 'spelling' | 'wrong_term';
 export interface WordVerdict { status: 'correct' | 'wrong' | 'unreadable'; mistake: WordMistake | null; closest?: string; extraWords?: boolean }
 
-/** Allowed spelling distance: none for very short words, 1 up to 6 letters, 2 beyond. */
-const allowance = (w: string) => (w.length <= 3 ? 0 : w.length <= 6 ? 1 : 2);
+/** Allowed spelling distance: none for very short words, 1 up to 8 letters, 2 beyond. */
+const allowance = (w: string) => (w.length <= 3 ? 0 : w.length <= 8 ? 1 : 2); // "writed" (2 edits) is a wrong form of "written", not a misspelling
 
 /**
  * Exact (after normalising) is correct. A near spelling is "spelling": correct with a note when

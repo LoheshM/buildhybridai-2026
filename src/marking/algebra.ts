@@ -121,7 +121,9 @@ export interface AlgebraVerdict { status: 'correct' | 'wrong' | 'unreadable'; mi
  * answers produced by the common wrong procedures (undoing with the same operation, wrong order).
  */
 export function linearEquation(prompt: string): { variable: string; solution: number; wrong: Map<number, AlgebraMistake> } | null {
-  const parts = prompt.split('=');
+  // "Solve 2x + 3 = 11", "Solve for x: 2x = 8": instruction words are not variables
+  const eqn = prompt.replace(/\bfor\s+[a-z]\s*:?/gi, ' ').replace(/\b[a-zA-Z]{2,}\b[:.]?/g, ' ').replace(/[?]/g, ' ');
+  const parts = eqn.split('=');
   if (parts.length !== 2) return null;
   const L = compile(parts[0]), R = compile(parts[1]);
   if (!L || !R) return null;

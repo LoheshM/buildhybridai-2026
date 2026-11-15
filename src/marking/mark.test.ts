@@ -81,33 +81,40 @@ describe('markAnswer', () => {
   });
 });
 
-describe('agreement with the independent sample simulator', () => {
-  // tools/samples/simulate.mjs injects known misconceptions using its own arithmetic.
-  const m = JSON.parse(readFileSync(new URL('../../public/samples/manifest.json', import.meta.url), 'utf8'));
-  const keys: QuestionKey[] = m.quiz.questions.map((q: { q: number; prompt: string; key: string }) => K(q.q, q.prompt, q.key));
-  it('every ground-truth answer gets the expected status', () => {
-    let n = 0;
+describe('agreement with the generators ground truth, all three sample classes', () => {
+  // tools/samples/classes.py plants each mistake with its own label, independently of src/marking.
+  const load = (c: string) => JSON.parse(readFileSync(new URL(`../../public/samples/${c}/manifest.json`, import.meta.url), 'utf8'));
+  const STATUS: Record<string, string> = { correct: 'correct', unsimplified: 'unsimplified', blank: 'blank', missing_unit: 'partial', open: 'pending', passage: 'pending' };
+  for (const cls of ['maths', 'science', 'english']) {
+    it(`${cls}: every planted answer gets the expected status and mistake`, () => {
+      const m = load(cls);
+      const keys: QuestionKey[] = m.quiz.questions.map((q: { q: number; prompt: string; key: string; spellingCounts?: boolean }) => ({ q: q.q, prompt: q.prompt, answer: q.key, ...(q.spellingCounts ? { spellingCounts: true } : {}) }));
+      let n = 0;
+      for (const s of m.students) for (const a of s.answers) {
+        const k = keys[a.q - 1];
+        const r = markAnswer(k, a.written, a.crossedOut);
+        const why = `${s.id} q${a.q} "${a.written}" (${a.label})`;
+        n++;
+        if (a.label === 'spelling') { expect(r.misconception, why).toBe('spelling'); expect(r.status, why).toBe(k.spellingCounts ? 'wrong' : 'correct'); continue; }
+        if (STATUS[a.label]) { expect(r.status, why).toBe(STATUS[a.label]); if (a.label === 'missing_unit') expect(r.misconception, why).toBe('missing_unit'); continue; }
+        expect(r.status, why).toBe('wrong');
+        if (a.label === 'wrong') continue; // multiple choice: the option picked is the insight
+        // a slip can coincide in value with a real misconception (6/12 = 2/4 for 3/4 - 1/3)
+        const ok = a.label === 'other' ? [null, 'slip', 'wrong_operation'] : a.label === 'slip' ? ['slip', 'numerators_only', 'add_across'] : [a.label];
+        expect(ok, why).toContain(r.misconception);
+      }
+      expect(n).toBe(m.students.length * m.quiz.questions.length);
+    });
+  }
+  it('the fraction detectors recover injected misconceptions from the arithmetic alone', () => {
+    const m = load('maths');
     for (const s of m.students) for (const a of s.answers) {
-      const r = markAnswer(keys[a.q - 1], a.written, a.crossedOut);
-      const want = a.label === 'correct' ? 'correct' : a.label === 'unsimplified' ? 'unsimplified' : a.label === 'blank' ? 'blank' : 'wrong';
-      expect(r.status, `${s.id} q${a.q} "${a.written}" (${a.label})`).toBe(want);
-      n++;
-    }
-    expect(n).toBe(280);
-  });
-  it('injected misconceptions are recovered by the detectors', () => {
-    const expected: Record<string, string[]> = {
-      add_across: ['add_across'], numerators_only: ['numerators_only'], cross_multiply: ['cross_multiply'],
-      no_invert: ['no_invert'], whole_dropped: ['whole_dropped'],
-      // a slip can coincide in value with a real misconception (6/12 = 2/4 for 3/4 - 1/3)
-      slip: ['slip', 'numerators_only', 'add_across'],
-    };
-    for (const s of m.students) for (const a of s.answers) {
-      if (!expected[a.label]) continue;
       const q = m.quiz.questions[a.q - 1];
+      const e = parseExpr(q.prompt);
+      if (!e || !['add_across', 'numerators_only', 'cross_multiply', 'no_invert', 'whole_dropped'].includes(a.label)) continue;
       const p = parse(a.written);
       if (p.kind !== 'value') throw new Error('bad sample');
-      expect(expected[a.label], `${s.id} q${a.q} ${q.prompt} → ${a.written}`).toContain(detect(parseExpr(q.prompt)!, p.value));
+      expect(detect(e, p.value), `${s.id} q${a.q}`).toBe(a.label);
     }
   });
 });

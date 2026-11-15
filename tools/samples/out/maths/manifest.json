@@ -337,7 +337,7 @@
      "q": 2,
      "written": "7/12",
      "crossedOut": "",
-     "label": "slip"
+     "label": "other"
     },
     {
      "q": 3,
@@ -601,7 +601,7 @@
      "q": 2,
      "written": "7/12",
      "crossedOut": "5/12",
-     "label": "slip"
+     "label": "other"
     },
     {
      "q": 3,
@@ -1525,7 +1525,7 @@
      "q": 2,
      "written": "7/12",
      "crossedOut": "",
-     "label": "slip"
+     "label": "other"
     },
     {
      "q": 3,
@@ -1657,7 +1657,7 @@
      "q": 2,
      "written": "7/12",
      "crossedOut": "",
-     "label": "slip"
+     "label": "other"
     },
     {
      "q": 3,

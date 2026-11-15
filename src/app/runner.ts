@@ -2,12 +2,13 @@
 // code, ask for a second read where needed, match the name to the roster, save.
 // The runner lives at module level, so a run keeps going while the teacher moves between pages.
 import { classify, isSample, type SampleImage, type StudentImage } from '../ai/images';
-import { readSampleSheet, readStudentSheet, rereadSampleQuestions, rereadStudentQuestions, resetLiveSampleReads } from '../ai/tasks';
+import { readSampleSheet, readStudentSheet, rereadSampleQuestions, rereadStudentQuestions, resetLiveSampleReads, suggestOpen } from '../ai/tasks';
 import { cancelQueued } from '../ai/queue';
 import { resetAllModels } from '../ai/models';
 import { markRead, mergeReread, rereadQuestions, stampModelRead } from '../marking/pipeline';
 import { matchName } from '../marking/roster';
 import { store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
+import { samplePhotoUrl } from './boot';
 
 export interface RunState { running: boolean; quizId?: string; done: number; total: number; current?: string; avgMs: number; error?: string }
 type Listener = (s: RunState) => void;
@@ -33,7 +34,7 @@ async function save(s: SheetRec) {
 
 async function imageFor(sheet: SheetRec): Promise<Blob> {
   if (sheet.source === 'sample' && sheet.sampleId) {
-    const r = await fetch(`/samples/${sheet.sampleId}.jpg`);
+    const r = await fetch(samplePhotoUrl(sheet.sampleId));
     if (!r.ok) throw new Error('Sample photo missing');
     return r.blob();
   }
@@ -70,17 +71,23 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
         try {
           lastErr = null;
           const img = await classify(await imageFor(sheet));
-          const n = quiz.keys.length;
           if (sheet.source === 'sample' && !isSample(img)) throw new Error('Sample photo does not match its fingerprint; refusing to send it anywhere.');
-          const first = isSample(img) ? await readSampleSheet(img, n) : await readStudentSheet(img as StudentImage, n);
+          const first = isSample(img) ? await readSampleSheet(img, quiz.keys) : await readStudentSheet(img as StudentImage, quiz.keys);
           let marks = markRead(quiz.keys, first.read);
           const qs = rereadQuestions(quiz.keys, marks);
           let rereadMs: number | undefined;
           if (qs.length && first.where === 'on_device') {
-            const second = isSample(img) ? await rereadSampleQuestions(img as SampleImage, qs) : await rereadStudentQuestions(img as StudentImage, qs);
+            const second = isSample(img) ? await rereadSampleQuestions(img as SampleImage, qs, quiz.keys) : await rereadStudentQuestions(img as StudentImage, qs, quiz.keys);
             if (second) { marks = mergeReread(marks, second.answers, quiz.keys); rereadMs = second.ms; }
           }
           marks = stampModelRead(marks);
+          // Open answers: Gemini Nano suggests a mark from the text it read; the teacher decides.
+          for (let i = 0; i < marks.length; i++) {
+            if (marks[i].status !== 'pending' || stopRequested) continue;
+            const key = quiz.keys.find((k) => k.q === marks[i].q)!;
+            const sug = await suggestOpen(marks[i].read, key, isSample(img) ? { sample: (img as SampleImage).sampleId } : { student: true });
+            if (sug) marks[i] = { ...marks[i], suggestion: sug };
+          }
           const match = matchName(first.read.studentName, cls.roster, taken);
           if (match.studentId) taken.add(match.studentId);
           s = { ...s, status: 'read', read: first.read, readName: first.read.studentName, studentId: match.studentId, nameConfident: match.confident, marks, where: first.where, ms: first.ms, rereadQs: qs, rereadMs };

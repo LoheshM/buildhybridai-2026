@@ -20,7 +20,8 @@ export const AI_HOST = 'firebasevertexai.googleapis.com';
 export const DEVICE_EXPECTED_INPUTS = [{ type: 'text', languages: ['en'] }, { type: 'image' }] as const;
 export const DEVICE_EXPECTED_OUTPUTS = [{ type: 'text', languages: ['en'] }] as const;
 
-export const DEVICE_TIMEOUT_MS = 45_000; // one sheet read on the device (typically 6-10 s)
+export const DEVICE_TIMEOUT_MS = 30_000; // one sheet read on the device (typically 4-12 s; a hung read is retried once)
+export const SUGGEST_TIMEOUT_MS = 20_000; // one suggested mark on the device (typically 1.5-3 s; retried once)
 export const CLOUD_READ_TIMEOUT_MS = 25_000; // one sample sheet read in the cloud (typically 3-8 s)
 export const PLAN_TIMEOUT_DEVICE_MS = 120_000; // compact plan on Gemini Nano (measured 13-60 s; the UI says "up to 2 minutes")
 export const PLAN_TIMEOUT_CLOUD_MS = 30_000; // plan when there is no on-device fallback

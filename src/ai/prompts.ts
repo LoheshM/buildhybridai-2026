@@ -1,40 +1,101 @@
 // Prompts are versioned so measured accuracy can be tied to the exact wording.
 import type { ClassTotals } from '../privacy/aggregate';
-import { MISCONCEPTIONS } from '../marking/misconceptions';
+import { MISTAKES } from '../marking/mistakes';
 import { fold } from '../marking/roster';
 
-export const PROMPTS_VERSION = 'r1-2026-11-16';
+import { typeOf, type QuestionKey } from '../marking/mark';
+import type { QType } from '../marking/qtypes';
 
-export const readSheetPrompt = (questionCount: number) =>
-  `This is a photo of a student's maths worksheet with ${questionCount} numbered questions. ` +
-  `For each question number 1-${questionCount}: put any answer the student struck through with a line in crossedOutText (empty string if none), ` +
-  `and put the remaining handwritten answer in finalAnswer exactly as written (use "a/b" for fractions, and "w a/b" with a space for mixed numbers, empty string if blank). ` +
-  `Do not correct mistakes. Also copy the handwritten student name.`;
+export const PROMPTS_VERSION = 'v2-2026-11-16';
 
-export const rereadPrompt = (qs: number[]) =>
-  `This is a photo of a student's maths worksheet. Look carefully at questions ${qs.join(', ')} only. ` +
-  `For each of them, copy the student's final handwritten answer to the right of the "=" sign exactly as written. ` +
+const HINT: Record<QType, string> = {
+  fraction: 'a fraction such as 3/4, or a mixed number such as 1 1/2',
+  number: 'a number, maybe with a unit or a % sign',
+  algebra: 'an algebra answer such as x = 4',
+  choice: 'one option letter, or True or False',
+  word: 'one or a few words',
+  short: 'one or two sentences',
+  passage: 'a paragraph of several lines',
+};
+
+/**
+ * Day-1 probe (16 Nov): one required field per question, each anchored to its printed question,
+ * cut real-handwriting character errors from 20.8% to 4.8% on completed reads (docs/research/06).
+ */
+export const readSheetPrompt = (keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer' | 'type'>[]) =>
+  `This is a photo of a student's worksheet with ${keys.length} numbered printed questions. The student has handwritten an answer to each one. ` +
+  `Copy each handwritten answer exactly as written, word for word, keeping the student's spelling and punctuation; join lines with a space. ` +
+  `Never copy printed text. Do not correct mistakes. Use "a/b" for a fraction and "w a/b" with a space for a mixed number. ` +
+  `If the student struck through an answer with a line, put it in crossedOut and the other answer in answer (empty strings if none). Use an empty string for a blank answer.\n` +
+  keys.map((k, i) => `q${i + 1}: the answer to "${k.q}) ${(k.prompt || '').slice(0, 90)}" (${HINT[typeOf(k as QuestionKey)]})`).join('\n') +
+  `\nAlso copy the handwritten student name (empty string if there is none).`;
+
+/** Second, targeted read of a few questions, anchored to their printed questions when the keys are given. */
+export const rereadPrompt = (qs: number[], keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer' | 'type'>[] = []) =>
+  `This is a photo of a student's worksheet. Look carefully at questions ${qs.join(', ')} only. ` +
+  `For each of them, copy the student's final handwritten answer exactly as written. ` +
   `If a whole number is written to the left of a fraction, include it with a space, for example "1 1/2". ` +
-  `If an answer has a line through it, it is crossed out: put it in crossedOutText (empty string if nothing is crossed out) and use the other answer as finalAnswer. Use an empty string if there is no answer.`;
+  `If an answer has a line through it, it is crossed out: put it in crossedOutText (empty string if nothing is crossed out) and use the other answer as finalAnswer. Use an empty string if there is no answer.` +
+  (keys.length ? '\n' + keys.filter((k) => qs.includes(k.q)).map((k) => `Question ${k.q} is "${(k.prompt || '').slice(0, 90)}" (${HINT[typeOf(k as QuestionKey)]}).`).join('\n') : '');
+
+/**
+ * A suggested mark for one short answer. Day-1 probe (SciEntsBank, real grade 3-6 answers marked by
+ * people): a holistic mark with a reason agreed best with the human marks; asking Nano to tick or
+ * quote each key point over-credited wrong answers. So: holistic mark, plus which key points are
+ * missing (for the class totals), and the teacher always decides.
+ */
+export const suggestShortPrompt = (question: string, points: string[], answer: string) =>
+  `You are helping a teacher mark one short answer.\nQuestion: ${question || '(not given)'}\n` +
+  `Teacher's key points (a full answer states all of them):\n${points.map((p, i) => `${i + 1}. ${p}`).join('\n')}\n` +
+  `Student's answer: ${answer}\n\n` +
+  `Judge the meaning, not the wording, spelling or grammar.\n` +
+  `"full" = the student states every key point, in any words.\n` +
+  `"partial" = some of it is right, but a key point is missing or too vague.\n` +
+  `"none" = wrong, contradicts a key point, or does not answer the question.\n` +
+  `Be strict: a key point counts only if the student actually states it. List the numbers of the key points the student did not state. ` +
+  `Then give the mark and a one-sentence reason a teacher can check.`;
+
+export const suggestPassagePrompt = (question: string, rubric: { line: string; max: number }[], answer: string) =>
+  `You are helping a teacher mark a student's paragraph.\nTask: ${question || '(not given)'}\n` +
+  `Teacher's rubric:\n${rubric.map((r, i) => `l${i + 1}: ${r.line} (0 to ${r.max})`).join('\n')}\n` +
+  `Student's paragraph: ${answer}\n\n` +
+  `Score the paragraph on each rubric line, from 0 to that line's maximum. Judge what is written, as a fair teacher would for a student of this age. ` +
+  `Then give a one-sentence reason a teacher can check.`;
 
 /** compact: the on-device variant (Gemini Nano writes far fewer tokens per second than the cloud). */
-export const totalsPrompt = (t: ClassTotals, compact = false) =>
-  `You are helping a maths teacher (students aged 9-14) plan tomorrow's lesson. Below are ANONYMOUS class totals from a fractions check: ` +
-  `no student names or individual answers. "mistakes" counts wrong answers by the mistake pattern a marking program detected ` +
-  `(add_across = added tops and bottoms straight across; numerators_only = combined numerators but kept one denominator; ` +
-  `denominators_multiplied; whole_dropped = lost the whole number of a mixed number; cross_multiply; no_invert = divided without flipping; ` +
-  `flipped_first; reversed_subtraction; wrong_operation; slip = arithmetic slip; other = unexplained). For each question "right" and "wrong" count students (the class size is not given). A value of "hidden" is a small group hidden for privacy; treat it as "a few". A question with no mistakes listed may have had its breakdown withheld for privacy.\n\n` +
+const SUBJECT_TEXT: Record<ClassTotals['subject'], string> = { maths: 'maths', science: 'science', english: 'English', other: 'school' };
+const AGES: Record<ClassTotals['grade_band'], string> = { '4-6': '9-12', '7-9': '12-15', '10-12': '15-18' };
+
+/** The mistake ids that appear in these totals, each with its plain-words meaning (keeps the prompt short). */
+function mistakeGlossary(t: ClassTotals): string {
+  const ids = new Set<string>();
+  for (const q of t.questions) for (const k of Object.keys(q.mistakes)) ids.add(k);
+  return [...ids].filter((k) => k !== 'other').map((k) => `${k} = ${(MISTAKES as Record<string, { teacher: string }>)[k]?.teacher ?? k}`).join('; ') || 'none listed';
+}
+
+export const totalsPrompt = (t: ClassTotals, compact = false) => {
+  const maths = t.subject === 'maths';
+  return `You are helping a ${SUBJECT_TEXT[t.subject]} teacher (students aged ${AGES[t.grade_band]}) plan tomorrow's lesson. Below are ANONYMOUS class totals from a short check: ` +
+  `no student names and no student answers. For each question: "type" is the question type, "answer" and "key_points" or "rubric" are the teacher's own key, ` +
+  `"right", "partial" and "wrong" count students with full, some and no marks (the class size is not given), and "mistakes" counts the mistake patterns a marking program detected or the teacher confirmed ` +
+  `(${mistakeGlossary(t)}; missing_point_N = did not state key point N of the teacher's key; rubric_low_N = scored half or less on rubric line N; other = unexplained). ` +
+  `"wrong_options" counts wrong multiple-choice answers by the option chosen. A value of "hidden" is a small group hidden for privacy; treat it as "a few". A question with no mistakes listed may have had its breakdown withheld for privacy.\n\n` +
   `Write:\n` +
-  `1. plan: a reteach mini-lesson of at most 15 minutes aimed at the most common mistake pattern, with ${compact ? '3 short' : '3-5'} steps (each with one full sentence for what the teacher does and one for what students do), ` +
+  `1. plan: a reteach mini-lesson of at most 15 minutes aimed at the most common mistake or missed key point, with ${compact ? '3 short' : '3-5'} steps (each with one full sentence for what the teacher does and one for what students do), ` +
   `a hinge question (with answer and what to do if students get it wrong), and practice in three tiers ` +
-  `(${compact ? 'support: 2 items, core: 2 items, stretch: 2 items' : 'support: 4 easier items, core: 4 items, stretch: 3 items'}). Use NEW numbers, not the quiz's own questions, and write each practice question as a plain sum such as "2/5 + 1/10". The hinge question must target the most common mistake pattern. Every practice answer must be exact and in simplest form ("a/b", or "w a/b" for mixed numbers).\n` +
+  `(${compact ? 'support: 2 items, core: 2 items, stretch: 2 items' : 'support: 4 easier items, core: 4 items, stretch: 3 items'}). Use NEW questions, not the quiz's own. ` +
+  (maths
+    ? `Write each practice question as a plain sum such as "2/5 + 1/10" or "0.4 + 0.35". Every practice answer must be exact and in simplest form ("a/b", or "w a/b" for mixed numbers). `
+    : `Write each practice question as a short question with a short model answer. `) +
+  `The hinge question must target the most common mistake.\n` +
   `2. notes: one short, warm parent-note template (max 70 words) for EACH of these groups: ${noteGroups(t, compact).join(', ')} ` +
   `("secure" = did well; "default" = mixed results with no single pattern; the others are the mistake patterns above), ` +
   `in EACH of these languages: ${t.note_languages.join(', ')}. That is ${noteGroups(t, compact).length * t.note_languages.length} notes${compact ? ', each at most 40 words' : ''}. ` +
   `Each template MUST use the placeholders {{student}}, {{score}} and {{total}} literally (keep the double braces and the English placeholder words in every language). ` +
   `Do not invent names. Suggest one simple home activity where helpful.\n` +
-  `In all text a teacher or parent reads, describe mistake patterns in plain words (for example "added the tops and the bottoms"), never with the ids above.\n\n` +
+  `In all text a teacher or parent reads, describe mistake patterns in plain words (for example "added the tops and the bottoms", "did not say where the energy comes from"), never with the ids above.\n\n` +
   `Class totals (JSON):\n${JSON.stringify(t)}`;
+};
 
 /** Groups that need a parent-note template: every mistake pattern seen, plus the general ones. */
 export function noteGroups(t: ClassTotals, compact = false): string[] {
@@ -48,10 +109,14 @@ export const WARMUP_PROMPT = 'Reply with the single word: ready';
 
 /** Every word of Tickmark's fixed prompt text. A student named "Max" or "Do" must not block the plan. */
 export const FIXED_VOCAB: ReadonlySet<string> = (() => {
-  const all: ClassTotals = {
-    v: 1, topic: 'fractions', grade_band: '4-8', k: 3, note_languages: ['en', 'hi', 'ta'],
-    questions: [{ q: 1, question: '', answer: '', right: 0, wrong: 0, mistakes: Object.fromEntries([...Object.keys(MISCONCEPTIONS), 'other'].map((k) => [k, 0])) }],
-  };
-  const text = [totalsPrompt(all), totalsPrompt(all, true), readSheetPrompt(10), rereadPrompt([1, 2]), WARMUP_PROMPT].join(' ');
-  return new Set(fold(text).split(' ').filter(Boolean));
+  const text = [WARMUP_PROMPT, readSheetPrompt([]), rereadPrompt([1, 2])];
+  for (const subject of ['maths', 'science', 'english', 'other'] as const) for (const grade_band of ['4-6', '7-9', '10-12'] as const) {
+    const all: ClassTotals = {
+      v: 2, subject, grade_band, k: 3, note_languages: ['en', 'hi', 'ta'],
+      questions: [{ q: 1, type: 'fraction', question: '', answer: '', right: 0, partial: 0, wrong: 0, mistakes: Object.fromEntries([...Object.keys(MISTAKES), 'other'].map((k) => [k, 0])) }],
+    };
+    text.push(totalsPrompt(all), totalsPrompt(all, true));
+  }
+  for (const h of Object.values(HINT)) text.push(h);
+  return new Set(fold(text.join(' ')).split(' ').filter(Boolean));
 })();

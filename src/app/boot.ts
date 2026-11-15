@@ -5,18 +5,35 @@ import { setAllowedImageHashes } from '../ai/netGuard';
 import { setRecorded, type Recorded } from '../ai/tasks';
 import { loadRemoteSettings } from '../ai/firebase';
 import type { QuestionKey } from '../marking/mark';
+import type { QType } from '../marking/qtypes';
+import type { GradeBand, Subject } from '../privacy/aggregate';
 import { db, store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 
 export interface SampleManifest {
-  quiz: { title: string; className: string; questions: { q: number; prompt: string; key: string }[] };
-  students: { id: string; name: string; sha256: string; answers: { q: number; written: string; label: string; crossedOut: string }[] }[];
+  quiz: {
+    title: string; className: string; subject: Subject; grade_band: GradeBand; instructions?: string; extract?: string;
+    questions: { q: number; prompt: string; key: string; type?: QType; marks?: number; spellingCounts?: boolean; passage?: boolean }[];
+  };
+  students: { id: string; name: string; sha256: string; answers: { q: number; written: string; label: string; crossedOut: string; ref?: boolean[] | number[] }[] }[];
   generated: string;
 }
 
-let manifest: SampleManifest | null = null;
-export const sampleManifest = () => manifest;
-export const SAMPLE_CLASS_ID = 'sample-class';
-export const SAMPLE_QUIZ_ID = 'sample-quiz';
+/** The three made-up classes, in the order the welcome page shows them. */
+export const SAMPLES = ['maths', 'science', 'english'] as const;
+export type SampleKey = (typeof SAMPLES)[number];
+export const sampleClassId = (k: SampleKey) => `sample-${k}`;
+export const sampleQuizId = (k: SampleKey) => `sample-quiz-${k}`;
+/** v1 links (#/quiz/sample-quiz) still open the maths class. */
+export const SAMPLE_QUIZ_ID = sampleQuizId('maths');
+
+const manifests = new Map<SampleKey, SampleManifest>();
+const photoDir = new Map<string, SampleKey>(); // sample id -> class folder
+export const sampleManifest = (k: SampleKey = 'maths') => manifests.get(k) ?? null;
+export const sampleKeyOfQuiz = (quizId: string): SampleKey | null => SAMPLES.find((k) => sampleQuizId(k) === quizId) ?? null;
+export const sampleKeyOfClass = (classId: string): SampleKey | null => SAMPLES.find((k) => sampleClassId(k) === classId) ?? null;
+export const samplePhotoUrl = (sampleId: string) => `/samples/${photoDir.get(sampleId) ?? 'maths'}/${sampleId}.jpg`;
+/** Every made-up name in every sample class (the guard's "test it yourself" uses them). */
+export const sampleNames = () => [...manifests.values()].flatMap((m) => m.students.map((s) => s.name));
 
 export let bootError: string | null = null;
 
@@ -25,25 +42,29 @@ export async function boot() {
   ledger.setPersist((e) => { store.putLedger(e).catch(() => undefined); });
   loadRemoteSettings().catch(() => undefined);
   await requeueInterrupted().catch(() => undefined);
-  let m: SampleManifest;
   try {
-    const r = await fetch('/samples/manifest.json', { cache: 'no-cache' });
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    m = (await r.json()) as SampleManifest;
+    await Promise.all(SAMPLES.map(async (k) => {
+      const r = await fetch(`/samples/${k}/manifest.json`, { cache: 'no-cache' });
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      manifests.set(k, (await r.json()) as SampleManifest);
+    }));
     bootError = null;
   } catch (e) {
-    bootError = `The sample class couldn't load (${(e as Error).message}). Check the connection and reload.`;
+    bootError = `The sample classes couldn't load (${(e as Error).message}). Check the connection and reload.`;
     return;
   }
-  manifest = m;
-  const map = new Map(m.students.map((s) => [s.sha256, s.id]));
-  setSampleHashes(map);
-  setAllowedImageHashes(map.keys());
-  try {
-    const r = await fetch('/samples/recorded-cloud.json');
-    if (r.ok) setRecorded((await r.json()) as Recorded);
-  } catch { /* optional */ }
-  await ensureSampleClass();
+  const hashes = new Map<string, string>();
+  for (const [k, m] of manifests) for (const s of m.students) { hashes.set(s.sha256, s.id); photoDir.set(s.id, k); }
+  setSampleHashes(hashes);
+  setAllowedImageHashes(hashes.keys());
+  await Promise.all(SAMPLES.map(async (k) => {
+    try {
+      const r = await fetch(`/samples/${k}/recorded-cloud.json`);
+      if (r.ok) setRecorded(k, (await r.json()) as Recorded);
+    } catch { /* optional */ }
+  }));
+  for (const k of SAMPLES) await ensureSampleClass(k);
+  await dropV1Sample();
 }
 
 /** A reload or crash mid-run leaves sheets marked "reading". At start-up nothing is running, so queue them again. */
@@ -54,21 +75,33 @@ export async function requeueInterrupted() {
   await tx.done;
 }
 
-export async function ensureSampleClass(reset = false) {
-  if (!manifest) return;
-  const existing = await store.class(SAMPLE_CLASS_ID);
+/** v1 kept one sample class under fixed ids; v2 replaces it with the three classes. */
+async function dropV1Sample() {
+  if (await store.class('sample-class')) await store.deleteClass('sample-class');
+}
+
+export const keysFromManifest = (m: SampleManifest): QuestionKey[] =>
+  m.quiz.questions.map((q) => ({ q: q.q, prompt: q.prompt, answer: q.key, ...(q.type ? { type: q.type } : {}), ...(q.marks ? { marks: q.marks } : {}), ...(q.spellingCounts ? { spellingCounts: true } : {}) }));
+
+export async function ensureSampleClass(k: SampleKey, reset = false) {
+  const m = manifests.get(k);
+  if (!m) return;
+  const id = sampleClassId(k);
+  const existing = await store.class(id);
   if (existing && !reset) return;
-  if (existing) await store.deleteClass(SAMPLE_CLASS_ID);
+  if (existing) await store.deleteClass(id);
   const cls: ClassRec = {
-    id: SAMPLE_CLASS_ID, name: `Sample: ${manifest.quiz.className}`, sample: true, createdAt: 0,
-    roster: manifest.students.map((s) => ({ id: s.id, name: s.name })),
+    id, name: m.quiz.className, sample: true, createdAt: SAMPLES.indexOf(k),
+    roster: m.students.map((s) => ({ id: s.id, name: s.name })),
   };
-  const keys: QuestionKey[] = manifest.quiz.questions.map((q) => ({ q: q.q, prompt: q.prompt, answer: q.key }));
-  const quiz: QuizRec = { id: SAMPLE_QUIZ_ID, classId: cls.id, title: manifest.quiz.title, keys, unsimplifiedCredit: 0.5, createdAt: 0 };
+  const quiz: QuizRec = {
+    id: sampleQuizId(k), classId: cls.id, title: m.quiz.title, keys: keysFromManifest(m), unsimplifiedCredit: 0.5, createdAt: 0,
+    subject: m.quiz.subject, gradeBand: m.quiz.grade_band, extract: m.quiz.extract,
+  };
   await store.putClass(cls);
   await store.putQuiz(quiz);
   let t = 1;
-  for (const s of manifest.students) {
+  for (const s of m.students) {
     const sheet: SheetRec = {
       id: `sample-${s.id}`, quizId: quiz.id, source: 'sample', sampleId: s.id, fileName: `${s.id}.jpg`, status: 'queued',
       studentId: null, nameConfident: false, readName: '', marks: [], createdAt: t++,

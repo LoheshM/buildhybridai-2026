@@ -34,3 +34,5 @@ tools/samples/out/raw/
 tools/samples/out/render.log
 
 public/bench/
+tools/samples/out/*/raw/
+tools/samples/out/render2.log

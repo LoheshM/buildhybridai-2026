@@ -1,0 +1,82 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<!-- Renders one synthetic v2 worksheet (any subject). Data comes from the URL hash (base64 JSON).
+     Handwriting fonts are SIL Open Font License fonts from Google Fonts. -->
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500&family=Kalam&family=Patrick+Hand&family=Gochi+Hand&family=Indie+Flower&family=Shadows+Into+Light&family=Reenie+Beanie&display=block" rel="stylesheet">
+<style>
+  html,body{margin:0;background:#f7f4ea}
+  .page{width:1240px;height:1754px;position:relative;background:#fbf9f2;font-family:Arial,Helvetica,sans-serif;color:#2a2a2a;overflow:hidden;
+    padding:64px 80px 40px 150px;box-sizing:border-box}
+  .margin{position:absolute;top:0;bottom:0;left:118px;width:2px;background:#e8a3a3}
+  h1{margin:0;font-size:36px;letter-spacing:.3px}
+  .sub{font-size:21px;color:#555;margin:6px 0 30px;max-width:620px}
+  .namebox{position:absolute;top:112px;right:80px;font-size:24px}
+  .namebox .line{display:inline-block;width:280px;border-bottom:2px solid #444;margin-left:8px;height:30px;vertical-align:bottom;position:relative}
+  .extract{border:2px solid #9aa6b8;border-radius:6px;padding:12px 16px;font-size:20px;line-height:1.45;margin:0 0 14px;background:#fffdf7}
+  .q{font-size:var(--qs);line-height:1.3;margin:var(--gap) 0 0;font-weight:600;position:relative}
+  .row{position:relative;min-height:calc(var(--hs) * 1.25)}
+  .ruled{background-image:repeating-linear-gradient(transparent 0 calc(var(--lh) - 2px),#c9d6ea calc(var(--lh) - 2px) var(--lh));line-height:var(--lh)}
+  .hand{display:inline;font-family:var(--font);font-size:var(--hs);color:var(--ink)}
+  .w{display:inline-block;margin-right:.3em;position:relative}
+  .strike{position:absolute;left:-4px;right:-4px;top:55%;height:3px;border-radius:2px;background:var(--ink)}
+  .frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 4px;font-size:.72em;line-height:1}
+  .frac .bar{height:3px;width:100%;border-radius:2px;margin:2px 0;background:var(--ink)}
+</style></head>
+<body><div class="page" id="p"><div class="margin"></div></div>
+<script>
+const d = JSON.parse(decodeURIComponent(escape(atob(location.hash.slice(1)))));
+let seed = d.seed; const rnd = () => ((seed = (seed * 1103515245 + 12345) & 0x7fffffff) / 0x7fffffff); const r = (a, b) => a + rnd() * (b - a);
+const p = document.getElementById('p');
+const st = p.style;
+st.setProperty('--font', `'${d.font}'`); st.setProperty('--hs', d.size + 'px'); st.setProperty('--ink', d.ink);
+st.setProperty('--qs', (d.qsize || 25) + 'px'); st.setProperty('--gap', (d.gap || 22) + 'px'); st.setProperty('--lh', Math.round(d.size * 1.32) + 'px');
+const esc = (s) => s.replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+p.insertAdjacentHTML('beforeend', `<h1>${esc(d.title)} — ${esc(d.className)}</h1><div class="sub">${esc(d.instructions || '')}</div>`);
+p.insertAdjacentHTML('beforeend', `<div class="namebox">Name:<span class="line"><span class="hand" style="position:absolute;left:14px;bottom:-4px;white-space:nowrap">${esc(d.name)}</span></span></div>`);
+if (d.extract) p.insertAdjacentHTML('beforeend', `<div class="extract">${esc(d.extract)}</div>`);
+
+function words(text, stacked) {
+  const frag = document.createElement('span'); frag.className = 'hand';
+  for (const t of text.split(/\s+/).filter(Boolean)) {
+    const w = document.createElement('span'); w.className = 'w';
+    if (stacked && /^\d+\/\d+$/.test(t)) {
+      const [n, dd] = t.split('/');
+      w.innerHTML = `<span class="frac"><span>${n}</span><span class="bar"></span><span>${dd}</span></span>`;
+    } else w.textContent = t;
+    w.style.transform = `translateY(${r(-3, 3)}px) rotate(${r(-3, 3)}deg)`;
+    frag.appendChild(w);
+  }
+  return frag;
+}
+function answer(a, stacked) {
+  const box = document.createElement('span');
+  if (a.crossedOut) {
+    const c = words(a.crossedOut, stacked); c.style.position = 'relative'; c.style.marginRight = '28px';
+    const s = document.createElement('span'); s.className = 'strike'; s.style.transform = `rotate(${r(-7, 7)}deg)`; c.appendChild(s);
+    box.appendChild(c);
+  }
+  if (a.written) box.appendChild(words(a.written, stacked));
+  return box;
+}
+d.questions.forEach((q, i) => {
+  const a = d.answers[i] || { written: '', crossedOut: '' };
+  const qd = document.createElement('div'); qd.className = 'q';
+  if (q.kind === 'inline') {
+    // short maths answers: on the same line after the printed sum
+    const sum = /^[\d\s./+×÷%-]+(of [\d.]+)?$/.test(q.prompt);
+    qd.innerHTML = `${q.q})&nbsp;&nbsp;${esc(q.prompt)}${sum ? ' =' : ':'}&nbsp;&nbsp;`;
+    const ans = answer(a, d.stacked); ans.style.fontWeight = 'normal'; ans.style.marginLeft = r(8, 40) + 'px';
+    qd.appendChild(ans);
+    p.appendChild(qd);
+    return;
+  }
+  qd.innerHTML = `${q.q})&nbsp;&nbsp;${esc(q.prompt)}`;
+  p.appendChild(qd);
+  const row = document.createElement('div'); row.className = 'row' + (q.kind === 'long' ? ' ruled' : '');
+  row.style.paddingLeft = r(12, 40) + 'px';
+  if (q.kind === 'long') row.style.minHeight = `calc(var(--lh) * ${q.lines || 3})`;
+  row.appendChild(answer(a, false));
+  p.appendChild(row);
+});
+document.fonts.ready.then(() => { document.title = 'ready'; });
+</script></body></html>

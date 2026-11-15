@@ -229,7 +229,7 @@ describe('R2: whole-question states never pin a hidden count', () => {
     for (let wrong = 0; wrong <= 14; wrong++) for (let right = 0; right <= 14; right++) {
       for (const split of parts(wrong, 3)) {
         const gs = split.map((v, i) => [groups[i], v] as [string, number]).filter(([, v]) => v > 0);
-        const out = JSON.stringify(questionCells(right, wrong, gs, k));
+        const out = JSON.stringify(questionCells(right, 0, wrong, gs, k));
         const list = byOutput.get(out) ?? [];
         list.push([right, wrong, ...split]);
         byOutput.set(out, list);
@@ -248,7 +248,7 @@ describe('R2: whole-question states never pin a hidden count', () => {
     expect(pinned).toBe(0);
   });
   it('two pupils wrong in two different ways: the breakdown is not sent', () => {
-    expect(questionCells(20, 2, [['add_across', 1], ['other', 1]], 3)).toEqual({ right: 20, wrong: 'hidden', mistakes: {} });
+    expect(questionCells(20, 0, 2, [['add_across', 1], ['other', 1]], 3)).toEqual({ right: 20, partial: 0, wrong: 'hidden', mistakes: {} });
   });
 });
 

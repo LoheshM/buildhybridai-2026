@@ -1,14 +1,28 @@
 // Marks one read answer against the teacher's key and decides which flags the teacher sees.
+// The key picks the question type (qtypes.ts). Exact types are marked here, in code. Open types
+// (short answers, paragraphs) wait as "pending" for Gemini Nano's suggestion and the teacher's decision.
 import { eq, evaluate, isLowest, mixedAlternatives, parse, parseExpr, type Expr, type Frac, type Parsed } from './fraction';
 import { detect, type MisconceptionId } from './misconceptions';
+import type { MistakeId } from './mistakes';
+import { markAlgebra } from './algebra';
+import { markQuantity } from './numeric';
+import { detectType, isOpen, marksFor, parseRubric, type QType } from './qtypes';
+import { markChoice, markWord } from './words';
 
 export interface QuestionKey {
   q: number;
-  prompt: string; // e.g. "2/3 + 1/6" (may be empty for a generic exact-match key)
-  answer: string; // teacher's key, e.g. "5/6"
+  prompt: string; // e.g. "2/3 + 1/6", or the printed question (may be empty)
+  answer: string; // teacher's key, e.g. "5/6", "photosynthesis", "makes food; uses sunlight"
+  type?: QType; // the teacher's override; otherwise detected from the key
+  marks?: number; // marks available (open questions); exact questions are worth 1
+  tolerance?: number; // numbers: absolute tolerance in the key's unit
+  spellingCounts?: boolean; // words: a near spelling is wrong (a spelling test)
 }
 
-export type Status = 'correct' | 'unsimplified' | 'wrong' | 'blank' | 'unreadable';
+export const typeOf = (k: QuestionKey): QType => k.type ?? detectType(k.answer, k.prompt);
+export const outOfFor = (k: QuestionKey): number => marksFor(typeOf(k), k.answer, k.marks);
+
+export type Status = 'correct' | 'unsimplified' | 'partial' | 'wrong' | 'blank' | 'unreadable' | 'pending';
 
 export type Flag =
   | 'two_answers'
@@ -18,6 +32,8 @@ export type Flag =
   | 'mixed_number_check'
   | 'letters'
   | 'reread_disagreed'
+  | 'extra_words'
+  | 'check_reading'
   | 'teacher_changed';
 
 export const FLAG_TEXT: Record<Flag, string> = {
@@ -28,15 +44,29 @@ export const FLAG_TEXT: Record<Flag, string> = {
   mixed_number_check: 'Check the mixed number',
   letters: 'Letters in a number box',
   reread_disagreed: 'Second read disagreed',
+  extra_words: 'Key word plus extra words',
+  check_reading: 'Check the reading',
   teacher_changed: 'Changed by you',
 };
+
+/** Gemini Nano's suggested mark for an open answer. Always shown as a suggestion; the teacher decides. */
+export interface Suggestion {
+  points: number; // computed in code from `met` / `lines`, never taken from the model directly
+  outOf: number;
+  met?: boolean[]; // short answers: one per key point
+  contradicts?: boolean;
+  lines?: { score: number; max: number }[]; // paragraphs: one per rubric line
+  reason: string;
+  where: 'on_device' | 'in_cloud' | 'recorded';
+  ms: number;
+}
 
 export interface Marked {
   q: number;
   read: string; // what was read (or typed)
   crossedOut: string;
   status: Status;
-  misconception: MisconceptionId | null;
+  misconception: MistakeId | null;
   flags: Flag[];
   /** Alternative readings worth offering the teacher as one-tap fixes. */
   suggestions: string[];
@@ -45,6 +75,13 @@ export interface Marked {
   /** The model's own reading and whether it was flagged, kept for the accuracy card. */
   modelRead?: string;
   modelFlagged?: boolean;
+  type?: QType;
+  outOf?: number; // marks available (default 1)
+  points?: number; // awarded marks when set by the teacher on an open question
+  mistakes?: MistakeId[]; // open questions: every key point missed, or a misconception
+  picked?: string; // multiple choice: the option chosen
+  note?: string; // what code noticed, e.g. "Same amount in mm"
+  suggestion?: Suggestion; // open questions only
 }
 
 export interface KeyInfo {
@@ -62,6 +99,13 @@ export function keyInfo(k: QuestionKey): KeyInfo {
 
 /** Does the key itself agree with the prompt? (Catches teacher typos before marking.) */
 export function keyProblem(k: QuestionKey): string | null {
+  const type = typeOf(k);
+  if (!k.answer.trim()) return 'Add an answer.';
+  if (type === 'number' && !markQuantity(k.answer, k.answer).status.startsWith('correct')) return 'The answer could not be read as a number.';
+  if (type === 'algebra' && markAlgebra(k.answer, k.answer).status !== 'correct') return 'The answer could not be read as algebra (for example x = 4 or 2x + 3).';
+  if (type === 'choice' && markChoice(k.answer, k.answer).status !== 'correct') return 'Use one option letter (A to H) or True/False.';
+  if (type === 'passage' && !parseRubric(k.answer)) return 'Write the rubric as lines with marks, for example "Ideas 3; Organisation 2".';
+  if (type !== 'fraction') return null;
   const info = keyInfo(k);
   if (info.keyParsed.kind !== 'value') return k.prompt ? 'The answer could not be read as a number.' : null;
   if (info.expr && !eq(evaluate(info.expr), info.keyParsed.value)) return 'This answer does not equal the question.';
@@ -72,7 +116,34 @@ export function keyProblem(k: QuestionKey): string | null {
   return null;
 }
 
+/** Marks one answer by its question type. */
 export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marked {
+  const type = typeOf(k);
+  if (type === 'fraction') return { ...markFraction(k, read, crossedOut), type };
+  const coRaw = (crossedOut ?? '').trim();
+  const co = coRaw && coRaw.replace(/\s+/g, '') !== (read ?? '').replace(/\s+/g, '') ? coRaw : '';
+  const base: Marked = { q: k.q, read: read ?? '', crossedOut: co, status: 'blank', misconception: null, flags: co ? ['crossed_out'] : [], suggestions: [], type, outOf: outOfFor(k) };
+  if (!(read ?? '').trim()) return base;
+  if (isOpen(type)) return { ...base, status: 'pending' };
+  if (type === 'number') {
+    const v = markQuantity(k.answer, read, k.tolerance ?? 0, k.prompt);
+    const flags = [...base.flags, ...(v.status === 'unreadable' ? [/[a-z]{3,}/i.test(read) ? 'letters' as const : 'unreadable' as const] : v.status === 'wrong' && !v.mistake ? ['unusual' as const] : [])];
+    return { ...base, status: v.status, misconception: v.mistake, note: v.note, flags };
+  }
+  if (type === 'algebra') {
+    const v = markAlgebra(k.answer, read, k.prompt);
+    return { ...base, status: v.status, misconception: v.mistake, flags: [...base.flags, ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
+  }
+  if (type === 'choice') {
+    const v = markChoice(k.answer, read);
+    return { ...base, status: v.status, picked: v.picked ?? undefined, flags: [...base.flags, ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
+  }
+  // word
+  const v = markWord(k.answer, read, !!k.spellingCounts);
+  return { ...base, status: v.status, misconception: v.mistake, note: v.mistake === 'spelling' && v.status === 'correct' ? `Spelling: ${v.closest}` : undefined, flags: [...base.flags, ...(v.extraWords ? ['extra_words' as const] : []), ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
+}
+
+function markFraction(k: QuestionKey, read: string, crossedOut = ''): Marked {
   const info = keyInfo(k);
   const flags: Flag[] = [];
   const suggestions: string[] = [];
@@ -126,21 +197,40 @@ export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marke
 const norm = (s: string) => (s ?? '').normalize('NFKC').toLowerCase().replace(/[.,;:!?]+$/, '').replace(/\s+/g, ' ').trim();
 const dedupe = <T,>(xs: T[]) => [...new Set(xs)];
 
-export interface SheetScore { points: number; outOf: number; correct: number; unsimplified: number; wrong: number; blank: number; unreadable: number }
+export interface SheetScore { points: number; outOf: number; correct: number; unsimplified: number; partial: number; wrong: number; blank: number; unreadable: number; pending: number }
 
-/** Unsimplified answers earn `unsimplifiedCredit` (0, 0.5 or 1). Unreadable answers block the score until checked. */
-export function scoreSheet(marks: Marked[], unsimplifiedCredit = 0.5): SheetScore {
-  const s: SheetScore = { points: 0, outOf: marks.length, correct: 0, unsimplified: 0, wrong: 0, blank: 0, unreadable: 0 };
+/** Points for one answer: the teacher's points on an open question, else from the status. */
+export function pointsFor(m: Marked, halfCredit = 0.5): number {
+  const out = m.outOf ?? 1;
+  if (m.points !== undefined) return m.points;
+  if (m.status === 'correct') return out;
+  if (m.status === 'unsimplified' || m.status === 'partial') return halfCredit * out;
+  return 0;
+}
+
+/**
+ * Half-right answers (unsimplified fractions, a missing unit, 0.45 for 45%) earn `halfCredit`
+ * (0, 0.5 or 1). Unreadable answers and open answers the teacher hasn't decided block the score.
+ */
+export function scoreSheet(marks: Marked[], halfCredit = 0.5): SheetScore {
+  const s: SheetScore = { points: 0, outOf: 0, correct: 0, unsimplified: 0, partial: 0, wrong: 0, blank: 0, unreadable: 0, pending: 0 };
   for (const m of marks) {
     s[m.status]++;
-    if (m.status === 'correct') s.points += 1;
-    if (m.status === 'unsimplified') s.points += unsimplifiedCredit;
+    s.outOf += m.outOf ?? 1;
+    s.points += pointsFor(m, halfCredit);
   }
   return s;
 }
 
+/** Status from points on an open question the teacher has decided. */
+export const statusFromPoints = (points: number, outOf: number): Status => (points >= outOf ? 'correct' : points <= 0 ? 'wrong' : 'partial');
+
 /** Questions worth a second, targeted on-device read. */
 export function needsReread(k: QuestionKey, m: Marked): boolean {
+  const type = typeOf(k);
+  // open answers: the teacher reads the text against the photo anyway; only a missing answer gets a second look
+  if (isOpen(type)) return m.status === 'blank';
+  if (type !== 'fraction') return m.status === 'blank' || m.status === 'unreadable' || m.flags.length > 0 || (m.status === 'wrong' && !m.misconception) || (m.status === 'partial');
   const keyMixed = keyInfo(k).keyParsed;
   const readP = parse(m.read);
   return (

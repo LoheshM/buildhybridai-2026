@@ -4,10 +4,15 @@ import type { Where, LedgerEvent } from '../ai/ledger';
 import type { SheetRead, TotalsResponse } from '../ai/schemas';
 import type { Marked, QuestionKey } from '../marking/mark';
 import type { Student } from '../marking/roster';
-import type { ClassTotals } from '../privacy/aggregate';
+import type { ClassTotals, GradeBand, Subject } from '../privacy/aggregate';
 
 export interface ClassRec { id: string; name: string; roster: Student[]; createdAt: number; sample?: boolean }
-export interface QuizRec { id: string; classId: string; title: string; keys: QuestionKey[]; unsimplifiedCredit: number; createdAt: number }
+export interface QuizRec {
+  id: string; classId: string; title: string; keys: QuestionKey[];
+  /** Credit for half-right answers (unsimplified fractions, a missing unit): 0, 0.5 or 1. */
+  unsimplifiedCredit: number; createdAt: number;
+  subject?: Subject; gradeBand?: GradeBand; extract?: string;
+}
 export type SheetStatus = 'queued' | 'reading' | 'read' | 'error' | 'checked';
 export interface SheetRec {
   id: string; quizId: string; imageId?: string; imageSha?: string; source: 'photo' | 'typed' | 'sample'; sampleId?: string; fileName?: string;

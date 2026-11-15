@@ -1,0 +1,1563 @@
+{
+ "quiz": {
+  "title": "Plants and water",
+  "className": "Science 7A",
+  "subject": "science",
+  "grade_band": "7-9",
+  "instructions": "Answer every question. Use full sentences for questions 6 and 7.",
+  "questions": [
+   {
+    "q": 1,
+    "prompt": "Which gas do plants take in to make food? A) oxygen B) carbon dioxide C) nitrogen D) hydrogen",
+    "key": "B"
+   },
+   {
+    "q": 2,
+    "prompt": "True or false: plants get their food from the soil.",
+    "key": "False"
+   },
+   {
+    "q": 3,
+    "prompt": "The green substance in leaves that traps light is called ...",
+    "key": "chlorophyll"
+   },
+   {
+    "q": 4,
+    "prompt": "Water turning into water vapour is called ...",
+    "key": "evaporation / evaporating"
+   },
+   {
+    "q": 5,
+    "prompt": "At sea level, pure water boils at ...",
+    "key": "100 °C"
+   },
+   {
+    "q": 6,
+    "prompt": "Why do plants need light?",
+    "key": "light gives the energy for photosynthesis; plants use it to make their own food (glucose)"
+   },
+   {
+    "q": 7,
+    "prompt": "A puddle disappears on a sunny day. Explain why.",
+    "key": "the water evaporates (turns into water vapour); heat from the Sun gives it the energy (makes it faster)"
+   },
+   {
+    "q": 8,
+    "prompt": "Which part of a plant takes in water? A) leaves B) flower C) roots D) stem",
+    "key": "C"
+   }
+  ]
+ },
+ "students": [
+  {
+   "id": "c01",
+   "name": "Aanya Kapoor",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyl",
+     "crossedOut": "",
+     "label": "spelling"
+    },
+    {
+     "q": 4,
+     "written": "evaperation",
+     "crossedOut": "",
+     "label": "spelling"
+    },
+    {
+     "q": 5,
+     "written": "0 °C",
+     "crossedOut": "",
+     "label": "other"
+    },
+    {
+     "q": 6,
+     "written": "They need light to make food.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water evaporates.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      false
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "b27b1a734751137478e57a9bd632c00b62d849f75ab815c2fe4187bb08d80d89"
+  },
+  {
+   "id": "c02",
+   "name": "Ben Okafor",
+   "answers": [
+    {
+     "q": 1,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "0 °C",
+     "crossedOut": "100",
+     "label": "other"
+    },
+    {
+     "q": 6,
+     "written": "They need light to make food.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water evaporates.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      false
+     ]
+    },
+    {
+     "q": 8,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    }
+   ],
+   "sha256": "dfdf2f975d8b42a01af391a32283edd894ed7d719f48cf53d35340044ac3c13c"
+  },
+  {
+   "id": "c03",
+   "name": "Chloe Martin",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "C",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "90 °C",
+     "crossedOut": "",
+     "label": "other"
+    },
+    {
+     "q": 6,
+     "written": "Light helps them grow taller and greener.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "125c8f162dad500da340b4ef81c2b5c6b4718399fe865c4230df88ff93d62a05"
+  },
+  {
+   "id": "c04",
+   "name": "Dev Malhotra",
+   "answers": [
+    {
+     "q": 1,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chloroplast",
+     "crossedOut": "",
+     "label": "wrong_term"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "0 °C",
+     "crossedOut": "",
+     "label": "other"
+    },
+    {
+     "q": 6,
+     "written": "Plants need light to get food from the soil.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water evaporates.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      false
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "D",
+     "label": "correct"
+    }
+   ],
+   "sha256": "80f2f14df59a286a54270b0ca357500dcf759cfe70e8853b66da7e96abdb2a2c"
+  },
+  {
+   "id": "c05",
+   "name": "Elif Yilmaz",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "True",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 3,
+     "written": "chloroplast",
+     "crossedOut": "",
+     "label": "wrong_term"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "90 °C",
+     "crossedOut": "",
+     "label": "other"
+    },
+    {
+     "q": 6,
+     "written": "So they can do photosynthesis.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "It condenses into the clouds because it is hot.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    }
+   ],
+   "sha256": "d1978af5c48a4b76a3861f7786f9ca989b2ba9f876e73c6269d26e417a2d75d8"
+  },
+  {
+   "id": "c06",
+   "name": "Farhan Ali",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "True",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 3,
+     "written": "",
+     "crossedOut": "",
+     "label": "blank"
+    },
+    {
+     "q": 4,
+     "written": "condensation",
+     "crossedOut": "",
+     "label": "wrong_term"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Plants use the energy from light to make their own food by photosynthesis.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    }
+   ],
+   "sha256": "ac42927937fa4240e5874f3c2e543056f8d459e47d4c021fbe0b9b51328c1b78"
+  },
+  {
+   "id": "c07",
+   "name": "Grace Lin",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "True",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "They need light to make food.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water evaporates into water vapour because the Sun heats it up.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    }
+   ],
+   "sha256": "fea3f92c998f60b3667033e104c90dd8b681a7863ebcbf10c6e15b45c41d0841"
+  },
+  {
+   "id": "c08",
+   "name": "Harsh Vardhan",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "True",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Light helps them grow taller and greener.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water soaks into the ground.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "14b9bbfde2aca97498c1693c2351d951cb42dc1c1305862ae416f877e2d0eb62"
+  },
+  {
+   "id": "c09",
+   "name": "Ines Costa",
+   "answers": [
+    {
+     "q": 1,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "100",
+     "crossedOut": "",
+     "label": "missing_unit"
+    },
+    {
+     "q": 6,
+     "written": "Plants need light to get food from the soil.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "a47967e6e225dfdd0ddd248d9b50a3d06d97d9f20a206c216d69b5a268d542a0"
+  },
+  {
+   "id": "c10",
+   "name": "Jai Prakash",
+   "answers": [
+    {
+     "q": 1,
+     "written": "",
+     "crossedOut": "",
+     "label": "blank"
+    },
+    {
+     "q": 2,
+     "written": "True",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 3,
+     "written": "clorophyll",
+     "crossedOut": "",
+     "label": "spelling"
+    },
+    {
+     "q": 4,
+     "written": "evaperation",
+     "crossedOut": "",
+     "label": "spelling"
+    },
+    {
+     "q": 5,
+     "written": "90 °C",
+     "crossedOut": "",
+     "label": "other"
+    },
+    {
+     "q": 6,
+     "written": "Plants use the energy from light to make their own food by photosynthesis.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water soaks into the ground.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 8,
+     "written": "",
+     "crossedOut": "",
+     "label": "blank"
+    }
+   ],
+   "sha256": "083f2aa000df646401826a5e3fea33aa6941efd25c701fae68ded119709c1685"
+  },
+  {
+   "id": "c11",
+   "name": "Keira Walsh",
+   "answers": [
+    {
+     "q": 1,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 2,
+     "written": "True",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 3,
+     "written": "clorophyll",
+     "crossedOut": "",
+     "label": "spelling"
+    },
+    {
+     "q": 4,
+     "written": "evaporating",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Light helps them grow taller and greener.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    }
+   ],
+   "sha256": "a722b9729b11f0b551644271da1af5900cae2dfb50a407e25e85d0dfaeeb63bc"
+  },
+  {
+   "id": "c12",
+   "name": "Lakshmi Iyer",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "condensation",
+     "crossedOut": "",
+     "label": "wrong_term"
+    },
+    {
+     "q": 5,
+     "written": "",
+     "crossedOut": "",
+     "label": "blank"
+    },
+    {
+     "q": 6,
+     "written": "Light helps them grow taller and greener.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The sun dries it.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "386dd7b28519e39dcc5da13b00dbeeab50f7c84bf1cae554dcdc8c85e81f3b98"
+  },
+  {
+   "id": "c13",
+   "name": "Mateo Ruiz",
+   "answers": [
+    {
+     "q": 1,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 2,
+     "written": "True",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Light helps them grow taller and greener.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water evaporates.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      false
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "092f8893aab5162b46ade570db23bfbc1ce5cef9989be96889b1e7556233c642"
+  },
+  {
+   "id": "c14",
+   "name": "Nandini Rao",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "",
+     "crossedOut": "",
+     "label": "blank"
+    },
+    {
+     "q": 7,
+     "written": "The water evaporates into water vapour because the Sun heats it up.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "a324420bfa57f7fe0d22d552aab10c6b9b5bd128fc761829492c6fccbc972d74"
+  },
+  {
+   "id": "c15",
+   "name": "Oscar Brown",
+   "answers": [
+    {
+     "q": 1,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "melting",
+     "crossedOut": "",
+     "label": "wrong_term"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Light gives plants energy for photosynthesis so they can make glucose.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water evaporates into water vapour because the Sun heats it up.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "11732c754c53bb3b0b84cc62e0c0dac0184c885e96fb8bdd529722d5a162eb28"
+  },
+  {
+   "id": "c16",
+   "name": "Priya Natarajan",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "True",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 3,
+     "written": "",
+     "crossedOut": "",
+     "label": "blank"
+    },
+    {
+     "q": 4,
+     "written": "condensation",
+     "crossedOut": "",
+     "label": "wrong_term"
+    },
+    {
+     "q": 5,
+     "written": "100",
+     "crossedOut": "",
+     "label": "missing_unit"
+    },
+    {
+     "q": 6,
+     "written": "Plants use the energy from light to make their own food by photosynthesis.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water goes away.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "af2c87776e9591bb38f3d4b01fa8f3414cf18d2c9d3c8221376dcef56fced576"
+  },
+  {
+   "id": "c17",
+   "name": "Qasim Raza",
+   "answers": [
+    {
+     "q": 1,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Plants use the energy from light to make their own food by photosynthesis.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water evaporates into water vapour because the Sun heats it up.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "1c64de17616e51214c5bdc3311d5d4e0d736dc24d4de33ac2426d48acfeee440"
+  },
+  {
+   "id": "c18",
+   "name": "Rhea Sen",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Plants use the energy from light to make their own food by photosynthesis.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water soaks into the ground.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "9bb61e08e3022396041653d40963af560301ecc4f5cd0686911949dbf6ac5c67"
+  },
+  {
+   "id": "c19",
+   "name": "Sipho Dlamini",
+   "answers": [
+    {
+     "q": 1,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "",
+     "crossedOut": "",
+     "label": "blank"
+    },
+    {
+     "q": 4,
+     "written": "evaperation",
+     "crossedOut": "",
+     "label": "spelling"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Plants need light to get food from the soil.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water evaporates into water vapour because the Sun heats it up.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "0bd9405832ba6cdf32dfbf5d583583c5ebd7a903f92a6a1a8ef1f5d56eeab48a"
+  },
+  {
+   "id": "c20",
+   "name": "Tanvi Shah",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "C",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaperation",
+     "crossedOut": "",
+     "label": "spelling"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Light helps them grow taller and greener.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water evaporates.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      false
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "ad714941c82f8447ac7f66f0bb68c590855a507343c701a4edc85c585c6cf03b"
+  },
+  {
+   "id": "c21",
+   "name": "Uma Pillai",
+   "answers": [
+    {
+     "q": 1,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Plants use the energy from light to make their own food by photosynthesis.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "It condenses into the clouds because it is hot.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    }
+   ],
+   "sha256": "e2c4b3a6586897473e090db6e7fc4a62231fc4ddd9d561bb0f734bda7933e056"
+  },
+  {
+   "id": "c22",
+   "name": "Vikram Bhat",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "",
+     "crossedOut": "",
+     "label": "blank"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyl",
+     "crossedOut": "",
+     "label": "spelling"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "",
+     "crossedOut": "",
+     "label": "blank"
+    },
+    {
+     "q": 6,
+     "written": "Plants need light to get food from the soil.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "e1667cebf2b43eb68296d3f4b5c1c384b0ec4df885a8867a36393b762f0bb575"
+  },
+  {
+   "id": "c23",
+   "name": "Wen Zhou",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "True",
+     "crossedOut": "",
+     "label": "wrong"
+    },
+    {
+     "q": 3,
+     "written": "chlorophyll",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 4,
+     "written": "evaporation",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "They need light to make food.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      true
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The water goes away.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 8,
+     "written": "C",
+     "crossedOut": "",
+     "label": "correct"
+    }
+   ],
+   "sha256": "97f35ea3566a632f7f31a1fbbdc8e9e8dfe1e6548b018255fb4b4bea8b20b1ea"
+  },
+  {
+   "id": "c24",
+   "name": "Yusuf Demir",
+   "answers": [
+    {
+     "q": 1,
+     "written": "B",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 2,
+     "written": "False",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 3,
+     "written": "chloroplast",
+     "crossedOut": "",
+     "label": "wrong_term"
+    },
+    {
+     "q": 4,
+     "written": "",
+     "crossedOut": "",
+     "label": "blank"
+    },
+    {
+     "q": 5,
+     "written": "100 °C",
+     "crossedOut": "",
+     "label": "correct"
+    },
+    {
+     "q": 6,
+     "written": "Plants need light to get food from the soil.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      false,
+      false
+     ]
+    },
+    {
+     "q": 7,
+     "written": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "crossedOut": "",
+     "label": "open",
+     "ref": [
+      true,
+      true
+     ]
+    },
+    {
+     "q": 8,
+     "written": "A",
+     "crossedOut": "",
+     "label": "wrong"
+    }
+   ],
+   "sha256": "7e377c4f926e7231453c4fb30c3194e98bd0d24e4efa6fabcb1618465874a583"
+  }
+ ],
+ "note": "Synthetic, fictional students. Ground truth for a Tickmark sample class.",
+ "generated": "2026-11-16"
+}

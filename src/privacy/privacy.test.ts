@@ -46,10 +46,28 @@ describe('class totals payload', () => {
     const bad3 = structuredClone(p); (bad3.questions[0].mistakes as Record<string, unknown>).meera = 4;
     expect(() => validatePayload(bad3)).toThrow(/mistake/);
   });
-  it('teacher-typed prompts with names are rebuilt from numbers or dropped', () => {
-    const q = buildTotals([{ q: 1, prompt: "Meera's question: 1/2 + 1/4", answer: '3/4 (Meera)' }], sheets.slice(0, 6), 3, ['en']);
+  it('maths keys are rebuilt from numbers; a typed key that is not a number is never sent as maths', () => {
+    const q = buildTotals([{ q: 1, prompt: '1/2 + 1/4', answer: '3/4 (Meera)' }], sheets.slice(0, 6), 3, ['en']);
+    expect(q.questions[0].question).toBe('1/2 + 1/4');
+    expect(q.questions[0].answer).toBe('3/4'); // the value of the printed sum, never the typed text
+    const bad = structuredClone(q); bad.questions[0].answer = 'Meera';
+    expect(() => validatePayload(bad)).toThrow(/answer text/);
+    const ok = structuredClone(q); ok.questions[0].answer = 'x = 4'; validatePayload(ok);
+    ok.questions[0].answer = '3.5 cm'; validatePayload(ok);
+    validatePayload(q);
+  });
+  it('teacher text that names someone on the class list is left out (layer 1)', () => {
+    const toks = rosterTokens(names);
+    const first = names[0].split(' ')[0];
+    const q = buildTotals([
+      { q: 1, prompt: `Why did ${first} go back to the station?`, answer: `heard the puppy; ${first} wanted to share lunch` },
+      { q: 2, prompt: 'Which gas do plants take in?', answer: 'carbon dioxide' },
+    ], [], 3, ['en'], { rosterTokens: toks });
     expect(q.questions[0].question).toBe('');
-    expect(q.questions[0].answer).toBe(''); // an unreadable typed key is dropped, never sent as text
+    expect(q.questions[0].key_points).toEqual(['heard the puppy', '']);
+    expect(q.questions[1].question).toBe('Which gas do plants take in?');
+    expect(q.questions[1].answer).toBe('carbon dioxide');
+    expect(findRosterNames(JSON.stringify(q), toks)).toEqual([]);
     validatePayload(q);
   });
 });

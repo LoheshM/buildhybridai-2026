@@ -1,159 +1,94 @@
 # Tickmark
 
-**Mark a class set of paper maths worksheets on your own laptop, without uploading a single photo.**
+**Any worksheet. One Tickmark answer sheet. Marked on your own laptop, without uploading a single photo.**
 
-Tickmark is for maths teachers in grades 4–8 who mark paper worksheets. It starts with fractions, and with Indian CBSE and private schools, where paper is the norm and a teacher can mark 40 sheets a day.
+Tickmark is for teachers who mark paper worksheets: maths, science, English, any subject with exact answers, sentences or paragraphs. Pupils answer on a printed **Tickmark answer sheet**; the teacher photographs the pile.
 
-1. **Read.** Gemini Nano reads each photo of a worksheet *inside Chrome on the teacher's laptop*.
-2. **Mark.** Plain code marks every answer against the teacher's key and, where it can, names the mistake, for example "added the tops and the bottoms".
-3. **Check.** The teacher checks only what Tickmark flags.
-4. **Plan.** To plan tomorrow's lesson, **only anonymous class totals** go to cloud Gemini. It writes a reteach mini-lesson and parent-note templates in English, Hindi or Tamil, and the laptop fills in each child's name.
+1. **Read.** Code finds the sheet's four corner squares, straightens the photo and cuts out each answer box. Gemini Nano reads the boxes *inside Chrome on the teacher's laptop*.
+2. **Mark.** The answer key picks each question's type. Plain code marks every exact answer (numbers and units, fractions, algebra, multiple choice, words) and names the mistake.
+3. **Decide.** For short answers and paragraphs, Gemini Nano only *suggests* a mark, in pencil. The teacher inks it. Anything doubtful is flagged, with the pupil's handwriting beside the reading.
+4. **Plan.** To plan tomorrow's lesson, **only anonymous class totals** go to cloud Gemini. It writes a reteach lesson and parent-note templates in English, Hindi or Tamil, and the laptop fills in each child's name.
 
 > Class totals go up. Names stay here.
 
-**Try it:** https://buildhybridai-lohe.web.app. It's free and needs no sign-in. Built for #BuildHybridAI 2026 on Firebase AI Logic hybrid inference.
+**Try it:** https://buildhybridai-lohe.web.app. Free, no sign-in. Built for #BuildHybridAI 2026 on Firebase AI Logic hybrid inference.
 
 ## Why
-- **Marking takes hours every week.** Teachers spend a median 5 hours a week on grading and feedback (EdWeek Research Center, 2022). With Tickmark the reading runs unattended (about 12 s a sheet) and the teacher looks only at the flagged answers: 14–24% of answers in our runs. We have not yet timed teachers end to end.
-- **Feedback that names the mistake is what helps,** and that's exactly what nobody has time to tally by hand.
-- **The work being marked is children's personal data.**
-  - UK DfE guidance recommends that "personal data is not used in generative AI tools".
-  - India's DPDP Act (s.9) requires verifiable parental consent to process a child's data.
-  - US districts need vendor contracts before student data leaves.
-- **The AI graders we looked at (Gradescope, Frizzle, Brisk, CoGrader, Redpen AI) all work from uploaded photos.**
-
-Tickmark is designed so a real class's photos, names and answers never leave the laptop. Nothing that identifies a child is sent to, stored by or reviewed by an AI service: the cloud only ever sees anonymous class totals.
+- **Marking takes hours every week.** Teachers spend a median 5 hours a week on grading and feedback (EdWeek Research Center, 2022).
+- **Feedback that names the mistake is what helps,** and nobody has time to tally it by hand.
+- **The work being marked is children's personal data.** UK DfE guidance recommends that "personal data is not used in generative AI tools"; India's DPDP Act (s.9) requires verifiable parental consent to process a child's data; US districts need vendor contracts before student data leaves. The AI graders we looked at (Gradescope, Frizzle, Brisk, CoGrader, Redpen AI) all work from uploaded photos.
 
 ## How the hybrid inference is used
 Tickmark routes every AI call by **what data it carries**, not by how hard the task is.
 
 | Data | Where it runs | Firebase AI Logic mode | Guard |
 |---|---|---|---|
-| Real student sheets (photos, names, answers) | This laptop only | `ONLY_ON_DEVICE` | Device gate, student lock and network guard; **no cloud fallback, ever** |
-| Laptop without on-device AI | Nowhere: the teacher types answers into a grid | none | Marking still runs in plain code |
-| Built-in synthetic sample class | Laptop when Gemini Nano is ready; otherwise up to 3 live cloud reads, then recorded cloud readings | `PREFER_ON_DEVICE` | Each image's SHA-256 must match a sample sheet |
-| Anonymous class totals | Cloud (`PREFER_IN_CLOUD`; if the cloud call fails, Tickmark writes a compact plan with Gemini Nano), or kept on the laptop when the teacher asks | `PREFER_IN_CLOUD` / `ONLY_ON_DEVICE` | Closed schema, small groups hidden, roster-name check, shown before sending |
+| A real pupil's answer boxes, second reads and suggested marks | This laptop only | `ONLY_ON_DEVICE` | Device gate, pupil-sheet lock and network guard; **no cloud fallback, ever** |
+| A laptop without on-device AI | Nowhere: the teacher types answers into a grid | none | Marking still runs in plain code |
+| Made-up sample sheets | Laptop when Gemini Nano is ready; otherwise Nano's own readings recorded on 15 Nov are replayed, labelled "Gemini Nano · recorded" | `ONLY_ON_DEVICE` | Each photo's SHA-256 must match a sample sheet |
+| Anonymous class totals | Cloud, with a compact on-device plan if the cloud fails and one retry on a second model if the free daily allowance runs out; or kept on the laptop when the teacher asks | `PREFER_IN_CLOUD`, `ONLY_IN_CLOUD`, `ONLY_ON_DEVICE` | Closed schema, small groups hidden, class-list name checks, shown before sending |
 | Parent-note personalisation | This laptop, plain code | none | Placeholder validation |
 
-**Every reading shows where it ran.** A step bar (Read sheets → Check flags → Results → Plan lesson) runs through every quiz. Labels such as "Laptop, 7.3 s" and "Cloud" come from the SDK's `inferenceSource`, and the **Privacy & data** page lists every request this browser sent to the AI service.
+Every reading shows where it ran ("On this laptop · 7.3 s", from the SDK's `inferenceSource`), and the **Privacy** page lists every request this browser sent.
 
-**Why Tickmark has its own guards:**
-- In `@firebase/ai` 3.1.0, a browser with no `LanguageModel` API sends even `ONLY_ON_DEVICE` requests to the cloud.
-- So Tickmark checks `LanguageModel.availability()` itself before every student call.
-- It also wraps `fetch` so that any AI request while a student sheet is being read is refused. So is any image that isn't a sample sheet, and any text containing a name from the class list.
-- Unit tests cover each guard.
+**Why Tickmark has its own guards.** In `@firebase/ai` 3.1.0, a browser with no `LanguageModel` API sends even `ONLY_ON_DEVICE` requests to the cloud. Tickmark checks `LanguageModel.availability()` itself before every pupil call, and wraps `fetch` so that any AI request is refused while a pupil's sheet is being read, as is any image that isn't a fingerprinted sample sheet, any file reference, and any class-list name anywhere in the request (Indian-script names with case endings included). Unit tests cover each guard, and **Privacy → Test the guard yourself** shows the refusals.
 
-**Model setup:**
-- One plain JSON Schema is used on both sides: `responseConstraint` on the device, `responseJsonSchema` in the cloud.
-- `initializeDeviceModel()` runs on a click and shows its progress.
-- A warm-up call before the first sheet avoids the cold start (about 15 s).
-- All on-device calls go through one queue, because parallel prompts abort each other. Hung calls time out and retry once.
+## Why an answer sheet
+On 15 Nov we measured Gemini Nano reading whole worksheets. It **answered the printed questions instead of copying the pupil**: it filled in blanks, flipped True/False and corrected misspellings, and 15–40% of exact answers got the wrong mark with no flag, whatever the prompt said (`docs/benchmarks.md`). So pupils write on a Tickmark answer sheet, printed from the key, and code cuts out each box. Nano reads boxes that carry no question to answer.
+
+The cutting is plain TypeScript (`src/img/`): corner squares, a four-point homography, an upside-down check, a printed-frame check that refuses another quiz's sheet, and per-box ink measures relative to each box's own paper. Code, not the model, decides which boxes are empty: asked about an empty box, Nano invents an answer.
 
 ## The model never decides a mark
-- **Reading:** Gemini Nano only *reads* the handwriting.
-- **Marking:** marking is exact fraction arithmetic (`src/marking/`). 5/10 equals 1/2, but is flagged "not simplified".
-- **Naming the mistake:** eight detectors recompute common wrong methods (adding straight across, dividing without flipping, losing the whole number, …) and name the mistake when one matches; two catch-alls ("arithmetic slip", "different operation") also raise a flag, because a misread looks just like them.
-- **Flags:** answers worth a look are flagged:
-  - crossed-out work;
-  - two answers;
-  - an unreadable answer;
-  - a likely lost mixed-number space, such as "11/2" against a key of "1 1/2";
-  - an unexplained wrong answer;
-  - a second on-device reading that disagrees.
-- **Suggestions:** flagged answers offer the alternative reading as a one-tap fix. A second opinion never changes a mark by itself.
-- **Names:** the name on each sheet is matched to the class list. Unsure matches are left for the teacher to confirm, never guessed.
-- **Practice answers:** the cloud's practice answers are re-checked by the same fraction engine. A wrong AI answer is corrected and labelled.
+- **Exact answers** are marked by code (`src/marking/`): units convert (35 mm = 3.5 cm), 2/4 equals 1/2 but is flagged "not simplified", algebra is compared by value, multiple choice and words are normalised. Named mistakes include "forgot to convert", "added tops and bottoms", "sign error", "copied the question".
+- **Open answers** (short answers with key points, paragraphs with a rubric) get Gemini Nano's suggestion, in pencil. The teacher inks it, adjusts the key points, or overrides. A pupil's answer is fenced as data in the prompt, and answers that talk to the marker get no suggestion at all.
+- **Flags** route anything doubtful to the teacher: two answers, crossed-out work, an unread box with ink in it, a reading that disagreed on a second look, a spelling Nano may have corrected, working written beside the answer, and more.
 
-## Measured (Chrome 157 on a 16 GB laptop, 15 Nov 2026)
-| | Sample class (handwriting fonts) | Real handwritten digits (MNIST) |
-|---|---|---|
-| Answers read exactly by Gemini Nano on the laptop | 89.3% (250 of 280) in the final run; 84–90% across runs | 78.6% (220 of 280) |
-| **Misreads the teacher was not asked to check** | **0 of 280** | **0 of 280** |
-| Answers flagged for the teacher (how many were real misreads) | 13.9% (30 of 39) | 24.3% (60 of 68) |
-| Names matched to the class list (confident) | 28 of 28 | 26 of 28 confident |
-| Time per sheet on the laptop, including the second read | 12 s | 11 s |
-| Same sheets read by cloud Gemini (`gemini-3.5-flash-lite`) | 279 of 280 | not sent: real-student path |
-| Lesson plan | cloud 9–17 s; on the laptop 13–60 s (it waits up to 2 minutes) | |
+## Measured (Gemini Nano in Chrome 157 on a 16 GB laptop, 15 Nov 2026)
 
-**What these numbers mean:**
-- **Sample class:** generated sheets (`tools/samples/`): made-up students, handwriting rendered from open-licence fonts, and planted mistakes.
-- **Real-handwriting set:** the same sheets with every answer rewritten in **real human handwritten digits** from the MNIST test set (`tools/samples/mnist.py`, CC BY-SA 3.0). They were uploaded as an ordinary class, so they went through the device-only student path.
-- **The trade-off:** the cloud model reads better, but Tickmark gives that up for privacy and makes up for it with flags and the teacher's check. In both sets every misread was flagged.
-- **Real children's handwriting** will vary more again. **Print blank quiz** gives you a sheet to try your own.
+| Measure | Result |
+|---|---|
+| Real human handwriting: MNIST digits written into the maths answer sheet, photo-processed | 81.3% read exactly (152/187); **0 wrong marks without a flag**; 25% of answers flagged; 240/240 blank decisions |
+| Suggested marks on 147 real pupils' short answers marked by people (SciEntsBank) | 58% equal to the human mark, 91% within one mark |
+| Sample classes, recorded run | Maths 83.7% of exact answers read exactly, science 66.7%, English 57.8%; after today's rules, 0 unflagged wrong marks in all three |
+| Bad photos (code only): tilt, perspective, blur, dim light with noise, soft and hard shadows, heavy JPEG | 120/120 cut, 999/1000 blank decisions |
+| Long strips | 26 answer rows: 14% exact; 6–7 rows: 83%. Sheets are read in strips of at most 10 answers. |
+| Prompt injection in a pupil's answer | Nano gave full marks 3/3 even fenced, so a code rule withholds the suggestion |
 
-**Which laptops work:**
-- **On-device reading** needs Gemini Nano in Chrome. That means Windows 10/11, macOS 13+ or Linux, with 16 GB of memory or a graphics card with more than 4 GB, plus 22 GB of free disk. We measured on a 16 GB laptop with a 4 GB RTX 3050 Ti.
-- **Any other laptop or browser** still gets Tickmark's marking, mistake names and lesson planning through the typed-answer grid. Only photo reading needs Gemini Nano, and student photos are never sent anywhere instead.
-
-## Try it
-**You need** Chrome 139 or newer on a Windows, macOS or Linux laptop or desktop. On-device reading needs 16 GB of memory (or a graphics card with more than 4 GB) and 22 GB of free disk. Without these, the sample still works through the cloud path below.
-
-1. Open https://buildhybridai-lohe.web.app.
-2. Get Gemini Nano on the laptop:
-   - **If the top bar shows a Download on-device AI button:** click it. Chrome downloads Gemini Nano once: a few GB, about 5 minutes.
-   - **To try the app during the download:** open the sample class and click **Read now with recorded readings**. When the download finishes, a banner offers to **read the sheets again on this laptop**.
-3. Click **Try the sample class**, then **Quick look: read 8**. To read all 28 (about 6 minutes), click **Read all**.
-4. Open **Check answers**. Use <kbd>J</kbd>/<kbd>K</kbd> to move, <kbd>Enter</kbd> when the reading is right, and <kbd>1</kbd>–<kbd>3</kbd> to pick a suggested reading. Use **Name is right** to confirm a name.
-5. Open **Results**, then **Plan tomorrow's lesson**. Read the "Before you send" table, then click **Send class totals and plan the lesson**. To keep everything on the laptop instead, tick **Keep this on the laptop**.
-6. Open **Privacy & data** to see each request sent to the AI service. Under **Test the guard yourself**, click **Try to send them**: Tickmark refuses to send a non-sample photo and a sentence containing a class-list name, before either leaves the browser.
-
-**No on-device AI on your laptop?** The top bar says "Sample: cloud mode".
-- The sample class reads its first 3 sheets live with cloud Gemini (allowed only for made-up sheets) and uses cloud readings recorded on 15 Nov for the rest.
-- Your own classes use the typed-answer grid.
-- If Chrome says image reading is off, enable `chrome://flags/#prompt-api-for-gemini-nano-multimodal-input` and restart Chrome.
+Not yet measured: children's handwriting in real phone photos.
 
 ## Run it locally
 ```bash
 npm install
-npm test            # unit tests: fraction engine, detectors, privacy layer, guards
+npm test            # unit tests: marking engine, privacy payload, guards, answer sheet
 npm run dev         # http://localhost:5173
 ```
-**App Check debug token:** Firebase App Check is enforced on Firebase AI Logic. For local development:
-1. Create a debug token in the Firebase console (App Check → Apps → Manage debug tokens).
-2. Put it in `.env.development.local` as `VITE_APPCHECK_DEBUG_TOKEN=<token>`.
+**App Check debug token:** App Check is enforced on Firebase AI Logic. For local development, create a debug token in the Firebase console (App Check → Apps → Manage debug tokens) and put it in `.env.development.local` as `VITE_APPCHECK_DEBUG_TOKEN=<token>`. That file is git-ignored; `npm run build` fails if the token, analytics or the dev-only Nano recorder reach `dist/`.
 
-That file is git-ignored and never included in a production build: `npm run build` fails if the token reaches `dist/`.
-
-**Your own Firebase project:** to use one, change `src/config.ts`. You need AI Logic with the Gemini Developer API, plus App Check with reCAPTCHA Enterprise.
+**Your own Firebase project:** change `src/config.ts`. You need AI Logic with the Gemini Developer API, plus App Check with reCAPTCHA Enterprise.
 
 **Tools:**
-- `tools/samples/` regenerates the sample class.
-- `tools/record-cloud.ts` records the cloud readings.
-- `tools/bench.js` measures reading accuracy.
-- `tools/deploy.mjs` builds, deploys and smoke-tests.
+- `tools/samples/` generates and renders the three made-up classes (`classes.py`, `render3.py`) and the MNIST benchmark (`mnist2.py`).
+- `tools/bench2.py <url> [--record]` reads the sample classes with Gemini Nano through the real app; `--record` (dev server only) writes the replay files.
+- `tools/cut-check.py`, `tools/distort-check.py` check the answer-sheet cutting; `tools/mnist-bench.py`, `tools/strip-length-probe.py` measure Nano.
+- `tools/live-regression.mjs` runs the judge path in a fresh browser with no on-device AI; `tools/deploy.mjs` builds, deploys and smoke-tests.
 
 ## Firebase products
-- **Firebase AI Logic:** hybrid inference, three modes.
-- **App Check:** reCAPTCHA Enterprise, enforced, with limited-use tokens. It loads only when a cloud request may follow, never on pages with student data.
+- **Firebase AI Logic:** hybrid inference, routed by data class.
+- **App Check:** reCAPTCHA Enterprise, enforced, with limited-use tokens. It loads only when a cloud request may follow.
 - **Hosting:** strict Content Security Policy and security headers.
-- **Remote Config:** operator settings only:
-  - the cloud model (from an allowlist);
-  - the smallest group shown (3 or more);
-  - live sample reads;
-  - a cloud kill switch.
-  
-  It can tighten limits but never loosen privacy.
+- **Remote Config:** the cloud model (from an allowlist), the smallest group shown (3 or more), live sample reads (0 by default) and a cloud kill switch. It can't send pupils' data or lower the group size below 3.
 
-**Deliberately not used:** Firestore, Auth, Analytics and AI monitoring. Nothing about a student is stored server-side.
+**Deliberately not used:** Firestore, Auth, Analytics and AI monitoring. Nothing about a pupil is stored server-side.
 
 ## Design boundaries
-- **No cloud path for real student work, even with consent.**
-  - Free-tier Gemini Developer API inputs may be used by Google to improve its services.
-  - Cropping the name off a sheet doesn't anonymise handwriting.
-- **No free text from the teacher in cloud requests.** Requests are built from numbers and fixed words only.
-- **No accounts or server storage.** Data lives in this browser's IndexedDB, and Privacy & data has **Erase everything**.
-- **Fractions first.** Other numeric answers are marked by value, and word answers by exact match.
-- **Desktop Chrome only for on-device reading.** Gemini Nano isn't available in mobile browsers.
+- **Pupils answer on a Tickmark answer sheet.** Reading whole worksheets made Nano answer the questions. A sheet from another quiz with an identical layout can't be told apart; any other layout is refused.
+- **Open answers are suggestions.** The teacher inks every one.
+- **No cloud path for real pupils' work, even with consent.** Free-tier Gemini Developer API inputs may be used by Google to improve its services, and handwriting isn't anonymous.
+- **No accounts or server storage.** Data lives in this browser's IndexedDB; Privacy has **Erase everything**.
+- **On-device reading needs desktop Chrome with Gemini Nano** (16 GB of memory or a GPU with more than 4 GB). Other laptops use the typed-answer grid.
 
 ## Operator notes
-**Quota:** the free cloud quota (15 requests a minute, 500 a day) is shared by every visitor. To protect it, Tickmark has:
-- a per-browser limiter;
-- recorded readings for the sample;
-- the Remote Config switches `sample_cloud_live_reads` (0–3) and `cloud_features_enabled`.
-
-**Before a public deployment:**
-- set a per-user quota on the AI Logic API;
-- restrict the API key to the APIs it uses.
+**Quota:** the free cloud quota (15 requests a minute and 500 a day per model) is shared by every visitor. Tickmark protects it with a per-browser limiter, recorded Nano readings for the samples, the Remote Config switches `sample_cloud_live_reads` and `cloud_features_enabled`, and one retry on the second allowlisted model. Before a wider deployment, set a per-user quota on the AI Logic API and restrict the API key.
 
 ## Licence and credits
 - **Licence:** Apache-2.0 (see `LICENSE`). Third-party notices are in `THIRD_PARTY_NOTICES.md`.

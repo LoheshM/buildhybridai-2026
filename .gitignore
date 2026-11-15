@@ -38,3 +38,10 @@ tools/samples/out/*/raw/
 tools/samples/out/render2.log
 
 .impeccable/review/
+
+# generated benchmark images (MNIST-derived sheets are CC BY-SA 3.0; kept local)
+tools/samples/out/mnist-raw/
+tools/samples/out/mnist2-raw/
+tools/samples/out/mnist2/*.jpg
+tools/samples/out/raw-blank/
+tools/samples/out/v1-bench/

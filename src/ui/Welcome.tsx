@@ -120,7 +120,7 @@ function DemoRegister() {
       <div className="demo-head"><b>Science 7A · Plants and water</b><span className="pill device"><i />On this laptop</span></div>
       <div className="register-wrap">
         <table className="register">
-          <thead><tr><th className="who" scope="col">Pupil</th>{DEMO_Q.map((q, i) => <th key={q} scope="col">{q}<span className="qt">{QTYPES[DEMO_QT[i] as QType].label.split(' ')[0]}</span></th>)}<th scope="col">Out of 7</th></tr></thead>
+          <thead><tr><th className="who" scope="col">Pupil</th>{DEMO_Q.map((q, i) => <th key={q} scope="col">{q}<span className="qt">{QTYPES[DEMO_QT[i] as QType].short}</span></th>)}<th scope="col">Out of 7</th></tr></thead>
           <tbody>
             {DEMO.map((r, ri) => (
               <tr key={r.name}>

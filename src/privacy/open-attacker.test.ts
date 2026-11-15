@@ -68,3 +68,35 @@ describe('open questions: overlapping "missed key point" counts never pin a hidd
     expect(r.leaks).toEqual([]);
   });
 });
+
+describe('exact answers with a partial cell (missing unit, unsimplified): no hidden count is pinned', () => {
+  // every state (right, partial, wrong, and up to 3 mistake groups that split partial + wrong)
+  const groups = ['missing_unit', 'place_value', 'other'];
+  const parts = (n: number, g: number): number[][] => (g === 0 ? (n === 0 ? [[]] : []) : Array.from({ length: n + 1 }, (_, v) => v).flatMap((v) => parts(n - v, g - 1).map((r) => [v, ...r])));
+  it('every published question has at least two consistent states for each hidden cell', () => {
+    const k = 3;
+    const byOutput = new Map<string, number[][]>();
+    for (let wrong = 0; wrong <= 9; wrong++) for (let partial = 0; partial <= 5; partial++) for (let right = 0; right <= 12; right++) {
+      for (const split of parts(wrong + partial, 3)) {
+        const gs = split.map((v, i) => [groups[i], v] as [string, number]).filter(([, v]) => v > 0);
+        const out = JSON.stringify(questionCells(right, partial, wrong, gs, k));
+        const list = byOutput.get(out) ?? [];
+        list.push([right, partial, wrong, ...split]);
+        byOutput.set(out, list);
+      }
+    }
+    let pinned = 0, judged = 0;
+    for (const [out, states] of byOutput) {
+      const o = JSON.parse(out);
+      // stay well inside the enumerated ranges (the class size is not published)
+      if ([o.right, o.partial, o.wrong, ...Object.values(o.mistakes)].some((v) => typeof v === 'number' && v > 6)) continue;
+      judged++;
+      const hidden: number[] = [];
+      ['right', 'partial', 'wrong'].forEach((c, i) => { if (o[c] === 'hidden') hidden.push(i); });
+      groups.forEach((g, i) => { if (o.mistakes[g] === 'hidden') hidden.push(3 + i); });
+      for (const i of hidden) if (new Set(states.map((s) => s[i])).size < 2) pinned++;
+    }
+    expect(judged).toBeGreaterThan(100);
+    expect(pinned).toBe(0);
+  });
+});

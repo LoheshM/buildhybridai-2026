@@ -259,7 +259,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
         {open && s && pending && (
           <div className="sugg">
             <span className="why">{s.reason || 'No reason given.'}</span>
-            <span className="tiny">Suggested by Gemini Nano {s.where === 'on_device' ? `on this laptop in ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? '(recorded cloud suggestion; this browser has no on-device AI)' : 'in the cloud (made-up sheet)'}. Nano agreed with human markers about half the time in our tests, so it is always your call.</span>
+            <span className="tiny">Suggested by Gemini Nano {s.where === 'on_device' ? `on this laptop in ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? '(recorded cloud suggestion; this browser has no on-device AI)' : 'in the cloud (made-up sheet)'}. In our test on 146 real pupils' answers that people had marked, Nano's suggestion matched the human mark half the time and was within one mark 9 times in 10, so it is always your call.</span>
           </div>
         )}
         {open && !s && pending && m.read && <div className="sugg"><span className="tiny">No suggestion for this answer. Tick the key points it states, or set the rubric scores.</span></div>}

@@ -40,9 +40,9 @@ export const rereadPrompt = (qs: number[], keys: Pick<QuestionKey, 'q' | 'prompt
 
 /**
  * A suggested mark for one short answer. Day-1 probe (SciEntsBank, real grade 3-6 answers marked by
- * people): a holistic mark with a reason agreed best with the human marks; asking Nano to tick or
- * quote each key point over-credited wrong answers. So: holistic mark, plus which key points are
- * missing (for the class totals), and the teacher always decides.
+ * people): a holistic mark first, then the missing key points, then a reason, agreed best with the
+ * human marks and never gave a wrong answer full marks on the dev split; asking Nano to tick or quote
+ * each key point over-credited wrong answers. The teacher always decides.
  */
 export const suggestShortPrompt = (question: string, points: string[], answer: string) =>
   `You are helping a teacher mark one short answer.\nQuestion: ${question || '(not given)'}\n` +
@@ -52,8 +52,7 @@ export const suggestShortPrompt = (question: string, points: string[], answer: s
   `"full" = the student states every key point, in any words.\n` +
   `"partial" = some of it is right, but a key point is missing or too vague.\n` +
   `"none" = wrong, contradicts a key point, or does not answer the question.\n` +
-  `Be strict: a key point counts only if the student actually states it. List the numbers of the key points the student did not state. ` +
-  `Then give the mark and a one-sentence reason a teacher can check.`;
+  `Give the mark, then the numbers of any key points the student did not state, then a one-sentence reason a teacher can check.`;
 
 export const suggestPassagePrompt = (question: string, rubric: { line: string; max: number }[], answer: string) =>
   `You are helping a teacher mark a student's paragraph.\nTask: ${question || '(not given)'}\n` +

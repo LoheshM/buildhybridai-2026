@@ -91,12 +91,12 @@ function ClassDoor({ k }: { k: SampleKey }) {
   const open = types.some((t) => QTYPES[t].markedBy === 'suggested');
   return (
     <button className={`door ${k}`} onClick={() => go(href.scan(sampleQuizId(k)))} aria-label={`Open ${m.quiz.className}, ${m.quiz.title}: ${m.students.length} worksheets`}>
-      <div>
+      <div className="label">
         <h3>{m.quiz.className}</h3>
         <div className="sub">{m.quiz.title} · {m.students.length} worksheets · {keys.length} questions</div>
+        <div className="types">{types.map((t) => <span key={t} className={`chip ${QTYPES[t].markedBy === 'code' ? 'code' : 'pencil'}`}>{QTYPES[t].label}</span>)}</div>
+        <div className="small muted">{open ? 'Some answers are suggested in pencil for you to decide.' : 'Every answer is marked by code.'}</div>
       </div>
-      <div className="types">{types.map((t) => <span key={t} className={`chip ${QTYPES[t].markedBy === 'code' ? 'code' : 'pencil'}`}>{QTYPES[t].label}</span>)}</div>
-      <div className="small muted">{open ? 'Some answers are suggested in pencil for you to decide.' : 'Every answer is marked by code.'}</div>
     </button>
   );
 }

@@ -1,0 +1,411 @@
+{
+ "recordedAt": "2026-11-15",
+ "model": "gemini-3.5-flash-lite",
+ "reads": {
+  "c01": {
+   "studentName": "Aanya K.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyl"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaperation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "0 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "They need light to make food."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water evaporates."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c02": {
+   "studentName": "Ben O.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "100",
+     "finalAnswer": "0 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "They need light to make food."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water evaporates."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    }
+   ]
+  },
+  "c03": {
+   "studentName": "Chloe M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "E",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "90 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Light helps them grow taller and greener."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The heat from the sun makes the water turn into vapour and go into the air."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c04": {
+   "studentName": "Dev M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chloroplast"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "0 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Plants need light to get food from the soil."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water evaporates."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "D",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c05": {
+   "studentName": "Elif Y.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "True"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chloroplast"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "90 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "So they can do photosynthesis."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "It condenses into the clouds because it is hot."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    }
+   ]
+  },
+  "c06": {
+   "studentName": "Farhan A.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "True"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "condensation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The heat from the sun makes the water turn into vapour and go into the air."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    }
+   ]
+  },
+  "c07": {
+   "studentName": "Grace L.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "True"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "They need light to make food."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water evaporates into water vapour because the Sun heats it up."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    }
+   ]
+  }
+ },
+ "suggestions": {
+  "c01:6": {
+   "missing": [
+    1
+   ],
+   "mark": "partial",
+   "reason": "The student mentioned making food but did not state that light provides energy for photosynthesis."
+  },
+  "c01:7": {
+   "missing": [
+    2
+   ],
+   "mark": "partial",
+   "reason": "The student correctly states that the water evaporates, but misses the key point about heat from the Sun providing energy."
+  },
+  "c02:6": {
+   "missing": [
+    1
+   ],
+   "mark": "partial",
+   "reason": "The student mentioned making food but failed to state that light provides energy for photosynthesis."
+  },
+  "c02:7": {
+   "missing": [
+    2
+   ],
+   "mark": "partial",
+   "reason": "The student correctly identified that the water evaporates, but missed the key point about the heat from the Sun providing energy."
+  },
+  "c03:6": {
+   "missing": [
+    1,
+    2
+   ],
+   "mark": "none",
+   "reason": "The student mentions growing taller and greener, but fails to state that light provides energy for photosynthesis or is used to make food."
+  },
+  "c03:7": {
+   "missing": [],
+   "mark": "full",
+   "reason": "The student successfully stated both that the water turns into vapor and that heat from the sun provides the energy."
+  },
+  "c04:6": {
+   "missing": [
+    1,
+    2
+   ],
+   "mark": "none",
+   "reason": "The student incorrectly claims that plants get food from the soil instead of stating that light provides energy for photosynthesis and food production."
+  },
+  "c04:7": {
+   "missing": [
+    2
+   ],
+   "mark": "partial",
+   "reason": "The student correctly states that the water evaporates, but misses the key point about heat from the Sun providing energy."
+  },
+  "c05:6": {
+   "missing": [
+    2
+   ],
+   "mark": "partial",
+   "reason": "The student correctly mentioned photosynthesis for energy, but failed to state that plants use it to make their own food."
+  },
+  "c05:7": {
+   "missing": [
+    1,
+    2
+   ],
+   "mark": "none",
+   "reason": "The student states that the water condenses instead of evaporates and incorrectly links heat to cloud formation rather than giving the water energy."
+  },
+  "c06:6": {
+   "missing": [],
+   "mark": "full",
+   "reason": "The student correctly covers both key points by mentioning the energy from light and the process of making food through photosynthesis."
+  },
+  "c06:7": {
+   "missing": [],
+   "mark": "full",
+   "reason": "The student correctly explains that the sun's heat causes the water to turn into vapour."
+  },
+  "c07:6": {
+   "missing": [
+    1
+   ],
+   "mark": "partial",
+   "reason": "The student mentioned that plants use light to make food, but omitted that light provides the energy for photosynthesis."
+  }
+ }
+}

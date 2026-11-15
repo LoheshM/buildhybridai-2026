@@ -17,12 +17,13 @@ export function sheetSchema(n: number) {
 export function shortSuggestSchema(n: number) {
   return {
     type: 'object',
+    // order matters: the mark first agreed best with human markers (probe prod2, docs/research/06)
     properties: {
-      missing: { type: 'array', items: { type: 'integer', enum: Array.from({ length: n }, (_, i) => i + 1) } },
       mark: { type: 'string', enum: ['full', 'partial', 'none'] },
+      missing: { type: 'array', items: { type: 'integer', enum: Array.from({ length: n }, (_, i) => i + 1) } },
       reason: { type: 'string' },
     },
-    required: ['missing', 'mark', 'reason'],
+    required: ['mark', 'missing', 'reason'],
   };
 }
 

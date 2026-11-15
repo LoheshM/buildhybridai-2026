@@ -273,7 +273,7 @@ input[type='checkbox'], input[type='radio'] { width: 18px; height: 18px; accent-
 .register td.total { text-align: right; font-weight: 700; white-space: nowrap; padding-right: 14px; border-left: 1px solid var(--rule-2); }
 .register tfoot td, .register tfoot th { position: sticky; bottom: 0; background: var(--sheet-2); font-size: .8125rem; color: var(--ink-2); text-align: center; border-top: 1px solid var(--rule-2); border-bottom: 0; }
 .register tbody tr:hover td, .register tbody tr:hover th { background-color: color-mix(in srgb, var(--sheet-2) 70%, transparent); }
-.register tr.fresh th.who { box-shadow: inset 4px 0 0 var(--hl); }
+.register tr.fresh th.who { background: var(--hl-soft); }
 
 /* question strip: right / some / none as one bar, with the counts */
 .qbar { display: flex; height: 10px; border-radius: 999px; overflow: hidden; background: var(--sheet-2); min-width: 120px; }
@@ -295,17 +295,17 @@ input[type='checkbox'], input[type='radio'] { width: 18px; height: 18px; accent-
 .demo .register-wrap { border: 0; border-radius: 0; max-height: none; }
 .demo-foot { padding: 10px 16px; border-top: 1px solid var(--rule); font-size: .8125rem; color: var(--ink-2); display: flex; gap: 14px; flex-wrap: wrap; }
 .doors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
-.door { position: relative; display: grid; grid-template-rows: auto 1fr auto; gap: 8px; text-align: left; padding: 20px 20px 16px 30px; border-radius: var(--radius-l); border: 1px solid var(--rule); background: var(--sheet); cursor: pointer; color: var(--ink); text-decoration: none; overflow: hidden; transition: border-color .15s, box-shadow .15s, transform .15s; min-height: 168px; }
-.door::before { content: ''; position: absolute; inset: 0 auto 0 0; width: 12px; background: var(--book, var(--cover)); }
-.door:hover { border-color: var(--rule-2); box-shadow: var(--shadow); text-decoration: none; }
-.door:active { transform: translateY(1px); }
-.door h3 { margin: 0; font-size: 1.25rem; }
+.door { position: relative; display: grid; text-align: left; padding: 18px 18px 46px; border-radius: 4px 10px 10px 4px; border: 0; background: var(--book, var(--cover)); cursor: pointer; color: var(--ink); text-decoration: none; min-height: 196px; box-shadow: var(--shadow); transition: transform .15s cubic-bezier(.2, .8, .2, 1), box-shadow .15s; }
+.door:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(23, 32, 58, .1), 0 14px 26px -12px rgba(23, 32, 58, .45); text-decoration: none; }
+.door:active { transform: translateY(0); }
+/* the white name label every school exercise book has on its cover */
+.door .label { background: var(--sheet); border-radius: 6px; padding: 14px 16px; display: grid; gap: 8px; align-content: start; box-shadow: 0 1px 0 rgba(0, 0, 0, .12); }
+.door .label h3 { margin: 0; font-size: 1.25rem; }
 .door .sub { color: var(--ink-2); font-size: .9375rem; }
 .door .types { display: flex; flex-wrap: wrap; gap: 6px; }
 .door.maths { --book: #1d4e9e; }
 .door.science { --book: #1f7a4f; }
 .door.english { --book: #a3233a; }
-.door.own { --book: var(--rule-2); background: transparent; border-style: dashed; }
 .where { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 48px; border-top: 1px solid var(--rule-2); }
 .where > div { padding: 18px 20px 0 0; }
 .where > div + div { padding-left: 20px; border-left: 1px solid var(--rule); }
@@ -314,9 +314,11 @@ input[type='checkbox'], input[type='radio'] { width: 18px; height: 18px; accent-
 
 /* ---------- classes ---------- */
 .classlist { display: grid; gap: 14px; }
-.classrow { display: grid; grid-template-columns: 12px minmax(0, 1fr); background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius-l); overflow: hidden; }
-.classrow > .spine { background: var(--book, var(--cover)); }
-.classrow > .body { padding: 16px 20px; min-width: 0; }
+.classrow { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius-l); padding: 16px 20px; }
+/* a small exercise-book cover: subject colour with its white label */
+.classrow > .spine { width: 44px; height: 56px; border-radius: 2px 6px 6px 2px; background: var(--book, var(--cover)); position: relative; box-shadow: 0 1px 2px rgba(23, 32, 58, .25); }
+.classrow > .spine::after { content: ''; position: absolute; left: 8px; right: 8px; top: 12px; height: 14px; border-radius: 2px; background: var(--sheet); }
+.classrow > .body { min-width: 0; }
 .quizline { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--rule); }
 .quizline:first-of-type { margin-top: 10px; }
 

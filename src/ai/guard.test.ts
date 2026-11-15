@@ -9,7 +9,7 @@ const g = globalThis as unknown as { LanguageModel?: unknown };
 describe('device gate (the SDK would silently use the cloud without it)', () => {
   beforeEach(() => { delete g.LanguageModel; });
   it('no LanguageModel API means unsupported, and the gate throws', async () => {
-    expect(await deviceState()).toBe('unsupported');
+    expect(await deviceState({ fresh: true })).toBe('unsupported');
     await expect(assertDeviceReady()).rejects.toThrow(/no on-device AI/);
   });
   it.each(['downloadable', 'downloading', 'unavailable'])('%s is refused', async (s) => {
@@ -18,7 +18,7 @@ describe('device gate (the SDK would silently use the cloud without it)', () => 
   });
   it('text works but images do not: the multimodal flag is off', async () => {
     g.LanguageModel = { availability: async (o: { expectedInputs: { type: string }[] }) => (o.expectedInputs.some((i) => i.type === 'image') ? 'unavailable' : 'available') };
-    expect(await deviceState()).toBe('no_image');
+    expect(await deviceState({ fresh: true })).toBe('no_image');
   });
   it('available passes', async () => {
     g.LanguageModel = { availability: async () => 'available' };
@@ -26,7 +26,7 @@ describe('device gate (the SDK would silently use the cloud without it)', () => 
   });
   it('a throwing availability() counts as unavailable', async () => {
     g.LanguageModel = { availability: async () => { throw new Error('NotSupportedError'); } };
-    expect(await deviceState()).toBe('unavailable');
+    expect(await deviceState({ fresh: true })).toBe('unavailable');
   });
 });
 
@@ -99,7 +99,7 @@ describe('a stuck model service never hangs the app', () => {
   it('availability() that never answers becomes not_responding within 8 s', async () => {
     (globalThis as unknown as { LanguageModel?: unknown }).LanguageModel = { availability: () => new Promise(() => undefined) };
     const t0 = Date.now();
-    expect(await deviceState()).toBe('not_responding');
+    expect(await deviceState({ fresh: true })).toBe('not_responding');
     expect(Date.now() - t0).toBeLessThan(9000);
     delete (globalThis as unknown as { LanguageModel?: unknown }).LanguageModel;
   }, 12000);

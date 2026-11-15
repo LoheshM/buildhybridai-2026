@@ -16,7 +16,17 @@ const TEXT_ONLY = { expectedInputs: [{ type: 'text', languages: ['en'] }], expec
 const withTimeout = <T,>(p: Promise<T>, ms: number): Promise<T | 'timeout'> =>
   Promise.race([p, new Promise<'timeout'>((r) => setTimeout(() => r('timeout'), ms))]);
 
-export async function deviceState(): Promise<DeviceState> {
+let negative: { s: DeviceState; at: number } | null = null;
+const NEGATIVE: DeviceState[] = ['unsupported', 'unavailable', 'no_image'];
+/** fresh: skip the 30-second cache of a negative answer (pupils' sheets always check afresh). */
+export async function deviceState(o: { fresh?: boolean } = {}): Promise<DeviceState> {
+  if (!o.fresh && negative && Date.now() - negative.at < 30_000) return negative.s;
+  const s = await probeDevice();
+  negative = NEGATIVE.includes(s) ? { s, at: Date.now() } : null;
+  return s;
+}
+
+async function probeDevice(): Promise<DeviceState> {
   const api = lm();
   if (!api || typeof api.availability !== 'function') return 'unsupported';
   try {
@@ -39,7 +49,7 @@ export class DeviceUnavailable extends Error {
 }
 
 export async function assertDeviceReady(): Promise<void> {
-  const s = await deviceState();
+  const s = await deviceState({ fresh: true });
   if (s !== 'available') throw new DeviceUnavailable(s);
 }
 
@@ -50,5 +60,5 @@ export const DEVICE_STATE_TEXT: Record<DeviceState, { title: string; body: strin
   no_image: { title: 'Image reading is switched off in this Chrome', body: 'Open chrome://flags/#prompt-api-for-gemini-nano-multimodal-input, set it to Enabled and restart Chrome. Until then, the sample class still works, and you can type answers in for your own class.' },
   unavailable: { title: "Gemini Nano can't run on this laptop", body: 'It needs Chrome on a laptop with 16 GB of memory (or a graphics card with more than 4 GB) and 22 GB of free disk. The sample class still works, and you can type answers in for your own class; marking happens here.' },
   not_responding: { title: 'The on-device model stopped responding', body: 'Reload the page (Ctrl+R) to restart it. Sheets read so far are saved; click Read the rest afterwards.' },
-  unsupported: { title: 'This browser has no on-device AI', body: 'On-device reading needs desktop Chrome 139 or newer. The sample class still works here, and you can type answers in for your own class; marking happens on this laptop.' },
+  unsupported: { title: 'This browser has no on-device AI', body: 'On-device reading needs a recent desktop Chrome on a laptop that can run Gemini Nano. The sample class still works here, and you can type answers in for your own class; marking happens on this laptop.' },
 };

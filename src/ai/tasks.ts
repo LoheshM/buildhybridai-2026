@@ -281,11 +281,18 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
     const err = classifyPlanError(e as Error);
     if (o.sample && recorded?.totals && !o.keepLocal) {
       ledger.addCall({ task: 'Reteach plan and parent notes', dataClass: 'totals', mode: 'recorded', where: 'recorded', ms: 0, ok: true, note: `Live AI unavailable (${err.message.slice(0, 80)}); showing the plan recorded on ${recorded.recordedAt}` });
-      return { response: recorded.totals, where: 'recorded', ms: 0, mode: 'recorded', payload: recorded.totalsPayload ?? totals, note: err.message };
+      return { response: recorded.totals, where: 'recorded', ms: 0, mode: 'recorded', payload: recorded.totalsPayload ?? totals, note: SHORT_REASON[err.kind] };
     }
     throw err;
   }
 }
+
+/** One phrase for the recorded-plan notice: "Live AI wasn't available (<reason>)". */
+export const SHORT_REASON: Record<PlanProblem, string> = {
+  limit: "this browser's share of free cloud requests is used up for now", offline: 'offline', quota: 'the free cloud AI is busy',
+  quota_day: "today's free cloud allowance is used up", blocked: 'Tickmark held the request back', timeout: 'the AI took too long',
+  device: 'no on-device AI here', other: 'the cloud refused the request', invalid: "the key couldn't be sent", disabled: 'cloud AI is switched off',
+};
 
 export function classifyPlanError(e: Error): PlanUnavailable {
   if (e instanceof PlanUnavailable) return e;

@@ -133,7 +133,8 @@ export function noteGroups(t: ClassTotals, compact = false): string[] {
   const count = new Map<string, number>();
   for (const q of t.questions) for (const [k, v] of Object.entries(q.mistakes)) if (k !== 'other' && (v === 'hidden' || (typeof v === 'number' && v > 0))) count.set(k, (count.get(k) ?? 0) + (typeof v === 'number' ? v : 1));
   const seen = [...count.entries()].sort((a, b) => b[1] - a[1]).map(([k]) => k);
-  return compact ? [...seen.slice(0, 1), 'secure', 'default'] : [...seen, 'other', 'secure', 'default'];
+  // at most 8 mistake groups (the most common): the rest share the "other" note
+  return compact ? [...seen.slice(0, 1), 'secure', 'default'] : [...seen.slice(0, 8), 'other', 'secure', 'default'];
 }
 
 export const WARMUP_PROMPT = 'Reply with the single word: ready';

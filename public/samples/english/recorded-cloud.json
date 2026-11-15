@@ -1,0 +1,1218 @@
+{
+ "recordedAt": "2026-11-15",
+ "model": "gemini-3.5-flash-lite",
+ "reads": {
+  "e01": {
+   "studentName": "Adaeze N.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "necesary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beginning"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "written"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "He wanted to get the paper boat back because the girl upstairs was about to cry."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The rain made the town quiet. Umbrellas bloomed like flowers along the pavement, red, yellow and black. A cat sat in a shop doorway, watching the drops with great suspicion."
+    }
+   ]
+  },
+  "e02": {
+   "studentName": "Bilal H.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "necessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "begining"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "written"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "D"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "The little girl was close to tears so he went to fetch her boat."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "It was a rainy day in my town. The roads were full of water and the cars splashed people. I stayed at home and read a book. In the afternoon the rain stopped and I went to play cricket with my friends."
+    }
+   ]
+  },
+  "e03": {
+   "studentName": "Charlotte E.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "nesessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "begining"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "writed"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Because the girl was sad."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The sky turned grey and heavy. Then the rain came down in sheets, so thick I could not see the shop across the road. Children ran out barefoot to sail paper boats while the old men sat under the bus stop shaking their heads."
+    }
+   ]
+  },
+  "e04": {
+   "studentName": "Daksh A.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "neccessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beginning"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "The little girl was close to tears so he went to fetch her boat."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The rain was falling very hard and the wind was blowing the trees and the electricity went off and we lit candles and my brother was scared of the thunder and then it stopped at night"
+    }
+   ]
+  },
+  "e05": {
+   "studentName": "Esha B.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "neccessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "begining"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "writed"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "He wanted to get the paper boat back because the girl upstairs was about to cry."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "Rainy days are good and bad. Good because it is cool. Bad because the roads flood. My school bus was late. We had a test. I got wet."
+    }
+   ]
+  },
+  "e06": {
+   "studentName": "Finn M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "necessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beginning"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "written"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "He wanted to get the paper boat back because the girl upstairs was about to cry."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "A rainy day in my town starts with the sound of thunder. Next the rain begins, slowly at first and then faster. Finally the streets empty and only the vegetable sellers stay, covering their carts with blue plastic."
+    }
+   ]
+  },
+  "e07": {
+   "studentName": "Gauri D.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "necessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "begining"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "gone",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "written"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "To get the boat."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "It rained. I was in school. The class was dark so the teacher put lights on. After school my shoes got wet on the way home and my mum was cross."
+    }
+   ]
+  },
+  "e08": {
+   "studentName": "Hamza S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "neccessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beginning"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "written"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "D"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Because the girl was sad."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "It was raining so we couldnt go out. We played carrom inside. Then the power went out. We ate dinner by candle light. It was fun."
+    }
+   ]
+  },
+  "e09": {
+   "studentName": "Isla C.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "neccessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "begining"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "gone"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "wrote",
+     "finalAnswer": "writed"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Because the girl was sad."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "Monsoon rain is heavy in my town. The drains overflow and the water comes up to our knees. Shops close early. But the air smells fresh and the hills behind the town disappear in the mist."
+    }
+   ]
+  },
+  "e10": {
+   "studentName": "Jiya S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "neccessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beggining"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "wrote"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "D"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "The little girl was close to tears so he went to fetch her boat."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "on rainy day the street is wet. there is lot of water. the buses are late and people are angry. i dont like rainy days because i cant go out"
+    }
+   ]
+  },
+  "e11": {
+   "studentName": "Karan M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "necessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "begining"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "goed"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "The little girl was close to tears so he went to fetch her boat."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "i like rain. its nice. the end."
+    }
+   ]
+  },
+  "e12": {
+   "studentName": "Lucia R.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "necessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beggining"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "wrote"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Because the girl was sad."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "Their was alot of rain yesterday. The road infront of my house was flooded and a car got stuck. Some men came and pushed it out. Everyone was soaking wet but they where laughing."
+    }
+   ]
+  },
+  "e13": {
+   "studentName": "Mihir K.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "neccessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beginning"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "written"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Because the girl was sad."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The rain drummed on the tin roofs like a hundred tiny drums. Water rushed down the gutters and the streets shone like glass. People hurried past with umbrellas, and the smell of wet earth filled the air. By evening the clouds cleared and a pale rainbow appeared over the market."
+    }
+   ]
+  },
+  "e14": {
+   "studentName": "Noor F.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "necessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beginning"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "wrote"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "The little girl was close to tears so he went to fetch her boat."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "When it rains in my town the whole place changes. The dusty roads turn to mud, the trees look bright green again and the street dogs hide under parked cars. Everything sounds different, softer somehow."
+    }
+   ]
+  },
+  "e15": {
+   "studentName": "Omkar P.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beginning"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "goed"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "written"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "The lane was a river and he wanted to swim."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The clouds were black. Then rain. Lots of rain. Water everywhere in the streets, in the shops, in my shoes."
+    }
+   ]
+  },
+  "e16": {
+   "studentName": "Pooja V.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "neccessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beggining"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "He wanted to get the paper boat back because the girl upstairs was about to cry."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "Rain fell all morning. The puddles grew bigger and the frogs started to croak loudly near the pond. My mother made hot pakoras and we watched the lightning from the window. It was the best kind of lazy day."
+    }
+   ]
+  },
+  "e17": {
+   "studentName": "Rafael S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "necesary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beginning"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "gone",
+     "finalAnswer": "went"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "written"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "To get the boat."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "Its raining. The weather is bad. I am bored. My phone is not working. I hate rain."
+    }
+   ]
+  },
+  "e18": {
+   "studentName": "Sneha J.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "nesessary"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "beginning"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "gone"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "written"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "He wanted to get the paper boat back because the girl upstairs was about to cry."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "In my town, rainy days mean chai and stories. My grandmother tells us about the great flood of her childhood while the rain hammers the windows. Outside, the street becomes a river and the frogs sing."
+    }
+   ]
+  }
+ },
+ "suggestions": {
+  "e01:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly mentioned both retrieving the paper boat and the girl being about to cry."
+  },
+  "e01:7": {
+   "l1": 2,
+   "l2": 1,
+   "l3": 2,
+   "reason": "The student provides lovely descriptive imagery and correct spelling and punctuation, but falls short of the task's length requirement with only three sentences."
+  },
+  "e02:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully stated both that Sam went to get the boat back and that the little girl was close to tears."
+  },
+  "e02:7": {
+   "l1": 2,
+   "l2": 2,
+   "l3": 2,
+   "reason": "The student successfully writes five sentences describing the rainy day with clear organization and correct spelling and punctuation."
+  },
+  "e03:6": {
+   "mark": "partial",
+   "missing": [
+    1
+   ],
+   "reason": "The student correctly identified that the girl was sad, but missed the detail about needing to get the paper boat back."
+  },
+  "e03:7": {
+   "l1": 3,
+   "l2": 2,
+   "l3": 2,
+   "reason": "The student successfully wrote a well-described, organized paragraph of three sentences with correct spelling and punctuation."
+  },
+  "e04:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully stated both that Sam went to get the boat back and that the little girl was close to tears."
+  },
+  "e04:7": {
+   "l1": 1,
+   "l2": 0,
+   "l3": 0,
+   "reason": "The student includes basic details about the rain, but the entire paragraph is a single run-on sentence lacking proper punctuation and organization."
+  },
+  "e05:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly identified both that Sam wanted to retrieve the paper boat and that he did so because the girl upstairs was about to cry."
+  },
+  "e05:7": {
+   "l1": 1,
+   "l2": 1,
+   "l3": 2,
+   "reason": "The student provides simple ideas about a rainy day with correct basic punctuation, but the sentences are too brief and lack strong descriptive detail."
+  },
+  "e06:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully included both the detail about retrieving the paper boat and the detail that the girl upstairs was about to cry."
+  },
+  "e06:7": {
+   "l1": 2,
+   "l2": 2,
+   "l3": 1,
+   "reason": "The student provides clear and descriptive ideas with good organization, but is slightly under the sentence count requirement and misses a comma after the transition word."
+  },
+  "e07:6": {
+   "mark": "partial",
+   "missing": [
+    2
+   ],
+   "reason": "The student correctly identified that Sam went into the water to get the boat, but missed the detail about the little girl upstairs being close to tears."
+  },
+  "e07:7": {
+   "l1": 1,
+   "l2": 1,
+   "l3": 2,
+   "reason": "The student meets the length requirement and uses correct basic punctuation, but the description of the rainy day is very minimal and poorly organised."
+  },
+  "e08:6": {
+   "mark": "partial",
+   "missing": [
+    1
+   ],
+   "reason": "The student identified that the girl was sad, which corresponds to the second point, but missed the detail about retrieving the paper boat."
+  },
+  "e08:7": {
+   "l1": 2,
+   "l2": 2,
+   "l3": 1,
+   "reason": "The student successfully describes a rainy day with clear organization and good ideas, but contains a missing apostrophe in couldnt."
+  },
+  "e09:6": {
+   "mark": "partial",
+   "missing": [
+    1
+   ],
+   "reason": "The student correctly identified that the girl was sad, but missed the key point that Sam went into the water to get the paper boat back."
+  },
+  "e09:7": {
+   "l1": 2,
+   "l2": 2,
+   "l3": 2,
+   "reason": "The paragraph effectively describes the rainy day with good organization and correct spelling and punctuation, although it is slightly short at four sentences."
+  },
+  "e10:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully included both the detail that the girl was close to tears and the reason to fetch her boat."
+  },
+  "e10:7": {
+   "l1": 1,
+   "l2": 1,
+   "l3": 0,
+   "reason": "The student provides simple ideas with basic description in four sentences, but lacks capitalization and punctuation throughout the paragraph."
+  },
+  "e11:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully stated both that the little girl was close to tears and that he went to get her boat back."
+  },
+  "e11:7": {
+   "l1": 0,
+   "l2": 0,
+   "l3": 0,
+   "reason": "The student failed to meet the length requirement of 4 to 6 sentences and lacked descriptive detail, proper capitalization, and correct punctuation."
+  },
+  "e12:6": {
+   "mark": "partial",
+   "missing": [
+    1
+   ],
+   "reason": "The student correctly identified that the girl was sad, but failed to mention that Sam wanted to get the paper boat back."
+  },
+  "e12:7": {
+   "l1": 2,
+   "l2": 2,
+   "l3": 1,
+   "reason": "The student provides clear and descriptive ideas with good flow and paragraph structure, but contains multiple common spelling and homophone errors like 'Their', 'alot', 'infront', and 'where'."
+  },
+  "e13:6": {
+   "mark": "partial",
+   "missing": [
+    1
+   ],
+   "reason": "The student correctly identified that the girl was sad, but missed the detail about retrieving the paper boat."
+  },
+  "e13:7": {
+   "l1": 3,
+   "l2": 2,
+   "l3": 2,
+   "reason": "The student provides vivid imagery across four well-organized sentences with accurate spelling and punctuation."
+  },
+  "e14:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully stated both that Sam went to get the boat back and that the little girl was close to tears."
+  },
+  "e14:7": {
+   "l1": 2,
+   "l2": 1,
+   "l3": 2,
+   "reason": "The student provides good sensory details and correct spelling, but the response is only three sentences long instead of the required four to six."
+  },
+  "e15:6": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student does not mention either of the key points regarding the paper boat or the upset little girl."
+  },
+  "e15:7": {
+   "l1": 1,
+   "l2": 1,
+   "l3": 1,
+   "reason": "The student attempts to describe a rainy day with some vivid imagery but falls short of the four-sentence minimum requirement."
+  },
+  "e16:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully stated both that Sam wanted to get the paper boat back and that the girl upstairs was about to cry."
+  },
+  "e16:7": {
+   "l1": 3,
+   "l2": 2,
+   "l3": 2,
+   "reason": "The student successfully writes four descriptive sentences that flow logically together with no spelling or punctuation errors."
+  },
+  "e17:6": {
+   "mark": "partial",
+   "missing": [
+    2
+   ],
+   "reason": "The student correctly identified that Sam wanted to get the boat back, but missed the detail about the little girl upstairs being close to tears."
+  },
+  "e17:7": {
+   "l1": 1,
+   "l2": 1,
+   "l3": 2,
+   "reason": "The student meets the sentence count and basic mechanics, but the ideas and paragraph organisation are extremely simple and repetitive."
+  },
+  "e18:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully stated both that Sam wanted to retrieve the paper boat and that the girl upstairs was about to cry."
+  },
+  "e18:7": {
+   "l1": 2,
+   "l2": 1,
+   "l3": 2,
+   "reason": "The student provides lovely descriptions but falls short of the four-to-six sentence length requirement."
+  }
+ },
+ "totals": {
+  "plan": {
+   "title": "Mastering Tricky Word Spellings",
+   "focus": "Correcting common double-letter spelling errors like necessary and beginning",
+   "minutes": 15,
+   "steps": [
+    {
+     "minutes": 3,
+     "teacher": "The teacher writes the word necessary on the board and highlights the single c and double s to show where students often misspell it.",
+     "students": "The students look at the highlighted letters and repeat the spelling out loud together."
+    },
+    {
+     "minutes": 4,
+     "teacher": "The teacher explains the rule of one coffee cup has one c and two s's for necessary, and a double n for beginning.",
+     "students": "The students copy the rule into their notebooks and underline the tricky double letters."
+    },
+    {
+     "minutes": 4,
+     "teacher": "The teacher writes misspelled words on the board and asks the class to spot the errors.",
+     "students": "The students raise their hands to identify the missing or extra double letters in the presented words."
+    },
+    {
+     "minutes": 4,
+     "teacher": "The teacher dictates two new challenge words and circulates the room to check student spelling.",
+     "students": "The students write the dictated words independently in their notebooks."
+    }
+   ],
+   "hingeQuestion": {
+    "question": "Which of these is the correct spelling: neccesary, necassary, or necessary?",
+    "answer": "necessary",
+    "ifWrong": "If students choose the wrong spelling, write the word again and have them count the c's and s's out loud."
+   },
+   "practice": {
+    "support": [
+     {
+      "question": "Spell the word for a requirement: neccessary / necessary",
+      "answer": "necessary"
+     },
+     {
+      "question": "Spell the word for starting something: beginning / begining",
+      "answer": "beginning"
+     },
+     {
+      "question": "Spell the word for a place with books: library / libary",
+      "answer": "library"
+     },
+     {
+      "question": "Spell the word for coming after: tomorrow / tommorrow",
+      "answer": "tomorrow"
+     }
+    ],
+    "core": [
+     {
+      "question": "Correct this spelling: occurence",
+      "answer": "occurrence"
+     },
+     {
+      "question": "Correct this spelling: seperate",
+      "answer": "separate"
+     },
+     {
+      "question": "Correct this spelling: defenite",
+      "answer": "definite"
+     },
+     {
+      "question": "Correct this spelling: untill",
+      "answer": "until"
+     }
+    ],
+    "stretch": [
+     {
+      "question": "Spell the word meaning independent: independent / independant",
+      "answer": "independent"
+     },
+     {
+      "question": "Spell the word meaning persistent: persevere / persevear",
+      "answer": "persevere"
+     },
+     {
+      "question": "Spell the word for a calendar item: schedule / skedule",
+      "answer": "schedule"
+     }
+    ]
+   }
+  },
+  "notes": [
+   {
+    "group": "spelling",
+    "language": "en",
+    "text": "Dear Parent, {{student}} scored {{score}} out of {{total}} on our recent English check. We noticed a few spelling errors with tricky words like necessary and beginning. Please help your child practice writing these words three times each night using flashcards to build confidence."
+   },
+   {
+    "group": "spelling",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया अंग्रेजी परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने देखा कि 'necessary' और 'beginning' जैसे कठिन शब्दों की वर्तनी में कुछ गलतियाँ हुईं। कृपया फ्लैशकार्ड की मदद से इन शब्दों को रोज रात तीन बार लिखने का अभ्यास करवाएं।"
+   },
+   {
+    "group": "spelling",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோருக்கு, {{student}} எங்கள் சமீபத்திய ஆங்கிலச் சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். necessary மற்றும் beginning போன்ற கடினமான வார்த்தைகளின் எழுத்துக்கூட்டல்களில் சில பிழைகள் இருந்தன. ஃப்ளாஷ் கார்டுகளைப் பயன்படுத்தி ஒவ்வொரு இரவும் இந்த வார்த்தைகளை மூன்று முறை எழுதிப் பயிற்சி செய்ய உதவுங்கள்."
+   },
+   {
+    "group": "wrong_term",
+    "language": "en",
+    "text": "Dear Parent, {{student}} scored {{score}} out of {{total}} on our recent English check. We noticed a few mix-ups with choosing the correct vocabulary words and verb forms. Please encourage your child to read a short story daily and talk about the correct action words used."
+   },
+   {
+    "group": "wrong_term",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया अंग्रेजी परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने देखा कि सही शब्दावली और क्रिया के रूपों को चुनने में कुछ भ्रम हुआ। कृपया अपने बच्चे को रोज़ एक छोटी कहानी पढ़ने और उसमें उपयोग किए गए सही शब्दों पर बात करने के लिए प्रेरित करें।"
+   },
+   {
+    "group": "wrong_term",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோருக்கு, {{student}} எங்கள் சமீபத்திய ஆங்கிலச் சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். சரியான சொற்கள் மற்றும் வினைச்சொற்களைத் தேர்ந்தெடுப்பதில் சில குழப்பங்கள் இருந்தன. உங்கள் குழந்தை প্রতিদিন ஒரு சிறிய கதையைப் படித்து, சரியான சொற்களைப் பற்றி விவாதிக்க ஊக்குவிக்கவும்."
+   },
+   {
+    "group": "other",
+    "language": "en",
+    "text": "Dear Parent, {{student}} scored {{score}} out of {{total}} on our recent English check. Some unexpected errors appeared that we are reviewing in class. Please have your child review their class notes and ask questions whenever something is unclear."
+   },
+   {
+    "group": "other",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया अंग्रेजी परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। कुछ अप्रत्याशित त्रुटियां सामने आईं जिनकी हम कक्षा में समीक्षा कर रहे हैं। कृपया अपने बच्चे से कहें कि वे अपने नोट्स दोहराएं और कुछ समझ न आने पर सवाल पूछें।"
+   },
+   {
+    "group": "other",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோருக்கு, {{student}} எங்கள் சமீபத்திய ஆங்கிலச் சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். வகுப்பில் நாங்கள் மீளாய்வு செய்யும் சில எதிர்பாராத பிழைகள் தோன்றின. உங்கள் குழந்தை தன் குறிப்புகளை மீளாய்வு செய்து, புரியாதபோது கேள்விகளைக் கேட்க ஊக்குவிக்கவும்."
+   },
+   {
+    "group": "secure",
+    "language": "en",
+    "text": "Dear Parent, {{student}} scored {{score}} out of {{total}} on our recent English check. Excellent work! {{student}} showed a strong understanding of spelling, vocabulary, and reading comprehension. Please encourage your child to keep reading interesting books at home."
+   },
+   {
+    "group": "secure",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया अंग्रेजी परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। बहुत बढ़िया काम! {{student}} ने वर्तनी, शब्दावली और समझ की अच्छी समझ दिखाई। कृपया अपने बच्चे को घर पर दिलचस्प किताबें पढ़ते रहने के लिए प्रेरित करें।"
+   },
+   {
+    "group": "secure",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோருக்கு, {{student}} எங்கள் சமீபத்திய ஆங்கிலச் சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். அருமையான வேலை! எழுத்துக்கூட்டு, சொற்களஞ்சியம் மற்றும் வாசிப்புத் திறன் ஆகியவற்றில் நல்ல புரிதலை வெளிப்படுத்தியுள்ளார். உங்கள் குழந்தை தொடர்ந்து சுவாரஸ்யமான புத்தகங்களை வாசிக்க ஊக்குவிக்கவும்."
+   },
+   {
+    "group": "default",
+    "language": "en",
+    "text": "Dear Parent, {{student}} scored {{score}} out of {{total}} on our recent English check. Results varied across different questions without one main pattern. Please review the returned paper together and practice a few English questions for ten minutes daily."
+   },
+   {
+    "group": "default",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया अंग्रेजी परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। परिणाम विभिन्न प्रश्नों में अलग-अलग रहे और कोई एक मुख्य पैटर्न नहीं दिखा। कृपया वापस मिले पेपर की एक साथ समीक्षा करें और रोज दस मिनट अंग्रेजी का अभ्यास करें।"
+   },
+   {
+    "group": "default",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோருக்கு, {{student}} எங்கள் சமீபத்திய ஆங்கிலச் சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். முடிவுகள் வெவ்வேறு கேள்விகளில் மாறி மாறி இருந்தன, ஒரு குறிப்பிட்ட பிழை இல்லை. திரும்பப் பெற்ற தாளை ஒன்றாகப் பார்த்து, தினமும் பத்து நிமிடங்கள் ஆங்கிலப் பயிற்சி செய்யுங்கள்."
+   }
+  ]
+ },
+ "totalsPayload": {
+  "v": 2,
+  "subject": "english",
+  "grade_band": "7-9",
+  "k": 3,
+  "questions": [
+   {
+    "q": 1,
+    "type": "word",
+    "question": "Write the correct spelling of 'neccessary'.",
+    "answer": "necessary",
+    "right": 6,
+    "partial": 0,
+    "wrong": 11,
+    "mistakes": {
+     "spelling": 11
+    }
+   },
+   {
+    "q": 2,
+    "type": "word",
+    "question": "Write the correct spelling of 'begining'.",
+    "answer": "beginning",
+    "right": 9,
+    "partial": 0,
+    "wrong": 9,
+    "mistakes": {
+     "spelling": 9
+    }
+   },
+   {
+    "q": 3,
+    "type": "word",
+    "question": "Yesterday we ... (go) to the market.",
+    "answer": "went",
+    "right": 13,
+    "partial": 0,
+    "wrong": 4,
+    "mistakes": {
+     "wrong_term": 4
+    }
+   },
+   {
+    "q": 4,
+    "type": "word",
+    "question": "She has ... (write) three letters.",
+    "answer": "written",
+    "right": 9,
+    "partial": 0,
+    "wrong": 6,
+    "mistakes": {
+     "wrong_term": 6
+    }
+   },
+   {
+    "q": 5,
+    "type": "choice",
+    "question": "In the extract, 'bobbed' means: A) sank B) floated up and down C) flew D) broke",
+    "answer": "B",
+    "right": 11,
+    "partial": 0,
+    "wrong": 5,
+    "mistakes": {},
+    "wrong_options": {
+     "D": "hidden",
+     "A": "hidden"
+    }
+   },
+   {
+    "q": 6,
+    "type": "short",
+    "question": "Why did Sam wade into the water? Give two details from the extract.",
+    "answer": "",
+    "right": 10,
+    "partial": 7,
+    "wrong": "hidden",
+    "mistakes": {},
+    "key_points": [
+     "to get the paper boat back",
+     "the little girl upstairs was close to tears (it was her boat)"
+    ]
+   },
+   {
+    "q": 7,
+    "type": "passage",
+    "question": "Describe a rainy day in your town in 4 to 6 sentences.",
+    "answer": "",
+    "right": 7,
+    "partial": 10,
+    "wrong": "hidden",
+    "mistakes": {},
+    "rubric": [
+     "Ideas and description (3)",
+     "Organisation (2)",
+     "Spelling and punctuation (2)"
+    ]
+   }
+  ],
+  "note_languages": [
+   "en",
+   "hi",
+   "ta"
+  ]
+ },
+ "totalsRecordedAt": "2026-11-15",
+ "cloudAccuracy": {
+  "exactReads": 90,
+  "exactTotal": 90,
+  "suggestions": 36,
+  "agree": 26,
+  "within1": 30
+ }
+}

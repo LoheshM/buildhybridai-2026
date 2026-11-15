@@ -28,7 +28,7 @@
     {
      "q": 5,
      "crossedOutText": "",
-     "finalAnswer": "0 Â°C"
+     "finalAnswer": "0 °C"
     },
     {
      "q": 6,
@@ -73,7 +73,7 @@
     {
      "q": 5,
      "crossedOutText": "100",
-     "finalAnswer": "0 Â°C"
+     "finalAnswer": "0 C"
     },
     {
      "q": 6,
@@ -97,7 +97,7 @@
    "answers": [
     {
      "q": 1,
-     "crossedOutText": "E",
+     "crossedOutText": "C",
      "finalAnswer": "B"
     },
     {
@@ -118,7 +118,7 @@
     {
      "q": 5,
      "crossedOutText": "",
-     "finalAnswer": "90 Â°C"
+     "finalAnswer": "90 °C"
     },
     {
      "q": 6,
@@ -163,7 +163,7 @@
     {
      "q": 5,
      "crossedOutText": "",
-     "finalAnswer": "0 Â°C"
+     "finalAnswer": "0 °C"
     },
     {
      "q": 6,
@@ -208,7 +208,7 @@
     {
      "q": 5,
      "crossedOutText": "",
-     "finalAnswer": "90 Â°C"
+     "finalAnswer": "90 °C"
     },
     {
      "q": 6,
@@ -478,12 +478,597 @@
     {
      "q": 5,
      "crossedOutText": "",
-     "finalAnswer": "100 oC"
+     "finalAnswer": "100 °C"
     },
     {
      "q": 6,
      "crossedOutText": "",
      "finalAnswer": "Light helps them grow taller and greener."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The heat from the sun makes the water turn into vapour and go into the air."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    }
+   ]
+  },
+  "c12": {
+   "studentName": "Lakshmi b.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "condensation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Light helps them grow taller and greener."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The sun dries it."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c13": {
+   "studentName": "Mateo R.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "True"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Light helps them grow taller and greener."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water evaporates."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c14": {
+   "studentName": "Nandini R.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water evaporates into water vapour because the Sun heats it up."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c15": {
+   "studentName": "Oscar B.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "melting"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Light gives plants energy for photosynthesis so they can make glucose."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water evaporates into water vapour because the Sun heats it up."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c16": {
+   "studentName": "Priya N.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "True"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "condensation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water goes away."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c17": {
+   "studentName": "Qasim R.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water evaporates into water vapour because the Sun heats it up."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c18": {
+   "studentName": "Rhea S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water soaks into the ground."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c19": {
+   "studentName": "Sipho D.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaperation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Plants need light to get food from the soil."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water evaporates into water vapour because the Sun heats it up."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c20": {
+   "studentName": "Tanvi S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "A",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaperation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Light helps them grow taller and greener."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water evaporates."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c21": {
+   "studentName": "Uma P.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "It condenses into the clouds because it is hot."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "A"
+    }
+   ]
+  },
+  "c22": {
+   "studentName": "Vikram B.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyl"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Plants need light to get food from the soil."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The heat from the sun makes the water turn into vapour and go into the air."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c23": {
+   "studentName": "Wen Z.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "True"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chlorophyll"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "evaporation"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "They need light to make food."
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "The water goes away."
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "C"
+    }
+   ]
+  },
+  "c24": {
+   "studentName": "Yusuf D.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "B"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "False"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "chloroplast"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "100 °C"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "Plants need light to get food from the soil."
     },
     {
      "q": 7,
@@ -504,14 +1089,14 @@
    "missing": [
     1
    ],
-   "reason": "The student correctly identified that plants make food, but omitted the key point about light providing energy for photosynthesis."
+   "reason": "The student mentioned that plants need light to make food, which matches key point 2, but omitted key point 1 regarding photosynthesis."
   },
   "c01:7": {
    "mark": "partial",
    "missing": [
     2
    ],
-   "reason": "The student correctly identified that the water evaporates, but missed the point about heat from the Sun giving it energy."
+   "reason": "The student correctly stated that the water evaporates, but did not mention the heat or energy from the Sun."
   },
   "c02:6": {
    "mark": "partial",
@@ -525,7 +1110,7 @@
    "missing": [
     2
    ],
-   "reason": "The student correctly stated that the water evaporates, but missed the point about heat from the Sun giving it energy."
+   "reason": "The student correctly identified that the water evaporates, but missed the point about heat from the Sun giving it energy."
   },
   "c03:6": {
    "mark": "none",
@@ -533,12 +1118,12 @@
     1,
     2
    ],
-   "reason": "The student mentions growing taller and greener, but does not state that light provides energy for photosynthesis or is used to make food."
+   "reason": "The student mentions growing taller and greener, but does not mention photosynthesis or making food."
   },
   "c03:7": {
    "mark": "full",
    "missing": [],
-   "reason": "The student correctly explains that the sun's heat causes the water to turn into vapour."
+   "reason": "The student correctly states that the heat from the sun turns the water into vapour in the air, covering both key points."
   },
   "c04:6": {
    "mark": "none",
@@ -546,21 +1131,21 @@
     1,
     2
    ],
-   "reason": "The student incorrectly claims that plants get food from the soil instead of using light to make it through photosynthesis."
+   "reason": "The student's answer is incorrect because plants do not get food from the soil using light."
   },
   "c04:7": {
    "mark": "partial",
    "missing": [
     2
    ],
-   "reason": "The student correctly identified that the water evaporates, but missed mentioning the heat or energy from the Sun."
+   "reason": "The student correctly identified that the water evaporates, but missed the point about heat from the Sun providing energy."
   },
   "c05:6": {
    "mark": "partial",
    "missing": [
     2
    ],
-   "reason": "The student mentioned photosynthesis, but did not state that plants use it to make their own food."
+   "reason": "The student correctly identified that plants need light for photosynthesis, but missed that they use it to make their own food."
   },
   "c05:7": {
    "mark": "none",
@@ -568,7 +1153,7 @@
     1,
     2
    ],
-   "reason": "The student states that the water condenses instead of evaporates and incorrectly links heat to condensation rather than vaporization."
+   "reason": "The student states that the water condenses instead of evaporates, and gets the direction of the process wrong."
   },
   "c06:6": {
    "mark": "full",
@@ -578,19 +1163,19 @@
   "c06:7": {
    "mark": "full",
    "missing": [],
-   "reason": "The student correctly explains both that heat from the sun provides energy and that the water turns into vapor and goes into the air."
+   "reason": "The student correctly explains that heat from the sun causes the water to turn into vapor and enter the air, covering both key points."
   },
   "c07:6": {
    "mark": "partial",
    "missing": [
     1
    ],
-   "reason": "The student correctly stated that plants use light to make food, but missed the key point that light provides energy for photosynthesis."
+   "reason": "The student correctly identified that plants need light to make food, but missed the key point that light provides the energy for photosynthesis."
   },
   "c07:7": {
    "mark": "full",
    "missing": [],
-   "reason": "The student correctly states both that the water evaporates into water vapour and that the Sun heats it up."
+   "reason": "The student correctly states that water evaporates into water vapour and that the Sun provides the heat."
   },
   "c08:6": {
    "mark": "none",
@@ -598,7 +1183,7 @@
     1,
     2
    ],
-   "reason": "The student mentions growing taller and greener, which does not address photosynthesis or making food."
+   "reason": "The student mentions growing taller and greener instead of explaining photosynthesis or food production."
   },
   "c08:7": {
    "mark": "none",
@@ -606,7 +1191,7 @@
     1,
     2
    ],
-   "reason": "The student states that the water soaks into the ground, which misses both evaporation and energy from the Sun."
+   "reason": "The student states that the water soaks into the ground instead of evaporating due to heat from the Sun."
   },
   "c09:6": {
    "mark": "none",
@@ -614,17 +1199,17 @@
     1,
     2
    ],
-   "reason": "The student incorrectly claims plants get food from the soil instead of using light for photosynthesis and making their own food."
+   "reason": "The student incorrectly claims that plants get food from the soil instead of using light for photosynthesis and making their own food."
   },
   "c09:7": {
    "mark": "full",
    "missing": [],
-   "reason": "The student correctly identifies that the heat from the sun turns the water into vapour and goes into the air, covering both key points."
+   "reason": "The student correctly identifies both that the heat from the sun provides energy and that the water turns into vapor."
   },
   "c10:6": {
    "mark": "full",
    "missing": [],
-   "reason": "The student correctly mentioned both that light provides energy for photosynthesis and that it is used to make food."
+   "reason": "The student successfully mentioned that plants use energy from light for photosynthesis to make their own food, covering both key points."
   },
   "c10:7": {
    "mark": "none",
@@ -632,7 +1217,7 @@
     1,
     2
    ],
-   "reason": "The student states that the water soaks into the ground, which misses both key points about evaporation and energy from the Sun."
+   "reason": "The student states that the water soaks into the ground, which does not address evaporation or heat from the Sun."
   },
   "c11:6": {
    "mark": "none",
@@ -640,7 +1225,481 @@
     1,
     2
    ],
-   "reason": "The student mentions growing taller and greener instead of explaining photosynthesis or food production."
+   "reason": "The student mentions growing taller and greener, which does not state the energy for photosynthesis or making food."
+  },
+  "c11:7": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly explains that heat from the sun causes the water to turn into vapor and enter the air, covering both key points."
+  },
+  "c12:6": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student mentions growing taller and greener instead of mentioning photosynthesis or food production."
+  },
+  "c12:7": {
+   "mark": "partial",
+   "missing": [
+    1
+   ],
+   "reason": "The student mentions the sun's effect but fails to explain that the water evaporates into water vapour."
+  },
+  "c13:6": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student mentions growing taller and greener, but does not mention photosynthesis or making food."
+  },
+  "c13:7": {
+   "mark": "partial",
+   "missing": [
+    2
+   ],
+   "reason": "The student correctly identified that the water evaporates, but missed the point about heat from the Sun providing energy."
+  },
+  "c14:7": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly explains both that the water evaporates into water vapour and that the Sun provides the heat for this process."
+  },
+  "c15:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully stated both that light provides energy for photosynthesis and that it is used to make glucose."
+  },
+  "c15:7": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly explains both that the water evaporates into water vapour and that the Sun heats it up."
+  },
+  "c16:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully mentioned that plants use energy from light for photosynthesis and to make their own food, covering both key points."
+  },
+  "c16:7": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student only states that the water goes away without mentioning evaporation or heat from the Sun."
+  },
+  "c17:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly covers both that light provides energy for photosynthesis and that this is used to make their own food."
+  },
+  "c17:7": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly explains both that the water evaporates into water vapour and that the Sun heats it up."
+  },
+  "c18:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student successfully mentioned that plants use energy from light for photosynthesis to make their own food."
+  },
+  "c18:7": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student says the water soaks into the ground instead of mentioning evaporation driven by heat from the Sun."
+  },
+  "c19:6": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student claims plants get food from the soil instead of making it through photosynthesis using light."
+  },
+  "c19:7": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly identifies both that the water evaporates into water vapour and that the Sun heats it up to provide the necessary energy."
+  },
+  "c20:6": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student mentions growing taller and greener, which does not address photosynthesis or making food."
+  },
+  "c20:7": {
+   "mark": "partial",
+   "missing": [
+    2
+   ],
+   "reason": "The student correctly stated that the water evaporates, but did not mention the heat or energy from the Sun."
+  },
+  "c21:6": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly mentioned both that light provides energy for photosynthesis and that it is used to make food."
+  },
+  "c21:7": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student incorrectly states that the water condenses instead of evaporates and mentions the heat causes condensation rather than giving energy to the water."
+  },
+  "c22:6": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student incorrectly claims that plants get food from the soil instead of using light to make it through photosynthesis."
+  },
+  "c22:7": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly explains that heat from the sun causes the water to turn into vapor and enter the air, covering both key points."
+  },
+  "c23:6": {
+   "mark": "partial",
+   "missing": [
+    1
+   ],
+   "reason": "The student correctly identified that plants need light to make food, but missed the specific mention of energy for photosynthesis."
+  },
+  "c23:7": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student only states that the water goes away without mentioning evaporation or the Sun's heat."
+  },
+  "c24:6": {
+   "mark": "none",
+   "missing": [
+    1,
+    2
+   ],
+   "reason": "The student incorrectly states that plants get food from the soil instead of using light for photosynthesis."
+  },
+  "c24:7": {
+   "mark": "full",
+   "missing": [],
+   "reason": "The student correctly identified that heat from the sun causes the water to turn into vapor and go into the air, covering both required points."
   }
+ },
+ "totals": {
+  "plan": {
+   "title": "Plant Nutrition: Why Plants Need Light",
+   "focus": "Explaining that light provides the energy for photosynthesis so plants can make their own food.",
+   "minutes": 15,
+   "steps": [
+    {
+     "minutes": 3,
+     "teacher": "The teacher explains that plants do not get food from the soil, but instead make their own food inside their leaves using light as an energy source.",
+     "students": "Students listen and write down the key idea that light supplies the energy for plant food production."
+    },
+    {
+     "minutes": 4,
+     "teacher": "The teacher demonstrates how light acts like an energy fuel by showing a solar-powered toy and asks the class what would happen if the light source is removed.",
+     "students": "Students discuss in pairs and conclude that without light energy, the process stops entirely."
+    },
+    {
+     "minutes": 4,
+     "teacher": "The teacher writes the two essential parts of the answer on the board: first, light gives the energy for photosynthesis, and second, plants use it to make glucose.",
+     "students": "Students copy the two bullet points into their notebooks and underline the words energy and photosynthesis."
+    },
+    {
+     "minutes": 4,
+     "teacher": "The teacher asks the students to turn to a partner and explain both why plants need light and what they make using it.",
+     "students": "Students take turns explaining the two main points to their partner in their own words."
+    }
+   ],
+   "hingeQuestion": {
+    "question": "Which of these best explains why plants need sunlight to survive? A) Sunlight warms up the leaves so they do not freeze. B) Sunlight provides the energy needed to make food. C) Sunlight gives the plant water through the air. D) Sunlight helps the roots grow deeper into the soil.",
+    "answer": "B",
+    "ifWrong": "If students choose A, C, or D, review that light is specifically used as an energy source for making food, not for warmth, water delivery, or root growth."
+   },
+   "practice": {
+    "support": [
+     {
+      "question": "Fill in the blank: Plants need light to get ______ for making food.",
+      "answer": "energy"
+     },
+     {
+      "question": "True or false: Plants make their food using light.",
+      "answer": "true"
+     },
+     {
+      "question": "What do plants create using light energy?",
+      "answer": "their own food"
+     },
+     {
+      "question": "Where does the energy for photosynthesis come from?",
+      "answer": "light"
+     }
+    ],
+    "core": [
+     {
+      "question": "State one reason why green plants need sunlight.",
+      "answer": "Light gives the energy for photosynthesis."
+     },
+     {
+      "question": "What do plants use light energy to do?",
+      "answer": "Make their own food or glucose."
+     },
+     {
+      "question": "Complete the sentence: Light provides the ______ for plants to make food.",
+      "answer": "energy"
+     },
+     {
+      "question": "Why would a plant placed in a dark cupboard stop growing?",
+      "answer": "It lacks the light energy needed to make food."
+     }
+    ],
+    "stretch": [
+     {
+      "question": "Explain fully why plants cannot survive in total darkness.",
+      "answer": "They cannot get the energy required to make their own food."
+     },
+     {
+      "question": "Describe the role of light in plant survival.",
+      "answer": "Light provides the energy for photosynthesis, allowing plants to produce glucose."
+     },
+     {
+      "question": "Explain what happens to a plant's food production if its leaves are kept in the dark.",
+      "answer": "Food production stops because light energy is missing."
+     }
+    ]
+   }
+  },
+  "notes": [
+   {
+    "group": "missing_point_1",
+    "language": "en",
+    "text": "Hello, parent of {{student}}. In our recent science check, {{student}} scored {{score}} out of {{total}}. They missed stating the first key point about why plants need light. At home, you can ask them to explain where plants get their energy from and discuss how sunlight acts like fuel for plants."
+   },
+   {
+    "group": "missing_point_1",
+    "language": "hi",
+    "text": "{{student}} के माता-पिता को नमस्कार। हमारे हालिया विज्ञान चेक में, {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। वे यह नहीं बता पाए कि पौधों को रोशनी की आवश्यकता क्यों होती है। घर पर, आप उनसे पूछ सकते हैं कि पौधे अपनी ऊर्जा कहाँ से प्राप्त करते हैं।"
+   },
+   {
+    "group": "missing_point_1",
+    "language": "ta",
+    "text": "{{student}} இன் பெற்றோருக்கு வணக்கம். எங்கள் சமீபத்திய அறிவியல் சோதனையில், {{student}} {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். தாவரங்களுக்கு ஏன் ஒளி தேவை என்பதற்கான முதல் முக்கிய குறிப்பை அவர்கள் விவரிக்கவில்லை."
+   },
+   {
+    "group": "missing_point_2",
+    "language": "en",
+    "text": "Hello, parent of {{student}}. In our science check, {{student}} scored {{score}} out of {{total}}. They missed explaining the second key point about what plants produce with light. Home activity: ask them what plants make using light energy and check their answers together."
+   },
+   {
+    "group": "missing_point_2",
+    "language": "hi",
+    "text": "{{student}} के माता-पिता को नमस्कार। हमारे विज्ञान चेक में, {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। वे यह नहीं बता पाए कि पौधे प्रकाश का उपयोग करके क्या बनाते हैं। घर की गतिविधि: उनसे पूछें कि पौधे प्रकाश ऊर्जा का उपयोग करके क्या बनाते हैं।"
+   },
+   {
+    "group": "missing_point_2",
+    "language": "ta",
+    "text": "{{student}} இன் பெற்றோருக்கு வணக்கம். எங்கள் அறிவியல் சோதனையில், {{student}} {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். ஒளி ஆற்றலைப் பயன்படுத்தி தாவரங்கள் என்ன உருவாக்குகின்றன என்பதை அவர்கள் விளக்கவில்லை."
+   },
+   {
+    "group": "wrong_term",
+    "language": "en",
+    "text": "Hello, parent of {{student}}. In our science check, {{student}} scored {{score}} out of {{total}}. They used a different scientific term than expected. Home activity: practice key vocabulary words like chlorophyll and evaporation together using flashcards."
+   },
+   {
+    "group": "wrong_term",
+    "language": "hi",
+    "text": "{{student}} के माता-पिता को नमस्कार। हमारे विज्ञान चेक में, {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। उन्होंने अपेक्षित वैज्ञानिक शब्द के बजाय किसी अन्य शब्द का उपयोग किया। घर पर फ्लैशकार्ड की मदद से मुख्य शब्दावली का अभ्यास करें।"
+   },
+   {
+    "group": "wrong_term",
+    "language": "ta",
+    "text": "{{student}} இன் பெற்றோருக்கு வணக்கம். எங்கள் அறிவியல் சோதனையில், {{student}} {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். அவர்கள் சரியான அறிவியல் சொல்லைப் பயன்படுத்தவில்லை. ஃபிளாஷ் கார்டுகளைப் பயன்படுத்தி முக்கிய சொற்களைப் பயிற்சி செய்யுங்கள்."
+   },
+   {
+    "group": "other",
+    "language": "en",
+    "text": "Hello, parent of {{student}}. In our science check, {{student}} scored {{score}} out of {{total}}. Some answers were unclear or unexplained. Home activity: review the recent science topics together and encourage them to write out full explanations."
+   },
+   {
+    "group": "other",
+    "language": "hi",
+    "text": "{{student}} के माता-पिता को नमस्कार। हमारे विज्ञान चेक में, {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए। कुछ उत्तर स्पष्ट नहीं थे। घर पर हाल के विज्ञान विषयों की समीक्षा करें और पूरी व्याख्या लिखने के लिए कहें।"
+   },
+   {
+    "group": "other",
+    "language": "ta",
+    "text": "{{student}} இன் பெற்றோருக்கு வணக்கம். எங்கள் அறிவியல் சோதனையில், {{student}} {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். சில பதில்கள் தெளிவாக இல்லை. சமீபத்திய அறிவியல் தலைப்புகளை ஒன்றாக மறுஆய்வு செய்யுங்கள்."
+   },
+   {
+    "group": "secure",
+    "language": "en",
+    "text": "Hello, parent of {{student}}. Fantastic work! In our science check, {{student}} scored {{score}} out of {{total}} and did very well. Home activity: ask them to explain photosynthesis to a family member to reinforce their strong understanding."
+   },
+   {
+    "group": "secure",
+    "language": "hi",
+    "text": "{{student}} के माता-पिता को नमस्कार। शानदार काम! हमारे विज्ञान चेक में, {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए और बहुत अच्छा प्रदर्शन किया। घर पर परिवार के किसी सदस्य को प्रकाश संश्लेषण समझाने के लिए कहें।"
+   },
+   {
+    "group": "secure",
+    "language": "ta",
+    "text": "{{student}} இன் பெற்றோருக்கு வணக்கம். அருமையான வேலை! எங்கள் அறிவியல் சோதனையில், {{student}} {{total}} மதிப்பெண்களுக்கு {{score}} பெற்று நன்றாகச் செய்துள்ளார். குடும்ப உறுப்பினர் ஒருவருக்கு ஒளிச்சேர்க்கையை விளக்கச் சொல்லுங்கள்."
+   },
+   {
+    "group": "default",
+    "language": "en",
+    "text": "Hello, parent of {{student}}. In our science check, {{student}} scored {{score}} out of {{total}} with mixed results. Home activity: look over the returned quiz together and discuss the questions they found tricky."
+   },
+   {
+    "group": "default",
+    "language": "hi",
+    "text": "{{student}} के माता-पिता को नमस्कार। हमारे विज्ञान चेक में, {{student}} ने {{total}} में से {{score}} अंक प्राप्त किए और मिले-जुले परिणाम रहे। घर पर लौटाई गई क्विज़ को साथ मिलकर देखें और कठिन प्रश्नों पर चर्चा करें।"
+   },
+   {
+    "group": "default",
+    "language": "ta",
+    "text": "{{student}} இன் பெற்றோருக்கு வணக்கம். எங்கள் அறிவியல் சோதனையில், {{student}} {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். திரும்பப் பெற்ற வினாடி வினாவை ஒன்றாகப் பார்த்து கடினமான கேள்விகளைப் பற்றி விவாதிக்கவும்."
+   }
+  ]
+ },
+ "totalsPayload": {
+  "v": 2,
+  "subject": "science",
+  "grade_band": "7-9",
+  "k": 3,
+  "questions": [
+   {
+    "q": 1,
+    "type": "choice",
+    "question": "Which gas do plants take in to make food? A) oxygen B) carbon dioxide C) nitrogen D) hydrogen",
+    "answer": "B",
+    "right": 14,
+    "partial": 0,
+    "wrong": 9,
+    "mistakes": {},
+    "wrong_options": {
+     "A": 9
+    }
+   },
+   {
+    "q": 2,
+    "type": "choice",
+    "question": "True or false: plants get their food from the soil.",
+    "answer": "false",
+    "right": 14,
+    "partial": 0,
+    "wrong": 9,
+    "mistakes": {},
+    "wrong_options": {
+     "true": 9
+    }
+   },
+   {
+    "q": 3,
+    "type": "word",
+    "question": "The green substance in leaves that traps light is called ...",
+    "answer": "chlorophyll",
+    "right": 18,
+    "partial": 0,
+    "wrong": 3,
+    "mistakes": {
+     "wrong_term": 3
+    }
+   },
+   {
+    "q": 4,
+    "type": "word",
+    "question": "Water turning into water vapour is called ...",
+    "answer": "evaporation / evaporating",
+    "right": 19,
+    "partial": 0,
+    "wrong": 4,
+    "mistakes": {
+     "wrong_term": 4
+    }
+   },
+   {
+    "q": 5,
+    "type": "number",
+    "question": "",
+    "answer": "100 °C",
+    "right": 14,
+    "partial": "hidden",
+    "wrong": 6,
+    "mistakes": {}
+   },
+   {
+    "q": 6,
+    "type": "short",
+    "question": "Why do plants need light?",
+    "answer": "",
+    "right": 7,
+    "partial": 5,
+    "wrong": 11,
+    "mistakes": {
+     "missing_point_1": 15,
+     "missing_point_2": 12
+    },
+    "key_points": [
+     "light gives the energy for photosynthesis",
+     "plants use it to make their own food (glucose)"
+    ]
+   },
+   {
+    "q": 7,
+    "type": "short",
+    "question": "A puddle disappears on a sunny day. Explain why.",
+    "answer": "",
+    "right": 11,
+    "partial": 8,
+    "wrong": 5,
+    "mistakes": {
+     "missing_point_2": 10,
+     "missing_point_1": 8
+    },
+    "key_points": [
+     "the water evaporates (turns into water vapour)",
+     "heat from the Sun gives it the energy (makes it faster)"
+    ]
+   },
+   {
+    "q": 8,
+    "type": "choice",
+    "question": "Which part of a plant takes in water? A) leaves B) flower C) roots D) stem",
+    "answer": "C",
+    "right": 16,
+    "partial": 0,
+    "wrong": 7,
+    "mistakes": {},
+    "wrong_options": {
+     "A": 7
+    }
+   }
+  ],
+  "note_languages": [
+   "en",
+   "hi",
+   "ta"
+  ]
+ },
+ "totalsRecordedAt": "2026-11-15",
+ "cloudAccuracy": {
+  "exactReads": 143,
+  "exactTotal": 144,
+  "suggestions": 47,
+  "agree": 45,
+  "within1": 47
  }
 }

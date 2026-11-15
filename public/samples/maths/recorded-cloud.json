@@ -1,0 +1,2043 @@
+{
+ "recordedAt": "2026-11-15",
+ "model": "gemini-3.5-flash-lite",
+ "reads": {
+  "m01": {
+   "studentName": "Aarav S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "10/12"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "1200"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "3.5"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "350 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m02": {
+   "studentName": "Meera K.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "4/6",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "5.33"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": ".35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "2x = 8"
+    }
+   ]
+  },
+  "m03": {
+   "studentName": "Rohan D.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "4/9"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "3/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "9/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "2x = 8",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m04": {
+   "studentName": "Ananya I.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "8.5"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "3.5"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m05": {
+   "studentName": "Kabir S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "7/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "3/12"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m06": {
+   "studentName": "Diya M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "10/12"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "-5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "13/12"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "9/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.31"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12.00"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "3.5"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m07": {
+   "studentName": "Arjun R.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "3.5"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m08": {
+   "studentName": "Ishita R.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "10/12"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "5.33"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 7"
+    }
+   ]
+  },
+  "m09": {
+   "studentName": "Vihaan J.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "5/12",
+     "finalAnswer": "7/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.31"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "3.5"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m10": {
+   "studentName": "Saanvi N.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "10/12"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "6/4"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "11/4",
+     "finalAnswer": "2 2/8"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "8.5"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": ".35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "35 mm",
+     "finalAnswer": "35"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 7"
+    }
+   ]
+  },
+  "m11": {
+   "studentName": "Aditya K.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/9"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "4/9",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "0.86",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 7"
+    }
+   ]
+  },
+  "m12": {
+   "studentName": "Myra F.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "2/1"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "4/9"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "3/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "9/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.31"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m13": {
+   "studentName": "Reyansh G.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "10/12"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "2/3"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "9/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "0.85",
+     "finalAnswer": "0.31"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "1200"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "4"
+    }
+   ]
+  },
+  "m14": {
+   "studentName": "Kiara T.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "4/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.31"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 7"
+    }
+   ]
+  },
+  "m15": {
+   "studentName": "Dhruv P.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "3/8"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": ".35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m16": {
+   "studentName": "Anika B.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "2/4",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "43/42",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "1200"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "350 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m17": {
+   "studentName": "Kavin R.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 2/8"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m18": {
+   "studentName": "Tara M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "5/4",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.31"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m19": {
+   "studentName": "Neil D.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "120"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m20": {
+   "studentName": "Zoya K.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": ".35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "2x = 8"
+    }
+   ]
+  },
+  "m21": {
+   "studentName": "Yash J.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "2/4",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "3/12"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m22": {
+   "studentName": "Riya P.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "10/12"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "2/4"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "3/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "0.85",
+     "finalAnswer": "0.31"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "1200"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "350 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "x=4",
+     "finalAnswer": "4"
+    }
+   ]
+  },
+  "m23": {
+   "studentName": "Samar M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "10/12"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "7/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "350 mm",
+     "finalAnswer": "3.5 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m24": {
+   "studentName": "Aisha S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "13/12"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "6/4"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "8.5"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "350 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  },
+  "m25": {
+   "studentName": "Ved C.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "3/6",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "7/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "13/12",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": ".35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "4"
+    }
+   ]
+  },
+  "m26": {
+   "studentName": "Nila S.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "10/12"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "4/9"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "3/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": ""
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "35",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "2x = 8",
+     "finalAnswer": "4"
+    }
+   ]
+  },
+  "m27": {
+   "studentName": "Leo M.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "3/9"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "13/12"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.86"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "12"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "3.5 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 7"
+    }
+   ]
+  },
+  "m28": {
+   "studentName": "Pari A.",
+   "answers": [
+    {
+     "q": 1,
+     "crossedOutText": "",
+     "finalAnswer": "5/6"
+    },
+    {
+     "q": 2,
+     "crossedOutText": "",
+     "finalAnswer": "5/12"
+    },
+    {
+     "q": 3,
+     "crossedOutText": "",
+     "finalAnswer": "1/4"
+    },
+    {
+     "q": 4,
+     "crossedOutText": "",
+     "finalAnswer": "1 1/2"
+    },
+    {
+     "q": 5,
+     "crossedOutText": "",
+     "finalAnswer": "2 1/4"
+    },
+    {
+     "q": 6,
+     "crossedOutText": "",
+     "finalAnswer": "0.85"
+    },
+    {
+     "q": 7,
+     "crossedOutText": "",
+     "finalAnswer": "1200"
+    },
+    {
+     "q": 8,
+     "crossedOutText": "",
+     "finalAnswer": "0.35"
+    },
+    {
+     "q": 9,
+     "crossedOutText": "",
+     "finalAnswer": "35 mm"
+    },
+    {
+     "q": 10,
+     "crossedOutText": "",
+     "finalAnswer": "x = 4"
+    }
+   ]
+  }
+ },
+ "suggestions": {},
+ "totals": {
+  "plan": {
+   "title": "Adding Mixed Numbers with Fractions",
+   "focus": "Remembering to include the whole number when adding mixed numbers and fractions.",
+   "minutes": 15,
+   "steps": [
+    {
+     "minutes": 3,
+     "teacher": "The teacher displays 2 1/2 + 1/4 and highlights that the whole number must be kept safe at the beginning.",
+     "students": "Students observe the whole number and say it aloud to confirm its presence."
+    },
+    {
+     "minutes": 4,
+     "teacher": "The teacher models finding a common denominator for the fractional parts and adding them to the whole number.",
+     "students": "Students copy the working steps in their notebooks and point to the whole number."
+    },
+    {
+     "minutes": 4,
+     "teacher": "The teacher guides students through another example, reminding them not to drop the whole number.",
+     "students": "Students solve a practice problem on mini-whiteboards and hold them up."
+    },
+    {
+     "minutes": 4,
+     "teacher": "The teacher reviews common errors where the whole number was forgotten.",
+     "students": "Students correct their own whiteboard practice if needed and write a final summary rule."
+    }
+   ],
+   "hingeQuestion": {
+    "question": "What is the answer to 3 1/3 + 1/6?",
+    "answer": "3 1/2",
+    "ifWrong": "If students answer 1/2, remind them that the whole number 3 was dropped and must be added back in."
+   },
+   "practice": {
+    "support": [
+     {
+      "question": "1 1/2 + 1/4",
+      "answer": "1 3/4"
+     },
+     {
+      "question": "2 1/3 + 1/6",
+      "answer": "2 1/2"
+     },
+     {
+      "question": "3 1/4 + 1/2",
+      "answer": "3 3/4"
+     },
+     {
+      "question": "1 1/5 + 3/10",
+      "answer": "1 1/2"
+     }
+    ],
+    "core": [
+     {
+      "question": "2 1/4 + 3/8",
+      "answer": "2 5/8"
+     },
+     {
+      "question": "1 1/3 + 2/9",
+      "answer": "1 5/9"
+     },
+     {
+      "question": "3 1/2 + 1/4",
+      "answer": "3 3/4"
+     },
+     {
+      "question": "4 1/6 + 1/3",
+      "answer": "4 1/2"
+     }
+    ],
+    "stretch": [
+     {
+      "question": "2 2/3 + 1 1/6",
+      "answer": "3 5/6"
+     },
+     {
+      "question": "1 3/4 + 2 1/8",
+      "answer": "3 7/8"
+     },
+     {
+      "question": "3 1/2 + 2 3/5",
+      "answer": "6 1/10"
+     }
+    ]
+   }
+  },
+  "notes": [
+   {
+    "group": "percent_decimal",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. We noticed some confusion when converting between percentages and decimals. A great way to practice at home is by turning discount signs in shops into decimals together!"
+   },
+   {
+    "group": "percent_decimal",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने प्रतिशत और दशमलव के बीच बदलते समय कुछ भ्रम देखा। घर पर अभ्यास करने का एक शानदार तरीका दुकानों में छूट के संकेतों को दशमलव में बदलना है!"
+   },
+   {
+    "group": "percent_decimal",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். சதவீதங்கள் மற்றும் தசமங்களை மாற்றும்போது சில குழப்பங்கள் இருந்ததை நாங்கள் கவனித்தோம். கடைகளில் உள்ள தள்ளுபடி பலகைகளை தசமங்களாக மாற்றுவது வீட்டዕப் பயிற்சிக்கு ஒரு சிறந்த வழியாகும்!"
+   },
+   {
+    "group": "whole_dropped",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. Sometimes the whole-number part was accidentally dropped when adding mixed numbers. You can help at home by practicing addition with recipes that use whole cups and fractions!"
+   },
+   {
+    "group": "whole_dropped",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। मिश्रित भिन्नों को जोड़ते समय कभी-कभी पूर्ण संख्या छूट जाती है। आप ऐसी रेसिपी का उपयोग करके घर पर अभ्यास में मदद कर सकते हैं जिनमें पूरे कप और भिन्न दोनों हों!"
+   },
+   {
+    "group": "whole_dropped",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். கலப்பு எண்களைக் கூட்டும்போது சில சமயங்களில் முழு எண் விடுபட்டது. முழு க்கப்கள் மற்றும் பின்னங்களைப் பயன்படுத்தும் சமையல் குறிப்புகளைக் கொண்டு வீட்டிலேயே பயிற்சி செய்யலாம்!"
+   },
+   {
+    "group": "place_value",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. We noticed a few slip-ups with place value and moving the decimal point. Practicing money amounts during shopping trips is a fun way to build confidence."
+   },
+   {
+    "group": "place_value",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने स्थानीय मान और दशमलव बिंदु को स्थानांतरित करने में कुछ गलतियाँ देखीं। खरीदारी के दौरान पैसों के हिसाब का अभ्यास करना आत्मविश्वास बढ़ाने का एक मजेदार तरीका है।"
+   },
+   {
+    "group": "place_value",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். இடமதிப்பு மற்றும் தசம புள்ளியை நகர்த்துவதில் சில பிழைகளைக் கவனித்தோம். ஷாப்பிங் செய்யும்போது பணத் தொகைகளைக் கணக்கிடுவது நம்பிக்கை வளர்க்க ஒரு வேடிக்கையான வழியாகும்."
+   },
+   {
+    "group": "cross_multiply",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. When multiplying fractions, there was some confusion with cross-multiplying instead of multiplying straight across. Reviewing fraction multiplication flashcards at home will help!"
+   },
+   {
+    "group": "cross_multiply",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। भिन्नों को गुणा करते समय, सीधे गुणा करने के बजाय क्रॉस-मल्टीप्लाई करने में कुछ भ्रम हुआ। घर पर अंश गुणा फ्लैशकार्ड की समीक्षा करना मददगार होगा!"
+   },
+   {
+    "group": "cross_multiply",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். பின்னங்களைப் பெருக்குும்போது, நேராக பெருக்குவதற்குப் பதிலாக குறுக்கு பெருக்கல் செய்வதில் குழப்பம் ஏற்பட்டது. வீட்டிலேயே பின்னப் பெருக்கல் அட்டைகளைப் பார்ப்பது உதவும்!"
+   },
+   {
+    "group": "wrong_operation",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. Sometimes the wrong mathematical operation was used for the problem. Encouraging {{student}} to read through each question carefully before starting is a great home habit."
+   },
+   {
+    "group": "wrong_operation",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। कभी-कभी प्रश्न के लिए गलत गणितीय संक्रिया का उपयोग किया गया। शुरू करने से पहले {{student}} को प्रत्येक प्रश्न को ध्यान से पढ़ने के लिए प्रोत्साहित करना एक अच्छी आदत है।"
+   },
+   {
+    "group": "wrong_operation",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். சில சமயங்களில் கணக்கிற்கு தவறான செயல்முறை பயன்படுத்தப்பட்டது. தொடங்குவதற்கு முன் ஒவ்வொரு கேள்தியையும் கவனமாகப் படிக்க {{student}} ஐ ஊக்குவிப்பது வீட்டிற்கு நல்லது."
+   },
+   {
+    "group": "numerators_only",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. When adding fractions, {{student}} sometimes added only the top numbers while keeping the bottom numbers the same without converting. Practicing with pizza slices at home is a fun visual aid!"
+   },
+   {
+    "group": "numerators_only",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। भिन्नों को जोड़ते समय, {{student}} ने कभी-कभी बिना बदले केवल ऊपर की संख्याओं को जोड़ा। घर पर पिज्जा के टुकड़ों के साथ अभ्यास करना एक मजेदार दृश्य सहायक है!"
+   },
+   {
+    "group": "numerators_only",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். பின்னங்களைக் கூட்டும்போது, மாற்றாமல் கீழே உள்ள எண்களை அப்படியே வைத்துவிட்டு மேல் எண்களை மட்டும் கூட்டினார். பீட்சா துண்டுகளைக் கொண்டு வீட்டிலேயே பயிற்சி செய்வது ஒரு நல்ல வழி!"
+   },
+   {
+    "group": "add_across",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. We noticed some adding straight across both tops and bottoms of fractions. Drawing fraction bars together at home can help build a clearer understanding."
+   },
+   {
+    "group": "add_across",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने भिन्नों के ऊपर और नीचे दोनों को सीधे जोड़ने की प्रवृत्ति देखी। घर पर एक साथ अंश बार बनाने से बेहतर समझ विकसित करने में मदद मिल सकती है।"
+   },
+   {
+    "group": "add_across",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். பின்னங்களின் மேல் மற்றும் கீழ் எண்களை நேராகக் கூட்டுவதைக் கவனித்தோம். வீட்டிலேயே பின்னப் பட்டைகளை வரைந்து பார்ப்பது தெளிவான புரிதலைப் பெற உதவும்."
+   },
+   {
+    "group": "slip",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. There were a few small careless slips in calculation. Taking a quick second look at completed work before handing it in is a great skill to practice!"
+   },
+   {
+    "group": "slip",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। गणना में कुछ छोटी-मोटी असावधानी वाली गलतियाँ थीं। जमा करने से पहले किए गए काम को एक बार फिर से देखना अभ्यास करने के लिए एक बेहतरीन कौशल है!"
+   },
+   {
+    "group": "slip",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். கணக்கீட்டில் சில சிறிய கவனக்குறைவு பிழைகள் இருந்தன. சமர்ப்பிப்பதற்கு முன் செய்த வேலையை ஒருமுறை சரிபார்ப்பது ஒரு சிறந்த பயிற்சியாகும்!"
+   },
+   {
+    "group": "reversed_subtraction",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. Sometimes subtraction problems were reversed by taking the smaller number from the larger incorrectly. Using a number line at home can help keep subtraction direction clear."
+   },
+   {
+    "group": "reversed_subtraction",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। कभी-कभी बड़ी संख्या में से छोटी संख्या को गलत तरीके से घटाने में घटाव की दिशा उलट गई। घर पर संख्या रेखा (नंबर लाइन) का उपयोग करने से घटाव की दिशा स्पष्ट रखने में मदद मिल सकती है।"
+   },
+   {
+    "group": "reversed_subtraction",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். சில சமயங்களில் சிறிய எண்ணை பெரிய எண்ணிலிருந்து கழிப்பதில் குழப்பம் ஏற்பட்டது. வீட்டிலேயே எண் கோட்டைப் பயன்படுத்துவது கழித்தல் திசையைத் தெளிவாகப் புரிந்து கொள்ள உதவும்."
+   },
+   {
+    "group": "decimal_alignment",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. We saw some issues with aligning decimal points correctly during addition or subtraction. Practicing decimal columns on squared paper at home is very helpful."
+   },
+   {
+    "group": "decimal_alignment",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। हमने जोड़ या घटाव के दौरान दशमलव बिंदुओं को ठीक से संरेखित करने में कुछ समस्याएं देखीं। घर पर चौकोर कागज़ (ग्रिड पेपर) पर दशमलव कॉलम का अभ्यास करना बहुत मददगार है।"
+   },
+   {
+    "group": "decimal_alignment",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். கூட்டல் அல்லது கழித்தலின் போது தசம புள்ளிகளை சரியாக வரிசைப்படுத்துவதில் சில சிக்கல்களைக் கண்டோம். கட்டக் காகிதத்தில் தசம எண்களை எழுதி பயிற்சி செய்வது மிகவும் பயனுள்ளதாக இருக்கும்."
+   },
+   {
+    "group": "missing_unit",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. The correct numbers were found, but units of measurement were sometimes left off. Reminding {{student}} to always check for units like cm or kg is a helpful habit."
+   },
+   {
+    "group": "missing_unit",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। सही संख्याएँ मिल गईं, लेकिन कभी-कभी माप की इकाइयाँ लिखना भूल गए। सेमी या किग्रा जैसी इकाइयों की हमेशा जाँच करने के लिए {{student}} को याद दिलाना एक अच्छी आदत है।"
+   },
+   {
+    "group": "missing_unit",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். சரியான எண்கள் கண்டுபிடிக்கப்பட்டன, ஆனால் சில சமயங்களில் அளவீட்டு அலகுகள் எழுதப்படவில்லை. செ.மீ அல்லது கி.கி போன்ற அலகுகளை எப்போதும் சரிபார்க்க {{student}} ஐ நினைவூட்டுவது நல்லது."
+   },
+   {
+    "group": "wrong_unit",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. There were a few mix-ups with measurement units or forgetting to convert between them. Practicing unit conversions while measuring ingredients in the kitchen is great practice!"
+   },
+   {
+    "group": "wrong_unit",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। माप की इकाइयों के साथ कुछ गड़बड़ियाँ थीं या उनके बीच रूपांतरण करना भूल गए। रसोई में सामग्री मापते समय इकाई रूपांतरण का अभ्यास करना बहुत अच्छा है!"
+   },
+   {
+    "group": "wrong_unit",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். அளவீட்டு அலகுகளில் சில குழப்பங்கள் இருந்தன அல்லது அவற்றுக்கிடையே மாற்றுவது மறந்துவிட்டது. சமையலறையில் பொருட்களை அளவிடும்போது அலகு மாற்றங்களைப் பயிற்சி செய்வது சிறந்த பயிற்சியாகும்!"
+   },
+   {
+    "group": "not_solved",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. Some expressions or equations were left unfinished instead of finding the final value. Encouraging {{student}} to complete every single step at home is very beneficial."
+   },
+   {
+    "group": "not_solved",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। अंतिम मान ज्ञात करने के बजाय कुछ व्यंजक या समीकरण अधूरे छोड़ दिए गए। घर पर हर एक चरण को पूरा करने के लिए {{student}} को प्रोत्साहित करना बहुत फायदेमंद है।"
+   },
+   {
+    "group": "not_solved",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். இறுதி மதிப்பைக் கண்டுபிடிப்பதற்குப் பதிலாக சில சமன்பாடுகள் முடிக்கப்படாமல் விடப்பட்டன. ஒவ்வொரு அடியையும் முழுமையாக முடிக்க {{student}} ஐ ஊக்குவிப்பது மிகவும் பயனுள்ளதாக இருக்கும்."
+   },
+   {
+    "group": "inverse_operation",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. When solving equations, inverse operations were sometimes mixed up (like adding instead of subtracting). Practicing puzzle boxes with missing numbers at home is a fun way to reinforce this."
+   },
+   {
+    "group": "inverse_operation",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। समीकरणों को हल करते समय, कभी-कभी उल्टी संक्रियाओं (जैसे घटाने के बजाय जोड़ना) में गड़बड़ी हो गई। घर पर लुप्त संख्याओं वाले पहेली बक्से का अभ्यास करना इसे सुदृढ़ करने का एक मजेदार तरीका है।"
+   },
+   {
+    "group": "inverse_operation",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். சமன்பாடுகளைத் தீர்க்கும்போது, எதிர்ச் செயல்கள் சில சமயங்களில் குழப்பிக் கொள்ளப்பட்டன (கழிப்பதற்குப் பதிலாக கூட்டுவது போன்றவை). விடுபட்ட எண்களுடன் புதிர் விளையாடுவதை வீட்டிலேயே பயிற்சி செய்வது நல்லது."
+   },
+   {
+    "group": "other",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. There were a few unique errors on this quiz. Reviewing the corrected paper together at home is a great way to talk through the tricky parts."
+   },
+   {
+    "group": "other",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। इस परीक्षा में कुछ अलग तरह की त्रुटियाँ थीं। कठिन हिस्सों पर चर्चा करने के लिए घर पर संशोधित पेपर की एक साथ समीक्षा करना एक शानदार तरीका है।"
+   },
+   {
+    "group": "other",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். இந்தச் சோதனையில் சில தனிப்பட்ட பிழைகள் இருந்தன. கடினமான பகுதிகளைப் பற்றிப் பேச திருத்தப்பட்ட விடைத்தாள் பற்றி வீட்டிலேயே விவாதிப்பது நல்லது."
+   },
+   {
+    "group": "secure",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. Fantastic job! {{student}} showed a very strong understanding of the topics. You can celebrate by letting {{student}} choose a fun math game to play online."
+   },
+   {
+    "group": "secure",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। शानदार काम! {{student}} ने विषयों की बहुत अच्छी समझ दिखाई। आप {{student}} को ऑनलाइन खेलने के लिए एक मजेदार गणित का खेल चुनने देकर जश्न मना सकते हैं।"
+   },
+   {
+    "group": "secure",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். அருமையான வேலை! {{student}} தலைப்புகளைப் பற்றி மிகச் சிறந்த புரிதலைக் காட்டியுள்ளார். ஆன்லைனில் விளையாட ஒரு வேடிக்கையான கணித விளையாட்டைத் தேர்ந்தெடுக்க அனுமதிப்பதன் மூலம் நீங்கள் இதைக் கொண்டாடலாம்."
+   },
+   {
+    "group": "default",
+    "language": "en",
+    "text": "Dear parents, {{student}} scored {{score}} out of {{total}} on our recent check. The results varied across different topics with no single pattern. Going over the returned quiz together at home will help pinpoint any areas to review."
+   },
+   {
+    "group": "default",
+    "language": "hi",
+    "text": "प्रिय माता-पिता, {{student}} ने हमारे हालिया परीक्षण में {{total}} में से {{score}} अंक प्राप्त किए। परिणाम अलग-अलग विषयों में भिन्न थे और कोई एक पैटर्न नहीं था। समीक्षा करने के लिए घर पर वापस की गई परीक्षा पर एक साथ नजर डालना मददगार होगा।"
+   },
+   {
+    "group": "default",
+    "language": "ta",
+    "text": "அன்பார்ந்த பெற்றோர்களே, {{student}} எங்கள் சமீபத்திய சோதனையில் {{total}} மதிப்பெண்களுக்கு {{score}} பெற்றுள்ளார். முடிவுகள் வெவ்வேறு தலைப்புகளில் வேறுபட்டன, எந்த ஒரு குறிப்பிட்ட வடிவமும் இல்லை. மறுபடியும் கொடுக்கப்பட்ட விடைத்தாளை வீட்டிலேயே ஒன்றாகப் பார்ப்பது மீள்பார்வை செய்ய உதவும்."
+   }
+  ]
+ },
+ "totalsPayload": {
+  "v": 2,
+  "subject": "maths",
+  "grade_band": "4-6",
+  "k": 3,
+  "questions": [
+   {
+    "q": 1,
+    "type": "fraction",
+    "question": "2/3 + 1/6",
+    "answer": "5/6",
+    "right": 22,
+    "partial": 0,
+    "wrong": 4,
+    "mistakes": {
+     "numerators_only": "hidden",
+     "add_across": "hidden",
+     "slip": "hidden"
+    }
+   },
+   {
+    "q": 2,
+    "type": "fraction",
+    "question": "3/4 - 1/3",
+    "answer": "5/12",
+    "right": 19,
+    "partial": 0,
+    "wrong": 7,
+    "mistakes": {
+     "other": "hidden",
+     "reversed_subtraction": "hidden",
+     "add_across": "hidden",
+     "numerators_only": "hidden"
+    }
+   },
+   {
+    "q": 3,
+    "type": "fraction",
+    "question": "1/3 × 3/4",
+    "answer": "1/4",
+    "right": 20,
+    "partial": 0,
+    "wrong": 6,
+    "mistakes": {
+     "cross_multiply": 3,
+     "wrong_operation": 3
+    }
+   },
+   {
+    "q": 4,
+    "type": "fraction",
+    "question": "3/4 ÷ 1/2",
+    "answer": "1 1/2",
+    "right": 23,
+    "partial": 0,
+    "wrong": 4,
+    "mistakes": {}
+   },
+   {
+    "q": 5,
+    "type": "fraction",
+    "question": "1 1/2 + 3/4",
+    "answer": "2 1/4",
+    "right": 21,
+    "partial": 0,
+    "wrong": 6,
+    "mistakes": {
+     "whole_dropped": 6
+    }
+   },
+   {
+    "q": 6,
+    "type": "number",
+    "question": "",
+    "answer": "17/20",
+    "right": 15,
+    "partial": 0,
+    "wrong": 11,
+    "mistakes": {
+     "place_value": "hidden",
+     "decimal_alignment": "hidden",
+     "other": "hidden"
+    }
+   },
+   {
+    "q": 7,
+    "type": "number",
+    "question": "",
+    "answer": "12",
+    "right": 15,
+    "partial": 0,
+    "wrong": 9,
+    "mistakes": {
+     "percent_decimal": 6,
+     "other": "hidden",
+     "place_value": "hidden"
+    }
+   },
+   {
+    "q": 8,
+    "type": "number",
+    "question": "",
+    "answer": "7/20",
+    "right": 21,
+    "partial": 0,
+    "wrong": 7,
+    "mistakes": {
+     "place_value": "hidden",
+     "percent_decimal": "hidden"
+    }
+   },
+   {
+    "q": 9,
+    "type": "number",
+    "question": "",
+    "answer": "35 mm",
+    "right": 19,
+    "partial": 3,
+    "wrong": 6,
+    "mistakes": {
+     "place_value": "hidden",
+     "missing_unit": "hidden",
+     "wrong_unit": "hidden"
+    }
+   },
+   {
+    "q": 10,
+    "type": "algebra",
+    "question": "",
+    "answer": "x = 4",
+    "right": 21,
+    "partial": 0,
+    "wrong": 7,
+    "mistakes": {
+     "not_solved": "hidden",
+     "inverse_operation": "hidden"
+    }
+   }
+  ],
+  "note_languages": [
+   "en",
+   "hi",
+   "ta"
+  ]
+ },
+ "totalsRecordedAt": "2026-11-15",
+ "cloudAccuracy": {
+  "exactReads": 279,
+  "exactTotal": 280,
+  "suggestions": 0,
+  "agree": 0,
+  "within1": 0
+ }
+}

@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-*Written 16 Nov 2026 from the project's own plan and research (PLAN.md, docs/WIDENING_PLAN.md, docs/research). The owner asked not to be interviewed; facts marked (inferred) come from those documents, not from a confirmation round.*
+*Written 15 Nov 2026 from the project's own plan and research (PLAN.md, docs/WIDENING_PLAN.md, docs/research). The owner asked not to be interviewed; facts marked (inferred) come from those documents, not from a confirmation round.*
 
 ## Platform
 
@@ -36,7 +36,7 @@ Hybrid by data class: pupils' work is only ever read on the device, and only ano
 - Kalam is used for handwriting marks (it covers Devanagari, which the Hindi notes need).
 
 ## Evidence on Hand
-- Day-1 probe (16 Nov 2026): real IAM handwriting read at 4.8% character error on completed reads, and SciEntsBank agreement with human markers.
+- Day-1 probe (15 Nov 2026): real IAM handwriting read at 4.8% character error on completed reads, and SciEntsBank agreement with human markers.
 - v1 bench: 28 sheets, 89.3% exact, 0 of 280 unflagged misreads.
 - No teacher testimonials or school customers exist; none may be invented.
 

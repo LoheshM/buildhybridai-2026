@@ -36,7 +36,7 @@ Raises kept from the declined challengers:
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 
-## Adaptations (recorded after the finish review, 16 Nov)
+## Adaptations (recorded after the finish review, 15 Nov)
 - The navy bar's class/quiz switcher was replaced by a white context bar below it: the quiz title, then the class name, then the step tabs. A teacher marks one quiz at a time, and Classes is one click away in the navy bar.
 - The welcome page keeps a three-part strip (On this laptop / You / In the cloud) because the privacy split is the product's claim, and judges score it.
 - Red ink also fills the "Ink n/m" button, because that button makes a red mark.

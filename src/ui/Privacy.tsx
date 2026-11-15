@@ -1,3 +1,4 @@
+import { stopRun } from '../app/runner';
 import { useState } from 'react';
 import { currentSettings } from '../ai/firebase';
 import { testGuard } from '../ai/tasks';
@@ -121,7 +122,7 @@ export function Privacy() {
           <h3 className="section">Other requests this page makes</h3>
           <ul className="small muted">
             <li>Firebase Remote Config and Installations: operator settings such as the cloud model name. No student data.</li>
-            <li>Firebase App Check with Google reCAPTCHA Enterprise: loaded only when you plan a lesson or use the sample class without on-device AI, to prove the request comes from this app.</li>
+            <li>Firebase App Check with Google reCAPTCHA Enterprise: loaded only when you plan a lesson or use a sample class without on-device AI, to prove the request comes from this app. Once loaded it stays loaded until you reload the page; reCAPTCHA does not receive the page's text.</li>
             <li>Chrome itself downloads Gemini Nano once, from Google, when you click Download.</li>
           </ul>
           <p className="small muted">Cloud requests use the free tier of the Gemini Developer API, where Google may use inputs to improve its services. That is why only anonymous class totals and made-up sample sheets are ever sent. A school deploying Tickmark can switch the project to paid Vertex AI.</p>
@@ -132,7 +133,7 @@ export function Privacy() {
           <p className="small muted">Classes, photos, marks and this log live in this browser's storage for this site. Clearing site data, or the button below, removes them.</p>
           <button className="btn danger" onClick={async () => {
             if (!window.confirm('Erase every class, photo, mark and log from this browser? This cannot be undone.')) return;
-            try { await store.eraseEverything(); } catch (e) { window.alert((e as Error).message); return; }
+            try { await stopRun(); await store.eraseEverything(); } catch (e) { window.alert((e as Error).message); return; }
             ledger.clear(); reload(); location.hash = '#/'; location.reload();
           }}>Erase everything</button>
           <h3 className="section">Settings</h3>

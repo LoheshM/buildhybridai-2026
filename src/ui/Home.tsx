@@ -65,7 +65,7 @@ function ClassList({ items, reload }: { items: Item[]; reload: () => void }) {
                 <span className="small muted">{c.roster.length} pupils{c.sample ? ' · made up' : ''}</span>
               </div>
               {c.sample ? <ResetSample classId={c.id} onDone={reload} /> : (
-                <button className="btn small danger" onClick={async () => { if (confirmDelete(c.name)) { stopRun(); await store.deleteClass(c.id); reload(); } }}>Delete class</button>
+                <button className="btn small danger" onClick={async () => { if (confirmDelete(c.name)) { await stopRun(); await store.deleteClass(c.id); reload(); } }}>Delete class</button>
               )}
             </div>
             {qs.map(({ q, total, read, toCheck }) => (

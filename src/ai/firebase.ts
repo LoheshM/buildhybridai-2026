@@ -19,7 +19,8 @@ export function firebaseApp(): FirebaseApp {
 let appCheckReady = false;
 /**
  * App Check (and with it the reCAPTCHA script) is started only when a cloud request may follow:
- * planning a lesson, or the sample class without on-device AI. Pages with student data never load it.
+ * planning a lesson, or a sample class without on-device AI. A page that shows pupils' data never starts it;
+ * once started it stays loaded until the page is reloaded (a single-page app can't unload a script).
  */
 export function ensureAppCheck() {
   if (appCheckReady) return;

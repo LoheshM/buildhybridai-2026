@@ -25,7 +25,9 @@ export const onRun = (l: Listener) => { listeners.add(l); return () => { listene
 /** Fires after every sheet the runner saves, whichever page is open. */
 export const onSheetChanged = (l: (s: SheetRec) => void) => { sheetListeners.add(l); return () => { sheetListeners.delete(l); }; };
 
-export function stopRun() { stopRequested = true; cancelQueued(); resetAllModels(); }
+let runDone: Promise<void> = Promise.resolve();
+/** Stops the run; resolves when the reading loop has exited (so a delete or erase can't race its last write). */
+export function stopRun(): Promise<void> { stopRequested = true; cancelQueued(); resetAllModels(); return runDone; }
 
 class OutOfSpace extends Error { constructor() { super('This browser is out of storage space. Delete the photos of quizzes you have already checked (Results page), then try again.'); this.name = 'OutOfSpace'; } }
 
@@ -53,6 +55,8 @@ const STOPS_BATCH = new Set(['DeviceUnavailable', 'GuardBlocked', 'OffDeviceAnsw
 export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): Promise<void> {
   if (state.running) return;
   emit({ running: true, quizId: quiz.id, done: 0, total: 0, error: undefined, current: undefined }); // claim before any await
+  let finished!: () => void;
+  runDone = new Promise((res) => { finished = res; });
   stopRequested = false;
   if (cls.sample) resetLiveSampleReads();
   let totalMs = 0;
@@ -77,7 +81,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           const photo = await imageFor(sheet);
           const img = await classify(photo);
           if (sheet.source === 'sample' && !isSample(img)) throw new Error('Sample photo does not match its fingerprint; refusing to send it anywhere.');
-          const sample = isSample(img);
+          const sample = isSample(img) && sheet.source === 'sample';
           let first: ReadResult;
           let strip: StudentImage | null = null;
           // Code, on this laptop, for every sheet: find the answer boxes, keep each box's handwriting, decide which are empty.
@@ -152,6 +156,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
   } catch (e) {
     emit({ error: friendly(e as Error) });
   } finally {
+    finished();
     emit({ running: false, current: undefined });
   }
 }

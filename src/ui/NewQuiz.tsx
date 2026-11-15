@@ -38,7 +38,7 @@ export function NewQuiz() {
   const problemOf = (i: number) => { const n = filled.findIndex((f) => f.i === i); return n >= 0 ? keyProblem(keys[n]) : null; };
   const set = (i: number, p: Partial<Row>) => setRows(rows.map((x, j) => (j === i ? { ...x, ...p } : x)));
 
-  const useTemplate = (k: SampleKey) => {
+  const applyTemplate = (k: SampleKey) => {
     const m = sampleManifest(k);
     if (!m) return;
     setTitle(m.quiz.title);
@@ -83,7 +83,7 @@ export function NewQuiz() {
             <h2 id="key-h">Answer key</h2>
             <div className="templates" role="group" aria-label="Start from a sample key">
               <span className="small muted">Start from</span>
-              {SAMPLES.map((k) => <button key={k} className="btn small quiet" onClick={() => useTemplate(k)}>{sampleManifest(k)?.quiz.className ?? k}</button>)}
+              {SAMPLES.map((k) => <button key={k} className="btn small quiet" onClick={() => applyTemplate(k)}>{sampleManifest(k)?.quiz.className ?? k}</button>)}
             </div>
           </div>
           <div className="row" style={{ alignItems: 'flex-end', marginBottom: 14 }}>

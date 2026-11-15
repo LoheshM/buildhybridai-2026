@@ -7,6 +7,7 @@ import { parseRoster } from '../marking/roster';
 import { GRADE_BANDS, SUBJECTS, type GradeBand, type Subject } from '../privacy/aggregate';
 import { store, uid, type ClassRec, type QuizRec } from '../store/db';
 import { useLoad } from './hooks';
+import { sheetFit } from '../img/sheet';
 import { Notice } from './App';
 
 interface Row { prompt: string; answer: string; type: QType | 'auto'; spelling: boolean }
@@ -56,6 +57,7 @@ export function NewQuiz() {
     if (!title.trim()) return setError('Give the quiz a title.');
     if (keys.length === 0) return setError('Add at least one question.');
     if (keys.some((k) => keyProblem(k))) return setError('Fix the answers marked in red first.');
+    if (!fit.fits) return setError("These answers don't fit on one answer sheet. Split the quiz into two, or turn a paragraph into a short answer.");
     let cls: ClassRec | undefined = classes?.find((c) => c.id === classId);
     if (isNew) {
       cls = { id: uid('c'), name: className.trim(), roster: roster.map((name) => ({ id: uid('s'), name })), createdAt: Date.now() };
@@ -66,6 +68,7 @@ export function NewQuiz() {
     go(href.scan(quiz.id));
   };
 
+  const fit = useMemo(() => sheetFit(keys), [JSON.stringify(keys)]); // eslint-disable-line react-hooks/exhaustive-deps
   const openCount = keys.filter((k) => QTYPES[typeOf(k)].markedBy === 'suggested').length;
 
   return (
@@ -135,6 +138,11 @@ export function NewQuiz() {
           <div className="row mt">
             <button className="btn small" onClick={() => setRows([...rows, { ...EMPTY, spelling: subject === 'english' }])}>Add question</button>
             {rows.length > 1 && <button className="btn small quiet" onClick={() => setRows(rows.slice(0, -1))}>Remove last</button>}
+            {keys.length > 0 && (
+              <span className={`small ${fit.fits ? 'muted' : 'bad'}`} role="status" data-fit={fit.fits ? 'ok' : 'over'}>
+                {fit.fits ? `The answer sheet is ${Math.round(fit.used * 100)}% full.` : "Too many answers for one answer sheet: split the quiz, or turn a paragraph into a short answer."}
+              </span>
+            )}
           </div>
           {(subject === 'english' || extract) && (
             <label className="field mt">Reading extract printed on the sheet (optional)

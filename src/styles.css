@@ -180,7 +180,7 @@ main.wide { max-width: none; }
 .btn.quiet { border-color: transparent; background: transparent; color: var(--ink-2); }
 .btn.quiet:hover { background: var(--sheet-2); color: var(--ink); }
 .btn.danger { color: var(--ink-2); border-color: var(--rule-2); }
-.btn.danger:hover { background: var(--hover, rgba(29, 43, 85, .06)); color: var(--ink); }
+.btn.danger:hover { background: rgba(29, 43, 85, .06); color: var(--ink); }
 .btn.small { min-height: 32px; padding: 4px 10px; font-size: .875rem; }
 .btn[disabled], .btn[aria-disabled='true'] { opacity: .5; cursor: not-allowed; pointer-events: none; }
 .btn kbd { background: transparent; border-color: currentColor; color: inherit; }
@@ -317,7 +317,7 @@ input[type='checkbox'], input[type='radio'] { width: 18px; height: 18px; accent-
 .demo .register-wrap { border: 0; border-radius: 0; max-height: none; }
 .demo-foot { padding: 10px 16px; border-top: 1px solid var(--rule); font-size: .8125rem; color: var(--ink-2); display: flex; gap: 14px; flex-wrap: wrap; }
 .doors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
-.door { position: relative; display: grid; text-align: left; padding: 22px 22px 22px 26px; border-radius: 4px 10px 10px 4px; border: 0; background: var(--book, var(--cover)); cursor: pointer; color: #fff; text-decoration: none; min-height: 180px; box-shadow: var(--shadow); transition: transform .15s cubic-bezier(.2, .8, .2, 1), box-shadow .15s; }
+.door { position: relative; display: grid; text-align: left; padding: 22px 22px 22px 26px; border-radius: 4px 10px 10px 4px; border: 0; background: var(--cover); cursor: pointer; color: #fff; text-decoration: none; min-height: 180px; box-shadow: var(--shadow); transition: transform .15s cubic-bezier(.2, .8, .2, 1), box-shadow .15s; }
 .door:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(23, 32, 58, .1), 0 14px 26px -12px rgba(23, 32, 58, .45); text-decoration: none; }
 .door:active { transform: translateY(0); }
 /* the white name label every school exercise book has on its cover */
@@ -338,7 +338,7 @@ input[type='checkbox'], input[type='radio'] { width: 18px; height: 18px; accent-
 .classlist { display: grid; gap: 14px; }
 .classrow { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 16px; background: var(--sheet); border: 1px solid var(--rule); border-radius: var(--radius-l); padding: 16px 20px; }
 /* a small exercise-book cover: subject colour with its white label */
-.classrow > .spine { width: 44px; height: 56px; border-radius: 2px 6px 6px 2px; background: var(--book, var(--cover)); position: relative; box-shadow: 0 1px 2px rgba(23, 32, 58, .25); }
+.classrow > .spine { width: 44px; height: 56px; border-radius: 2px 6px 6px 2px; background: var(--cover); position: relative; box-shadow: 0 1px 2px rgba(23, 32, 58, .25); }
 .classrow > .spine::after { content: ''; position: absolute; left: 8px; right: 8px; top: 12px; height: 14px; border-radius: 2px; background: var(--sheet); }
 .classrow > .body { min-width: 0; }
 .quizline { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 10px 0; border-top: 1px solid var(--rule); }
@@ -605,3 +605,4 @@ pre.json { background: var(--sheet-2); padding: 12px; border-radius: var(--radiu
 /* unfocused rows: the key points are listed above the answers, so the toggles show only their numbers */
 .ans:not(.focus) .kptoggle .kptx { display: none; }
 .ans:not(.focus) .kprow { margin-top: 6px; }
+.small.bad { color: var(--red); font-weight: 600; }

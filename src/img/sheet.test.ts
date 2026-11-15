@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import type { QuestionKey } from '../marking/mark';
-import { apply, findMarkers, homography, layout, markerCentres, PAGE, pageToImage } from './sheet';
+import { apply, findMarkers, homography, layout, markerCentres, PAGE, pageToImage, sheetFit } from './sheet';
 
 const keysOf = (c: string): QuestionKey[] => JSON.parse(readFileSync(new URL(`../../public/samples/${c}/manifest.json`, import.meta.url), 'utf8')).quiz.questions.map((q: { q: number; prompt: string; key: string }) => ({ q: q.q, prompt: q.prompt, answer: q.key }));
 
@@ -62,5 +62,17 @@ describe('finding the corner squares', () => {
     const [mx, my] = truth[2];
     for (let y = my - 30; y < my + 30; y++) for (let x = mx - 30; x < mx + 30; x++) g[y * W + x] = 236;
     expect(findMarkers(g, W, H)).toBeNull();
+  });
+});
+
+describe('round 5: the key must fit on one answer sheet (E17/J7/F4-08)', () => {
+  const k = (q: number, answer: string) => ({ q, prompt: `Q${q}`, answer });
+  it('reports how full the sheet is, and refuses keys that do not fit', () => {
+    const small = sheetFit([k(1, '3/4'), k(2, 'B')]);
+    expect(small.fits).toBe(true);
+    expect(small.used).toBeLessThan(0.2);
+    expect(sheetFit([...Array.from({ length: 6 }, (_, i) => k(i + 1, 'point one; point two')), ...Array.from({ length: 6 }, (_, i) => k(i + 7, 'nucleus'))]).fits).toBe(false);
+    expect(sheetFit(Array.from({ length: 26 }, (_, i) => k(i + 1, String(i)))).fits).toBe(true);
+    expect(sheetFit(Array.from({ length: 27 }, (_, i) => k(i + 1, String(i)))).fits).toBe(false);
   });
 });

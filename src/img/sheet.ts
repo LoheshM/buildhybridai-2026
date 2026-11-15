@@ -47,6 +47,17 @@ export function layout(keys: QuestionKey[]): Box[] {
   return boxes;
 }
 
+/** How much of the answer sheet a key uses (1 = full). Checked while the teacher types the key. */
+export function sheetFit(keys: QuestionKey[]): { fits: boolean; used: number } {
+  if (!keys.length) return { fits: true, used: 0 };
+  try {
+    const boxes = layout(keys);
+    const last = Math.max(...boxes.map((b) => b.y + b.h));
+    const bottom = PAGE.h - MARKER.inset - MARKER.size - 4;
+    return { fits: true, used: Math.min(1, (last - 44) / (bottom - 44)) };
+  } catch { return { fits: false, used: 1 }; }
+}
+
 // ---------------------------------------------------------------- homography (4-point, DLT)
 export type H = number[]; // 3x3 row-major, h[8] = 1
 

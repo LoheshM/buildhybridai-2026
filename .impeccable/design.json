@@ -1,0 +1,740 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-15T12:09:02Z",
+  "title": "Design System: Tickmark",
+  "extensions": {
+    "colorMeta": {
+      "cover": {
+        "role": "primary",
+        "displayName": "Register-Cover Navy",
+        "canonical": "#1d2b55",
+        "oklch": "oklch(30.1% 0.078 267.7)",
+        "darkTheme": "#0a0f20",
+        "tonalRamp": [
+          "oklch(15.0% 0.039 267.7)",
+          "oklch(26.4% 0.075 267.7)",
+          "oklch(37.9% 0.071 267.7)",
+          "oklch(49.3% 0.061 267.7)",
+          "oklch(60.7% 0.052 267.7)",
+          "oklch(72.1% 0.042 267.7)",
+          "oklch(83.6% 0.021 267.7)",
+          "oklch(95.0% 0.004 267.7)"
+        ]
+      },
+      "cover-2": {
+        "role": "primary",
+        "displayName": "Cover Lift",
+        "canonical": "#2a3b6d",
+        "oklch": "oklch(36.5% 0.089 267.7)",
+        "darkTheme": "#141c35",
+        "tonalRamp": [
+          "oklch(15.0% 0.041 267.7)",
+          "oklch(26.4% 0.079 267.7)",
+          "oklch(37.9% 0.088 267.7)",
+          "oklch(49.3% 0.076 267.7)",
+          "oklch(60.7% 0.065 267.7)",
+          "oklch(72.1% 0.054 267.7)",
+          "oklch(83.6% 0.028 267.7)",
+          "oklch(95.0% 0.006 267.7)"
+        ]
+      },
+      "cover-3": {
+        "role": "primary",
+        "displayName": "Cover Bright",
+        "canonical": "#3a4c82",
+        "oklch": "oklch(42.9% 0.093 268.4)",
+        "darkTheme": "#24304f",
+        "tonalRamp": [
+          "oklch(15.0% 0.038 268.4)",
+          "oklch(26.4% 0.076 268.4)",
+          "oklch(37.9% 0.087 268.4)",
+          "oklch(49.3% 0.086 268.4)",
+          "oklch(60.7% 0.074 268.4)",
+          "oklch(72.1% 0.062 268.4)",
+          "oklch(83.6% 0.033 268.4)",
+          "oklch(95.0% 0.008 268.4)"
+        ]
+      },
+      "cover-ink": {
+        "role": "primary",
+        "displayName": "Cover Ink",
+        "canonical": "#f3f5fb",
+        "oklch": "oklch(97.0% 0.008 271.3)",
+        "darkTheme": "#eef1f9",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 271.3)",
+          "oklch(26.4% 0.002 271.3)",
+          "oklch(37.9% 0.003 271.3)",
+          "oklch(49.3% 0.004 271.3)",
+          "oklch(60.7% 0.005 271.3)",
+          "oklch(72.1% 0.006 271.3)",
+          "oklch(83.6% 0.005 271.3)",
+          "oklch(95.0% 0.002 271.3)"
+        ]
+      },
+      "cover-ink-2": {
+        "role": "primary",
+        "displayName": "Cover Ink Muted",
+        "canonical": "#c3cbe2",
+        "oklch": "oklch(84.3% 0.033 270.4)",
+        "darkTheme": "#aab4cf",
+        "tonalRamp": [
+          "oklch(15.0% 0.005 270.4)",
+          "oklch(26.4% 0.012 270.4)",
+          "oklch(37.9% 0.016 270.4)",
+          "oklch(49.3% 0.020 270.4)",
+          "oklch(60.7% 0.025 270.4)",
+          "oklch(72.1% 0.029 270.4)",
+          "oklch(83.6% 0.022 270.4)",
+          "oklch(95.0% 0.006 270.4)"
+        ]
+      },
+      "red": {
+        "role": "secondary",
+        "displayName": "Red Ink",
+        "canonical": "#c4122f",
+        "oklch": "oklch(52.4% 0.203 21.9)",
+        "darkTheme": "#ff7085",
+        "tonalRamp": [
+          "oklch(15.0% 0.071 21.9)",
+          "oklch(26.4% 0.145 21.9)",
+          "oklch(37.9% 0.170 21.9)",
+          "oklch(49.3% 0.196 21.9)",
+          "oklch(60.7% 0.184 21.9)",
+          "oklch(72.1% 0.159 21.9)",
+          "oklch(83.6% 0.087 21.9)",
+          "oklch(95.0% 0.021 21.9)"
+        ]
+      },
+      "red-soft": {
+        "role": "secondary",
+        "displayName": "Red Wash",
+        "canonical": "#fbe9ec",
+        "oklch": "oklch(94.9% 0.020 6.0)",
+        "darkTheme": "#3a1c26",
+        "tonalRamp": [
+          "oklch(15.0% 0.001 6.0)",
+          "oklch(26.4% 0.005 6.0)",
+          "oklch(37.9% 0.007 6.0)",
+          "oklch(49.3% 0.010 6.0)",
+          "oklch(60.7% 0.012 6.0)",
+          "oklch(72.1% 0.015 6.0)",
+          "oklch(83.6% 0.011 6.0)",
+          "oklch(95.0% 0.004 6.0)"
+        ]
+      },
+      "hl": {
+        "role": "tertiary",
+        "displayName": "Highlighter",
+        "canonical": "#ffdf3d",
+        "oklch": "oklch(90.4% 0.171 97.3)",
+        "darkTheme": "#e8c63a",
+        "tonalRamp": [
+          "oklch(15.0% 0.017 97.3)",
+          "oklch(26.4% 0.049 97.3)",
+          "oklch(37.9% 0.071 97.3)",
+          "oklch(49.3% 0.093 97.3)",
+          "oklch(60.7% 0.114 97.3)",
+          "oklch(72.1% 0.136 97.3)",
+          "oklch(83.6% 0.104 97.3)",
+          "oklch(95.0% 0.032 97.3)"
+        ]
+      },
+      "hl-soft": {
+        "role": "tertiary",
+        "displayName": "Highlighter Wash",
+        "canonical": "#fff4b8",
+        "oklch": "oklch(96.2% 0.077 98.9)",
+        "darkTheme": "#3a3418",
+        "tonalRamp": [
+          "oklch(15.0% 0.005 98.9)",
+          "oklch(26.4% 0.017 98.9)",
+          "oklch(37.9% 0.027 98.9)",
+          "oklch(49.3% 0.037 98.9)",
+          "oklch(60.7% 0.047 98.9)",
+          "oklch(72.1% 0.057 98.9)",
+          "oklch(83.6% 0.044 98.9)",
+          "oklch(95.0% 0.015 98.9)"
+        ]
+      },
+      "hl-ink": {
+        "role": "tertiary",
+        "displayName": "Highlighter Ink",
+        "canonical": "#4a3d00",
+        "oklch": "oklch(36.3% 0.075 95.4)",
+        "darkTheme": "#fff3b0",
+        "tonalRamp": [
+          "oklch(15.0% 0.034 95.4)",
+          "oklch(26.4% 0.066 95.4)",
+          "oklch(37.9% 0.073 95.4)",
+          "oklch(49.3% 0.064 95.4)",
+          "oklch(60.7% 0.054 95.4)",
+          "oklch(72.1% 0.045 95.4)",
+          "oklch(83.6% 0.023 95.4)",
+          "oklch(95.0% 0.005 95.4)"
+        ]
+      },
+      "device": {
+        "role": "tertiary",
+        "displayName": "Laptop Teal",
+        "canonical": "#0a7563",
+        "oklch": "oklch(50.4% 0.091 176.7)",
+        "darkTheme": "#4cd2ba",
+        "tonalRamp": [
+          "oklch(15.0% 0.033 176.7)",
+          "oklch(26.4% 0.067 176.7)",
+          "oklch(37.9% 0.079 176.7)",
+          "oklch(49.3% 0.090 176.7)",
+          "oklch(60.7% 0.081 176.7)",
+          "oklch(72.1% 0.069 176.7)",
+          "oklch(83.6% 0.038 176.7)",
+          "oklch(95.0% 0.009 176.7)"
+        ]
+      },
+      "device-soft": {
+        "role": "tertiary",
+        "displayName": "Laptop Wash",
+        "canonical": "#dcf1ec",
+        "oklch": "oklch(94.1% 0.023 179.9)",
+        "darkTheme": "#12352f",
+        "tonalRamp": [
+          "oklch(15.0% 0.002 179.9)",
+          "oklch(26.4% 0.006 179.9)",
+          "oklch(37.9% 0.009 179.9)",
+          "oklch(49.3% 0.012 179.9)",
+          "oklch(60.7% 0.015 179.9)",
+          "oklch(72.1% 0.017 179.9)",
+          "oklch(83.6% 0.013 179.9)",
+          "oklch(95.0% 0.005 179.9)"
+        ]
+      },
+      "ok": {
+        "role": "tertiary",
+        "displayName": "Settled Green",
+        "canonical": "#1f6f3a",
+        "oklch": "oklch(48.0% 0.113 150.6)",
+        "darkTheme": "#6fd28f",
+        "tonalRamp": [
+          "oklch(15.0% 0.043 150.6)",
+          "oklch(26.4% 0.086 150.6)",
+          "oklch(37.9% 0.101 150.6)",
+          "oklch(49.3% 0.112 150.6)",
+          "oklch(60.7% 0.097 150.6)",
+          "oklch(72.1% 0.083 150.6)",
+          "oklch(83.6% 0.045 150.6)",
+          "oklch(95.0% 0.011 150.6)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Cool Paper",
+        "canonical": "#f5f7fb",
+        "oklch": "oklch(97.6% 0.006 264.5)",
+        "darkTheme": "#0f1528",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 264.5)",
+          "oklch(26.4% 0.001 264.5)",
+          "oklch(37.9% 0.002 264.5)",
+          "oklch(49.3% 0.003 264.5)",
+          "oklch(60.7% 0.003 264.5)",
+          "oklch(72.1% 0.004 264.5)",
+          "oklch(83.6% 0.003 264.5)",
+          "oklch(95.0% 0.001 264.5)"
+        ]
+      },
+      "sheet": {
+        "role": "neutral",
+        "displayName": "Sheet White",
+        "canonical": "#ffffff",
+        "oklch": "oklch(100.0% 0.000 89.9)",
+        "darkTheme": "#161e36",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 89.9)",
+          "oklch(26.4% 0.000 89.9)",
+          "oklch(37.9% 0.000 89.9)",
+          "oklch(49.3% 0.000 89.9)",
+          "oklch(60.7% 0.000 89.9)",
+          "oklch(72.1% 0.000 89.9)",
+          "oklch(83.6% 0.000 89.9)",
+          "oklch(95.0% 0.000 89.9)"
+        ]
+      },
+      "sheet-2": {
+        "role": "neutral",
+        "displayName": "Sheet Tint",
+        "canonical": "#eef2f8",
+        "oklch": "oklch(96.0% 0.009 258.3)",
+        "darkTheme": "#1c2541",
+        "tonalRamp": [
+          "oklch(15.0% 0.001 258.3)",
+          "oklch(26.4% 0.002 258.3)",
+          "oklch(37.9% 0.003 258.3)",
+          "oklch(49.3% 0.004 258.3)",
+          "oklch(60.7% 0.006 258.3)",
+          "oklch(72.1% 0.007 258.3)",
+          "oklch(83.6% 0.005 258.3)",
+          "oklch(95.0% 0.002 258.3)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Hairline",
+        "canonical": "#dfe5ef",
+        "oklch": "oklch(92.0% 0.015 260.7)",
+        "darkTheme": "#29334f",
+        "tonalRamp": [
+          "oklch(15.0% 0.001 260.7)",
+          "oklch(26.4% 0.004 260.7)",
+          "oklch(37.9% 0.006 260.7)",
+          "oklch(49.3% 0.008 260.7)",
+          "oklch(60.7% 0.010 260.7)",
+          "oklch(72.1% 0.012 260.7)",
+          "oklch(83.6% 0.009 260.7)",
+          "oklch(95.0% 0.003 260.7)"
+        ]
+      },
+      "rule-2": {
+        "role": "neutral",
+        "displayName": "Hairline Strong",
+        "canonical": "#c5cfe0",
+        "oklch": "oklch(85.2% 0.026 261.1)",
+        "darkTheme": "#364262",
+        "tonalRamp": [
+          "oklch(15.0% 0.003 261.1)",
+          "oklch(26.4% 0.009 261.1)",
+          "oklch(37.9% 0.012 261.1)",
+          "oklch(49.3% 0.016 261.1)",
+          "oklch(60.7% 0.019 261.1)",
+          "oklch(72.1% 0.022 261.1)",
+          "oklch(83.6% 0.017 261.1)",
+          "oklch(95.0% 0.005 261.1)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Register Ink",
+        "canonical": "#17203a",
+        "oklch": "oklch(25.0% 0.051 268.1)",
+        "darkTheme": "#e9edf7",
+        "tonalRamp": [
+          "oklch(15.0% 0.027 268.1)",
+          "oklch(26.4% 0.050 268.1)",
+          "oklch(37.9% 0.044 268.1)",
+          "oklch(49.3% 0.037 268.1)",
+          "oklch(60.7% 0.031 268.1)",
+          "oklch(72.1% 0.024 268.1)",
+          "oklch(83.6% 0.012 268.1)",
+          "oklch(95.0% 0.002 268.1)"
+        ]
+      },
+      "ink-2": {
+        "role": "neutral",
+        "displayName": "Ink Muted",
+        "canonical": "#434c66",
+        "oklch": "oklch(41.9% 0.045 269.6)",
+        "darkTheme": "#bec6db",
+        "tonalRamp": [
+          "oklch(15.0% 0.019 269.6)",
+          "oklch(26.4% 0.037 269.6)",
+          "oklch(37.9% 0.043 269.6)",
+          "oklch(49.3% 0.041 269.6)",
+          "oklch(60.7% 0.036 269.6)",
+          "oklch(72.1% 0.030 269.6)",
+          "oklch(83.6% 0.016 269.6)",
+          "oklch(95.0% 0.004 269.6)"
+        ]
+      },
+      "ink-3": {
+        "role": "neutral",
+        "displayName": "Ink Quiet",
+        "canonical": "#5f6884",
+        "oklch": "oklch(52.0% 0.046 270.9)",
+        "darkTheme": "#98a2bd",
+        "tonalRamp": [
+          "oklch(15.0% 0.016 270.9)",
+          "oklch(26.4% 0.033 270.9)",
+          "oklch(37.9% 0.038 270.9)",
+          "oklch(49.3% 0.044 270.9)",
+          "oklch(60.7% 0.041 270.9)",
+          "oklch(72.1% 0.035 270.9)",
+          "oklch(83.6% 0.020 270.9)",
+          "oklch(95.0% 0.005 270.9)"
+        ]
+      },
+      "pencil": {
+        "role": "neutral",
+        "displayName": "Graphite Pencil",
+        "canonical": "#5d6271",
+        "oklch": "oklch(49.7% 0.025 270.9)",
+        "darkTheme": "#a7adbd",
+        "tonalRamp": [
+          "oklch(15.0% 0.009 270.9)",
+          "oklch(26.4% 0.018 270.9)",
+          "oklch(37.9% 0.021 270.9)",
+          "oklch(49.3% 0.025 270.9)",
+          "oklch(60.7% 0.022 270.9)",
+          "oklch(72.1% 0.019 270.9)",
+          "oklch(83.6% 0.010 270.9)",
+          "oklch(95.0% 0.002 270.9)"
+        ]
+      },
+      "pencil-soft": {
+        "role": "neutral",
+        "displayName": "Pencil Wash",
+        "canonical": "#eceef3",
+        "oklch": "oklch(94.9% 0.007 268.5)",
+        "darkTheme": "#232b44",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 268.5)",
+          "oklch(26.4% 0.002 268.5)",
+          "oklch(37.9% 0.003 268.5)",
+          "oklch(49.3% 0.003 268.5)",
+          "oklch(60.7% 0.004 268.5)",
+          "oklch(72.1% 0.005 268.5)",
+          "oklch(83.6% 0.004 268.5)",
+          "oklch(95.0% 0.001 268.5)"
+        ]
+      },
+      "cloud": {
+        "role": "neutral",
+        "displayName": "Cloud Slate",
+        "canonical": "#4f5974",
+        "oklch": "oklch(46.6% 0.046 268.8)",
+        "darkTheme": "#a9b3cc",
+        "tonalRamp": [
+          "oklch(15.0% 0.018 268.8)",
+          "oklch(26.4% 0.036 268.8)",
+          "oklch(37.9% 0.041 268.8)",
+          "oklch(49.3% 0.044 268.8)",
+          "oklch(60.7% 0.039 268.8)",
+          "oklch(72.1% 0.033 268.8)",
+          "oklch(83.6% 0.018 268.8)",
+          "oklch(95.0% 0.004 268.8)"
+        ]
+      },
+      "cloud-soft": {
+        "role": "neutral",
+        "displayName": "Cloud Wash",
+        "canonical": "#e6e9f1",
+        "oklch": "oklch(93.4% 0.011 269.5)",
+        "darkTheme": "#232b42",
+        "tonalRamp": [
+          "oklch(15.0% 0.001 269.5)",
+          "oklch(26.4% 0.003 269.5)",
+          "oklch(37.9% 0.004 269.5)",
+          "oklch(49.3% 0.006 269.5)",
+          "oklch(60.7% 0.007 269.5)",
+          "oklch(72.1% 0.009 269.5)",
+          "oklch(83.6% 0.007 269.5)",
+          "oklch(95.0% 0.002 269.5)"
+        ]
+      },
+      "focus": {
+        "role": "neutral",
+        "displayName": "Focus Blue",
+        "canonical": "#2a5bd7",
+        "oklch": "oklch(51.6% 0.198 264.2)",
+        "darkTheme": "#8eb0ff",
+        "tonalRamp": [
+          "oklch(15.0% 0.071 264.2)",
+          "oklch(26.4% 0.143 264.2)",
+          "oklch(37.9% 0.168 264.2)",
+          "oklch(49.3% 0.193 264.2)",
+          "oklch(60.7% 0.178 264.2)",
+          "oklch(72.1% 0.153 264.2)",
+          "oklch(83.6% 0.084 264.2)",
+          "oklch(95.0% 0.020 264.2)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The welcome headline only, max 18ch."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Page headings; 1.5rem at 640px and below."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Section headings and the quiz title in the context bar."
+      },
+      "title-sm": {
+        "displayName": "Title small",
+        "purpose": "Panel headings and the question prompt on Check."
+      },
+      "body-lg": {
+        "displayName": "Lede",
+        "purpose": "The lede under a page heading, max 62ch, ink-2."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Everything else; tabular figures, paragraphs max 70ch. Fields stay 16px so phones do not zoom."
+      },
+      "body-sm": {
+        "displayName": "Body small",
+        "purpose": "Small buttons, legends, secondary lines."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "Chips, pills, flags, register headings, hints."
+      },
+      "mark": {
+        "displayName": "Mark (Kalam)",
+        "purpose": "Figures inside marks and point totals in the answer margin. Pencil uses weight 400 in graphite."
+      },
+      "score": {
+        "displayName": "Score (Kalam)",
+        "purpose": "The ringed total; 1.85rem in the large ring."
+      }
+    },
+    "shadows": [
+      {
+        "name": "lift",
+        "value": "0 1px 2px rgba(23, 32, 58, 0.06), 0 6px 16px -8px rgba(23, 32, 58, 0.22)",
+        "dark": "0 1px 2px rgba(0, 0, 0, 0.4), 0 8px 20px -10px rgba(0, 0, 0, 0.7)",
+        "purpose": "Floating things only: welcome register excerpt, class covers, toast, skip link, current question in the list, sheet tile on hover."
+      },
+      {
+        "name": "cover-hover",
+        "value": "0 2px 4px rgba(23, 32, 58, .1), 0 14px 26px -12px rgba(23, 32, 58, .45)",
+        "purpose": "A class cover under a real pointer, with a 2px rise."
+      },
+      {
+        "name": "spine",
+        "value": "0 1px 2px rgba(23, 32, 58, .25)",
+        "purpose": "The small class cover beside each class on the Classes list."
+      },
+      {
+        "name": "focus-ring",
+        "value": "outline: 3px solid var(--focus); outline-offset: 2px",
+        "purpose": "Every keyboard-focusable element; fields use 2px with no offset."
+      },
+      {
+        "name": "needs-underline",
+        "value": "inset 0 -3px 0 var(--hl)",
+        "purpose": "A register cell the teacher should look at."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ink-draw",
+        "value": "250ms cubic-bezier(.3, .7, .4, 1)",
+        "purpose": "Pencil to pen: the red stroke draws over the pencil ghost; a second stroke starts 100ms later."
+      },
+      {
+        "name": "ghost-fade",
+        "value": "180ms ease-out, 200ms delay",
+        "purpose": "The pencil ghost fades out under the new ink."
+      },
+      {
+        "name": "ring-draw",
+        "value": "450ms ease-out, 100ms delay",
+        "purpose": "The score ring draws when a total settles."
+      },
+      {
+        "name": "toast-rise",
+        "value": "200ms cubic-bezier(.2, .8, .2, 1)",
+        "purpose": "A toast rises 8px into place."
+      },
+      {
+        "name": "control",
+        "value": "150ms (120ms on tabs, toggles, list items)",
+        "purpose": "Background, border and colour changes on controls."
+      },
+      {
+        "name": "press",
+        "value": "100ms, scale(.98)",
+        "purpose": "Pressed buttons, toggles, tabs and covers."
+      },
+      {
+        "name": "cell-settle",
+        "value": "200ms ease-out, 150ms delay",
+        "purpose": "A register cell's wash changing in place."
+      },
+      {
+        "name": "progress",
+        "value": "300ms ease-out",
+        "purpose": "Reading and download progress bars."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "0.01ms",
+        "purpose": "Under prefers-reduced-motion every transition and animation collapses; marks change without drawing."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "phone",
+        "value": "640px"
+      },
+      {
+        "name": "narrow",
+        "value": "860px"
+      },
+      {
+        "name": "answers-container",
+        "value": "760px (container query on the answer list)"
+      },
+      {
+        "name": "single-column",
+        "value": "1080px"
+      },
+      {
+        "name": "content-max",
+        "value": "1320px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Navy fill, the one main action in a region (\"Try a sample class\", \"Plan tomorrow's lesson\").",
+      "html": "<button class=\"ds-btn-primary\">Try a sample class</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--rule-2, #c5cfe0); font: 600 16px/1.5 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s, transform .1s; background: var(--cover, #1d2b55); border-color: var(--cover, #1d2b55); color: var(--cover-ink, #f3f5fb); } .ds-btn-primary:hover { background: var(--cover-2, #2a3b6d); border-color: var(--cover-2, #2a3b6d); } .ds-btn-primary:active { transform: scale(.98); } .ds-btn-primary:focus-visible { outline: 3px solid var(--focus, #2a5bd7); outline-offset: 2px; }"
+    },
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button-default",
+      "description": "Sheet white with a strong hairline; secondary actions and destructive actions alike (the confirm step carries the danger).",
+      "html": "<button class=\"ds-btn\">Mark my own class</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--rule-2, #c5cfe0); font: 600 16px/1.5 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s, transform .1s; background: var(--sheet, #ffffff); color: var(--ink, #17203a); } .ds-btn:hover { background: var(--sheet-2, #eef2f8); border-color: var(--ink-3, #5f6884); } .ds-btn:active { transform: scale(.98); } .ds-btn:focus-visible { outline: 3px solid var(--focus, #2a5bd7); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ink Button",
+      "kind": "button",
+      "refersTo": "button-ink",
+      "description": "Red fill only on the action that writes a red mark, with its key cap.",
+      "html": "<button class=\"ds-btn-ink\">Ink 1/2 <kbd class=\"ds-kbd\">Enter</kbd></button>",
+      "css": ".ds-btn-ink { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 40px; padding: 8px 16px; border-radius: 6px; border: 1px solid var(--rule-2, #c5cfe0); font: 600 16px/1.5 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; cursor: pointer; transition: background-color .15s, border-color .15s, color .15s, transform .1s; min-height: 32px; padding: 4px 10px; font-size: .875rem; background: var(--red, #c4122f); border-color: var(--red, #c4122f); color: #fff; } .ds-btn-ink:hover { filter: brightness(1.07); } .ds-btn-ink:active { transform: scale(.98); } .ds-btn-ink:focus-visible { outline: 3px solid var(--focus, #2a5bd7); outline-offset: 2px; } .ds-kbd { font: 600 .78em/1 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; border: 1px solid currentColor; border-bottom-width: 2px; border-radius: 4px; padding: 2px 5px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "40px field with its label above and a muted hint; 16px text so phones do not zoom.",
+      "html": "<label class=\"ds-field\">Class name<span class=\"ds-hint\">As your pupils know it</span><input class=\"ds-input\" placeholder=\"Science 7A\"></label>",
+      "css": ".ds-field { display: grid; gap: 6px; font: 600 .9375rem/1.5 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; color: var(--ink, #17203a); } .ds-hint { font-weight: 400; font-size: .8125rem; color: var(--ink-2, #434c66); } .ds-input { width: 100%; min-height: 40px; padding: 8px 10px; border: 1px solid var(--rule-2, #c5cfe0); border-radius: 6px; background: var(--sheet, #ffffff); color: var(--ink, #17203a); font: 400 16px/1.5 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; } .ds-input::placeholder { color: var(--ink-3, #5f6884); } .ds-input:focus-visible { outline: 2px solid var(--focus, #2a5bd7); outline-offset: 0; border-color: var(--focus, #2a5bd7); }"
+    },
+    {
+      "name": "Top Bar",
+      "kind": "nav",
+      "refersTo": "topbar",
+      "description": "The navy register cover: brand, main nav with a cover-ink underline on the current page, on-device status light, cloud counter.",
+      "html": "<header class=\"ds-topbar\"><span class=\"ds-brand\">Tickmark</span><nav class=\"ds-nav\"><a href=\"#\" aria-current=\"page\">Classes</a><a href=\"#\">Privacy</a></nav><span class=\"ds-spacer\"></span><span class=\"ds-light\"><i></i>Gemini Nano ready</span><span class=\"ds-counter\">Pupil photos sent<b>0</b></span></header>",
+      "css": ".ds-topbar { display: flex; align-items: center; gap: 18px; min-height: 56px; padding: 0 24px; background: var(--cover, #1d2b55); color: var(--cover-ink, #f3f5fb); font: 400 16px/1.5 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; } .ds-brand { font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; } .ds-nav { display: flex; gap: 2px; align-self: stretch; } .ds-nav a { display: flex; align-items: center; padding: 0 12px; color: var(--cover-ink-2, #c3cbe2); text-decoration: none; border-top: 3px solid transparent; border-bottom: 3px solid transparent; transition: color .12s; } .ds-nav a:hover { color: var(--cover-ink, #f3f5fb); } .ds-nav a[aria-current='page'] { color: var(--cover-ink, #f3f5fb); border-bottom-color: var(--cover-ink, #f3f5fb); font-weight: 700; } .ds-nav a:focus-visible { outline: 3px solid #8eb0ff; outline-offset: -3px; } .ds-spacer { flex: 1; } .ds-light { display: inline-flex; align-items: center; gap: 7px; font-size: .875rem; padding: 5px 10px; border-radius: 999px; background: var(--cover-2, #2a3b6d); } .ds-light i { width: 8px; height: 8px; border-radius: 50%; background: #4be0c5; box-shadow: 0 0 0 3px rgba(75, 224, 197, .22); } .ds-counter { font-size: .8125rem; color: var(--cover-ink-2, #c3cbe2); } .ds-counter b { margin-left: 4px; font-size: .95rem; color: #7ee9d3; }"
+    },
+    {
+      "name": "Step Tabs",
+      "kind": "nav",
+      "refersTo": "tab-active",
+      "description": "The context bar's four marking steps; navy underline on the current one, a highlighter count on what waits.",
+      "html": "<ul class=\"ds-tabs\"><li><a href=\"#\">Sheets</a></li><li><a href=\"#\" aria-current=\"page\">Check <span class=\"ds-count\">65</span></a></li><li><a href=\"#\">Results</a></li><li><a href=\"#\">Plan the lesson</a></li></ul>",
+      "css": ".ds-tabs { display: flex; gap: 2px; margin: 0; padding: 0; list-style: none; background: var(--sheet, #ffffff); border-bottom: 1px solid var(--rule, #dfe5ef); font: 400 16px/1.5 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; } .ds-tabs a { display: flex; align-items: center; gap: 8px; padding: 10px 14px; color: var(--ink-2, #434c66); text-decoration: none; border-bottom: 3px solid transparent; transition: background-color .12s, color .12s; } .ds-tabs a:hover { color: var(--ink, #17203a); background: var(--sheet-2, #eef2f8); } .ds-tabs a[aria-current='page'] { color: var(--ink, #17203a); font-weight: 700; border-bottom-color: var(--cover, #1d2b55); } .ds-tabs a:focus-visible { outline: 3px solid var(--focus, #2a5bd7); outline-offset: 2px; } .ds-count { font-size: .75rem; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: var(--hl, #ffdf3d); color: #1b1600; }"
+    },
+    {
+      "name": "Ink and Pencil Chips",
+      "kind": "chip",
+      "refersTo": "chip-ink",
+      "description": "Who marks a question type: solid red bar for code (ink), dashed graphite bar for Gemini Nano (pencil); plus the teal on-device pill and a highlighter flag.",
+      "html": "<span class=\"ds-chip ds-chip-ink\">One word</span> <span class=\"ds-chip ds-chip-pencil\">Short answer (key points)</span> <span class=\"ds-pill\"><i></i>On this laptop</span> <span class=\"ds-flag\">Check the spelling</span>",
+      "css": ".ds-chip, .ds-pill { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border-radius: 999px; font: 600 .8125rem/1.5 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; white-space: nowrap; } .ds-chip-ink { background: var(--red-soft, #fbe9ec); color: var(--red, #c4122f); } .ds-chip-ink::before { content: ''; width: 14px; height: 2px; border-radius: 2px; background: var(--red, #c4122f); } .ds-chip-pencil { background: var(--pencil-soft, #eceef3); color: var(--pencil, #5d6271); } .ds-chip-pencil::before { content: ''; width: 14px; border-top: 2px dashed var(--pencil, #5d6271); } .ds-pill { font-weight: 400; background: var(--device-soft, #dcf1ec); color: var(--device, #0a7563); } .ds-pill i { width: 7px; height: 7px; border-radius: 50%; background: currentColor; } .ds-flag { display: inline-flex; padding: 1px 8px; border-radius: 3px; background: var(--hl, #ffdf3d); color: #1b1600; font: 700 .8125rem/1.5 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; }"
+    },
+    {
+      "name": "Marks",
+      "kind": "custom",
+      "refersTo": "mark",
+      "description": "The signature: a red-ink tick (decided) beside a dashed graphite tick with a highlighter square (suggested, needs you). Hover the ink tick to replay pencil to pen.",
+      "html": "<span class=\"ds-mk ds-ink\" role=\"img\" aria-label=\"Right\"><svg viewBox=\"0 0 26 26\"><path pathLength=\"1\" d=\"M4 13.5C6.5 15.5 8.5 18 10 21C13 14 17 8.5 22 4\"/></svg></span> <span class=\"ds-mk ds-pencil ds-needs\" role=\"img\" aria-label=\"Suggested: full marks\"><svg viewBox=\"0 0 26 26\"><path d=\"M4 13.5C6.5 15.5 8.5 18 10 21C13 14 17 8.5 22 4\"/></svg></span>",
+      "css": ".ds-mk { display: inline-grid; place-items: center; width: 28px; height: 28px; position: relative; isolation: isolate; } .ds-mk svg { width: 100%; height: 100%; overflow: visible; } .ds-mk path { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; } .ds-ink path { stroke: var(--red, #c4122f); } .ds-pencil path { stroke: var(--pencil, #5d6271); stroke-width: 2.2; stroke-dasharray: 3 2.5; } .ds-needs::after { content: ''; position: absolute; inset: 1px; border-radius: 4px; background: var(--hl, #ffdf3d); opacity: .55; z-index: -1; } @media (prefers-reduced-motion: no-preference) { .ds-ink:hover path { stroke-dasharray: 1 2; stroke-dashoffset: 1.01; animation: ds-draw .25s cubic-bezier(.3, .7, .4, 1) forwards; } } @keyframes ds-draw { to { stroke-dashoffset: 0; } }"
+    },
+    {
+      "name": "Score Ring",
+      "kind": "custom",
+      "refersTo": "score-ring",
+      "description": "The total in Kalam inside a hand-drawn red ring; an undecided total is graphite, dashed, with \"so far\".",
+      "html": "<span class=\"ds-score\" role=\"img\" aria-label=\"Score 7 out of 10\"><svg viewBox=\"0 0 100 56\" preserveAspectRatio=\"none\"><path d=\"M58 5C26 1 5 13 5 30C6 50 46 57 76 50C97 45 99 21 77 10C66 5 52 4 40 7\"/></svg><span>7<small>/10</small></span></span> <span class=\"ds-score ds-open\" role=\"img\" aria-label=\"Score so far 5 of 10\"><svg viewBox=\"0 0 100 56\" preserveAspectRatio=\"none\"><path d=\"M58 5C26 1 5 13 5 30C6 50 46 57 76 50C97 45 99 21 77 10C66 5 52 4 40 7\"/></svg><span>5<small>/10</small><em>so far</em></span></span>",
+      "css": ".ds-score { position: relative; display: inline-grid; place-items: center; min-width: 74px; height: 46px; padding: 0 10px; color: var(--red, #c4122f); font: 700 1.3rem/1 'Kalam', 'Segoe Print', cursive; font-variant-numeric: tabular-nums; } .ds-score svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; } .ds-score path { fill: none; stroke: var(--red, #c4122f); stroke-width: 2.2; stroke-linecap: round; } .ds-score small { font-size: .7em; } .ds-score em { display: block; font: italic 600 .62rem/1 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; color: var(--pencil, #5d6271); margin-top: 2px; } .ds-open { color: var(--pencil, #5d6271); } .ds-open path { stroke: var(--pencil, #5d6271); stroke-dasharray: 4 3; }"
+    },
+    {
+      "name": "Register Row",
+      "kind": "custom",
+      "refersTo": "register-row",
+      "description": "A 38px register row: sticky name, ink and pencil cells, a red wash on a wrong cell, a pencil hatch on a waiting cell, the total behind a strong rule.",
+      "html": "<table class=\"ds-register\"><tbody><tr><th class=\"ds-who\">Chloe Martin</th><td class=\"ds-cell ds-wrong\"><span class=\"ds-m ds-mi\"><svg viewBox=\"0 0 26 26\"><path d=\"M6 6C10.5 10.5 13.5 13.5 18 18\"/><path d=\"M18 6C13.5 10.5 10.5 14 6 18\"/></svg></span></td><td class=\"ds-cell\"><span class=\"ds-m ds-mi\"><svg viewBox=\"0 0 26 26\"><path d=\"M4 13.5C6.5 15.5 8.5 18 10 21C13 14 17 8.5 22 4\"/></svg></span></td><td class=\"ds-cell ds-pending\"><span class=\"ds-m ds-mp\"><svg viewBox=\"0 0 26 26\"><path d=\"M4 13.5C6.5 15.5 8.5 18 10 21C13 14 17 8.5 22 4\"/></svg></span></td><td class=\"ds-total\">2½</td></tr></tbody></table>",
+      "css": ".ds-register { border-collapse: separate; border-spacing: 0; background: var(--sheet, #ffffff); border: 1px solid var(--rule, #dfe5ef); border-radius: 10px; font: 400 .9375rem/1.5 'Atkinson Hyperlegible Next Variable', 'Atkinson Hyperlegible', system-ui, 'Segoe UI', sans-serif; color: var(--ink, #17203a); } .ds-register th, .ds-register td { height: 38px; padding: 0 8px; border-bottom: 1px solid var(--rule, #dfe5ef); } .ds-who { text-align: left; min-width: 140px; font-weight: 600; border-right: 1px solid var(--rule-2, #c5cfe0); } .ds-cell { min-width: 44px; text-align: center; transition: background-color .2s ease-out .15s; } .ds-wrong { background: var(--red-soft, #fbe9ec); } .ds-pending { background: repeating-linear-gradient(135deg, transparent 0 5px, var(--pencil-soft, #eceef3) 5px 7px); } .ds-register tr:hover td { background-color: var(--sheet-2, #eef2f8); } .ds-m { display: inline-block; width: 28px; height: 28px; } .ds-m svg { width: 100%; height: 100%; overflow: visible; } .ds-m path { fill: none; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; } .ds-mi path { stroke: var(--red, #c4122f); } .ds-mp path { stroke: var(--pencil, #5d6271); stroke-width: 2.2; stroke-dasharray: 3 2.5; } .ds-total { text-align: right; padding-right: 14px; border-left: 1px solid var(--rule-2, #c5cfe0); color: var(--red, #c4122f); font: 700 1.1rem/1 'Kalam', 'Segoe Print', cursive; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Mark Register",
+    "overview": "Tickmark looks like the book a teacher keeps for a class: the class list down the left, the questions across, and a mark in every cell. A navy register cover (the top bar, primary buttons, the class covers on the welcome page) frames cool white paper. Everything on the paper is a working surface, not a dashboard: the register grid, panels ruled with hairlines, and one dominant work region per screen. The system turns down the SaaS dashboard of cards and KPI tiles. Results opens with one summary sentence and then the register itself.\n\nThe whole visual language exists to show **who made each mark**. Code and the teacher write in red ink, drawn as solid SVG strokes. Gemini Nano only suggests, so its marks are dashed graphite pencil. Highlighter yellow means \"this needs you\". Teal means \"on this laptop\" and slate means \"in the cloud\". Each of these colours carries one meaning and is not reused for decoration, so a teacher can read the state of a whole class at a glance. The tick, cross, half-tick, dash and question shapes, and hatching for \"waiting\", carry the same meaning without colour.\n\nDensity matches a real register: 38 px rows, tabular figures, sticky names and headings, and keyboard-first checking with one key per decision. The type is Atkinson Hyperlegible, chosen for legibility at night and for Indian-script fallbacks. The one hand-drawn voice is Kalam, and it is used only for the marks themselves. There is one authored motion: a pencil suggestion redrawn as a red-ink stroke when the teacher confirms it.",
+    "keyCharacteristics": [
+      "Navy register cover over cool white paper; light (\"Paper\") and dark (\"Chalkboard\") themes from the same token names.",
+      "Every colour has a single meaning: red ink = decided mark, graphite = suggestion, yellow = needs you, teal = laptop, slate = cloud.",
+      "Status reads in greyscale: distinct mark shapes, solid vs dashed strokes, hatched cells for waiting.",
+      "Dense, ruled, flat surfaces; one shadow token for things that float.",
+      "Atkinson Hyperlegible for every label and number (tabular); Kalam only for marks and scores.",
+      "One signature motion: pencil to pen in 250 ms, skipped under reduced motion."
+    ],
+    "rules": [
+      {
+        "name": "The Red Ink Rule",
+        "body": "Red is a mark someone stands behind: a stroke, a ringed score, a point total, the margin rule, the \"Ink\" chip, or the button that inks a mark. It is never interface chrome. Tabs, the current question, delete buttons and confirmations are navy or grey.",
+        "section": "colors"
+      },
+      {
+        "name": "The Highlighter Means You Rule",
+        "body": "Yellow appears only where the teacher has to act. If nothing is waiting, there is no yellow on the screen.",
+        "section": "colors"
+      },
+      {
+        "name": "The Laptop-or-Cloud Rule",
+        "body": "Teal is on this laptop, slate is the cloud, and the two are never swapped or used decoratively. Where data went is the product's claim, so its colour must stay honest.",
+        "section": "colors"
+      },
+      {
+        "name": "The Hand Is For Marks Rule",
+        "body": "Kalam sets marks, scores and point totals only. Nano's reasons, question numbers, headings and labels stay in Atkinson; Nano's reason is Atkinson italic in graphite.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Rule",
+        "body": "Every figure on screen is tabular, so register columns, totals and counts align without extra work.",
+        "section": "typography"
+      },
+      {
+        "name": "The Flat Register Rule",
+        "body": "Working surfaces (panels, the register, answer rows) never take a shadow. Only things that float or are lifted for a pointer do, and touch screens drop hover lifts.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Shape Is Meaning Rule",
+        "body": "Tick, cross, half-tick, dash and question mark are distinct shapes, solid is decided and dashed is suggested, so the register reads correctly in greyscale and for colour-blind teachers.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** make the register (or a ruled list) the first thing on a working screen, with one dominant work region taking most of the width.",
+      "**Do** draw every new mark state as its own shape and stroke (solid for decided, dashed for suggested), so it reads in greyscale.",
+      "**Do** keep red for marks, scores, point totals, the margin rule, the \"Ink\" chip and the inking action only (the Red Ink Rule).",
+      "**Do** show yellow only where the teacher must act, and teal or slate only to say where data was processed.",
+      "**Do** use Atkinson Hyperlegible with tabular figures for every label and number, and Kalam only inside marks and scores.",
+      "**Do** keep working surfaces flat: sheet white, 1 px hairlines, 6 px controls, 10 px panels; use the Lift shadow only for floating things.",
+      "**Do** give every motion a reduced-motion path, and keep 44 px targets and hidden keyboard legends on coarse pointers.",
+      "**Do** define both themes from the same token names; never hard-code a light-only colour in a component."
+    ],
+    "donts": [
+      "**Don't** build KPI tiles, stat-card rows or dashboard cards; put counts in a sentence or the register's foot row.",
+      "**Don't** use red for tabs, navigation markers, delete buttons, confirmations or decoration.",
+      "**Don't** set sentences, reasons, question numbers or headings in Kalam.",
+      "**Don't** credit cloud Gemini output to Gemini Nano, or colour a cloud reading teal.",
+      "**Don't** add uppercase eyebrows or kickers above headings; the context line goes after the heading.",
+      "**Don't** put shadows on panels, rows or the register, or lift on hover on touch screens.",
+      "**Don't** use text glyphs (\"−\", \"+\", \"✓\") as icons; use the drawn 24-unit, 1.8-stroke icon set."
+    ]
+  }
+}

@@ -94,3 +94,13 @@ describe('Outbox bodies and the student-photo counter are measured', async () =>
     expect(counters([{ ...base, blocked: true, nonSampleImages: 1 }])).toMatchObject({ studentPhotosSent: 0, studentPhotosBlocked: 1, blocked: 1 });
   });
 });
+
+describe('a stuck model service never hangs the app', () => {
+  it('availability() that never answers becomes not_responding within 8 s', async () => {
+    (globalThis as unknown as { LanguageModel?: unknown }).LanguageModel = { availability: () => new Promise(() => undefined) };
+    const t0 = Date.now();
+    expect(await deviceState()).toBe('not_responding');
+    expect(Date.now() - t0).toBeLessThan(9000);
+    delete (globalThis as unknown as { LanguageModel?: unknown }).LanguageModel;
+  }, 12000);
+});

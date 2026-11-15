@@ -74,6 +74,7 @@ function DevicePill() {
     return <span className="pill warn" role="status">{pct !== null && pct >= 90 ? 'Unpacking Gemini Nano…' : `Downloading Gemini Nano${pct !== null ? ` ${pct}%` : '…'}`}</span>;
   }
   if (d.state === 'downloadable') return <button className="btn small primary" onClick={() => downloadDeviceModel()}>Download on-device AI</button>;
+  if (d.state === 'not_responding') return <button className="pill warn" onClick={() => location.reload()} title="Chrome's on-device model stopped answering">On-device AI stuck: reload</button>;
   if (d.state === 'no_image') return <a className="pill warn" href={href.welcome()} title="Turn on image input in chrome://flags">Image reading is off</a>;
   return <a className="pill" href={href.welcome()} title="This browser can't run Gemini Nano. The sample class still works; your own classes use typed answers.">Sample: cloud mode</a>;
 }

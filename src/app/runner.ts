@@ -121,7 +121,7 @@ export async function requeueForDevice(quizId: string): Promise<number> {
 
 export function friendly(e: Error): string {
   switch (e.name) {
-    case 'DeviceUnavailable': return `${e.message} Student sheets are only ever read on this laptop, so Tickmark stopped instead of uploading.`;
+    case 'DeviceUnavailable': return (e as Error & { state?: string }).state === 'not_responding' ? 'The on-device model stopped responding. Reload the page (Ctrl+R), then click Read the rest: your sheets so far are saved.' : `${e.message} Student sheets are only ever read on this laptop, so Tickmark stopped instead of uploading.`;
     case 'GuardBlocked': case 'OffDeviceAnswer': case 'OutOfSpace': return e.message;
     case 'TimeoutError': return `${e.message}. Try this sheet again.`;
     case 'CancelledError': return 'Stopped.';

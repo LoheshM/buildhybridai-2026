@@ -107,12 +107,13 @@ export function keyInfo(k: QuestionKey): KeyInfo {
 }
 
 /** Does the key itself agree with the prompt? (Catches teacher typos before marking.) */
-export function keyProblem(k: QuestionKey): string | null {
-  const type = typeOf(k);
+export function keyProblem(kIn: QuestionKey): string | null {
+  const type = typeOf(kIn);
+  const k = isOpen(type) ? kIn : { ...kIn, answer: keyCore(kIn.answer), type };
   if (!k.answer.trim()) return 'Add an answer.';
   if (type === 'number' && !markQuantity(keyCore(k.answer), keyCore(k.answer)).status.startsWith('correct')) return 'The answer could not be read as a number.';
   if (type === 'algebra' && markAlgebra(keyCore(k.answer), keyCore(k.answer)).status !== 'correct') return 'The answer could not be read as algebra (for example x = 4 or 2x + 3).';
-  if (type === 'choice' && markChoice(k.answer, k.answer).status !== 'correct') return 'Use one option letter (A to H) or True/False.';
+  if (type === 'choice' && markChoice(k.answer, k.answer, k.prompt).status !== 'correct') return 'Use one option letter (A to H) or True/False.';
   if (type === 'passage' && !parseRubric(k.answer)) return 'Write the rubric as lines with marks, for example "Ideas 3; Organisation 2".';
   if (type === 'short' && k.answer.split(/\s*(?:\n|;)\s*/).filter((x) => x.trim()).length > 6) return 'Use at most 6 key points (separate them with ;).';
   if (type === 'passage' && (parseRubric(k.answer)?.length ?? 0) > 4) return 'Use at most 4 rubric lines.';
@@ -128,8 +129,9 @@ export function keyProblem(k: QuestionKey): string | null {
 }
 
 /** Marks one answer by its question type. */
-export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marked {
-  const type = typeOf(k);
+export function markAnswer(kIn: QuestionKey, read: string, crossedOut = ''): Marked {
+  const type = typeOf(kIn);
+  const k = isOpen(type) ? kIn : { ...kIn, answer: keyCore(kIn.answer), type };
   if (type === 'fraction') return { ...markFraction(k, read, crossedOut), type };
   const coRaw = (crossedOut ?? '').trim();
   const co = coRaw && coRaw.replace(/\s+/g, '') !== (read ?? '').replace(/\s+/g, '') ? coRaw : '';
@@ -138,15 +140,17 @@ export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marke
   if (isOpen(type)) return { ...base, status: 'pending' };
   if (type === 'number') {
     const v = markQuantity(keyCore(k.answer), read, k.tolerance ?? 0, k.prompt);
-    const flags = [...base.flags, ...(v.status === 'unreadable' ? [/[a-z]{3,}/i.test(read) ? 'letters' as const : 'unreadable' as const] : v.status === 'wrong' && !v.mistake ? ['unusual' as const] : [])];
+    // Nano sometimes adds a decimal point ("1200" read as "12.00"): a reading ending in ".00" is checked
+    const zeroPoint = /\d\.0+(?!\d)/.test(read) && !/\.\d/.test(k.answer);
+    const flags = [...base.flags, ...(v.status === 'unreadable' ? [/[a-z]{3,}/i.test(read) ? 'letters' as const : 'unreadable' as const] : v.status === 'wrong' && !v.mistake ? ['unusual' as const] : zeroPoint ? ['check_reading' as const] : [])];
     return { ...base, status: v.status, misconception: v.mistake, note: v.note, flags };
   }
   if (type === 'algebra') {
     const v = markAlgebra(keyCore(k.answer), read, k.prompt);
-    return { ...base, status: v.status, misconception: v.mistake, flags: [...base.flags, ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
+    return { ...base, status: v.status, misconception: v.mistake, flags: [...base.flags, ...(v.status === 'unreadable' ? ['unreadable' as const] : v.working ? ['check_reading' as const] : [])] };
   }
   if (type === 'choice') {
-    const v = markChoice(keyCore(k.answer), read);
+    const v = markChoice(k.answer, read, k.prompt);
     return { ...base, status: v.status, picked: v.picked ?? undefined, flags: [...base.flags, ...(v.two ? ['two_answers' as const] : v.status === 'unreadable' ? ['unreadable' as const] : [])] };
   }
   // word

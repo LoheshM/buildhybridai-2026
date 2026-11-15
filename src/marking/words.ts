@@ -29,8 +29,11 @@ export type ChoiceVerdict = { status: 'correct' | 'wrong' | 'unreadable'; picked
 /** A key that is one option letter, A to H ("F" included: true/false keys are written as words or T). */
 const isLetterKey = (key: string) => /^\(?[A-Ha-h]\)?[.)]?$/.test(key.trim());
 
-export function markChoice(key: string, read: string): ChoiceVerdict & { two?: boolean } {
-  const letterMode = isLetterKey(key);
+/** The key's letter mode: an option letter, except "F" (or "T") on a true/false question. */
+export const choiceLetterMode = (key: string, prompt = '') => isLetterKey(key) && !(/^\(?f\)?[.)]?$/i.test(key.trim()) && /\btrue\b|\bfalse\b|\bT\s*\/\s*F\b/i.test(prompt));
+
+export function markChoice(key: string, read: string, prompt = ''): ChoiceVerdict & { two?: boolean } {
+  const letterMode = choiceLetterMode(key, prompt);
   const k = normChoice(key, letterMode);
   // two different option letters ("D C", "B or C", "B and C", "B + C") is two answers, never the first one
   const joined = (read ?? '').replace(/\b(?:and|or|then|plus|also|&)\b|[+&]/gi, ' ');

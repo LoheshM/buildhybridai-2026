@@ -43,7 +43,7 @@ export function openAccuracy(sheets: SheetLike[], truth: OpenTruth[], refPoints:
       const ref = want.ref ? refPoints(m.q, want.ref) : null;
       if (ref === null) continue;
       o.refTotal++;
-      if (!m.suggestion) continue;
+      if (!m.suggestion || m.suggestion.where === 'recorded' || m.suggestion.where === 'in_cloud') continue;
       o.suggested++;
       if (Math.abs(m.suggestion.points - ref) < 0.01) o.agree++;
       if (Math.abs(m.suggestion.points - ref) <= 1) o.within1++;
@@ -94,7 +94,7 @@ export function markHarm(sheets: SheetLike[], truth: Truth[], keys: QuestionKey[
       h.total++;
       const open = m.type === 'short' || m.type === 'passage';
       const flagged = m.modelFlagged ?? (m.flags.some((f) => f !== 'teacher_changed') || m.status === 'unreadable');
-      if (flagged || open) h.needed++;
+      if (flagged || (open && m.status !== 'blank')) h.needed++;
       if (open) continue;
       h.answers++;
       const want = t.answers.find((x) => x.q === m.q)?.written ?? '';

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ensureAppCheck } from '../ai/firebase';
+import { currentSettings, ensureAppCheck } from '../ai/firebase';
 import { DEVICE_STATE_TEXT } from '../ai/gate';
 import { normalizeUpload } from '../ai/images';
 import { setRosterTokens, sha256Hex } from '../ai/netGuard';
@@ -38,7 +38,8 @@ export function Scan({ quizId }: { quizId: string }) {
   }), [quizId]);
   useEffect(() => { if (ctx?.cls) setRosterTokens(rosterTokens(ctx.cls.roster.map((s) => s.name))); }, [ctx?.cls]);
   useWakeLock(run.running);
-  useEffect(() => { if (ctx?.cls?.sample && d.state !== 'available' && d.state !== 'checking') ensureAppCheck(); }, [ctx?.cls?.sample, d.state]);
+  // reCAPTCHA only when a live cloud read of a made-up sheet can follow (0 by default: the recordings replay)
+  useEffect(() => { if (ctx?.cls?.sample && d.state !== 'available' && d.state !== 'checking' && currentSettings().sampleLiveReads > 0) ensureAppCheck(); }, [ctx?.cls?.sample, d.state]);
 
   if (!ctx) return <p className="muted">Loading sheets…</p>;
   if (!ctx.quiz || !ctx.cls) return <p>This quiz no longer exists. <a href={href.home()}>Back to classes</a></p>;
@@ -165,7 +166,7 @@ function ReadControls({ n, total, sample, state, progress, onStart, openQs = 0 }
   if (sample) {
     return (
       <div className="row spread">
-        <div><strong>{n} sheets waiting.</strong><div className="small muted">{DEVICE_STATE_TEXT[state as keyof typeof DEVICE_STATE_TEXT]?.title ?? 'Checking on-device AI'}. This made-up class uses cloud Gemini for 3 sheets and recorded readings for the rest.</div></div>
+        <div><strong>{n} sheets waiting.</strong><div className="small muted">{DEVICE_STATE_TEXT[state as keyof typeof DEVICE_STATE_TEXT]?.title ?? 'Checking on-device AI'}. Without on-device AI, this made-up class replays Gemini Nano's recorded readings of these sheets.</div></div>
         <button className="btn primary" onClick={() => onStart()} disabled={state === 'checking'}>Read {label}</button>
       </div>
     );

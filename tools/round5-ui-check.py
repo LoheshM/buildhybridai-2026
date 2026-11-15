@@ -48,6 +48,18 @@ with sync_playwright() as p:
     check('J5: deciding from the answer key leaves nothing waiting', done == 1)
     pg.get_by_role('button', name='Undo').click(); pg.wait_for_timeout(1500)
     check('J5: Undo puts the waiting marks back', pg.get_by_text('Everything is decided.').count() == 0)
+    # R6-4-01: typing a key whose detected type changes keeps every character
+    pg.goto('about:blank'); pg.goto(f'{URL}/#/new')
+    box = pg.get_by_label('Answer key 1')
+    box.click(); pg.keyboard.type('light gives energy; to make food', delay=20)
+    check('R6-4-01: typed key keeps every character', box.input_value() == 'light gives energy; to make food', box.input_value())
+    # R6-4-04: after clicking a question in the Check list, J/Enter still work
+    pg.goto('about:blank'); pg.goto(f'{URL}/#/quiz/sample-quiz-science/check/q/5')
+    pg.locator('.qnav button').nth(2).click(); pg.wait_for_timeout(800)
+    before = pg.locator('.ans.focus').count()
+    pg.keyboard.press('j'); pg.wait_for_timeout(300)
+    active = pg.evaluate("document.activeElement && document.activeElement.tagName")
+    check('R6-4-04: shortcuts work after clicking a question', active != 'BUTTON' and pg.locator('.ans.focus').count() >= 1, f'active {active}, focus rows {before}')
     # F4-04
     pg.goto('about:blank'); pg.goto(f'{URL}/#/quiz/sample-quiz-english/reteach')
     pg.get_by_role('button', name=re.compile('Send the class totals')).click()

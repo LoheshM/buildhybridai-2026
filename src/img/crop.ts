@@ -28,7 +28,7 @@ export const STRIP_ROWS = 10;
  * Share of "ink" pixels inside a box, ignoring a border band (the printed frame and its shadow).
  * Code decides a box is empty: asked about an empty box, Gemini Nano invented an answer.
  */
-export function inkShare(c: OffscreenCanvas, borderPx = 13): number {
+export function inkShare(c: OffscreenCanvas, borderPx = 13, ratio = 0.7): number {
   const ctx = c.getContext('2d', { willReadFrequently: true })!;
   const { data, width: w, height: h } = ctx.getImageData(0, 0, c.width, c.height);
   const iw = w - 2 * borderPx, ih = h - 2 * borderPx;
@@ -39,7 +39,7 @@ export function inkShare(c: OffscreenCanvas, borderPx = 13): number {
   const paper = sorted[Math.floor(sorted.length * 0.6)]; // the page's own brightness in this box
   const dark = new Uint8Array(iw * ih);
   // relative to the box's own paper, so a dim photo's ink still counts (round 5 distortion check)
-  for (let i = 0; i < lum.length; i++) dark[i] = lum[i] < paper * 0.7 ? 1 : 0;
+  for (let i = 0; i < lum.length; i++) dark[i] = lum[i] < paper * ratio ? 1 : 0;
   // straight lines are print (a box edge left in by a slightly skewed photo), not handwriting
   for (let y = 0; y < ih; y++) { let n = 0; for (let x = 0; x < iw; x++) n += dark[y * iw + x]; if (n > iw * 0.4) for (let x = 0; x < iw; x++) dark[y * iw + x] = 0; }
   // columns: only a near-full-height line close to the frame (a skewed box edge); an upright "1" or "l" stays ink
@@ -73,17 +73,6 @@ export function trimToInk(c: OffscreenCanvas, pad = 14): OffscreenCanvas {
   return out;
 }
 
-/** Page strips (x, y, w, h in mm): the start of the printed title, and the same strip turned 180°, which is blank paper. */
-const TITLE_STRIP: [number, number, number, number] = [30, 14, 45, 8];
-const BOTTOM_STRIP: [number, number, number, number] = [210 - 30 - 45, 297 - 14 - 8, 45, 8];
-/** Share of clearly dark pixels (print or ink) in a canvas. */
-function darkShare(c: OffscreenCanvas): number {
-  const { data } = c.getContext('2d', { willReadFrequently: true })!.getImageData(0, 0, c.width, c.height);
-  const lum: number[] = [];
-  for (let p = 0; p < data.length; p += 4) lum.push((data[p] * 299 + data[p + 1] * 587 + data[p + 2] * 114) / 1000);
-  const paper = [...lum].sort((x, y) => x - y)[Math.floor(lum.length * 0.6)];
-  return lum.filter((v) => v < paper * 0.7).length / lum.length;
-}
 
 /**
  * How much of a box's printed frame is where the layout says (0-1). The cut keeps a 1.5 mm margin, so the
@@ -106,7 +95,9 @@ export function frameScore(c: OffscreenCanvas, padPx = Math.round(1.5 * PX_PER_M
   return n ? hit / n : 0;
 }
 
-export const BLANK_BELOW = 0.002; // blank boxes measure 0; one handwritten letter about 0.0065
+export const BLANK_BELOW = 0.002;
+/** Faint pencil: about 18% darker than the paper. */
+const FAINT = 0.82; // blank boxes measure 0; one handwritten letter about 0.0065
 
 async function bitmapOf(b: Blob) { return createImageBitmap(b, { imageOrientation: 'from-image' }); }
 
@@ -135,10 +126,15 @@ export async function cutAnswerSheet(photo: Blob, keys: QuestionKey[]): Promise<
   // The four squares are identical, so a photo taken upside down maps every box onto the wrong place.
   // The printed title sits top left and the matching strip at the bottom right is always empty paper:
   // if the bottom strip holds the print, the sheet is upside down, and the corners are swapped round.
-  if (darkShare(warp(full, h, ...BOTTOM_STRIP)) > 2 * darkShare(warp(full, h, ...TITLE_STRIP)) + 0.004) {
-    h = pageToImage([corners[2], corners[3], corners[0], corners[1]]);
-  }
+  // Round 6 (E6-06): a shadow on an upright photo made the old print test flip it. The printed frames decide:
+  // where they line up with this quiz's boxes, that is the right way up.
   const boxes = layout(keys);
+  const orient = (hh: H) => { const bs = boxes.slice(0, 5); return bs.reduce((a, b) => a + frameScore(boxCanvas(full, hh, b)), 0) / bs.length; };
+  const upright = orient(h);
+  if (upright < 0.8) {
+    const turned = pageToImage([corners[2], corners[3], corners[0], corners[1]]);
+    if (orient(turned) > upright + 0.15) h = turned;
+  }
   const cut = (b: Box) => boxCanvas(full, h, b);
   const nameCanvas = cut(boxes[0]);
   const name = await nameCanvas.convertToBlob({ type: 'image/png' });
@@ -147,7 +143,9 @@ export async function cutAnswerSheet(photo: Blob, keys: QuestionKey[]): Promise<
   // box scores 1.0; a photo of another quiz's sheet has at least one box below 0.6. A sheet with the same layout
   // from another quiz can't be told apart this way.
   if ([nameCanvas, ...answers.map(({ c }) => c)].some((c) => frameScore(c) < FRAME_MIN)) throw new LayoutMismatch();
-  const blank = answers.filter(({ c }) => inkShare(c) < BLANK_BELOW).map(({ b }) => b.q);
+  // blank only if there is no ink at all, faint pencil included (round 6, E6-08): a faint answer goes to Nano,
+  // and if it comes back empty the teacher is asked (unread ink), never a silent 0
+  const blank = answers.filter(({ c }) => inkShare(c) < BLANK_BELOW && inkShare(c, 13, FAINT) < BLANK_BELOW).map(({ b }) => b.q);
   const written = answers.filter(({ b }) => !blank.includes(b.q));
   // the name box rides on the same strip, so one on-device call reads the whole sheet
   // each chunk repeats the Name row, so every strip is read with the same prompt
@@ -196,7 +194,7 @@ export const stripImage = (rows: { label: string; c: OffscreenCanvas }[]) => str
 function warp(img: ImageData, h: H, x: number, y: number, w: number, hgt: number, ppm = PX_PER_MM): OffscreenCanvas {
   const ow = Math.round(w * ppm), oh = Math.round(hgt * ppm);
   const out = new OffscreenCanvas(ow, oh);
-  const ctx = out.getContext('2d')!;
+  const ctx = out.getContext('2d', { willReadFrequently: true })!; // read back by the ink and frame checks
   const dst = ctx.createImageData(ow, oh);
   const { width: W, height: Hh, data } = img;
   for (let j = 0; j < oh; j++) for (let i = 0; i < ow; i++) {

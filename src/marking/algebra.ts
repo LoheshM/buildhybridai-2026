@@ -121,7 +121,7 @@ const value = (s: string): number | null => {
 };
 
 export type AlgebraMistake = 'sign_error' | 'inverse_operation' | 'not_solved';
-export interface AlgebraVerdict { status: 'correct' | 'wrong' | 'unreadable'; mistake: AlgebraMistake | null }
+export interface AlgebraVerdict { status: 'correct' | 'wrong' | 'unreadable'; mistake: AlgebraMistake | null; working?: boolean }
 
 /**
  * Solves a linear equation "2x + 3 = 11" by evaluating both sides at two points, and lists the
@@ -158,7 +158,13 @@ const round6 = (x: number) => Math.round(x * 1e6) / 1e6;
 
 export function markAlgebra(keyText: string, readText: string, prompt = ''): AlgebraVerdict {
   // "= 12" and "x = 4." are the answer with a stray sign or full stop
-  const read = readText.trim().replace(/^=\s*/, '').replace(/\.$/, '').trim();
+  let read = readText.trim().replace(/^=\s*/, '').replace(/\.$/, '').trim();
+  // working then the answer: "x = 8/2 = 4" or "2x=8 4" (crossed-out working read together with the answer)
+  const tail = read.match(/^(.*=\s*\S+)\s+(-?[\d./]+)$/); // a whole equation, then a value: \"2x = 8\" alone is not working plus an answer
+  let working = false;
+  if (tail && compile(tail[2])) { read = tail[2]; working = true; }
+  else if ((read.match(/=/g) ?? []).length >= 2) { read = read.slice(read.lastIndexOf('=') + 1).trim(); working = true; }
+  if (working) { const v = markAlgebra(keyText, read, prompt); return { ...v, working: true }; }
   if (!read) return { status: 'unreadable', mistake: null };
   const key = splitAssignment(keyText);
   const ans = splitAssignment(read);

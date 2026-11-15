@@ -8,6 +8,7 @@ export interface Quantity { value: Frac; unit: string; percent: boolean; text: s
 /** Unit aliases → canonical symbol. Kept small and school-shaped on purpose. */
 const ALIASES: Record<string, string> = {
   mm: 'mm', millimetre: 'mm', millimetres: 'mm', millimeter: 'mm', millimeters: 'mm',
+  cms: 'cm', mms: 'mm', kms: 'km', kgs: 'kg', gms: 'g', mls: 'ml',
   cm: 'cm', centimetre: 'cm', centimetres: 'cm', centimeter: 'cm', centimeters: 'cm',
   m: 'm', metre: 'm', metres: 'm', meter: 'm', meters: 'm',
   km: 'km', kilometre: 'km', kilometres: 'km', kilometer: 'km', kilometers: 'km',
@@ -49,7 +50,7 @@ export function parseQuantity(raw: string | null | undefined): Quantity | null {
   if (cur) { unit = cur[1]; s = s.slice(cur[0].length); }
   // thousands separators: "1,250" (but not "1,5" which some students use as a decimal comma)
   // "0,125" is a decimal comma: a number never starts with a thousands group of 0
-  s = s.replace(/^(-?0),(\d+)$/, '$1.$2').replace(/(\d),(\d{3})(?!\d)/g, '$1$2').replace(/^(-?\d+),(\d{1,2})(?!\d)/, '$1.$2');
+  s = s.replace(/^(-?0),(\d+)(?=\s*[^\d,]*$)/, '$1.$2').replace(/(\d),(\d{3})(?!\d)/g, '$1$2').replace(/^(-?\d+),(\d{1,2})(?!\d)/, '$1.$2');
   const m = s.match(/^(-?\s*(?:\d+(?:\.\d*)?|\.\d+)(?:\s+\d+\/\d+|\/\d+)?)\s*(%|[^\d\s].*)?$/);
   if (!m) return null;
   // "- 12" → "-12"; "1 1/2" keeps its space (a mixed number)
@@ -85,7 +86,8 @@ export function markQuantity(keyText: string, readText: string, tolerance = 0, p
   const close = (a: Frac, b: Frac) => (tolerance > 0 ? Math.abs(toNum(a) - toNum(b)) <= tolerance + 1e-12 : eq(a, b));
   // the same number with or without its % sign: "45%" for 45 is right; "45" for 45% is missing its sign
   if (!k.unit && !s.unit && k.percent !== s.percent && eq(k.value, s.value)) {
-    return k.percent ? { status: 'partial', mistake: 'missing_unit', note: 'The % sign is missing' } : { status: 'correct', mistake: null, note: 'Written as a percentage' };
+    if (k.percent) return { status: 'partial', mistake: 'missing_unit', note: 'The % sign is missing' };
+    return /%|percent/i.test(prompt) ? { status: 'correct', mistake: null, note: 'Written as a percentage' } : { status: 'wrong', mistake: 'wrong_unit' };
   }
 
   // "100 °" for a key of "100 °C": the C was not written (or not read); the degree sign says what is meant

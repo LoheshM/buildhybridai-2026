@@ -150,5 +150,7 @@ export const FIXED_VOCAB: ReadonlySet<string> = (() => {
     text.push(totalsPrompt(all), totalsPrompt(all, true));
   }
   for (const h of Object.values(HINT)) text.push(h);
+  // the SDK's request wrapper and Tickmark's response schemas (round 6, R6-S3)
+  text.push('user model application json object array integer string number boolean title focus ifwrong hingequestion passage short word choice fraction algebra', ...Object.keys(HINT));
   return new Set(fold(text.join(' ')).split(' ').filter(Boolean));
 })();

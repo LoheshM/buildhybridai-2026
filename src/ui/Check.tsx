@@ -153,7 +153,7 @@ function ByQuestion({ quiz, cls, sheets, q, save }: { quiz: QuizRec; cls: ClassR
         {quiz.keys.map((k) => {
           const w = waitingIn(k);
           return (
-            <button key={k.q} aria-current={k.q === key.q} onClick={() => go(href.checkQ(quiz.id, k.q))}>
+            <button key={k.q} aria-current={k.q === key.q} onClick={(e) => { e.currentTarget.blur(); go(href.checkQ(quiz.id, k.q)); }}>
               <span className="qn">Q{k.q}</span>
               <span className="clip small">{QTYPES[typeOf(k)].short}</span>
               {w > 0 ? <span className="flag soft" aria-label={`${w} waiting`}>{w}</span> : <span style={{ color: 'var(--ok)' }} aria-label="all decided"><Icon name="check" size={16} /></span>}
@@ -241,7 +241,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
   const accept = useCallback(() => {
     if (open) { if (m.suggestion || m.checked) onChange(decideOpen(k, m)); else return; }
     else if (m.status !== 'unreadable') onChange({ ...m, checked: true });
-    else return;
+    else { setEditing(true); return; } // Enter on a row Tickmark couldn't read: type what it says
     onDone();
   }, [k, m, open, onChange, onDone]);
   const undecided = m.status === 'pending' && !m.checked;
@@ -285,7 +285,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
         {sheet.crops?.[m.q] && <Crop id={sheet.crops[m.q]} label={`Q${m.q} as the pupil wrote it`} />}
         {editing ? (
           <div className="row" style={{ marginTop: 4 }}>
-            {open ? <textarea data-student autoFocus spellCheck={false} autoCorrect="off" autoCapitalize="off" value={text} onChange={(e) => setText(e.target.value)} aria-label="Corrected reading" style={{ minHeight: 70 }} />
+            {open ? <textarea data-student autoFocus spellCheck={false} autoCorrect="off" autoCapitalize="off" value={text} onChange={(e) => setText(e.target.value)} aria-label="Corrected reading" style={{ minHeight: 70 }} onKeyDown={(e) => { if (e.key === 'Escape') { setEditing(false); setText(m.read); } }} />
               : <input data-student autoFocus spellCheck={false} autoCorrect="off" autoCapitalize="off" value={text} onChange={(e) => setText(e.target.value)} aria-label="Corrected reading" style={{ maxWidth: 260 }} onKeyDown={(e) => { if (e.key === 'Enter') correct(text); if (e.key === 'Escape') setEditing(false); }} />}
             <button className="btn small primary" onClick={() => correct(text)}>Save reading</button>
             <button className="btn small quiet" onClick={() => { setEditing(false); setText(m.read); }}>Cancel</button>

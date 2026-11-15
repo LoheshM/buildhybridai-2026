@@ -24,9 +24,12 @@ export function findRosterNames(text: string, tokens: string[], ignore: Readonly
   const hits: NameHit[] = [];
   for (const tok of tokens) {
     if (VOCAB.has(tok) || ignore.has(tok)) continue;
-    // Indian-script names take case endings written onto the word (பிரியாவின் = "Priya's"): match the start of a word
-    const prefix = tok.length >= 3 && !/[a-z]/.test(tok);
-    const at = hay.indexOf(prefix ? ` ${tok}` : ` ${tok} `);
+    // Indian-script names take case endings written onto the word (பிரியாவின் = "Priya's"): match the start of a word,
+    // and for a name ending in a consonant, its stem (கண்ணன் → கண்ணனின், Murugan, Selvam → செல்வத்தின், Malayalam chillu)
+    const indic = !/[a-z]/.test(tok);
+    let at = -1;
+    if (!indic || [...tok].length < 3) at = hay.indexOf(` ${tok} `);
+    else for (const stem of stems(tok)) { at = hay.indexOf(` ${stem}`); if (at >= 0) break; }
     if (at >= 0) hits.push({ token: tok, at });
   }
   return hits;
@@ -38,4 +41,17 @@ export function stringValues(v: unknown, out: string[] = []): string[] {
   else if (Array.isArray(v)) v.forEach((x) => stringValues(x, out));
   else if (v && typeof v === 'object') Object.values(v).forEach((x) => stringValues(x, out));
   return out;
+}
+
+const CHILLU: Record<string, string> = { 'ൻ': 'ന', 'ർ': 'ര', 'ൽ': 'ല', 'ൾ': 'ള', 'ൺ': 'ണ', 'ൿ': 'ക' };
+const VIRAMA = /[\u094D\u09CD\u0A4D\u0ACD\u0B4D\u0BCD\u0C4D\u0CCD\u0D4D]$/u;
+/** The forms an Indian-script name can start with once a case ending is written on (round 6, R6-S1). Stems of 3+ code points only. */
+export function stems(tok: string): string[] {
+  const out = new Set<string>([tok]);
+  const base = [...tok].map((ch) => CHILLU[ch] ?? ch).join('');
+  out.add(base);
+  const noVirama = base.replace(VIRAMA, '');
+  out.add(noVirama);
+  if (/ம்$/u.test(base)) out.add(base.replace(/ம்$/u, '')); // Tamil -ம் becomes -த்த- before an ending (செல்வம் → செல்வத்தின்)
+  return [...out].filter((x) => [...x].length >= 3);
 }

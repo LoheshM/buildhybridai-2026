@@ -48,7 +48,8 @@ describe('round 5 engine pins', () => {
     expect(markAlgebra('4x - x^2', '-x^2 + 4x').status).toBe('correct');
   });
   it('E8 a percentage written with its sign is the number the key asks for', () => {
-    expect(markQuantity('45', '45%').status).not.toBe('wrong');
+    expect(markQuantity('45', '45%', 0, 'What percentage of the class walked?').status).not.toBe('wrong');
+    expect(markQuantity('45', '45%', 0, 'Measure the angle.').status).toBe('wrong'); // round 6 E6-16
     expect(markQuantity('45%', '45').status).toBe('partial');
   });
   it('E9 "4 = x" is solved', () => { expect(markAlgebra('x = 4', '4 = x').status).toBe('correct'); });

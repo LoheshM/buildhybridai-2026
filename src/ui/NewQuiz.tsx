@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { go, href } from '../app/router';
 import { SAMPLES, sampleManifest, type SampleKey } from '../app/boot';
 import { keyProblem, outOfFor, typeOf, type QuestionKey } from '../marking/mark';
@@ -26,6 +26,7 @@ export function NewQuiz() {
   const [rows, setRows] = useState<Row[]>([EMPTY, EMPTY, EMPTY]);
   const [credit, setCredit] = useState(0.5);
   const [error, setError] = useState<string | null>(null);
+  useEffect(() => { setError(null); }, [rows, title, className, rosterText]); // an error is about what was there when Save was pressed
   const [extract, setExtract] = useState('');
 
   const roster = useMemo(() => parseRoster(rosterText), [rosterText]);
@@ -111,9 +112,10 @@ export function NewQuiz() {
                     <td className="n">{i + 1}</td>
                     <td><span className="m-label">Question {i + 1} as printed</span><textarea rows={r.prompt.length > 34 ? 2 : 1} style={{ minHeight: 40 }} aria-label={`Question ${i + 1} as printed`} value={r.prompt} placeholder={i === 0 ? 'e.g. 2/3 + 1/6' : i === 1 ? 'e.g. Why do plants need light?' : 'e.g. Which gas do plants take in? A) oxygen B) carbon dioxide'} onChange={(e) => set(i, { prompt: e.target.value })} spellCheck={false} /></td>
                     <td><span className="m-label">Answer key</span>
-                      {t === 'short' || t === 'passage'
-                        ? <textarea aria-label={`Answer key ${i + 1}`} rows={3} style={{ minHeight: 84 }} value={r.answer} placeholder={t === 'passage' ? 'e.g. Rubric: Ideas 3; Organisation 2' : 'e.g. light gives energy; to make food'} onChange={(e) => set(i, { answer: e.target.value })} className={prob ? 'bad' : ''} spellCheck={false} />
-                        : <input aria-label={`Answer key ${i + 1}`} value={r.answer} placeholder={i === 0 ? 'e.g. 5/6' : i === 1 ? 'e.g. light gives energy; to make food' : 'e.g. B'} onChange={(e) => set(i, { answer: e.target.value })} className={prob ? 'bad' : ''} spellCheck={false} />}
+                      {/* one element whatever the detected type, so focus never drops while typing (round 6, R6-4-01) */}
+                      <textarea aria-label={`Answer key ${i + 1}`} rows={t === 'short' || t === 'passage' ? 3 : 1} style={{ minHeight: t === 'short' || t === 'passage' ? 84 : 40 }} value={r.answer}
+                        placeholder={t === 'passage' ? 'e.g. Rubric: Ideas 3; Organisation 2' : t === 'short' ? 'e.g. light gives energy; to make food' : i === 0 ? 'e.g. 5/6' : i === 1 ? 'e.g. light gives energy; to make food' : 'e.g. B'}
+                        onChange={(e) => set(i, { answer: e.target.value })} className={prob ? 'bad' : ''} spellCheck={false} />
                       {has && prob && <div className="problem" role="alert">{prob}</div>}
                       {has && !prob && t === 'short' && <div className="tiny muted" style={{ marginTop: 4 }}>{keyPoints(r.answer).length} key point{keyPoints(r.answer).length === 1 ? '' : 's'}, {outOfFor(k)} mark{outOfFor(k) === 1 ? '' : 's'}</div>}
                       {has && !prob && t === 'passage' && <div className="tiny muted" style={{ marginTop: 4 }}>{(parseRubric(r.answer) ?? []).map((l) => `${l.line} ${l.max}`).join(' · ')}</div>}

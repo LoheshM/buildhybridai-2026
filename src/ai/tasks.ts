@@ -51,7 +51,7 @@ function withTimeout<T>(p: Promise<T>, ms: number, what: string): Promise<T> {
   return Promise.race([p, new Promise<never>((_, rej) => { t = setTimeout(() => rej(new TimeoutError(ms, what)), ms); })]).finally(() => clearTimeout(t));
 }
 
-interface CallOpts { queue: boolean; timeoutMs: number; studentLock?: boolean; what?: string; schema?: object; cloudModel?: string }
+interface CallOpts { queue: boolean; timeoutMs: number; studentLock?: boolean; what?: string; schema?: object; cloudModel?: string; note?: string }
 interface CallResult { text: string; where: Where; ms: number; heldBack?: string }
 
 async function call(task: Task, mode: Mode, parts: Part[], dataClass: DataClass, label: string, o: CallOpts): Promise<CallResult> {
@@ -64,14 +64,15 @@ async function call(task: Task, mode: Mode, parts: Part[], dataClass: DataClass,
     const r = o.queue ? await enqueue(run, o.timeoutMs, o.what) : await withTimeout(run(), o.timeoutMs, o.what ?? 'cloud Gemini');
     const where: Where = r.response.inferenceSource === 'on_device' ? 'on_device' : 'in_cloud';
     const heldBack = blockCount() > blocksBefore ? lastBlockReason() : undefined;
-    ledger.addCall({ task: label, dataClass, mode, where, ms: Math.round(performance.now() - t0), ok: true, note: heldBack ? `Tickmark held back the cloud request (${heldBack}); Gemini Nano answered here.` : undefined });
+    ledger.addCall({ task: label, dataClass, mode, where, ms: Math.round(performance.now() - t0), ok: true, note: heldBack ? `Tickmark held back the cloud request (${heldBack}); Gemini Nano answered here.` : o.note });
     return { text: r.response.text(), where, ms: Math.round(performance.now() - t0), heldBack };
   } catch (e) {
     // A hung on-device prompt would block every later on-device call on this page: cancel it.
     if ((e as Error).name === 'TimeoutError') resetModel(task, mode);
     // The SDK wraps errors thrown inside fetch; recover our own guard's verdict from its counter.
     const err = blockCount() > blocksBefore ? new GuardBlocked(lastBlockReason() ?? 'blocked') : (e as Error);
-    ledger.addCall({ task: label, dataClass, mode, where: err.name === 'GuardBlocked' ? 'blocked' : 'local', ms: Math.round(performance.now() - t0), ok: false, note: err.message.slice(0, 200) });
+    const q429 = /429|RESOURCE_EXHAUSTED|quota/i.test(err.message);
+    ledger.addCall({ task: label, dataClass, mode, where: err.name === 'GuardBlocked' ? 'blocked' : 'local', ms: Math.round(performance.now() - t0), ok: false, note: q429 ? (/per day|PerDay/i.test(err.message) ? "The cloud model's free daily allowance is used up" : 'The free cloud AI is busy (rate limit)') : err.message.slice(0, 200) });
     throw err;
   }
 }
@@ -267,8 +268,7 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
       if (alt && classifyPlanError(e as Error).kind === 'quota_day' && canCallCloud()) {
         noteCloudCall();
         try {
-          const r = await call('classTotals', InferenceMode.ONLY_IN_CLOUD, [totalsPrompt(totals)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: PLAN_TIMEOUT_CLOUD_MS, what: 'cloud Gemini', cloudModel: alt });
-          ledger.addCall({ task: 'Reteach plan and parent notes', dataClass: 'totals', mode: InferenceMode.ONLY_IN_CLOUD, where: 'in_cloud', ms: r.ms, ok: true, note: `Written by ${alt}: the daily allowance of ${currentSettings().cloudModel} was used up` });
+          const r = await call('classTotals', InferenceMode.ONLY_IN_CLOUD, [totalsPrompt(totals)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: PLAN_TIMEOUT_CLOUD_MS, what: 'cloud Gemini', cloudModel: alt, note: `Written by ${alt}: the daily allowance of ${currentSettings().cloudModel} was used up` });
           return { response: parseJson(r.text) as TotalsResponse, where: r.where, ms: r.ms, mode: InferenceMode.ONLY_IN_CLOUD, payload: totals, note: `written by ${alt}` };
         } catch { /* fall through to the laptop or the recording */ }
       }

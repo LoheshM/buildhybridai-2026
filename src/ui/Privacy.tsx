@@ -46,6 +46,7 @@ export function Privacy() {
             <li><b>{calls.filter((e) => e.where === 'on_device' && /Suggest/.test(e.task)).length}</b> suggested marks for sentences and paragraphs</li>
             <li><b>{calls.filter((e) => e.where === 'on_device' && /Second read/.test(e.task)).length}</b> second readings of doubtful answers</li>
             <li><b>{calls.filter((e) => e.where === 'on_device' && /Reteach/.test(e.task)).length}</b> lesson plans written on the laptop</li>
+            {calls.some((e) => e.where === 'recorded_device') && <li><b>{calls.filter((e) => e.where === 'recorded_device').length}</b> Gemini Nano results replayed from its recording of the made-up sheets (this browser has no on-device AI)</li>}
             <li>Every exact mark, every mistake name, name matching and parent-note filling: plain code, here</li>
           </ul>
         </div>
@@ -53,7 +54,7 @@ export function Privacy() {
           <h2><Icon name="cloud" />In the cloud</h2>
           <ul>
             <li><b>{net.filter((e) => !e.blocked && !e.images).length}</b> class-totals requests ({(net.filter((e) => !e.blocked && !e.images).reduce((a, e) => a + e.bytes, 0) / 1024).toFixed(1)} KB, no names)</li>
-            <li><b>{net.filter((e) => !e.blocked && e.images).length}</b> made-up sample sheets read without on-device AI</li>
+            <li><b>{net.filter((e) => !e.blocked && e.images).length}</b> made-up sample sheets read live by cloud Gemini</li>
             <li><b>{c.studentPhotosSent}</b> photos or words of your pupils</li>
             <li><b>{c.blocked}</b> requests refused by Tickmark's guard</li>
           </ul>
@@ -122,7 +123,8 @@ export function Privacy() {
           <h3 className="section">Other requests this page makes</h3>
           <ul className="small muted">
             <li>Firebase Remote Config and Installations: operator settings such as the cloud model name. No student data.</li>
-            <li>Firebase App Check with Google reCAPTCHA Enterprise: loaded only when you plan a lesson or use a sample class without on-device AI, to prove the request comes from this app. Once loaded it stays loaded until you reload the page; reCAPTCHA does not receive the page's text.</li>
+            <li>Names are checked as written on your class list, including Indian-script names with case endings, both in the key text Tickmark builds and in every request before it leaves.</li>
+            <li>Firebase App Check with Google reCAPTCHA Enterprise: loaded only when you plan a lesson or use a sample class without on-device AI, to prove the request comes from this app. Once loaded it stays loaded until you reload the page. Tickmark sends it nothing about your pupils; it is a Google script, so reload the page if you'd rather it weren't present.</li>
             <li>Chrome itself downloads Gemini Nano once, from Google, when you click Download.</li>
           </ul>
           <p className="small muted">Cloud requests use the free tier of the Gemini Developer API, where Google may use inputs to improve its services. That is why only anonymous class totals and made-up sample sheets are ever sent. A school deploying Tickmark can switch the project to paid Vertex AI.</p>
@@ -137,7 +139,7 @@ export function Privacy() {
             ledger.clear(); reload(); location.hash = '#/'; location.reload();
           }}>Erase everything</button>
           <h3 className="section">Settings</h3>
-          <p className="small">Cloud model <code>{s.cloudModel}</code>. Smallest group shown <code>{s.minGroupSize}</code>. Live cloud reads for the sample class <code>{s.sampleLiveReads}</code>. Source: {s.source === 'remote' ? 'Firebase Remote Config' : 'built-in defaults'}. Remote settings can only tighten these limits. Build {BUILD.commit}.</p>
+          <p className="small">Cloud model <code>{s.cloudModel}</code>. Smallest group shown <code>{s.minGroupSize}</code>. Live cloud reads for the sample class <code>{s.sampleLiveReads}</code>. Source: {s.source === 'remote' ? 'Firebase Remote Config' : 'built-in defaults'}. Remote settings choose the cloud model and can switch cloud AI off; they can't send pupils' data or lower the group size below 3. Build {BUILD.commit}.</p>
         </section>
       </div>
     </>

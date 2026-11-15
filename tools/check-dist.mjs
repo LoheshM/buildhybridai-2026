@@ -15,7 +15,7 @@ for (const f of ['.env.development.local', '.env.local', 'appcheck-debug-token.t
   const t = readFileSync(p, 'utf8').match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
   if (t) secrets.push(t[0]);
 }
-const bad = [/FIREBASE_APPCHECK_DEBUG_TOKEN\s*=\s*["'][0-9a-f-]{36}/i, /googletagmanager\.com/, /google-analytics\.com/, /measurementId/, /__tickmarkCapture/];
+const bad = [/FIREBASE_APPCHECK_DEBUG_TOKEN\s*=\s*["'][0-9a-f-]{36}/i, /googletagmanager\.com/, /google-analytics\.com/, /measurementId/, /__tickmarkCapture/, /location\.search/, /\.has\(\s*["'`]record["'`]\s*\)/];
 const BINARY = /\.(jpe?g|png|gif|webp|avif|ico|woff2?|ttf|otf|pdf|mp4|webm)$/i;
 
 if (!existsSync(DIST)) fail(`${DIST} does not exist`);

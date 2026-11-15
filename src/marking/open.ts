@@ -87,7 +87,7 @@ export function adjustSuggestion(key: QuestionKey, m: Marked, d: { met?: boolean
   if (d.met) {
     const n = Math.max(1, d.met.length);
     const points = clamp(half((d.met.filter(Boolean).length / n) * outOf), 0, outOf);
-    return { ...m, suggestion: { ...base, met: d.met, points, contradicts: false, adjusted: true } };
+    return { ...m, suggestion: { ...base, met: d.met, points, contradicts: false, adjusted: true, named: d.met.map((v, i) => (v ? 0 : i + 1)).filter(Boolean) } };
   }
   if (d.lines) {
     const max = d.lines.reduce((a, l) => a + l.max, 0) || 1;
@@ -103,5 +103,5 @@ export function adjustSuggestion(key: QuestionKey, m: Marked, d: { met?: boolean
  * pattern instead: no suggestion, a flag, and the teacher marks it. No sample answer and none of 300 real
  * pupils' answers (SciEntsBank) match.
  */
-const TALKS = /(<<<|>>>)|\b(ignore|disregard)\b[^.]{0,40}\b(key|instructions?|rules?|points?|above|previous)\b|\b(full|maximum|max|all( the)?)\s+marks?\b|\b(give|award)s?\b[^.]{0,30}\b(marks?|points?|full)\b|\b(system|assistant|marker|examiner)\s*(note)?\s*:|\bmarks?\s*[:=]|\bmark\s+(this|it|me)\b/i;
+const TALKS = /(<<<|>>>)|\b(ignore|disregard)\b[^.]{0,40}\b(key|instructions?|rules?|points?|above|previous)\b|\b(full|maximum|max|all( the)?)\s+(marks?|credit|points?|score)\b|\b(give|award)s?\b[^.]{0,30}\b(marks?|points?|full|credit)\b|\b(deserves?|earns?)\b[^.]{0,20}\b(marks?|credit|full)\b|\b\d+\s*(out of|\/)\s*\d+\s*(marks?|points?)?\s*$|(^|[.!?]\s*)(system|assistant|marker|examiner|teacher)\s*(note)?\s*:|\bmarks?\s*[:=]/i;
 export const talksToMarker = (text: string) => TALKS.test(text ?? '');

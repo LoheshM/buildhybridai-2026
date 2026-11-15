@@ -8,7 +8,7 @@ import { keyInfo, typeOf, type Marked, type QuestionKey } from '../marking/mark'
 import { MISTAKES, type MistakeId } from '../marking/mistakes';
 import { parseQuantity } from '../marking/numeric';
 import { keyCore, keyPoints, parseRubric, QTYPES, type QType } from '../marking/qtypes';
-import { normChoice } from '../marking/words';
+import { choiceLetterMode, normChoice } from '../marking/words';
 import { findRosterNames } from './nameCheck';
 
 export const PAYLOAD_VERSION = 2;
@@ -119,10 +119,11 @@ function keyText(k: QuestionKey, type: QType): string {
     const v = q.decimals > 0 ? (q.value.n / q.value.d).toFixed(q.decimals) : format(q.value); // 3.6 g stays 3.6, never 3 3/5
     return `${v}${q.percent ? '%' : q.unit ? ` ${q.unit}` : ''}`.replace(/^(.*) ([$£€₹])$/, '$2$1');
   }
-  if (type === 'choice') return normChoice(k.answer) ?? '';
+  if (type === 'choice') return normChoice(keyCore(k.answer), choiceLetterMode(keyCore(k.answer), k.prompt)) ?? '';
   if (type === 'short' || type === 'passage') return '';
   // "2ab", "xy + 3x": implicit products written out, so every variable stays a single letter
-  if (type === 'algebra') return fit40(teacherText(keyCore(k.answer), 80).replace(/([a-z])(?=[a-z])/gi, '$1×'));
+  // powers survive cleaning: each piece around ^ is cleaned on its own (round 6, E6-13)
+  if (type === 'algebra') return fit40(keyCore(k.answer).replace(/²/g, '^2').replace(/³/g, '^3').split('^').map((p) => teacherText(p, 80)).join('^').replace(/([a-z])(?=[a-z])/gi, '$1×'));
   // word keys: whole alternatives, as many as fit ("photosynthesis / photosynthesise / …")
   if (type === 'word') {
     const alts = teacherText(keyCore(k.answer), 160).split(/\s*(?:\/|\||\bor\b)\s*/i).filter(Boolean);

@@ -1,3 +1,4 @@
+import { runState, stopRun } from '../app/runner';
 import { useMemo } from 'react';
 import { href } from '../app/router';
 import { sampleKeyOfClass, sampleManifest } from '../app/boot';
@@ -128,7 +129,7 @@ export function Results({ quizId }: { quizId: string }) {
       <div className="row section noprint">
         <button className="btn" onClick={exportCsv}>Download marks (CSV)</button>
         <button className="btn" onClick={() => window.print()}>Print</button>
-        {!cls.sample && <button className="btn danger" onClick={async () => { await store.deletePhotos(quizId); setToast('Photos deleted from this browser. Marks are kept.'); reload(); }}>Delete the photos, keep the marks</button>}
+        {!cls.sample && <button className="btn danger" onClick={async () => { if (runState().running && runState().quizId === quizId) await stopRun(); await store.deletePhotos(quizId); setToast('Photos deleted from this browser. Marks are kept.'); reload(); }}>Delete the photos, keep the marks</button>}
       </div>
       {toast && <div className="toast" role="status">{toast}</div>}
     </>
@@ -176,11 +177,11 @@ function qsummary(k: QuestionKey, sheets: SheetRec[], nameOf: (s: SheetRec) => s
     const m = s.marks.find((x) => x.q === k.q);
     if (!m) continue;
     if (m.status === 'correct') { right++; continue; }
-    if (m.status === 'partial') partial++;
+    if (m.status === 'partial' || m.status === 'unsimplified') partial++;
     else if (m.status === 'wrong') wrong++;
     else { if (m.status === 'pending' || (m.status === 'unreadable' && !m.checked)) waiting++; else other++; continue; }
     if (type === 'choice' && m.picked) options.set(m.picked, (options.get(m.picked) ?? 0) + 1);
-    const labels = m.mistakes?.length ? m.mistakes : m.misconception ? [m.misconception] : type === 'choice' ? [] : ['other'];
+    const labels = m.status === 'unsimplified' ? ['unsimplified'] : m.mistakes?.length ? m.mistakes : m.misconception ? [m.misconception] : type === 'choice' ? [] : ['other'];
     for (const g of labels) groups.set(g, [...(groups.get(g) ?? []), nameOf(s)]);
   }
   return {

@@ -153,6 +153,9 @@ function PlanView({ plan: rec, headingRef, sheets, quiz, rosterName }: { plan: P
 
   const groupOf = (s: SheetRec): string => {
     const off = s.marks.filter((m) => m.status === 'wrong' || m.status === 'partial');
+    // 80% or more is doing well, whatever the one slip was (round 6: 9/10 got a "needs support" note)
+    const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit);
+    if (sc.outOf > 0 && sc.points / sc.outOf >= 0.8) return 'secure';
     if (!off.length) return s.marks.every((m) => m.status === 'correct') ? 'secure' : 'default';
     const counts = new Map<string, number>();
     off.forEach((m) => { for (const g of m.mistakes?.length ? m.mistakes : [m.misconception && m.misconception !== 'slip' && m.misconception !== 'wrong_operation' ? m.misconception : 'other']) counts.set(g, (counts.get(g) ?? 0) + 1); });

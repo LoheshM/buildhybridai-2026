@@ -114,3 +114,13 @@ describe('round 5 S4: names in Indian scripts', () => {
     expect(findRosterNames('Hopefully fine', rosterTokens(['Hope Adams'])).length).toBe(0);
   });
 });
+
+describe('round 6 R6-S1: consonant-final Indian-script names with a case ending', () => {
+  it('finds Kannan, Murugan, Arjun, Selvam and Malayalam Kannan with endings; leaves ordinary Tamil alone', async () => {
+    const { findRosterNames, rosterTokens } = await import('./nameCheck');
+    const cases: [string, string][] = [['கண்ணன் ராஜ்', 'கண்ணனின் முறையை விளக்கு'], ['முருகன் சிவா', 'முருகனுக்கு உதவு'], ['அர்ஜுன் குமார்', 'அர்ஜுனின் பதில்'], ['செல்வம் மணி', 'செல்வத்தின் விடை'], ['കണ്ണൻ നായർ', 'കണ്ണന്റെ ഉത്തരം'], ['பிரியா ராஜ்', 'பிரியாவின் தாய்']];
+    for (const [name, text] of cases) expect(findRosterNames(text, rosterTokens([name])).length, text).toBeGreaterThan(0);
+    for (const text of ['ஒளிச்சேர்க்கை என்றால் என்ன?', 'தாவரங்கள் உணவு தயாரிக்கும் முறை'])
+      expect(findRosterNames(text, rosterTokens(['கண்ணன் ராஜ்', 'முருகன் சிவா', 'செல்வம் மணி'])).length, text).toBe(0);
+  });
+});

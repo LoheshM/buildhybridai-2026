@@ -115,18 +115,20 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           // an empty box is empty, whatever any model says about it
           for (const a of first.read.answers) if (cut.blank.includes(a.q)) { a.finalAnswer = ''; a.crossedOutText = ''; }
           let marks = markRead(quiz.keys, first.read);
-          const qs = rereadQuestions(quiz.keys, marks);
+          // a box code found empty isn't on the strip: asking about it gets another row's answer (round 6, E6-05)
+          const qs = rereadQuestions(quiz.keys, marks).filter((q) => !cut.blank.includes(q));
           let rereadMs: number | undefined;
+          let rereadDone: number[] = [];
           if (qs.length && strip && first.where === 'on_device') {
             const second = await rereadChunks(chunks, strip, qs, quiz.keys, sample ? 'sample' : 'student');
-            marks = mergeReread(marks, second.answers, quiz.keys); rereadMs = second.ms;
+            marks = mergeReread(marks, second.answers, quiz.keys); rereadMs = second.ms; rereadDone = qs;
             const got = capture && sample ? capture.reads[(img as SampleImage).sampleId] : undefined;
             if (got) { got.second = Object.fromEntries(second.answers); got.secondMs = second.ms; }
           } else if (qs.length && first.where === 'recorded_device') {
             // Nano's recorded second read, for the questions today's code asks about and the recording holds
             const rec = deviceReadFor((img as SampleImage).sampleId)?.read;
             const answers = new Map(Object.entries(rec?.second ?? {}).map(([q, v]) => [Number(q), v] as const).filter(([q]) => qs.includes(q)));
-            if (answers.size) { marks = mergeReread(marks, answers, quiz.keys); rereadMs = rec!.secondMs; }
+            if (answers.size) { marks = mergeReread(marks, answers, quiz.keys); rereadMs = rec!.secondMs; rereadDone = [...answers.keys()]; }
           }
           // a box with ink in it that came back empty was not read, whatever the model says: the teacher looks
           marks = marks.map((m) => (!m.read.trim() && !cut.blank.includes(m.q) ? { ...m, status: 'unreadable' as const, flags: [...new Set([...m.flags, 'unreadable' as const])] } : m));
@@ -135,13 +137,15 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           for (let i = 0; i < marks.length; i++) {
             if (marks[i].status !== 'pending' || stopRequested) continue;
             if (talksToMarker(marks[i].read)) { marks[i] = { ...marks[i], flags: [...new Set([...marks[i].flags, 'talks_to_marker' as const])] }; continue; }
+            // a long sentence read as crossed out with a letter or two left (round 6, K3): the reading is doubtful, the teacher looks
+            if (marks[i].read.trim().length <= 3 && (marks[i].crossedOut ?? '').length >= 15) { marks[i] = { ...marks[i], flags: [...new Set([...marks[i].flags, 'check_reading' as const])] }; continue; }
             const key = quiz.keys.find((k) => k.q === marks[i].q)!;
             const sug = await suggestOpen(marks[i].read, key, sample ? { sample: (img as SampleImage).sampleId, deviceOnly: !!strip } : { student: true });
             if (sug) marks[i] = { ...marks[i], suggestion: sug };
           }
           const match = matchName(first.read.studentName, cls.roster, taken);
           if (match.studentId) taken.add(match.studentId);
-          s = { ...s, status: 'read', read: first.read, readName: first.read.studentName, studentId: match.studentId, nameConfident: match.confident, marks, where: first.where, ms: first.ms + cutMs, rereadQs: rereadMs !== undefined ? qs : undefined, rereadMs, crops };
+          s = { ...s, status: 'read', read: first.read, readName: first.read.studentName, studentId: match.studentId, nameConfident: match.confident, marks, where: first.where, ms: first.ms + cutMs, rereadQs: rereadDone.length ? rereadDone : undefined, rereadMs, crops };
           break;
         } catch (e) {
           lastErr = e as Error;

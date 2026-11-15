@@ -38,10 +38,12 @@ export function keyPoints(key: string): string[] {
 }
 
 /** "3.14 (2 dp)" → "3.14": a note in brackets after an exact answer is for the teacher, not part of the answer. */
+const NOTE = /^(?:to\s+)?(?:\d+\s*(?:dp|d\.p\.|sf|s\.f\.|decimal places?|significant figures?)|nearest\s+\w+(?:\s+\w+)?|simplest form|lowest terms|in words|any order|or equivalent|accept\s.+|exact|rounded)$/i;
 export function keyCore(key: string): string {
   const k = (key ?? '').trim();
   const m = k.match(/^(.*?\S)\s*\(([^()]*)\)$/);
-  return m && /\p{L}{2,}/u.test(m[2]) && !/[;\n]/.test(k) ? m[1] : k;
+  // round 6 (E6-01): "3(2 + xy)", "carbon dioxide (CO2)" and "12 (cm)" are answers, not notes
+  return m && NOTE.test(m[2].trim()) && !/[;\n]/.test(k) ? m[1] : k;
 }
 
 /** Picks the type from the key text (and the printed question, when it helps). */
@@ -54,7 +56,7 @@ export function detectType(key: string, prompt = ''): QType {
   const p = parse(k);
   if (p.kind === 'value' && (p.form === 'fraction' || p.form === 'mixed')) return 'fraction';
   // a printed fraction sum ("2/3 + 1/6") makes it a fraction question whatever the key looks like
-  if (prompt && parseExpr(prompt)) return 'fraction';
+  if (prompt && /\d\s*\/\s*\d/.test(prompt) && parseExpr(prompt)) return 'fraction'; // "7 x 8" is not a fraction sum (round 6)
   if (looksChoice(k)) return 'choice';
   if (parseQuantity(k)) {
     // an integer key for a fraction sum ("2/3 + 1/3 = 1") is still the fraction engine's

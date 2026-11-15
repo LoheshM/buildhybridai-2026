@@ -269,17 +269,17 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
           </div>
         )}
         {open && s && pending && (
-          <div className="sugg">
-            <span className="why">{s.reason || 'No reason given.'}</span>
-            <span className="tiny">{s.where === 'on_device' ? `Suggested by Gemini Nano on this laptop, ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? 'Suggested by cloud Gemini (recorded)' : 'Suggested by cloud Gemini (made-up sheet)'}{s.adjusted ? ' · changed by you' : ''}</span>
-          </div>
+          <p className="sugg">
+            <span className="why">{s.reason || 'No reason given.'}</span>{' '}
+            <span className="src">({s.where === 'on_device' ? `Gemini Nano on this laptop, ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? 'cloud Gemini, recorded' : 'cloud Gemini, made-up sheet'}{s.adjusted ? '; changed by you' : ''})</span>
+          </p>
         )}
         {open && !s && pending && m.read && <div className="sugg"><span className="tiny">No suggestion for this answer. Tick the key points it states, or set the rubric scores.</span></div>}
         {open && type === 'short' && m.read && (
-          <div className="row" style={{ gap: 6, marginTop: 8 }} role="group" aria-label="Key points stated">
+          <div className="kprow" role="group" aria-label="Key points stated">
             {pts.map((p, i) => (
-              <button key={i} className={`kptoggle${undecided ? ' pencil' : ''}`} aria-pressed={!!met[i]} onMouseDown={keep} onClick={(e) => { e.stopPropagation(); toggle(i); }}>
-                <Icon name={met[i] ? 'check' : 'x'} />{i + 1}. {p}
+              <button key={i} className={`kptoggle${undecided ? ' pencil' : ''}`} aria-pressed={!!met[i]} aria-label={`Key point ${i + 1}: ${p}`} onMouseDown={keep} onClick={(e) => { e.stopPropagation(); toggle(i); }}>
+                <Icon name={met[i] ? 'check' : 'x'} /><span className="kpt" title={p}>{i + 1}<span className="kptx">. {p}</span></span>
               </button>
             ))}
           </div>

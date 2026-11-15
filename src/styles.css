@@ -179,8 +179,8 @@ main.wide { max-width: none; }
 .btn.ink:hover { filter: brightness(1.07); background: var(--red); }
 .btn.quiet { border-color: transparent; background: transparent; color: var(--ink-2); }
 .btn.quiet:hover { background: var(--sheet-2); color: var(--ink); }
-.btn.danger { color: var(--red); border-color: color-mix(in srgb, var(--red) 40%, var(--rule)); }
-.btn.danger:hover { background: var(--red-soft); }
+.btn.danger { color: var(--ink-2); border-color: var(--rule-2); }
+.btn.danger:hover { background: var(--hover, rgba(29, 43, 85, .06)); color: var(--ink); }
 .btn.small { min-height: 32px; padding: 4px 10px; font-size: .875rem; }
 .btn[disabled], .btn[aria-disabled='true'] { opacity: .5; cursor: not-allowed; pointer-events: none; }
 .btn kbd { background: transparent; border-color: currentColor; color: inherit; }
@@ -317,13 +317,16 @@ input[type='checkbox'], input[type='radio'] { width: 18px; height: 18px; accent-
 .demo .register-wrap { border: 0; border-radius: 0; max-height: none; }
 .demo-foot { padding: 10px 16px; border-top: 1px solid var(--rule); font-size: .8125rem; color: var(--ink-2); display: flex; gap: 14px; flex-wrap: wrap; }
 .doors { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 40px; }
-.door { position: relative; display: grid; text-align: left; padding: 18px 18px 46px; border-radius: 4px 10px 10px 4px; border: 0; background: var(--book, var(--cover)); cursor: pointer; color: var(--ink); text-decoration: none; min-height: 196px; box-shadow: var(--shadow); transition: transform .15s cubic-bezier(.2, .8, .2, 1), box-shadow .15s; }
+.door { position: relative; display: grid; text-align: left; padding: 22px 22px 22px 26px; border-radius: 4px 10px 10px 4px; border: 0; background: var(--book, var(--cover)); cursor: pointer; color: #fff; text-decoration: none; min-height: 180px; box-shadow: var(--shadow); transition: transform .15s cubic-bezier(.2, .8, .2, 1), box-shadow .15s; }
 .door:hover { transform: translateY(-2px); box-shadow: 0 2px 4px rgba(23, 32, 58, .1), 0 14px 26px -12px rgba(23, 32, 58, .45); text-decoration: none; }
 .door:active { transform: translateY(0); }
 /* the white name label every school exercise book has on its cover */
-.door .label { background: var(--sheet); border-radius: 6px; padding: 14px 16px; display: grid; gap: 8px; align-content: start; box-shadow: 0 1px 0 rgba(0, 0, 0, .12); }
+.door .label { display: grid; gap: 8px; align-content: start; }
+.door .label h3 { color: #fff; }
+.door .label .muted { color: #c9d4f5; }
+.door .types .chip { background: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .35); color: #fff; }
 .door .label h3 { margin: 0; font-size: 1.25rem; }
-.door .sub { color: var(--ink-2); font-size: .9375rem; }
+.door .sub { color: #dfe6fb; font-size: .9375rem; }
 .door .types { display: flex; flex-wrap: wrap; gap: 6px; }
 .where { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 48px; border-top: 1px solid var(--rule-2); }
 .where > div { padding: 18px 20px 0 0; }
@@ -385,9 +388,10 @@ a.tile:hover { border-color: var(--rule-2); box-shadow: var(--shadow); text-deco
 .ans.focus .crop { max-height: 260px; }
 .ans .text { font-size: 1.0625rem; line-height: 1.5; margin: 2px 0 0; overflow-wrap: anywhere; }
 .ans .text.short { font-size: 1.25rem; }
-.ans .sugg { margin-top: 8px; display: grid; gap: 6px; font-size: .9375rem; color: var(--pencil); }
+.ans .sugg { margin: 6px 0 0; font-size: .9375rem; color: var(--pencil); max-width: 72ch; }
+.ans .sugg .src { font-size: .8125rem; font-style: normal; }
 .ans .sugg .why { font-style: italic; font-size: .9375rem; color: var(--pencil); line-height: 1.4; }
-.ans:not(.focus) .sugg .why { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+.ans:not(.focus) .sugg { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
 .ans .actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; max-width: 360px; }
 .answers { container-type: inline-size; }
 .ans.focus { background: var(--sheet-2); outline: none; }
@@ -397,7 +401,11 @@ a.tile:hover { border-color: var(--rule-2); box-shadow: var(--shadow); text-deco
 }
 .ans.focus .margin { border-right-color: var(--red); }
 .ans.done .text { color: var(--ink-2); }
-.kptoggle { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 14px; border: 1px solid var(--rule-2); background: var(--sheet); cursor: pointer; font-size: .875rem; color: var(--ink-2); text-align: left; max-width: 100%; }
+.kptoggle { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 14px; border: 1px solid var(--rule-2); background: var(--sheet); cursor: pointer; font-size: .875rem; color: var(--ink-2); text-align: left; max-width: min(100%, 34ch); }
+.kptoggle .kpt { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.ans.focus .kptoggle { max-width: 100%; }
+.ans.focus .kptoggle .kpt { white-space: normal; }
+.kprow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
 /* an undecided key point is pencil: dashed graphite until the teacher inks the row (E8) */
 .kptoggle.pencil[aria-pressed='true'] { border: 1px dashed var(--pencil); color: var(--pencil); background: var(--pencil-soft); font-weight: 600; }
 .kptoggle[aria-pressed='true'] { border-color: var(--red); color: var(--red); background: var(--red-soft); font-weight: 600; }
@@ -590,3 +598,10 @@ pre.json { background: var(--sheet-2); padding: 12px; border-radius: var(--radiu
 .ctx-meta { font-size: .875rem; color: var(--ink-2); text-decoration: none; }
 .ctx-meta:hover { text-decoration: underline; }
 .qmeta { font-size: .8125rem; color: var(--ink-2); margin: 0; }
+
+/* finish review, pass 2: the question heading keeps its width on a phone; the chip wraps under it */
+.qkey .row.spread { flex-wrap: wrap; }
+.qkey .prompt { flex: 1 1 18rem; min-width: 0; }
+/* unfocused rows: the key points are listed above the answers, so the toggles show only their numbers */
+.ans:not(.focus) .kptoggle .kptx { display: none; }
+.ans:not(.focus) .kprow { margin-top: 6px; }

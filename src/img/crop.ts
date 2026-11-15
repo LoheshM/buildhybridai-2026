@@ -11,7 +11,13 @@ export class NoMarkers extends Error {
   constructor() { super("Tickmark couldn't find the four black corner squares. Retake the photo with the whole answer sheet in view, flat and in good light."); this.name = 'NoMarkers'; }
 }
 
-export interface Cut { strip: Blob; boxes: Box[]; blank: number[]; name: Blob; preview: Blob; crops: Map<number, Blob>; ms: number }
+export interface Cut { strip: Blob; strips: { blob: Blob; qs: number[] }[]; boxes: Box[]; blank: number[]; name: Blob; preview: Blob; crops: Map<number, Blob>; ms: number }
+
+/**
+ * Answer rows per strip. Round 5 (F4-20): Gemini Nano read 6-7-row strips 82.7% exactly but 26-row strips 14.4%
+ * (rows shifted by one, later rows empty); the 10-answer maths sheets read 85.7%. Longer sheets are read in chunks.
+ */
+export const STRIP_ROWS = 10;
 
 /**
  * Share of "ink" pixels inside a box, ignoring a border band (the printed frame and its shadow).
@@ -113,12 +119,18 @@ export async function cutAnswerSheet(photo: Blob, keys: QuestionKey[]): Promise<
   const blank = answers.filter(({ c }) => inkShare(c) < BLANK_BELOW).map(({ b }) => b.q);
   const written = answers.filter(({ b }) => !blank.includes(b.q));
   // the name box rides on the same strip, so one on-device call reads the whole sheet
-  const strip = await stripOf([{ label: 'Name', c: nameCanvas }, ...written.map(({ b, c }) => ({ label: String(b.q), c }))]).convertToBlob({ type: 'image/jpeg', quality: 0.9 });
+  // each chunk repeats the Name row, so every strip is read with the same prompt
+  const strips: { blob: Blob; qs: number[] }[] = [];
+  for (let i = 0; i === 0 || i < written.length; i += STRIP_ROWS) {
+    const part = written.slice(i, i + STRIP_ROWS);
+    strips.push({ blob: await stripOf([{ label: 'Name', c: nameCanvas }, ...part.map(({ b, c }) => ({ label: String(b.q), c }))]).convertToBlob({ type: 'image/jpeg', quality: 0.9 }), qs: part.map(({ b }) => b.q) });
+  }
+  const strip = strips[0].blob;
   const preview = await warp(full, h, 0, 0, 210, 297, 2.4).convertToBlob({ type: 'image/jpeg', quality: 0.8 });
   // each box's handwriting, kept so the teacher always sees what the pupil wrote beside what Nano read
   const crops = new Map<number, Blob>();
   for (const { b, c } of answers) crops.set(b.q, await trimToInk(c).convertToBlob({ type: 'image/jpeg', quality: 0.8 }));
-  return { strip, boxes, blank, name, preview, crops, ms: Math.round(performance.now() - t0) };
+  return { strip, strips, boxes, blank, name, preview, crops, ms: Math.round(performance.now() - t0) };
 }
 
 /** One box (with a 1.5 mm margin for its frame) cut out of the photo. */

@@ -35,6 +35,7 @@ export type Flag =
   | 'extra_words'
   | 'check_reading'
   | 'check_spelling'
+  | 'talks_to_marker'
   | 'teacher_changed';
 
 export const FLAG_TEXT: Record<Flag, string> = {
@@ -48,6 +49,7 @@ export const FLAG_TEXT: Record<Flag, string> = {
   extra_words: 'Key word plus extra words',
   check_reading: 'Check the reading',
   check_spelling: 'Check the spelling',
+  talks_to_marker: 'Talks to the marker: no suggestion',
   teacher_changed: 'Changed by you',
 };
 
@@ -76,6 +78,7 @@ export interface Marked {
   suggestions: string[];
   /** Set when the teacher has looked at this answer and accepted or corrected it. */
   checked?: boolean;
+  decidedBy?: 'sample_key'; // a made-up class decided from its own answer key (never a real class)
   /** The model's own reading and whether it was flagged, kept for the accuracy card. */
   modelRead?: string;
   modelFlagged?: boolean;

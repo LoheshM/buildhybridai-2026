@@ -84,8 +84,9 @@ export function Logo() {
   );
 }
 
-export function WhereChip({ where, ms, short = false }: { where?: string; ms?: number; short?: boolean }) {
+export function WhereChip({ where, ms, short = false, plan = false }: { where?: string; ms?: number; short?: boolean; plan?: boolean }) {
   if (!where) return null;
+  if (plan && where === 'recorded') return <span className="pill cloud" title="A plan cloud Gemini wrote earlier for this made-up class, shown when live AI isn't available"><i />Recorded plan</span>;
   const secs = ms ? ` · ${(ms / 1000).toFixed(1)} s` : '';
   if (where === 'on_device') return <span className="pill device" title="Read by Gemini Nano on this laptop"><i />{short ? 'Laptop' : 'On this laptop'}{secs}</span>;
   if (where === 'in_cloud') return <span className="pill cloud" title="Read by Gemini in the cloud (made-up sample sheets only)"><i />{short ? 'Cloud' : 'Cloud Gemini'}{secs}</span>;

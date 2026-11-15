@@ -83,25 +83,7 @@ export function Reteach({ quizId }: { quizId: string }) {
         </div>
         <p className="muted">This table is all the class data in the message: no names, photos or pupils' words, and small groups are hidden. The rest of the message is fixed instructions. Your own key text is included so the plan can teach it; any line naming someone on your class list is left out.</p>
         {waiting > 0 && <Notice tone="warn"><p>{[pencilLeft ? `${pencilLeft} pencil or unread mark${pencilLeft === 1 ? " isn't" : "s aren't"} counted yet` : '', flaggedLeft ? `${flaggedLeft} flagged answer${flaggedLeft === 1 ? ' is' : 's are'} counted as Tickmark read ${flaggedLeft === 1 ? 'it' : 'them'}` : ''].filter(Boolean).join('; ')}. <a href={href.check(quizId)}>Decide them</a> for complete totals.</p></Notice>}
-        <div style={{ overflowX: 'auto' }}>
-          <table className="plain">
-            <thead><tr><th>Q</th><th>Type</th><th>Question and key</th><th>Full</th><th>Some</th><th>None</th><th>Mistakes</th></tr></thead>
-            <tbody>
-              {totals.questions.map((q) => (
-                <tr key={q.q}>
-                  <td className="hand" style={{ color: 'var(--red)', fontWeight: 700 }}>{q.q}</td>
-                  <td className="small">{QTYPES[q.type].label}</td>
-                  <td className="small">{q.question || <span className="quiet">(question not sent)</span>}{q.answer ? <> · <b>{q.answer}</b></> : null}{q.key_points?.length ? <div className="quiet">{q.key_points.map((p, i) => p ? `${i + 1}. ${p}` : `${i + 1}. (left out: names someone)`).join('  ')}</div> : null}{q.rubric?.length ? <div className="quiet">{q.rubric.join(' · ')}</div> : null}</td>
-                  <td><C c={q.right} /></td><td><C c={q.partial} /></td><td><C c={q.wrong} /></td>
-                  <td className="small">
-                    {Object.keys(q.mistakes).length === 0 && !q.wrong_options ? <span className="quiet">{q.wrong === 0 && q.partial === 0 ? 'none' : 'breakdown withheld (small groups)'}</span> : Object.entries(q.mistakes).map(([k, v]) => <span key={k} style={{ marginRight: 10 }}>{mistakeLabel(k, q.key_points ?? [], (q.rubric ?? []).map((r) => r.replace(/ \(\d+\)$/, '')))}: <C c={v!} /></span>)}
-                    {q.wrong_options && Object.entries(q.wrong_options).map(([o, v]) => <span key={o} style={{ marginRight: 10 }}>picked {o}: <C c={v!} /></span>)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <PayloadTable t={totals} />
         <p className="tiny muted mt">The class size isn't sent. <span className="hidden-cell">hidden</span> means fewer than {totals.k} pupils, or a breakdown that would let someone work a small group out. Blank and undecided answers aren't sent.</p>
         {deviceReady && (
           <label className="check-line small mt">
@@ -207,9 +189,16 @@ function PlanView({ plan: rec, headingRef, sheets, quiz, rosterName }: { plan: P
       <section className="panel section" aria-labelledby="plan-h">
         <div className="panel-head">
           <h2 id="plan-h" ref={headingRef} tabIndex={-1}>{plain(p.title)}</h2>
-          <WhereChip where={rec.where} ms={rec.ms} />
+          <WhereChip where={rec.where} ms={rec.ms} plan />
         </div>
         {rec.where === 'recorded' && <Notice>Live AI wasn't available ({rec.note ?? 'unknown reason'}). This plan was recorded for this made-up class on {recordedOn}.</Notice>}
+        {rec.where === 'recorded' && (
+          <details className="mt">
+            <summary>What this recorded plan was written from</summary>
+            <p className="small muted">The class totals sent when it was recorded, which can differ from your marks today.</p>
+            <PayloadTable t={rec.payload} />
+          </details>
+        )}
         {rec.where === 'in_cloud' && rec.note?.startsWith('written by ') && <p className="small muted">Written by {rec.note.slice(11)}, because the first cloud model's free daily allowance was used up.</p>}
         {rec.where === 'on_device' && (
           <Notice tone="device">
@@ -263,5 +252,30 @@ function PlanView({ plan: rec, headingRef, sheets, quiz, rosterName }: { plan: P
       </section>
       {toast && <div className="toast" role="status">{toast}</div>}
     </>
+  );
+}
+
+/** The class totals as a table: every number and word that is (or was) in the message. */
+function PayloadTable({ t }: { t: ClassTotals }) {
+  return (
+    <div style={{ overflowX: 'auto' }}>
+      <table className="plain">
+        <thead><tr><th>Q</th><th>Type</th><th>Question and key</th><th>Full</th><th>Some</th><th>None</th><th>Mistakes</th></tr></thead>
+        <tbody>
+          {t.questions.map((q) => (
+            <tr key={q.q}>
+              <td className="hand" style={{ color: 'var(--red)', fontWeight: 700 }}>{q.q}</td>
+              <td className="small">{QTYPES[q.type].label}</td>
+              <td className="small">{q.question || <span className="quiet">(question not sent)</span>}{q.answer ? <> · <b>{q.answer}</b></> : null}{q.key_points?.length ? <div className="quiet">{q.key_points.map((p, i) => p ? `${i + 1}. ${p}` : `${i + 1}. (left out: names someone)`).join('  ')}</div> : null}{q.rubric?.length ? <div className="quiet">{q.rubric.join(' · ')}</div> : null}</td>
+              <td><C c={q.right} /></td><td><C c={q.partial} /></td><td><C c={q.wrong} /></td>
+              <td className="small">
+                {Object.keys(q.mistakes).length === 0 && !q.wrong_options ? <span className="quiet">{q.wrong === 0 && q.partial === 0 ? 'none' : 'breakdown withheld (small groups)'}</span> : Object.entries(q.mistakes).map(([k, v]) => <span key={k} style={{ marginRight: 10 }}>{mistakeLabel(k, q.key_points ?? [], (q.rubric ?? []).map((r) => r.replace(/ \(\d+\)$/, '')))}: <C c={v!} /></span>)}
+                {q.wrong_options && Object.entries(q.wrong_options).map(([o, v]) => <span key={o} style={{ marginRight: 10 }}>picked {o}: <C c={v!} /></span>)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

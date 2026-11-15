@@ -2,13 +2,14 @@
 // code, ask for a second read where needed, match the name to the roster, save.
 // The runner lives at module level, so a run keeps going while the teacher moves between pages.
 import { classify, isSample, type SampleImage, type StudentImage } from '../ai/images';
-import { noteSampleDeviceFailure, noteSampleDeviceSuccess, readSampleSheet, readStrip, rereadStrip, resetLiveSampleReads, sampleDeviceUsable, suggestOpen, type ReadResult } from '../ai/tasks';
+import { noteSampleDeviceFailure, noteSampleDeviceSuccess, readSampleSheet, readStrip, rereadStrip, resetLiveSampleReads, sampleDeviceUsable, suggestOpen, type ReadResult, type SecondRead } from '../ai/tasks';
 import { CancelledError } from '../ai/queue';
 import { capture, deviceReadFor } from '../ai/deviceRecording';
 import { cutAnswerSheet } from '../img/crop';
 import { cancelQueued } from '../ai/queue';
 import { resetAllModels } from '../ai/models';
 import { markRead, mergeReread, rereadQuestions, stampModelRead } from '../marking/pipeline';
+import { talksToMarker } from '../marking/open';
 import { matchName } from '../marking/roster';
 import { store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 import { samplePhotoUrl } from './boot';
@@ -84,6 +85,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           const sample = isSample(img) && sheet.source === 'sample';
           let first: ReadResult;
           let strip: StudentImage | null = null;
+          let chunks: Chunk[] = [];
           // Code, on this laptop, for every sheet: find the answer boxes, keep each box's handwriting, decide which are empty.
           const cut = await cutAnswerSheet(photo, quiz.keys);
           const cutMs = cut.ms;
@@ -94,9 +96,11 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           if (quiz.keys.length > 0 && cut.blank.length >= quiz.keys.length) throw new NoWriting();
           if (!sample || (await sampleDeviceUsable())) {
             // Gemini Nano reads the boxes with writing in them, as one strip, on this laptop.
-            strip = (await classify(cut.strip)) as StudentImage; // a strip never matches a sample fingerprint: it can only be read on-device
+            // a strip never matches a sample fingerprint: it can only be read on-device
+            chunks = await Promise.all(cut.strips.map(async (c) => ({ img: (await classify(c.blob)) as StudentImage, qs: c.qs })));
+            strip = chunks[0].img;
             try {
-              first = await readStrip(strip, quiz.keys, cut.blank, sample ? 'sample' : 'student');
+              first = await readChunks(chunks, quiz.keys, cut.blank, sample ? 'sample' : 'student');
               if (sample) noteSampleDeviceSuccess();
               if (capture && sample) capture.reads[(img as SampleImage).sampleId] = { first: structuredClone(first.read), firstMs: first.ms };
             } catch (e) {
@@ -114,7 +118,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           const qs = rereadQuestions(quiz.keys, marks);
           let rereadMs: number | undefined;
           if (qs.length && strip && first.where === 'on_device') {
-            const second = await rereadStrip(strip, qs, quiz.keys, sample ? 'sample' : 'student');
+            const second = await rereadChunks(chunks, strip, qs, quiz.keys, sample ? 'sample' : 'student');
             marks = mergeReread(marks, second.answers, quiz.keys); rereadMs = second.ms;
             const got = capture && sample ? capture.reads[(img as SampleImage).sampleId] : undefined;
             if (got) { got.second = Object.fromEntries(second.answers); got.secondMs = second.ms; }
@@ -130,6 +134,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           // Open answers: Gemini Nano suggests a mark from the text it read; the teacher decides.
           for (let i = 0; i < marks.length; i++) {
             if (marks[i].status !== 'pending' || stopRequested) continue;
+            if (talksToMarker(marks[i].read)) { marks[i] = { ...marks[i], flags: [...new Set([...marks[i].flags, 'talks_to_marker' as const])] }; continue; }
             const key = quiz.keys.find((k) => k.q === marks[i].q)!;
             const sug = await suggestOpen(marks[i].read, key, sample ? { sample: (img as SampleImage).sampleId, deviceOnly: !!strip } : { student: true });
             if (sug) marks[i] = { ...marks[i], suggestion: sug };
@@ -171,6 +176,39 @@ export async function requeueForDevice(quizId: string): Promise<number> {
     }
   }
   return n;
+}
+
+type Chunk = { img: StudentImage; qs: number[] };
+
+/** A sheet longer than one strip is read strip by strip; a one-strip sheet is exactly one call, as before. */
+async function readChunks(chunks: Chunk[], keys: QuizRec['keys'], blank: number[], dc: 'sample' | 'student'): Promise<ReadResult> {
+  if (chunks.length === 1) return readStrip(chunks[0].img, keys, blank, dc);
+  let out: ReadResult | null = null;
+  for (const c of chunks) {
+    const r = await readStrip(c.img, keys, keys.map((k) => k.q).filter((q) => !c.qs.includes(q)), dc);
+    if (!out) { out = { ...r, read: { ...r.read, answers: r.read.answers.map((a) => ({ ...a })) } }; continue; }
+    out.ms += r.ms;
+    for (const a of r.read.answers) {
+      if (!c.qs.includes(a.q)) continue;
+      const t = out.read.answers.find((x) => x.q === a.q);
+      if (t) Object.assign(t, a); else out.read.answers.push({ ...a });
+    }
+  }
+  return out!;
+}
+
+async function rereadChunks(chunks: Chunk[], strip: StudentImage, qs: number[], keys: QuizRec['keys'], dc: 'sample' | 'student') {
+  if (chunks.length <= 1) return rereadStrip(strip, qs, keys, dc);
+  const answers = new Map<number, SecondRead>();
+  let ms = 0;
+  for (const c of chunks) {
+    const mine = qs.filter((q) => c.qs.includes(q));
+    if (!mine.length) continue;
+    const r = await rereadStrip(c.img, mine, keys, dc);
+    for (const [q, v] of r.answers) answers.set(q, v);
+    ms += r.ms;
+  }
+  return { answers, ms };
 }
 
 /** No ink in any answer box. */

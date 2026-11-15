@@ -9,6 +9,8 @@ import { adjustSuggestion, decideOpen } from '../marking/open';
 import { applyCorrection, markWrongByTeacher, needsCheck, openFlags } from '../marking/pipeline';
 import { isOpen, keyPoints, parseRubric, QTYPES } from '../marking/qtypes';
 import { store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
+import { sampleKeyOfClass, sampleManifest } from '../app/boot';
+import { decideFromKey } from '../app/sampleDecide';
 import { useLoad } from './hooks';
 import { usePhoto } from './Scan';
 import { Notice } from './App';
@@ -31,6 +33,7 @@ export function Check({ quizId, sheetId, q }: { quizId: string; sheetId?: string
     return { quiz, cls, sheets: quiz ? (await store.sheets(quiz.id)).filter(isRead) : [] };
   }, [quizId]);
   const [sheets, setSheets] = useState<SheetRec[]>([]);
+  const [undo, setUndo] = useState<SheetRec[] | null>(null);
   useEffect(() => { if (ctx) setSheets(ctx.sheets); }, [ctx]);
   // sheets the runner finishes while the teacher is checking join at the end, in place
   useEffect(() => onSheetChanged((s) => {
@@ -78,6 +81,27 @@ export function Check({ quizId, sheetId, q }: { quizId: string; sheetId?: string
           {stillReading ? ` ${stillReading} more sheet${stillReading === 1 ? ' is' : 's are'} still being read.` : ''}
         </span>
       </div>
+      {cls.sample && (answersLeft > 0 || namesLeft > 0) && !undo && !stillReading && (
+        <Notice>
+          <p>This class is made up, so its answer key can decide the {answersLeft + namesLeft} things waiting for you, if you want to see the results and the lesson plan sooner. A real class has no such button: you decide every mark.</p>
+          <div className="row"><button className="btn small" onClick={async () => {
+            const k = sampleKeyOfClass(cls.id); const man = k ? sampleManifest(k) : null;
+            if (!man) return;
+            const before = sheets, after = decideFromKey(cls, quiz.keys, sheets, man.students);
+            await Promise.all(after.map((s) => store.putSheet(s)));
+            setSheets(after); setUndo(before); dispatchEvent(new Event('tickmark:marks-changed'));
+          }}>Decide the rest from the answer key</button></div>
+        </Notice>
+      )}
+      {undo && (
+        <Notice tone="device">
+          <p>Decided from the made-up class's answer key. Those marks say so on each answer.</p>
+          <div className="row">
+            <a className="btn small primary" href={href.reteach(quizId)}>Plan the lesson</a>
+            <button className="btn small" onClick={async () => { await Promise.all(undo.map((s) => store.putSheet(s))); setSheets(undo); setUndo(null); dispatchEvent(new Event('tickmark:marks-changed')); }}>Undo</button>
+          </div>
+        </Notice>
+      )}
       {bySheet
         ? <BySheet quiz={quiz} cls={cls} sheets={sheets} sheetId={sheetId!} save={save} />
         : <ByQuestion quiz={quiz} cls={cls} sheets={sheets} q={q ?? firstQ} save={save} />}
@@ -267,7 +291,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
             <button className="btn small quiet" onClick={() => { setEditing(false); setText(m.read); }}>Cancel</button>
           </div>
         ) : (
-          <p className={`text${open ? '' : ' short'}`} lang="en">{m.read || <span className="quiet">(blank)</span>}{m.crossedOut && <span className="small quiet"> · crossed out: <s>{m.crossedOut}</s></span>}</p>
+          <p className={`text${open ? '' : ' short'}`} lang="en">{m.read || <span className="quiet">(blank)</span>}{m.crossedOut && <span className="small quiet"> · crossed out: <s>{m.crossedOut}</s></span>}{m.decidedBy === 'sample_key' && <span className="small quiet"> · decided from the answer key (made-up class)</span>}</p>
         )}
         {!open && (m.misconception || m.note || openFlags(m).length > 0 || (m.status === 'unreadable' && !m.checked)) && (
           <div className="row small" style={{ gap: 6, marginTop: 6 }}>

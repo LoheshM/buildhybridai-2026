@@ -1,7 +1,7 @@
 // Reading accuracy of the sample class against the generator's ground truth (the same logic as
 // tools/bench.js), so the app can show judges a measured number for the run they just did.
 import { normalize } from './fraction';
-import type { Marked } from './mark';
+import { markAnswer, type Marked, type QuestionKey } from './mark';
 
 export interface Truth { id: string; answers: { q: number; written: string }[] }
 export interface SheetLike { sampleId?: string; where?: string; marks: Marked[] }
@@ -72,4 +72,38 @@ export function accuracy(sheets: SheetLike[], truth: Truth[], onlyExact = false)
     }
   }
   return a;
+}
+
+export interface MarkHarm { answers: number; wrongMarkUnflagged: number; readDiffSameMark: number; needed: number; total: number }
+
+/**
+ * What a misreading did to the mark (round 5, J8). For each exact answer: the mark from the model's reading
+ * against the mark from what the pupil really wrote. A different mark with no flag is the harm that matters;
+ * a misreading that gives the same mark is not. "needed" counts the answers that waited for the teacher
+ * (flagged, or an open answer in pencil), out of every answer (J9).
+ */
+export function markHarm(sheets: SheetLike[], truth: Truth[], keys: QuestionKey[]): MarkHarm {
+  const byId = new Map(truth.map((t) => [t.id, t]));
+  const h: MarkHarm = { answers: 0, wrongMarkUnflagged: 0, readDiffSameMark: 0, needed: 0, total: 0 };
+  for (const s of sheets) {
+    const t = s.sampleId ? byId.get(s.sampleId) : undefined;
+    if (!t) continue;
+    for (const m of s.marks) {
+      const k = keys.find((x) => x.q === m.q);
+      if (!k) continue;
+      h.total++;
+      const open = m.type === 'short' || m.type === 'passage';
+      const flagged = m.modelFlagged ?? (m.flags.some((f) => f !== 'teacher_changed') || m.status === 'unreadable');
+      if (flagged || open) h.needed++;
+      if (open) continue;
+      h.answers++;
+      const want = t.answers.find((x) => x.q === m.q)?.written ?? '';
+      const read = m.modelRead ?? m.read;
+      if (norm(read) === norm(want)) continue;
+      const fromRead = markAnswer(k, read).status, fromTruth = markAnswer(k, want).status;
+      if (fromRead === fromTruth) h.readDiffSameMark++;
+      else if (!flagged) h.wrongMarkUnflagged++;
+    }
+  }
+  return h;
 }

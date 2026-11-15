@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { href } from '../app/router';
 import { sampleKeyOfClass, sampleManifest } from '../app/boot';
-import { accuracy, openAccuracy } from '../marking/accuracy';
+import { accuracy, markHarm, openAccuracy } from '../marking/accuracy';
 import { outOfFor, pointsFor, scoreSheet, typeOf, type QuestionKey } from '../marking/mark';
 import { mistakeLabel } from '../marking/mistakes';
 import { needsCheck } from '../marking/pipeline';
@@ -117,7 +117,7 @@ export function Results({ quizId }: { quizId: string }) {
           <h2 id="acc-h">How well the reading went</h2>
           <p className="muted">This class is made up, so its right answers are known and Tickmark can score its own run. Measured on the sheets you just read.</p>
           <p className="small">
-            <b>{view.acc.exact.exact} of {view.acc.exact.answers}</b> exact answers read exactly, and <b>{view.acc.exact.unflagged}</b> misreads weren't flagged for you.
+            <b>{view.acc.exact.exact} of {view.acc.exact.answers}</b> exact answers read exactly. Misreadings that changed the mark with no flag for you: <b>{view.acc.harm.wrongMarkUnflagged}</b>; misreadings that gave the same mark anyway: {view.acc.harm.readDiffSameMark}. <b>{view.acc.harm.needed} of {view.acc.harm.total}</b> answers needed you.
             {view.acc.open.answers > 0 && <> In {view.acc.open.answers} sentences and paragraphs, <b>{(100 - (100 * view.acc.open.charErrors) / Math.max(1, view.acc.open.chars)).toFixed(1)}%</b> of characters were read right.</>}
             {view.acc.open.suggested > 0 && <> <b>{view.acc.open.agree} of {view.acc.open.suggested}</b> suggested marks equalled the reference mark ({view.acc.open.within1} within one mark).</>}
           </p>
@@ -150,6 +150,7 @@ function summarise(sheets: SheetRec[], quiz: QuizRec, cls: ClassRec) {
   const man = sk ? sampleManifest(sk) : null;
   const acc = man ? {
     exact: accuracy(sheets, man.students, true),
+    harm: markHarm(sheets, man.students, quiz.keys),
     open: openAccuracy(sheets, man.students, (q, ref) => {
       const k = quiz.keys.find((x) => x.q === q);
       if (!k) return null;

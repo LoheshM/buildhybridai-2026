@@ -137,7 +137,8 @@ export function squares(gray: Uint8ClampedArray | Uint8Array, w: number, h: numb
     const bw = x1 - x0 + 1, bh = y1 - y0 + 1;
     if (bw < minSide || bh < minSide || bw > maxSide || bh > maxSide) continue;
     const aspect = bw / bh, fill = n / (bw * bh);
-    if (aspect < 0.6 || aspect > 1.65 || fill < 0.72) continue;
+    // a square tilted 20° fills 61% of its bounding box: photos are rarely straight (round 5 distortion check)
+    if (aspect < 0.6 || aspect > 1.65 || fill < 0.58) continue;
     out.push({ cx: sx / n, cy: sy / n, w: bw, h: bh, area: n });
   }
   return out;

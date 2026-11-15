@@ -1,0 +1,1351 @@
+{
+ "quiz": {
+  "title": "Number check",
+  "className": "Maths 6B",
+  "subject": "maths",
+  "grade_band": "4-6",
+  "instructions": "Show your answer in its simplest form. Give units where needed.",
+  "questions": [
+   {
+    "q": 1,
+    "prompt": "2/3 + 1/6",
+    "key": "5/6"
+   },
+   {
+    "q": 2,
+    "prompt": "3/4 - 1/3",
+    "key": "5/12"
+   },
+   {
+    "q": 3,
+    "prompt": "1/3 × 3/4",
+    "key": "1/4"
+   },
+   {
+    "q": 4,
+    "prompt": "3/4 ÷ 1/2",
+    "key": "1 1/2"
+   },
+   {
+    "q": 5,
+    "prompt": "1 1/2 + 3/4",
+    "key": "2 1/4"
+   },
+   {
+    "q": 6,
+    "prompt": "0.6 + 0.25",
+    "key": "0.85"
+   },
+   {
+    "q": 7,
+    "prompt": "15% of 80",
+    "key": "12"
+   },
+   {
+    "q": 8,
+    "prompt": "Write 35% as a decimal",
+    "key": "0.35"
+   },
+   {
+    "q": 9,
+    "prompt": "Write 3.5 cm in millimetres",
+    "key": "35 mm"
+   },
+   {
+    "q": 10,
+    "prompt": "Solve 2x + 3 = 11",
+    "key": "x = 4"
+   }
+  ]
+ },
+ "students": [
+  {
+   "id": "n01",
+   "name": "Aarav Shah",
+   "answers": [
+    {
+     "q": 1,
+     "written": "10/12"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "3/8"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "1200"
+    },
+    {
+     "q": 8,
+     "written": "3.5"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n02",
+   "name": "Meera Krishnan",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "5.33"
+    },
+    {
+     "q": 8,
+     "written": ".35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n03",
+   "name": "Rohan Das",
+   "answers": [
+    {
+     "q": 1,
+     "written": ""
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "4/9"
+    },
+    {
+     "q": 4,
+     "written": "3/2"
+    },
+    {
+     "q": 5,
+     "written": "9/4"
+    },
+    {
+     "q": 6,
+     "written": ""
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n04",
+   "name": "Ananya Iyer",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "8.5"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "3.5"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n05",
+   "name": "Kabir Singh",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "7/12"
+    },
+    {
+     "q": 3,
+     "written": "3/12"
+    },
+    {
+     "q": 4,
+     "written": "3/8"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": ""
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": "35"
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n06",
+   "name": "Diya Menon",
+   "answers": [
+    {
+     "q": 1,
+     "written": "10/12"
+    },
+    {
+     "q": 2,
+     "written": "-5/12"
+    },
+    {
+     "q": 3,
+     "written": "13/12"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "9/4"
+    },
+    {
+     "q": 6,
+     "written": "0.31"
+    },
+    {
+     "q": 7,
+     "written": "1200"
+    },
+    {
+     "q": 8,
+     "written": "3.5"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n07",
+   "name": "Arjun Reddy",
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/6"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "3.5"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n08",
+   "name": "Ishita Rao",
+   "answers": [
+    {
+     "q": 1,
+     "written": "10/12"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "1 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "5.33"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n09",
+   "name": "Vihaan Joshi",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "7/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "1 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.31"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "3.5"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n10",
+   "name": "Saanvi Nair",
+   "answers": [
+    {
+     "q": 1,
+     "written": "10/12"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "6/4"
+    },
+    {
+     "q": 5,
+     "written": "2 2/8"
+    },
+    {
+     "q": 6,
+     "written": "8.5"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": ".35"
+    },
+    {
+     "q": 9,
+     "written": "35"
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n11",
+   "name": "Aditya Kulkarni",
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/9"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "1 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n12",
+   "name": "Myra Fernandes",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "2/1"
+    },
+    {
+     "q": 3,
+     "written": "4/9"
+    },
+    {
+     "q": 4,
+     "written": "3/2"
+    },
+    {
+     "q": 5,
+     "written": "9/4"
+    },
+    {
+     "q": 6,
+     "written": "0.31"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n13",
+   "name": "Reyansh Gupta",
+   "answers": [
+    {
+     "q": 1,
+     "written": "10/12"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "2/3"
+    },
+    {
+     "q": 5,
+     "written": "9/4"
+    },
+    {
+     "q": 6,
+     "written": "0.31"
+    },
+    {
+     "q": 7,
+     "written": "1200"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": "4"
+    }
+   ]
+  },
+  {
+   "id": "n14",
+   "name": "Kiara Thomas",
+   "answers": [
+    {
+     "q": 1,
+     "written": "4/6"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": ""
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.31"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n15",
+   "name": "Dhruv Patel",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": ""
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "3/8"
+    },
+    {
+     "q": 5,
+     "written": ""
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": ""
+    },
+    {
+     "q": 8,
+     "written": ".35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n16",
+   "name": "Anika Bose",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "1200"
+    },
+    {
+     "q": 8,
+     "written": "35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n17",
+   "name": "Kavin Raj",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 2/8"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n18",
+   "name": "Tara Mehta",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.31"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n19",
+   "name": "Neil D'Souza",
+   "answers": [
+    {
+     "q": 1,
+     "written": ""
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "1 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "120"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n20",
+   "name": "Zoya Khan",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": ""
+    },
+    {
+     "q": 8,
+     "written": ".35"
+    },
+    {
+     "q": 9,
+     "written": "35"
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n21",
+   "name": "Yash Verma",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "3/12"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n22",
+   "name": "Riya Pillai",
+   "answers": [
+    {
+     "q": 1,
+     "written": "10/12"
+    },
+    {
+     "q": 2,
+     "written": "2/4"
+    },
+    {
+     "q": 3,
+     "written": ""
+    },
+    {
+     "q": 4,
+     "written": "3/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.31"
+    },
+    {
+     "q": 7,
+     "written": "1200"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": "4"
+    }
+   ]
+  },
+  {
+   "id": "n23",
+   "name": "Samar Malhotra",
+   "answers": [
+    {
+     "q": 1,
+     "written": "10/12"
+    },
+    {
+     "q": 2,
+     "written": "7/12"
+    },
+    {
+     "q": 3,
+     "written": ""
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n24",
+   "name": "Aisha Siddiqui",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": ""
+    },
+    {
+     "q": 3,
+     "written": "13/12"
+    },
+    {
+     "q": 4,
+     "written": "6/4"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "8.5"
+    },
+    {
+     "q": 7,
+     "written": ""
+    },
+    {
+     "q": 8,
+     "written": "35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n25",
+   "name": "Ved Chatterjee",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "7/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": ".35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": "4"
+    }
+   ]
+  },
+  {
+   "id": "n26",
+   "name": "Nila Sundaram",
+   "answers": [
+    {
+     "q": 1,
+     "written": "10/12"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "4/9"
+    },
+    {
+     "q": 4,
+     "written": "3/2"
+    },
+    {
+     "q": 5,
+     "written": "1 1/4"
+    },
+    {
+     "q": 6,
+     "written": ""
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": "4"
+    }
+   ]
+  },
+  {
+   "id": "n27",
+   "name": "Leo Mathew",
+   "answers": [
+    {
+     "q": 1,
+     "written": "3/9"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "13/12"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "1 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.86"
+    },
+    {
+     "q": 7,
+     "written": "12"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  },
+  {
+   "id": "n28",
+   "name": "Pari Agarwal",
+   "answers": [
+    {
+     "q": 1,
+     "written": "5/6"
+    },
+    {
+     "q": 2,
+     "written": "5/12"
+    },
+    {
+     "q": 3,
+     "written": "1/4"
+    },
+    {
+     "q": 4,
+     "written": "1 1/2"
+    },
+    {
+     "q": 5,
+     "written": "2 1/4"
+    },
+    {
+     "q": 6,
+     "written": "0.85"
+    },
+    {
+     "q": 7,
+     "written": "1200"
+    },
+    {
+     "q": 8,
+     "written": "0.35"
+    },
+    {
+     "q": 9,
+     "written": ""
+    },
+    {
+     "q": 10,
+     "written": ""
+    }
+   ]
+  }
+ ]
+}

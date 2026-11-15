@@ -1,82 +1,2724 @@
 {
  "cls": "science",
- "errors": [],
- "sheets": 24,
- "onDevice": 23,
+ "errors": [
+  "c02: No answer from the on-device model after 30 s. Try this sheet again.",
+  "c11: No answer from the on-device model after 30 s. Try this sheet again."
+ ],
+ "sheets": 22,
+ "onDevice": 21,
  "exact": {
-  "answers": 144,
-  "exact": 114,
-  "misread": 30,
-  "unflagged": 10,
-  "flagged": 36
+  "answers": 132,
+  "exact": 88,
+  "misread": 44,
+  "unflagged": 6,
+  "flagged": 49
  },
  "open": {
-  "answers": 47,
-  "chars": 2216,
-  "errors": 254,
-  "suggested": 43,
-  "agree": 33,
-  "within1": 43,
-  "ms": 68649
+  "answers": 43,
+  "chars": 2054,
+  "errors": 335,
+  "suggested": 38,
+  "agree": 30,
+  "within1": 36,
+  "ms": 64566
  },
- "readMs": 176983,
- "suggestMs": 68649,
- "names": 24,
+ "readMs": 184343,
+ "suggestMs": 64566,
+ "names": 22,
  "misses": [
   "c01 q3: \"chlorophyll\" (truth \"chlorophyl\") correct",
   "c01 q4: \"evaporation\" (truth \"evaperation\") correct",
-  "c04 q8: \"D C\" (truth \"C\") wrong",
-  "c07 q5: \"100 \u00b0\" (truth \"100 \u00b0C\") wrong",
-  "c10 q3: \"chlorophyll\" (truth \"clorophyll\") correct",
   "c10 q4: \"evaporation\" (truth \"evaperation\") correct",
-  "c11 q3: \"chlorophyll\" (truth \"clorophyll\") correct",
   "c19 q4: \"evaporation\" (truth \"evaperation\") correct",
-  "c20 q4: \"evaporation\" (truth \"evaperation\") correct",
+  "c21 q5: \"100 \u00baC\" (truth \"100 \u00b0C\") correct",
   "c22 q3: \"chlorophyll\" (truth \"chlorophyl\") correct"
  ],
- "openMisses": [],
+ "openMisses": [
+  "c15 q6: suggested 0, reference 2",
+  "c15 q7: suggested 0, reference 2"
+ ],
  "allMisses": [
+  "q1 \"B\" -> \"\" [flagged]",
   "q3 \"chlorophyl\" -> \"chlorophyll\"",
   "q4 \"evaperation\" -> \"evaporation\"",
-  "q5 \"0 \u00b0C\" -> \"-100 0 \u00b0C\" [flagged]",
-  "q1 \"A\" -> \"Fals\" [flagged]",
-  "q2 \"False\" -> \"Fals\" [flagged]",
-  "q8 \"C\" -> \"D C\"",
-  "q5 \"100 \u00b0C\" -> \"100 \u00b0\"",
-  "q1 \"A\" -> \"\" [flagged]",
-  "q2 \"False\" -> \"\" [flagged]",
-  "q3 \"clorophyll\" -> \"chlorophyll\"",
+  "q1 \"A\" -> \"d\" [flagged]",
+  "q2 \"False\" -> \"True\" [flagged]",
+  "q8 \"C\" -> \"B\" [flagged]",
+  "q3 \"chloroplast\" -> \"\" [flagged]",
+  "q4 \"evaporation\" -> \"\" [flagged]",
+  "q5 \"90 \u00b0C\" -> \"\" [flagged]",
+  "q8 \"A\" -> \"\" [flagged]",
+  "q3 \"clorophyll\" -> \"\" [flagged]",
   "q4 \"evaperation\" -> \"evaporation\"",
-  "q1 \"A\" -> \"True\" [flagged]",
-  "q3 \"clorophyll\" -> \"chlorophyll\"",
-  "q1 \"A\" -> \"\" [flagged]",
+  "q1 \"B\" -> \"\" [flagged]",
   "q2 \"False\" -> \"\" [flagged]",
   "q3 \"chlorophyll\" -> \"\" [flagged]",
-  "q4 \"melting\" -> \"\" [flagged]",
-  "q5 \"100 \u00b0C\" -> \"\" [flagged]",
+  "q4 \"condensation\" -> \"\" [flagged]",
   "q8 \"C\" -> \"\" [flagged]",
   "q1 \"A\" -> \"\" [flagged]",
-  "q4 \"evaperation\" -> \"evaporation\"",
-  "q4 \"evaperation\" -> \"evaporation\"",
-  "q1 \"A\" -> \"\" [flagged]",
+  "q2 \"True\" -> \"\" [flagged]",
+  "q5 \"100 \u00b0C\" -> \"\" [flagged]",
+  "q1 \"B\" -> \"\" [flagged]",
   "q2 \"False\" -> \"\" [flagged]",
   "q3 \"chlorophyll\" -> \"\" [flagged]",
   "q4 \"evaporation\" -> \"\" [flagged]",
   "q5 \"100 \u00b0C\" -> \"\" [flagged]",
-  "q8 \"A\" -> \"\" [flagged]",
+  "q8 \"C\" -> \"\" [flagged]",
+  "q1 \"A\" -> \"F\" [flagged]",
+  "q2 \"False\" -> \"F\" [flagged]",
+  "q3 \"chlorophyll\" -> \"F\" [flagged]",
+  "q4 \"melting\" -> \"F\" [flagged]",
+  "q5 \"100 \u00b0C\" -> \"F\" [flagged]",
+  "q8 \"C\" -> \"F\" [flagged]",
+  "q1 \"B\" -> \"\" [flagged]",
+  "q4 \"evaperation\" -> \"evaporation\"",
+  "q1 \"B\" -> \"6 B\" [flagged]",
+  "q3 \"chlorophyll\" -> \"\" [flagged]",
+  "q4 \"evaperation\" -> \"\" [flagged]",
+  "q5 \"100 \u00b0C\" -> \"\" [flagged]",
+  "q8 \"C\" -> \"\" [flagged]",
+  "q5 \"100 \u00b0C\" -> \"100 \u00baC\"",
+  "q1 \"B\" -> \"\" [flagged]",
   "q3 \"chlorophyl\" -> \"chlorophyll\"",
-  "q1 \"B\" -> \"\" [flagged]"
+  "q1 \"B\" -> \"\" [flagged]",
+  "q3 \"chloroplast\" -> \"\" [flagged]"
  ],
  "summary": {
-  "exactPct": 79.2,
-  "unflagged": "10/144",
-  "flagRatePct": 25,
-  "openCharsRightPct": 88.5,
-  "suggestAgree": "33/43",
-  "suggestWithin1": "43/43",
-  "secsPerSheet": 10.2,
-  "readSecsPerSheet": 7.4,
-  "suggestSecs": 1.6,
-  "names": "24/24"
- }
+  "exactPct": 66.7,
+  "unflagged": "6/132",
+  "flagRatePct": 37.1,
+  "openCharsRightPct": 83.7,
+  "suggestAgree": "30/38",
+  "suggestWithin1": "36/38",
+  "secsPerSheet": 11.3,
+  "readSecsPerSheet": 8.4,
+  "suggestSecs": 1.7,
+  "names": "22/22"
+ },
+ "raw": [
+  {
+   "sampleId": "c01",
+   "where": "on_device",
+   "ms": 5257,
+   "rereadMs": 2025,
+   "rereadQs": [
+    1,
+    5
+   ],
+   "read": {
+    "studentName": "Aanya K.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "B",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "False"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "0 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "They need light to make food."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The water evaporates."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "False",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "0 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "They need light to make food.",
+     "suggestion": {
+      "points": 1,
+      "outOf": 2,
+      "met": [
+       false,
+       true
+      ],
+      "named": [
+       1
+      ],
+      "reason": "The student correctly identifies light's role in making food, but doesn't mention the process of photosynthesis or the production of glucose.",
+      "where": "on_device",
+      "ms": 1514
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water evaporates.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student correctly identifies evaporation as the process causing the puddle to disappear, which is a core element of the question.",
+      "where": "on_device",
+      "ms": 1522
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c03",
+   "where": "recorded",
+   "ms": 216,
+   "rereadMs": null,
+   "rereadQs": null,
+   "read": {
+    "studentName": "Chloe M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "C",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "False"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "90 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Light helps them grow taller and greener."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The heat from the sun makes the water turn into vapour and go into the air."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "B",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "False",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "90 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Light helps them grow taller and greener.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The student mentioned growth, which is a *result* of photosynthesis but not the reason plants need light to *perform* that process.",
+      "where": "on_device",
+      "ms": 1851
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student correctly identifies evaporation and the sun's heat as the cause of the puddle's disappearance.",
+      "where": "on_device",
+      "ms": 1511
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c04",
+   "where": "on_device",
+   "ms": 6441,
+   "rereadMs": 3282,
+   "rereadQs": [
+    1,
+    2,
+    5,
+    8
+   ],
+   "read": {
+    "studentName": "Dev M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "A",
+      "finalAnswer": "d"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "False",
+      "finalAnswer": "True"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chloroplast",
+      "finalAnswer": "chloroplast"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "evaporation",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "0 \u00b0C",
+      "finalAnswer": "0 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "Plants need light to get food from the soil.",
+      "finalAnswer": "Plants need light to get food from the soil."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "The water evaporates.",
+      "finalAnswer": "The water evaporates."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "D C",
+      "finalAnswer": "B"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "d",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "True",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chloroplast",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "0 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants need light to get food from the soil.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The student states light is needed for food from the soil, which is incorrect; photosynthesis is the process where plants use light to create glucose, and this glucose is their food; the student needs to state that light provides energy for",
+      "where": "on_device",
+      "ms": 2429
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water evaporates.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student correctly identifies evaporation as the process that causes the puddle to disappear.",
+      "where": "on_device",
+      "ms": 1245
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "B",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c05",
+   "where": "on_device",
+   "ms": 5871,
+   "rereadMs": 1703,
+   "rereadQs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "read": {
+    "studentName": "Elif Y.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "True",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "True",
+      "finalAnswer": "True"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chloroplast",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "evaporation",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "90 \u00b0C",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "So they can do Photosynthesis.",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "It condenses into the clouds because it is hot.",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "A",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "B",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "True",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c06",
+   "where": "on_device",
+   "ms": 6651,
+   "rereadMs": 2537,
+   "rereadQs": [
+    2,
+    3,
+    8
+   ],
+   "read": {
+    "studentName": "Farhan A",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "B",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "True",
+      "finalAnswer": "True"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "condensation",
+      "finalAnswer": "condensation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "100 \u00b0C",
+      "finalAnswer": "100 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "Plants use the energy from light to make their own food by photosynthesis.",
+      "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "The heat from the sun makes the water turn into vapour and go into the air.",
+      "finalAnswer": "The heat from the sun makes the water turn into vapour and go into the air."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "A",
+      "finalAnswer": "A"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "B",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "True",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "condensation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants use the energy from light to make their own food by photosynthesis.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student accurately identifies the role of light in photosynthesis and its connection to how plants create food.",
+      "where": "on_device",
+      "ms": 2080
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student correctly identifies evaporation as the process by which the water changes into vapor due to the heat from the sun.",
+      "where": "on_device",
+      "ms": 1606
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "A",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c07",
+   "where": "on_device",
+   "ms": 5675,
+   "rereadMs": 2188,
+   "rereadQs": [
+    2,
+    8
+   ],
+   "read": {
+    "studentName": "Grace L",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "B",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "True",
+      "finalAnswer": "True"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chlorophyll",
+      "finalAnswer": "chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "evaporation",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "100 \u00b0C",
+      "finalAnswer": "100 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "They need light to make food.",
+      "finalAnswer": "They need light to make food."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "The water evaporates into water vapour because the Sun heats it up.",
+      "finalAnswer": "The water evaporates into water vapour because the Sun heats it up."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "A",
+      "finalAnswer": "A"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "B",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "True",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "They need light to make food.",
+     "suggestion": {
+      "points": 1,
+      "outOf": 2,
+      "met": [
+       false,
+       true
+      ],
+      "named": [
+       1
+      ],
+      "reason": "The student correctly identifies that plants use light to make food, but doesn't mention the process of photosynthesis or glucose production.",
+      "where": "on_device",
+      "ms": 1458
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water evaporates into water vapour because the Sun heats it up.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student accurately identifies water evaporation as the process and correctly links it to the Sun's heat providing the energy for the evaporation.",
+      "where": "on_device",
+      "ms": 1686
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "A",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c08",
+   "where": "on_device",
+   "ms": 4613,
+   "rereadMs": 1479,
+   "rereadQs": [
+    2
+   ],
+   "read": {
+    "studentName": "Harsh V.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "B",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "True"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "100 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Light helps them grow taller and greener."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The water soaks into the ground."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "B",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "True",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Light helps them grow taller and greener.",
+     "suggestion": {
+      "points": 1,
+      "outOf": 2,
+      "met": [
+       false,
+       true
+      ],
+      "named": [
+       1
+      ],
+      "reason": "The student mentions growth as a result of light, which relates to photosynthesis, but doesn't directly address the energy source or the production of glucose.",
+      "where": "on_device",
+      "ms": 1717
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water soaks into the ground.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The answer incorrectly describes what happens to the water after it evaporates, failing to mention the role of heat from the sun in the process.",
+      "where": "on_device",
+      "ms": 1900
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c09",
+   "where": "on_device",
+   "ms": 7001,
+   "rereadMs": 2100,
+   "rereadQs": [
+    1,
+    5
+   ],
+   "read": {
+    "studentName": "Ines C.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "A",
+      "finalAnswer": "A"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "False",
+      "finalAnswer": "False"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chlorophyll",
+      "finalAnswer": "chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "evaporation",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "100",
+      "finalAnswer": "100"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "Plants need light to get food from the soil.",
+      "finalAnswer": "Plants need light to get food from the soil."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "The heat from the sun makes the water turn into vapour and go into the air.",
+      "finalAnswer": "The heat from the sun makes the water turn into vapour and go into the air."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "C",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "A",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "False",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants need light to get food from the soil.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The student correctly identifies that plants get food from the soil, but does not connect this to the process of photosynthesis or the creation of glucose using light energy.",
+      "where": "on_device",
+      "ms": 1718
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student accurately identifies evaporation and the sun's energy as the reason the puddle disappears, fulfilling all key points.",
+      "where": "on_device",
+      "ms": 1615
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c10",
+   "where": "on_device",
+   "ms": 4743,
+   "rereadMs": 5526,
+   "rereadQs": [
+    1,
+    2,
+    3,
+    5,
+    8
+   ],
+   "read": {
+    "studentName": "Jai P.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "True"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chlorophyll",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "90 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The water soaks into the ground."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "True",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "90 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants use the energy from light to make their own food by photosynthesis.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student correctly identifies that plants use light to make their own food through photosynthesis.",
+      "where": "on_device",
+      "ms": 1322
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water soaks into the ground.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1
+      ],
+      "reason": "The student did not mention evaporation (key point 1), nor the role of heat from the sun (key point 2) in the process.",
+      "where": "on_device",
+      "ms": 1706
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c12",
+   "where": "on_device",
+   "ms": 5077,
+   "rereadMs": 4298,
+   "rereadQs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    8
+   ],
+   "read": {
+    "studentName": "Lakshmi l",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "B",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chlorophyll",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "condensation",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "light helps them grow taller and greener."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The sun dries it."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "light helps them grow taller and greener.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The student mentions growth and color which are results of photosynthesis, but doesn't explain the process or where the energy comes from to make food.",
+      "where": "on_device",
+      "ms": 1827
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The sun dries it.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The answer is partially correct but doesn't address the evaporation process or the role of heat from the sun's energy.",
+      "where": "on_device",
+      "ms": 1569
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c13",
+   "where": "on_device",
+   "ms": 5542,
+   "rereadMs": 2626,
+   "rereadQs": [
+    1,
+    2,
+    5
+   ],
+   "read": {
+    "studentName": "Mateo R.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "A",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "True",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "Chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "100 \u00b0C",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Light helps them grow taller and greener."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The water evaporates."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "Chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Light helps them grow taller and greener.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1
+      ],
+      "reason": "The student mentions growth but doesn't explain how light enables photosynthesis, specifically stating its role in energy production or food making.",
+      "where": "on_device",
+      "ms": 1608
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water evaporates.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student directly states the correct process of evaporation, which is a key way a puddle disappears on a sunny day due to the sun's energy providing the latent heat of vaporization needed to transform liquid water into water vapor.",
+      "where": "on_device",
+      "ms": 1982
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c14",
+   "where": "on_device",
+   "ms": 5259,
+   "rereadMs": null,
+   "rereadQs": null,
+   "read": {
+    "studentName": "Nandini R",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "B",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "False",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chlorophyll",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "evaporation",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "100 \u00b0C",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "The water evaporates into water vapour because the Sun heats it up.",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "\"",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c15",
+   "where": "on_device",
+   "ms": 6130,
+   "rereadMs": 5889,
+   "rereadQs": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    8
+   ],
+   "read": {
+    "studentName": "Oscar B.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "A",
+      "finalAnswer": "F"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "False",
+      "finalAnswer": "F"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chlorophyll",
+      "finalAnswer": "F"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "melting",
+      "finalAnswer": "F"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "100 \u00b0C",
+      "finalAnswer": "F"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "Light gives plants energy for photosynthesis so they can make glucose.",
+      "finalAnswer": "F"
+     },
+     {
+      "q": 7,
+      "crossedOutText": "The water evaporates into water vapour because the Sun heats it up.",
+      "finalAnswer": "F"
+     },
+     {
+      "q": 8,
+      "crossedOutText": "C",
+      "finalAnswer": "F"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "F",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "F",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "F",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "F",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "F",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "F",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The answer doesn't address the core reason plants need light \u2013 its role in photosynthesis and food production.",
+      "where": "on_device",
+      "ms": 1436
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "F",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The answer doesn't mention evaporation or the role of heat from the sun in causing the water to disappear.",
+      "where": "on_device",
+      "ms": 1451
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "F",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c16",
+   "where": "on_device",
+   "ms": 5063,
+   "rereadMs": 3103,
+   "rereadQs": [
+    1,
+    2,
+    3,
+    5
+   ],
+   "read": {
+    "studentName": "Priya N.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "B",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "True"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "condensation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "100"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The water goes away."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "True",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "condensation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants use the energy from light to make their own food by photosynthesis.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student correctly identifies that light is used to make food through photosynthesis, covering both the energy source and the food production.",
+      "where": "on_device",
+      "ms": 1532
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water goes away.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1
+      ],
+      "reason": "The response doesn't address why the water goes away, only that it *does* go away.",
+      "where": "on_device",
+      "ms": 1393
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c17",
+   "where": "on_device",
+   "ms": 6991,
+   "rereadMs": 7493,
+   "rereadQs": [
+    1
+   ],
+   "read": {
+    "studentName": "Qasim R.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "A",
+      "finalAnswer": "A"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "False",
+      "finalAnswer": "False"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chlorophyll",
+      "finalAnswer": "chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "evaporation",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "100 \u00b0C",
+      "finalAnswer": "100 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "Plants use the energy from light to make their own food by photosynthesis.",
+      "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "The water evaporates into water vapour because the Sun heats it up.",
+      "finalAnswer": "The water evaporates into water vapour because the Sun heats it up."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "A",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "False",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants use the energy from light to make their own food by photosynthesis.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student accurately identifies light as the energy source for photosynthesis, which is how plants create their food.",
+      "where": "on_device",
+      "ms": 1805
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water evaporates into water vapour because the Sun heats it up.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student accurately describes evaporation and the role of solar energy in causing it.",
+      "where": "on_device",
+      "ms": 1575
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c18",
+   "where": "on_device",
+   "ms": 7196,
+   "rereadMs": null,
+   "rereadQs": null,
+   "read": {
+    "studentName": "Rhea S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "False"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "100 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The water soaks into the ground."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "B",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "False",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants use the energy from light to make their own food by photosynthesis.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The answer correctly identifies that light provides energy for photosynthesis, leading to the production of food (glucose).",
+      "where": "on_device",
+      "ms": 1849
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water soaks into the ground.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The student states the puddle disappears because the water soaks into the ground, which is incorrect. The puddle disappears due to evaporation, not absorption into the ground.",
+      "where": "on_device",
+      "ms": 2383
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c19",
+   "where": "on_device",
+   "ms": 6745,
+   "rereadMs": 3702,
+   "rereadQs": [
+    1,
+    3
+   ],
+   "read": {
+    "studentName": "Sipho D.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "A",
+      "finalAnswer": "A"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "False",
+      "finalAnswer": "False"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "100 \u2103"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Plants need light to get food from the soil."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The water evaporates into water vapour because the Sun heats it up."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "A",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "False",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100 \u2103",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants need light to get food from the soil.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1
+      ],
+      "reason": "The student's response does not address that light provides energy for photosynthesis, which is how plants make their food.",
+      "where": "on_device",
+      "ms": 1819
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water evaporates into water vapour because the Sun heats it up.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The answer correctly identifies evaporation as the reason the puddle disappears, and accurately attributes the cause to heat from the sun.",
+      "where": "on_device",
+      "ms": 1872
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c20",
+   "where": "on_device",
+   "ms": 5772,
+   "rereadMs": 5627,
+   "rereadQs": [
+    1,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "read": {
+    "studentName": "Tani S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "6 B"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "False"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chlorophyll",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "evaporation",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "100 \u00b0C",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "Light helps them grow taller and greener.",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "The water evaporates.",
+      "finalAnswer": ""
+     },
+     {
+      "q": 8,
+      "crossedOutText": "C",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "6 B",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "False",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 7,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 8,
+     "modelRead": "",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c21",
+   "where": "on_device",
+   "ms": 5529,
+   "rereadMs": 2047,
+   "rereadQs": [
+    1,
+    8
+   ],
+   "read": {
+    "studentName": "uma P.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "A",
+      "finalAnswer": "A"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "False",
+      "finalAnswer": "False"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chlorophyll",
+      "finalAnswer": "chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "evaporation",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "100 \u00baC",
+      "finalAnswer": "100 \u00baC"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Plants use the energy from light to make their own food by photosynthesis."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "It condenses into the clouds because it is hot."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "A"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "A",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "False",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100 \u00baC",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants use the energy from light to make their own food by photosynthesis.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student accurately states that light is used by plants to make food through photosynthesis, encompassing both energy provision and the creation of glucose.",
+      "where": "on_device",
+      "ms": 1638
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "It condenses into the clouds because it is hot.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1
+      ],
+      "reason": "The student mentions condensation, which is the opposite of evaporation, offering an incorrect explanation for the puddle's disappearance.",
+      "where": "on_device",
+      "ms": 1709
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "A",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c22",
+   "where": "on_device",
+   "ms": 4938,
+   "rereadMs": 2444,
+   "rereadQs": [
+    1,
+    2,
+    5
+   ],
+   "read": {
+    "studentName": "Vikram B.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "B",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Plants need light to get food from the soil."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The heat from the sun makes the water turn into vapour and go into the air."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants need light to get food from the soil.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The student mentions plants need light for food but doesn't explain how the light provides energy for photosynthesis or makes glucose.",
+      "where": "on_device",
+      "ms": 1677
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student correctly identifies evaporation as the process by which the water disappears, linking it to the sun's heat which provides the energy for the water to change state.",
+      "where": "on_device",
+      "ms": 1897
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c23",
+   "where": "on_device",
+   "ms": 5440,
+   "rereadMs": 1557,
+   "rereadQs": [
+    2
+   ],
+   "read": {
+    "studentName": "Wen Z.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "True"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "chlorophyll"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "evaporation"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "100 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "They need light to make food."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The water goes away."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "C"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "B",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "True",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "chlorophyll",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "evaporation",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "They need light to make food.",
+     "suggestion": {
+      "points": 1,
+      "outOf": 2,
+      "met": [
+       true,
+       false
+      ],
+      "named": [],
+      "reason": "The student correctly states that plants use light to make food, but doesn't mention photosynthesis or glucose, which are crucial details.",
+      "where": "on_device",
+      "ms": 1583
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The water goes away.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The answer is too vague and doesn't explain *why* the water disappears; it just states the water is gone.",
+      "where": "on_device",
+      "ms": 1693
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "C",
+     "suggestion": null
+    }
+   ]
+  },
+  {
+   "sampleId": "c24",
+   "where": "on_device",
+   "ms": 5455,
+   "rereadMs": 3112,
+   "rereadQs": [
+    1,
+    3,
+    4,
+    8
+   ],
+   "read": {
+    "studentName": "Yusuf D.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "B",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "False"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "chloroplast",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "100 \u00b0C"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Plants need light to get food from the soil."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The heat from the sun makes the water turn into vapour and go into the air."
+     },
+     {
+      "q": 8,
+      "crossedOutText": "",
+      "finalAnswer": "A"
+     }
+    ]
+   },
+   "marks": [
+    {
+     "q": 1,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 2,
+     "modelRead": "False",
+     "suggestion": null
+    },
+    {
+     "q": 3,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 4,
+     "modelRead": "",
+     "suggestion": null
+    },
+    {
+     "q": 5,
+     "modelRead": "100 \u00b0C",
+     "suggestion": null
+    },
+    {
+     "q": 6,
+     "modelRead": "Plants need light to get food from the soil.",
+     "suggestion": {
+      "points": 0,
+      "outOf": 2,
+      "met": [
+       false,
+       false
+      ],
+      "named": [
+       1,
+       2
+      ],
+      "reason": "The student's answer is incorrect because it confuses obtaining food from the soil with needing light for photosynthesis, which is how plants create their own food using light energy.",
+      "where": "on_device",
+      "ms": 1774
+     }
+    },
+    {
+     "q": 7,
+     "modelRead": "The heat from the sun makes the water turn into vapour and go into the air.",
+     "suggestion": {
+      "points": 2,
+      "outOf": 2,
+      "met": [
+       true,
+       true
+      ],
+      "named": [],
+      "reason": "The student correctly identifies evaporation as the process of the water turning into vapor due to heat from the sun, fulfilling all key points.",
+      "where": "on_device",
+      "ms": 1614
+     }
+    },
+    {
+     "q": 8,
+     "modelRead": "A",
+     "suggestion": null
+    }
+   ]
+  }
+ ],
+ "benchAt": "2026-11-15T12:41:47.396Z"
 }

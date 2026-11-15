@@ -38,7 +38,8 @@ export function inkShare(c: OffscreenCanvas, borderPx = 13): number {
   const sorted = Float32Array.from(lum).sort();
   const paper = sorted[Math.floor(sorted.length * 0.6)]; // the page's own brightness in this box
   const dark = new Uint8Array(iw * ih);
-  for (let i = 0; i < lum.length; i++) dark[i] = lum[i] < paper - 70 ? 1 : 0;
+  // relative to the box's own paper, so a dim photo's ink still counts (round 5 distortion check)
+  for (let i = 0; i < lum.length; i++) dark[i] = lum[i] < paper * 0.7 ? 1 : 0;
   // straight lines are print (a box edge left in by a slightly skewed photo), not handwriting
   for (let y = 0; y < ih; y++) { let n = 0; for (let x = 0; x < iw; x++) n += dark[y * iw + x]; if (n > iw * 0.4) for (let x = 0; x < iw; x++) dark[y * iw + x] = 0; }
   // columns: only a near-full-height line close to the frame (a skewed box edge); an upright "1" or "l" stays ink
@@ -60,7 +61,7 @@ export function trimToInk(c: OffscreenCanvas, pad = 14): OffscreenCanvas {
   let top = -1, bottom = -1;
   for (let y = 13; y < h - 13; y++) {
     let n = 0;
-    for (let x = 13; x < w - 13; x++) if (lum(x, y) < paper - 70) n++;
+    for (let x = 13; x < w - 13; x++) if (lum(x, y) < paper * 0.7) n++;
     // a row with some ink but not a printed line across the box
     if (n > 2 && n < (w - 26) * 0.4) { if (top < 0) top = y; bottom = y; }
   }
@@ -81,7 +82,7 @@ function darkShare(c: OffscreenCanvas): number {
   const lum: number[] = [];
   for (let p = 0; p < data.length; p += 4) lum.push((data[p] * 299 + data[p + 1] * 587 + data[p + 2] * 114) / 1000);
   const paper = [...lum].sort((x, y) => x - y)[Math.floor(lum.length * 0.6)];
-  return lum.filter((v) => v < paper - 70).length / lum.length;
+  return lum.filter((v) => v < paper * 0.7).length / lum.length;
 }
 
 /**
@@ -96,7 +97,8 @@ export function frameScore(c: OffscreenCanvas, padPx = Math.round(1.5 * PX_PER_M
   for (let y = 0; y < h; y += 3) for (let x = 0; x < w; x += 3) sample.push(lum(x, y));
   sample.sort((a, b) => a - b);
   const paper = sample[Math.floor(sample.length * 0.6)];
-  const dark = (x: number, y: number) => x >= 0 && y >= 0 && x < w && y < h && lum(x, y) < paper - 60;
+  // relative to this box's own paper: a dim or blurred photo keeps the frame about 25% darker than the paper
+  const dark = (x: number, y: number) => x >= 0 && y >= 0 && x < w && y < h && lum(x, y) < paper * 0.8;
   let hit = 0, n = 0;
   const near = (x0: number, y0: number, horiz: boolean) => { for (let d = -band; d <= band; d++) if (horiz ? dark(x0, y0 + d) : dark(x0 + d, y0)) return true; return false; };
   for (let x = padPx + 6; x < w - padPx - 6; x += 2) { n += 2; if (near(x, padPx, true)) hit++; if (near(x, h - 1 - padPx, true)) hit++; }

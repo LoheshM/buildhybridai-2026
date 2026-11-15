@@ -1,0 +1,1238 @@
+{
+ "recordedAt": "2026-11-15T18:15:14+0530",
+ "model": "Gemini Nano (Chrome Prompt API, through Firebase AI Logic)",
+ "chrome": "Chrome 157",
+ "promptsVersion": "v2-2026-11-15-fenced",
+ "reads": {
+  "e01": {
+   "first": {
+    "studentName": "Adaeze N.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "necessary",
+      "finalAnswer": "necessary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "beginning",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "went",
+      "finalAnswer": "went"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "written",
+      "finalAnswer": "written"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "B",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "He wanted to get the paper boat back because the girl upstairs was about to cry.",
+      "finalAnswer": "He wanted to get the paper boat back because the girl upstairs was about to cry."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "The rain made the town quiet. Umbrellas bloomed like flowers along the pavement, red, yellow and black. A cat sat in a shop doorway, watching the drops with great suspicion.",
+      "finalAnswer": "The rain made the town quiet. Umbrellas bloomed like flowers along the pavement, red, yellow and black. A cat sat in a shop doorway, watching the drops with great suspicion."
+     }
+    ]
+   },
+   "firstMs": 7629
+  },
+  "e02": {
+   "first": {
+    "studentName": "Bilal H.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "necessary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "went"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "written"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "D"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "The little girl was close to tears so he went to fetch her boat."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "It was a rainy day in my town. The roads were full of water and the cars splashed people. I stayed at home and read a book. In the afternoon the rain stopped and I went to play cricket with my friends."
+     }
+    ]
+   },
+   "firstMs": 6320,
+   "second": {
+    "5": {
+     "final": "",
+     "crossed": "D"
+    }
+   },
+   "secondMs": 1537
+  },
+  "e03": {
+   "first": {
+    "studentName": "Charlotte E.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "nesary",
+      "finalAnswer": "nesary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "beginning",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "went",
+      "finalAnswer": "went"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "written",
+      "finalAnswer": "written"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "B",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "Because the girl was.",
+      "finalAnswer": "Because the girl was."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "The sky turned grey and heavy. Then the rain came down in sheets, so thick I could not see the shop across the road. Children ran out barefoot to sail paper boats while the old men sat under the bus stop shaking their heads.",
+      "finalAnswer": "The sky turned grey and heavy. Then the rain came down in sheets, so thick I could not see the shop across the road. Children ran out barefoot to sail paper boats while the old men sat under the bus stop shaking their heads."
+     }
+    ]
+   },
+   "firstMs": 7012
+  },
+  "e04": {
+   "first": {
+    "studentName": "Daksh A.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "necessary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "went"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "The little girl was close to tears so he went to fetch her boat."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The rain was falling very hard and the wind was blowing the trees and the electricity went off and we lit candles and my brother was scared of the thunder and then it stopped at night"
+     }
+    ]
+   },
+   "firstMs": 5512,
+   "second": {
+    "4": {
+     "final": "one or a few words.",
+     "crossed": "one or a few words."
+    }
+   },
+   "secondMs": 1810
+  },
+  "e05": {
+   "first": {
+    "studentName": "Esha B.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "necessary",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "went"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "wrote"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "A"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "He wanted to get the paper boat back because the girl upstairs was about to cry."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "Rainy days are good and bad, good because it is cool, Bad because the roads flood. My school bus was late, we had a test. I got wet.",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "firstMs": 5965,
+   "second": {
+    "1": {
+     "final": "",
+     "crossed": "necessary"
+    },
+    "5": {
+     "final": "",
+     "crossed": "A"
+    },
+    "7": {
+     "final": "",
+     "crossed": ""
+    }
+   },
+   "secondMs": 2507
+  },
+  "e06": {
+   "first": {
+    "studentName": "Finn M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "necessary",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "beginning",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "went",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "written",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "B",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "firstMs": 4531
+  },
+  "e07": {
+   "first": {
+    "studentName": "Gauri D.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "necessary",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "beginning",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "game went",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "written",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "B",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "To get the boat."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "firstMs": 4684,
+   "second": {
+    "1": {
+     "final": "",
+     "crossed": "necessary"
+    },
+    "2": {
+     "final": "",
+     "crossed": "beginning"
+    },
+    "3": {
+     "final": "",
+     "crossed": "game went"
+    },
+    "4": {
+     "final": "",
+     "crossed": "written"
+    },
+    "5": {
+     "final": "",
+     "crossed": "B"
+    },
+    "7": {
+     "final": "It rained. I was in school. The class was dark so the teacher put lights on. After school my shoes got wet on the way home and my mum was cross.",
+     "crossed": ""
+    }
+   },
+   "secondMs": 5220
+  },
+  "e08": {
+   "first": {
+    "studentName": "Hamza S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "necessary",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "went"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "written"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "D"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Because the girl was sad."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "It was raining so we couldnt go out. We played carrom inside. Then the power went out. We ate dinner by candle light. It was fun."
+     }
+    ]
+   },
+   "firstMs": 5543,
+   "second": {
+    "1": {
+     "final": "",
+     "crossed": "one or a few words"
+    },
+    "5": {
+     "final": "",
+     "crossed": "D"
+    }
+   },
+   "secondMs": 2171
+  },
+  "e09": {
+   "first": {
+    "studentName": "Isla C.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "essential",
+      "finalAnswer": "necessary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "beggin",
+      "finalAnswer": "begging"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "gone",
+      "finalAnswer": "going"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "wrote written",
+      "finalAnswer": "wrote"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "B",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Because the girl was sad."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "Monsoon rain is heavy in my town. The drains overflow and the water comes up to our knees. Shops close early. But the air smells fresh and the hills behind the town disappear in the mist."
+     }
+    ]
+   },
+   "firstMs": 6482,
+   "second": {
+    "1": {
+     "final": "necessary",
+     "crossed": "necessary"
+    },
+    "2": {
+     "final": "beginning",
+     "crossed": "beginning"
+    },
+    "3": {
+     "final": "gone",
+     "crossed": "gone"
+    },
+    "4": {
+     "final": "wrote written",
+     "crossed": "wrote written"
+    }
+   },
+   "secondMs": 3602
+  },
+  "e10": {
+   "first": {
+    "studentName": "Jiya S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "necessary",
+      "finalAnswer": "necessary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "begginning",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "went",
+      "finalAnswer": "went"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "wrote",
+      "finalAnswer": "wrote"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "D",
+      "finalAnswer": "D"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "The little girl was close to tears so he went to fetch her boat."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "on rainy day the street is wet. there is lot of water. the buses are late and people are angry. i dont like rainy days because i cant go out"
+     }
+    ]
+   },
+   "firstMs": 6322,
+   "second": {
+    "2": {
+     "final": "",
+     "crossed": "beginning"
+    },
+    "5": {
+     "final": "",
+     "crossed": "D"
+    }
+   },
+   "secondMs": 2034
+  },
+  "e11": {
+   "first": {
+    "studentName": "Karan M.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "necessar",
+      "finalAnswer": "necessay"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "begining",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "goed",
+      "finalAnswer": "good"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "B",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "The little girl was close to tears so he went to fetch her boat."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "i like rain. its nice. the end."
+     }
+    ]
+   },
+   "firstMs": 4837,
+   "second": {
+    "1": {
+     "final": "",
+     "crossed": "necessary"
+    },
+    "2": {
+     "final": "",
+     "crossed": "beginning"
+    },
+    "3": {
+     "final": "",
+     "crossed": "goed"
+    },
+    "4": {
+     "final": "",
+     "crossed": ""
+    }
+   },
+   "secondMs": 3258
+  },
+  "e12": {
+   "first": {
+    "studentName": "Lucia R.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "necessary",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "beginning",
+      "finalAnswer": ""
+     },
+     {
+      "q": 3,
+      "crossedOutText": "went",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "wrote",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Because the girl was sad."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "Their was alot of rain yesterday. The road infront of my house was flooded and a car got stuck. Some men came and pushed it out. Everyone was soaking wet but they were laughing."
+     }
+    ]
+   },
+   "firstMs": 5480,
+   "second": {
+    "1": {
+     "final": "necessary",
+     "crossed": "necessary"
+    },
+    "2": {
+     "final": "beginning",
+     "crossed": "beginning"
+    },
+    "3": {
+     "final": "went",
+     "crossed": "went"
+    },
+    "4": {
+     "final": "wrote",
+     "crossed": "wrote"
+    },
+    "5": {
+     "final": "True",
+     "crossed": "True"
+    }
+   },
+   "secondMs": 4214
+  },
+  "e13": {
+   "first": {
+    "studentName": "Mihir K.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "necessary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "went"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "written"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "Because the girl was sad."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The rain drummed on the tin roofs like a hundred tiny drums. Water rushed down the gutters and the streets shone like glass. People hurried past with umbrellas, and the smell of wet earth filled the air. By evening the clouds cleared and a pale rainbow appeared over the market."
+     }
+    ]
+   },
+   "firstMs": 6447
+  },
+  "e14": {
+   "first": {
+    "studentName": "Noor F.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "necessary",
+      "finalAnswer": "necessary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "beginning",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "went",
+      "finalAnswer": "went"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "wrote",
+      "finalAnswer": "wrote"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     }
+    ]
+   },
+   "firstMs": 4138,
+   "second": {
+    "5": {
+     "final": "one option letter, or True or False.",
+     "crossed": ""
+    },
+    "6": {
+     "final": "The little girl was close to tears so he went to fetch her boat.",
+     "crossed": ""
+    },
+    "7": {
+     "final": "When it rains in my town the whole place changes. The dusty roads turn to mud, the trees look bright green again and the street dogs hide under parked cars. Everything sounds different, softer somehow.",
+     "crossed": ""
+    }
+   },
+   "secondMs": 4118
+  },
+  "e15": {
+   "first": {
+    "studentName": "Omkar P.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 2,
+      "crossedOutText": "beginning",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "goed",
+      "finalAnswer": "goed"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "written",
+      "finalAnswer": "written"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "B",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "The lane was a river and he wanted to swim."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "The clouds were black. Then rain. Lots of rain. Water everywhere in the streets, in the shops, in my shoes."
+     }
+    ]
+   },
+   "firstMs": 5061,
+   "second": {
+    "1": {
+     "final": "",
+     "crossed": "one or a few words."
+    }
+   },
+   "secondMs": 1599
+  },
+  "e16": {
+   "first": {
+    "studentName": "Pooja V.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "necessary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "begging"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": ""
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "He wanted to get the paper boat back because the girl upstairs was about to cry."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "Rain fell all morning. The puddles grew bigger and the frogs started to croak loudly near the pond. My mother made hot pakoras and we watched the lightning from the window. It was the best kind of lazy day."
+     }
+    ]
+   },
+   "firstMs": 5215,
+   "second": {
+    "3": {
+     "final": "",
+     "crossed": "one or a few words."
+    },
+    "4": {
+     "final": "",
+     "crossed": "one or a few words."
+    }
+   },
+   "secondMs": 2265
+  },
+  "e17": {
+   "first": {
+    "studentName": "Rafael S.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "necessary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "gene went"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "written"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "A"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "To get the boat."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "Its raining. The weather is bad. I am bored. My phone is not working. I hate rain."
+     }
+    ]
+   },
+   "firstMs": 5368,
+   "second": {
+    "3": {
+     "final": "",
+     "crossed": "gone went"
+    }
+   },
+   "secondMs": 1568
+  },
+  "e18": {
+   "first": {
+    "studentName": "Sneha J.",
+    "answers": [
+     {
+      "q": 1,
+      "crossedOutText": "",
+      "finalAnswer": "nesessary"
+     },
+     {
+      "q": 2,
+      "crossedOutText": "",
+      "finalAnswer": "beginning"
+     },
+     {
+      "q": 3,
+      "crossedOutText": "",
+      "finalAnswer": "gone"
+     },
+     {
+      "q": 4,
+      "crossedOutText": "",
+      "finalAnswer": "written"
+     },
+     {
+      "q": 5,
+      "crossedOutText": "",
+      "finalAnswer": "B"
+     },
+     {
+      "q": 6,
+      "crossedOutText": "",
+      "finalAnswer": "the wanted to get the paper boat back because the girl upstairs was about to cry."
+     },
+     {
+      "q": 7,
+      "crossedOutText": "",
+      "finalAnswer": "In my town, rainy days mean chai and stories. My grandmother tells us about the great flood of her childhood while the rain hammers the windows. Outside, the street becomes a river and the frogs sing."
+     }
+    ]
+   },
+   "firstMs": 6290
+  }
+ },
+ "suggestions": {
+  "e01:6": {
+   "raw": {
+    "mark": "full",
+    "missing": [],
+    "reason": "The student correctly identifies that Sam waded into the water to retrieve a paper boat, and acknowledges that the girl upstairs was upset about her boat, fulfilling both key points."
+   },
+   "ms": 1911
+  },
+  "e01:7": {
+   "raw": {
+    "l1": 3,
+    "l2": 2,
+    "l3": 2,
+    "reason": "The paragraph effectively evokes imagery of a rainy day, using descriptive language to paint a picture of the scene."
+   },
+   "ms": 2023
+  },
+  "e02:6": {
+   "raw": {
+    "mark": "full",
+    "missing": [],
+    "reason": "The student correctly identifies that Sam waded into the water to retrieve the boat because the little girl was upset about it."
+   },
+   "ms": 1691
+  },
+  "e02:7": {
+   "raw": {
+    "l1": 2,
+    "l2": 1,
+    "l3": 1,
+    "reason": "The paragraph clearly describes a rainy day and includes some descriptive details, but the organization feels a bit disjointed with a sudden shift in activity."
+   },
+   "ms": 2119
+  },
+  "e03:6": {
+   "raw": {
+    "mark": "none",
+    "missing": [
+     1,
+     2
+    ],
+    "reason": "The answer states that Sam waded into the water because a girl was close to tears, but does not mention the key point about Sam retrieving the paper boat."
+   },
+   "ms": 1951
+  },
+  "e03:7": {
+   "raw": {
+    "l1": 3,
+    "l2": 1,
+    "l3": 2,
+    "reason": "The paragraph effectively evokes a vivid description of a rainy day, using sensory details to create a clear picture in the reader's mind."
+   },
+   "ms": 2261
+  },
+  "e04:6": {
+   "raw": {
+    "mark": "full",
+    "missing": [],
+    "reason": "The student correctly identified that Sam waded into the water to retrieve the little girl's boat, fulfilling both key purpose points mentioned by the teacher."
+   },
+   "ms": 1883
+  },
+  "e04:7": {
+   "raw": {
+    "l1": 1,
+    "l2": 1,
+    "l3": 1,
+    "reason": "The paragraph attempts to describe a rainy day, but lacks detailed description and organized structure. "
+   },
+   "ms": 1870
+  },
+  "e05:6": {
+   "raw": {
+    "mark": "full",
+    "missing": [],
+    "reason": "The student accurately states both reasons why Sam went into the water: to retrieve the paper boat and because the girl was close to crying."
+   },
+   "ms": 1724
+  },
+  "e07:6": {
+   "raw": {
+    "mark": "none",
+    "missing": [
+     1,
+     2
+    ],
+    "reason": "The answer only states *why* Sam went to the water, not *why* he did it – detailing the motivation (getting the boat back or helping a little girl)."
+   },
+   "ms": 1984
+  },
+  "e08:6": {
+   "raw": {
+    "mark": "partial",
+    "missing": [
+     1
+    ],
+    "reason": "The student correctly identifies the reason the girl was upset, but does not explicitly mention that Sam wanted to get the paper boat back."
+   },
+   "ms": 1872
+  },
+  "e08:7": {
+   "raw": {
+    "l1": 1,
+    "l2": 1,
+    "l3": 2,
+    "reason": "The paragraph presents a simple narrative about a rainy day, including relevant details, but lacks descriptive language and clear organization."
+   },
+   "ms": 2009
+  },
+  "e09:6": {
+   "raw": {
+    "mark": "partial",
+    "missing": [
+     1
+    ],
+    "reason": "The student correctly identifies the girl being sad, which is a key detail, but doesn't mention retrieving the paper boat."
+   },
+   "ms": 1804
+  },
+  "e09:7": {
+   "raw": {
+    "l1": 3,
+    "l2": 1,
+    "l3": 2,
+    "reason": "The paragraph vividly describes the sensory experience of a rainy day with vivid imagery and clear details of events occurring in the town."
+   },
+   "ms": 2050
+  },
+  "e10:6": {
+   "raw": {
+    "mark": "full",
+    "missing": [],
+    "reason": "The student accurately states that Sam waded into the water to retrieve the little girl's boat, fulfilling both key points provided."
+   },
+   "ms": 1689
+  },
+  "e10:7": {
+   "raw": {
+    "l1": 1,
+    "l2": 1,
+    "l3": 1,
+    "reason": "The paragraph identifies a rainy day in context but lacks vivid description, sentence structure, and varied vocabulary."
+   },
+   "ms": 1838
+  },
+  "e11:6": {
+   "raw": {
+    "mark": "full",
+    "missing": [],
+    "reason": "The student correctly identifies that Sam went to get the paper boat back because the little girl was close to tears about it."
+   },
+   "ms": 1760
+  },
+  "e11:7": {
+   "raw": {
+    "l1": 1,
+    "l2": 0,
+    "l3": 0,
+    "reason": "The paragraph provides a simple opinion about rain but lacks descriptive details to illustrate a rainy day in the student's town."
+   },
+   "ms": 1891
+  },
+  "e12:6": {
+   "raw": {
+    "mark": "partial",
+    "missing": [
+     1
+    ],
+    "reason": "While the student correctly identifies the girl's sadness as a reason for Sam's action, they don't explicitly state that Sam wanted to retrieve the paper boat, which is a key point to address the question directly."
+   },
+   "ms": 2366
+  },
+  "e12:7": {
+   "raw": {
+    "l1": 1,
+    "l2": 0,
+    "l3": 2,
+    "reason": "The paragraph conveys a basic idea of a rainy day, but lacks detailed descriptions of the atmosphere and feelings evoked by the rain."
+   },
+   "ms": 2075
+  },
+  "e13:6": {
+   "raw": {
+    "mark": "partial",
+    "missing": [
+     1
+    ],
+    "reason": "The student rightly identifies the girl's sadness as a reason, but does not mention the desire to retrieve the paper boat, neglecting the second key point."
+   },
+   "ms": 1827
+  },
+  "e13:7": {
+   "raw": {
+    "l1": 3,
+    "l2": 1,
+    "l3": 2,
+    "reason": "The paragraph vividly describes the sensory details of a rainy day, using strong imagery and figurative language to create a clear picture."
+   },
+   "ms": 2023
+  },
+  "e15:6": {
+   "raw": {
+    "mark": "none",
+    "missing": [
+     1,
+     2
+    ],
+    "reason": "The student stated 'he wanted to swim,' which is vague and doesn't explain *why* Sam wanted to swim in the river. The teacher's key points are about Sam returning a paper boat to a little girl who was upset about losing her boat."
+   },
+   "ms": 2557
+  },
+  "e15:7": {
+   "raw": {
+    "l1": 1,
+    "l2": 1,
+    "l3": 1,
+    "reason": "The paragraph provides basic observations about a rainy day, but the description is simple and lacks vivid detail."
+   },
+   "ms": 1727
+  },
+  "e16:6": {
+   "raw": {
+    "mark": "full",
+    "missing": [],
+    "reason": "The student correctly identifies that Sam waded into the water to retrieve the paper boat, as the girl upstairs was about to cry because it was her boat, fulfilling both key points."
+   },
+   "ms": 2027
+  },
+  "e16:7": {
+   "raw": {
+    "l1": 3,
+    "l2": 1,
+    "l3": 2,
+    "reason": "The paragraph effectively describes sensory details of a rainy day, including visual (puddles, lightning) and auditory (frogs croaking) elements, demonstrating good ideas and description."
+   },
+   "ms": 2571
+  },
+  "e17:6": {
+   "raw": {
+    "mark": "none",
+    "missing": [
+     1,
+     2
+    ],
+    "reason": "The student only stated the student's motivation, but did not mention the emotional state of the little girl or her connection to the boat."
+   },
+   "ms": 1850
+  },
+  "e17:7": {
+   "raw": {
+    "l1": 1,
+    "l2": 0,
+    "l3": 0,
+    "reason": "The paragraph touches on the feeling of a rainy day, but lacks descriptive details about the town or the weather."
+   },
+   "ms": 1841
+  },
+  "e18:6": {
+   "raw": {
+    "mark": "full",
+    "missing": [],
+    "reason": "The student correctly identifies both reasons Sam waded into the water: to retrieve the paper boat and because the little girl upstairs was becoming upset over it."
+   },
+   "ms": 1876
+  },
+  "e18:7": {
+   "raw": {
+    "l1": 3,
+    "l2": 2,
+    "l3": 2,
+    "reason": "The paragraph effectively paints a vivid picture using sensory details (chai, stories, hammering rain, river, frogs) and establishes a clear atmosphere."
+   },
+   "ms": 2157
+  }
+ },
+ "missing": []
+}

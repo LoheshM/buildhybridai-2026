@@ -65,7 +65,7 @@ export const store = {
   async putQuiz(q: QuizRec) { await (await db()).put('quizzes', q); },
   async sheets(quizId: string) { return (await (await db()).getAllFromIndex('sheets', 'byQuiz', quizId)).sort((a, b) => a.createdAt - b.createdAt); },
   async putSheet(s: SheetRec) { await (await db()).put('sheets', s); },
-  async deleteSheet(s: SheetRec) { const d = await db(); await d.delete('sheets', s.id); if (s.imageId) await d.delete('images', s.imageId); for (const id of Object.values(s.crops ?? {})) await d.delete('images', id); },
+  async deleteSheet(s: SheetRec) { const d = await db(); await d.delete('sheets', s.id); if (s.imageId) await d.delete('images', s.imageId); await dropCrops(d, s.id); },
   async image(id: string) { return (await (await db()).get('images', id))?.blob; },
   async putImage(id: string, blob: Blob) { await (await db()).put('images', { id, blob }); },
   async plan(quizId: string) { return (await db()).get('plans', quizId); },
@@ -77,7 +77,7 @@ export const store = {
   async deleteClass(classId: string) {
     const d = await db();
     for (const q of await d.getAllFromIndex('quizzes', 'byClass', classId)) {
-      for (const s of await d.getAllFromIndex('sheets', 'byQuiz', q.id)) { await d.delete('sheets', s.id); if (s.imageId) await d.delete('images', s.imageId); for (const id of Object.values(s.crops ?? {})) await d.delete('images', id); }
+      for (const s of await d.getAllFromIndex('sheets', 'byQuiz', q.id)) { await d.delete('sheets', s.id); if (s.imageId) await d.delete('images', s.imageId); await dropCrops(d, s.id); }
       await d.delete('plans', q.id);
       await d.delete('quizzes', q.id);
     }
@@ -89,7 +89,7 @@ export const store = {
     const d = await db();
     for (const s of await d.getAllFromIndex('sheets', 'byQuiz', quizId)) {
       // the photo and every cut-out answer box: both are the pupil's handwriting
-      for (const id of Object.values(s.crops ?? {})) await d.delete('images', id);
+      await dropCrops(d, s.id);
       if (s.imageId || s.crops) await d.put('sheets', { ...s, imageId: undefined, crops: undefined });
       if (s.imageId) await d.delete('images', s.imageId);
     }
@@ -112,4 +112,12 @@ export async function storageEstimate() {
   const est = await navigator.storage?.estimate?.();
   const persisted = await navigator.storage?.persisted?.();
   return { usedMB: est?.usage ? est.usage / 1048576 : 0, persisted: !!persisted };
+}
+
+/**
+ * Every cut-out answer box of a sheet, by key prefix ("<sheet id>#q<n>"): crops are stored before the
+ * reading, so a sheet whose read failed has crops that its record doesn't list.
+ */
+async function dropCrops(d: Awaited<ReturnType<typeof db>>, sheetId: string) {
+  await d.delete('images', IDBKeyRange.bound(`${sheetId}#`, `${sheetId}#￿`));
 }

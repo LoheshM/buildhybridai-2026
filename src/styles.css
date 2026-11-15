@@ -567,7 +567,7 @@ pre.json { background: var(--sheet-2); padding: 12px; border-radius: var(--radiu
   kbd, .keys { display: none !important; }
   /* finger-sized targets on the marking screens (MN3, B8) */
   .btn, .btn.small { min-height: 44px; }
-  .kptoggle { min-height: 40px; }
+  .kptoggle { min-height: 40px; min-width: 44px; justify-content: center; }
   .ans .who { display: inline-block; padding: 8px 0; }
   .stepper button { width: 40px; height: 40px; }
 }

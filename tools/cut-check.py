@@ -20,6 +20,22 @@ with sync_playwright() as p:
           } catch (e) { out.push(`${s.id} ${e.name}`); }
         }
       }
+      // E15: the same photos upside down must come back with every answer box blank, so the runner refuses to score them
+      let upside = 0, upsideAllBlank = 0;
+      for (const cls of ['maths', 'science', 'english']) {
+        const m = await (await fetch(`/samples/${cls}/manifest.json`, {cache:'no-store'})).json();
+        const keys = m.quiz.questions.map((q) => ({ q: q.q, prompt: q.prompt, answer: q.key }));
+        for (const s of m.students.slice(0, 8)) {
+          const bmp = await createImageBitmap(await (await fetch(`/samples/${cls}/${s.id}.jpg`, {cache:'no-store'})).blob());
+          const cv = new OffscreenCanvas(bmp.width, bmp.height); const cx = cv.getContext('2d');
+          cx.translate(bmp.width, bmp.height); cx.rotate(Math.PI); cx.drawImage(bmp, 0, 0);
+          upside++;
+          // turned the right way up again: the same blank decisions as the upright photo
+          try { const c = await C.cutAnswerSheet(await cv.convertToBlob({ type: 'image/jpeg', quality: 0.9 }), keys); const truth = s.answers.filter((a) => !a.written && !a.crossedOut).map((a) => a.q).sort().join(','); const got = [...c.blank].sort().join(','); if (truth === got) upsideAllBlank++; else out.push(`${s.id} upside down: blank ${got} truth ${truth}`); }
+          catch (e) { out.push(`${s.id} upside down: ${e.name}`); }
+        }
+      }
+      out.unshift(`upside-down photos turned upright (blank decisions match): ${upsideAllBlank}/${upside}`);
       out.unshift(`sheets found ${ok}/${n}; blank decisions right ${blankRight}, wrong ${blankWrong}; ${Math.round(ms / ok)} ms per sheet`);
       return out;
     }""")

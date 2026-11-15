@@ -84,6 +84,9 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           const cutMs = cut.ms;
           const crops: Record<number, string> = {};
           for (const [q, blob] of cut.crops) { const id = `${sheet.id}#q${q}`; await store.putImage(id, blob); crops[q] = id; }
+          // Every answer box empty: an upside-down photo or another quiz's sheet lands every box on bare paper.
+          // That is never scored as a zero (round 5, E15).
+          if (quiz.keys.length > 0 && cut.blank.length >= quiz.keys.length) throw new NoWriting();
           if (!sample || (await sampleDeviceUsable())) {
             // Gemini Nano reads the boxes with writing in them, as one strip, on this laptop.
             strip = (await classify(cut.strip)) as StudentImage; // a strip never matches a sample fingerprint: it can only be read on-device
@@ -154,6 +157,11 @@ export async function requeueForDevice(quizId: string): Promise<number> {
     }
   }
   return n;
+}
+
+/** No ink in any answer box. */
+export class NoWriting extends Error {
+  constructor() { super("No writing found in any answer box. If the photo is upside down or of another quiz's answer sheet, retake it. A sheet the pupil left blank can be typed in as blanks."); this.name = 'NoWriting'; }
 }
 
 export function friendly(e: Error): string {

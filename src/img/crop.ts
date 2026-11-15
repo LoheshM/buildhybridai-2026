@@ -61,6 +61,18 @@ export function trimToInk(c: OffscreenCanvas, pad = 14): OffscreenCanvas {
   return out;
 }
 
+/** Page strips (x, y, w, h in mm): the start of the printed title, and the same strip turned 180°, which is blank paper. */
+const TITLE_STRIP: [number, number, number, number] = [30, 14, 45, 8];
+const BOTTOM_STRIP: [number, number, number, number] = [210 - 30 - 45, 297 - 14 - 8, 45, 8];
+/** Share of clearly dark pixels (print or ink) in a canvas. */
+function darkShare(c: OffscreenCanvas): number {
+  const { data } = c.getContext('2d', { willReadFrequently: true })!.getImageData(0, 0, c.width, c.height);
+  const lum: number[] = [];
+  for (let p = 0; p < data.length; p += 4) lum.push((data[p] * 299 + data[p + 1] * 587 + data[p + 2] * 114) / 1000);
+  const paper = [...lum].sort((x, y) => x - y)[Math.floor(lum.length * 0.6)];
+  return lum.filter((v) => v < paper - 70).length / lum.length;
+}
+
 export const BLANK_BELOW = 0.002; // blank boxes measure 0; one handwritten letter about 0.0065
 
 async function bitmapOf(b: Blob) { return createImageBitmap(b, { imageOrientation: 'from-image' }); }
@@ -79,13 +91,20 @@ export async function cutAnswerSheet(photo: Blob, keys: QuestionKey[]): Promise<
   for (let i = 0; i < dw * dh; i++) gray[i] = (rgba[i * 4] * 299 + rgba[i * 4 + 1] * 587 + rgba[i * 4 + 2] * 114) / 1000;
   const found = findMarkers(gray, dw, dh);
   if (!found) { bmp.close(); throw new NoMarkers(); }
-  const h = pageToImage(found.map(([x, y]) => [x / scale, y / scale] as [number, number]));
+  const corners = found.map(([x, y]) => [x / scale, y / scale] as [number, number]);
+  let h = pageToImage(corners);
   // full-resolution source pixels for sampling
   const src = new OffscreenCanvas(bmp.width, bmp.height);
   const cctx = src.getContext('2d', { willReadFrequently: true })!;
   cctx.drawImage(bmp, 0, 0);
   const full = cctx.getImageData(0, 0, bmp.width, bmp.height);
   bmp.close();
+  // The four squares are identical, so a photo taken upside down maps every box onto the wrong place.
+  // The printed title sits top left and the matching strip at the bottom right is always empty paper:
+  // if the bottom strip holds the print, the sheet is upside down, and the corners are swapped round.
+  if (darkShare(warp(full, h, ...BOTTOM_STRIP)) > 2 * darkShare(warp(full, h, ...TITLE_STRIP)) + 0.004) {
+    h = pageToImage([corners[2], corners[3], corners[0], corners[1]]);
+  }
   const boxes = layout(keys);
   const cut = (b: Box, pad = 1.5) => warp(full, h, b.x - pad, b.y - pad, b.w + 2 * pad, b.h + 2 * pad);
   const nameCanvas = cut(boxes[0]);

@@ -151,13 +151,13 @@ function PlanView({ plan: rec, headingRef, sheets, quiz, rosterName }: { plan: P
   const hinge = p.hingeQuestion && maths ? verifyPractice({ question: p.hingeQuestion.question, answer: p.hingeQuestion.answer }) : null;
 
   const groupOf = (s: SheetRec): string => {
-    const off = s.marks.filter((m) => m.status === 'wrong' || m.status === 'partial');
+    const off = s.marks.filter((m) => m.status === 'wrong' || m.status === 'partial' || m.status === 'unsimplified');
     // 80% or more is doing well, whatever the one slip was (round 6: 9/10 got a "needs support" note)
     const sc = scoreSheet(s.marks, quiz.unsimplifiedCredit);
     if (sc.outOf > 0 && sc.points / sc.outOf >= 0.8) return 'secure';
     if (!off.length) return s.marks.every((m) => m.status === 'correct') ? 'secure' : 'default';
     const counts = new Map<string, number>();
-    off.forEach((m) => { for (const g of m.mistakes?.length ? m.mistakes : [m.misconception && m.misconception !== 'slip' && m.misconception !== 'wrong_operation' ? m.misconception : 'other']) counts.set(g, (counts.get(g) ?? 0) + 1); });
+    off.forEach((m) => { for (const g of m.status === 'unsimplified' ? ['unsimplified'] : m.mistakes?.length ? m.mistakes : [m.misconception && m.misconception !== 'slip' && m.misconception !== 'wrong_operation' ? m.misconception : 'other']) counts.set(g, (counts.get(g) ?? 0) + 1); });
     return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
   };
   // own group, then "other", then "default" in the same language, then Tickmark's built-in English

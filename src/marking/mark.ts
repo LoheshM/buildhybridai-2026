@@ -129,7 +129,28 @@ export function keyProblem(kIn: QuestionKey): string | null {
 }
 
 /** Marks one answer by its question type. */
+/**
+ * Round 7 (J7-01): on number, fraction and algebra questions, an answer that repeats a quantity or expression
+ * printed in the question ("3.5 cm" for "Write 3.5 cm in millimetres", "3(x + 2)" for "Expand 3(x + 2)") has the
+ * same value as the key but not the form asked for. It is never full marks: wrong, named "Copied the question".
+ */
+export function copiedFromPrompt(read: string, prompt: string, key: string): boolean {
+  const norm = (s: string) => (s ?? '').normalize('NFKC').toLowerCase().replace(/[−–—]/g, '-').replace(/\s+/g, ' ').trim();
+  const r = norm(read).replace(/\s+/g, ''), p = norm(prompt), kk = norm(key).replace(/\s+/g, '');
+  if (!r || !p || r === kk) return false;
+  const body = [...r].map((c) => c.replace(/[.*+?^${}()|[\]\\/]/g, '\\$&')).join('\\s*');
+  return new RegExp(`(^|[^0-9a-z.])${body}(?![0-9]|\\.\\d)${/[a-z]$/.test(r) ? '(?![a-z])' : ''}`).test(p);
+}
+
 export function markAnswer(kIn: QuestionKey, read: string, crossedOut = ''): Marked {
+  const m = markAnswerByType(kIn, read, crossedOut);
+  const type = m.type ?? typeOf(kIn);
+  if ((type === 'number' || type === 'fraction' || type === 'algebra') && (m.status === 'correct' || m.status === 'partial' || m.status === 'unsimplified') && copiedFromPrompt(read, kIn.prompt, keyCore(kIn.answer)))
+    return { ...m, status: 'wrong', misconception: 'copied_question' as Marked['misconception'], note: undefined };
+  return m;
+}
+
+function markAnswerByType(kIn: QuestionKey, read: string, crossedOut = ''): Marked {
   const type = typeOf(kIn);
   const k = isOpen(type) ? kIn : { ...kIn, answer: keyCore(kIn.answer), type };
   if (type === 'fraction') return { ...markFraction(k, read, crossedOut), type };
@@ -141,8 +162,8 @@ export function markAnswer(kIn: QuestionKey, read: string, crossedOut = ''): Mar
   if (type === 'number') {
     const v = markQuantity(keyCore(k.answer), read, k.tolerance ?? 0, k.prompt);
     // Nano sometimes adds a decimal point ("1200" read as "12.00"): a reading ending in ".00" is checked
-    const zeroPoint = /\d\.0+(?!\d)/.test(read) && !/\.\d/.test(k.answer);
-    const flags = [...base.flags, ...(v.status === 'unreadable' ? [/[a-z]{3,}/i.test(read) ? 'letters' as const : 'unreadable' as const] : v.status === 'wrong' && !v.mistake ? ['unusual' as const] : zeroPoint ? ['check_reading' as const] : [])];
+    const zeroPoint = /\d\.0+(?!\d)/.test(read) && !/\.\d/.test(k.answer) && !/[$£€₹]/.test(read + k.answer); // £4.00 is how money is written (E7-12)
+    const flags = [...base.flags, ...(v.status === 'unreadable' ? [/[a-z]{3,}/i.test(read) ? 'letters' as const : 'unreadable' as const] : v.status === 'wrong' && (!v.mistake || v.note?.startsWith('Check')) ? ['unusual' as const] : zeroPoint ? ['check_reading' as const] : [])];
     return { ...base, status: v.status, misconception: v.mistake, note: v.note, flags };
   }
   if (type === 'algebra') {

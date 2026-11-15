@@ -8,6 +8,7 @@ export interface Quantity { value: Frac; unit: string; percent: boolean; text: s
 /** Unit aliases → canonical symbol. Kept small and school-shaped on purpose. */
 const ALIASES: Record<string, string> = {
   mm: 'mm', millimetre: 'mm', millimetres: 'mm', millimeter: 'mm', millimeters: 'mm',
+  ft: 'ft', foot: 'ft', feet: 'ft', inch: 'in', inches: 'in',
   cms: 'cm', mms: 'mm', kms: 'km', kgs: 'kg', gms: 'g', mls: 'ml',
   cm: 'cm', centimetre: 'cm', centimetres: 'cm', centimeter: 'cm', centimeters: 'cm',
   m: 'm', metre: 'm', metres: 'm', meter: 'm', meters: 'm',
@@ -26,6 +27,7 @@ const ALIASES: Record<string, string> = {
 
 /** Families with the factor to the family's base unit (exact fractions). */
 const FAMILY: Record<string, [string, Frac]> = {
+  ft: ['length', frac(381, 1250)], in: ['length', frac(127, 5000)],
   mm: ['length', frac(1, 1000)], cm: ['length', frac(1, 100)], m: ['length', frac(1)], km: ['length', frac(1000)],
   g: ['mass', frac(1)], kg: ['mass', frac(1000)],
   ml: ['volume', frac(1)], l: ['volume', frac(1000)], 'cm³': ['volume', frac(1)],
@@ -87,7 +89,9 @@ export function markQuantity(keyText: string, readText: string, tolerance = 0, p
   // the same number with or without its % sign: "45%" for 45 is right; "45" for 45% is missing its sign
   if (!k.unit && !s.unit && k.percent !== s.percent && eq(k.value, s.value)) {
     if (k.percent) return { status: 'partial', mistake: 'missing_unit', note: 'The % sign is missing' };
-    return /%|percent/i.test(prompt) ? { status: 'correct', mistake: null, note: 'Written as a percentage' } : { status: 'wrong', mistake: 'wrong_unit' };
+    // a percentage question (any wording, Hindi and Tamil too), or no question text: the sign is fine
+    if (!prompt.trim() || /%|per\s*cent|प्रतिशत|சதவீத|शतांश/i.test(prompt)) return { status: 'correct', mistake: null, note: 'Written as a percentage' };
+    return { status: 'wrong', mistake: 'wrong_unit', note: 'Check: a % sign on a question that is not about percentages' };
   }
 
   // "100 °" for a key of "100 °C": the C was not written (or not read); the degree sign says what is meant

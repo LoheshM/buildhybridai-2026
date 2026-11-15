@@ -11,7 +11,7 @@ const TF: Record<string, 'true' | 'false'> = { true: 'true', t: 'true', yes: 'tr
 export function normChoice(raw: string, letters = false): string | null {
   const s = (raw ?? '').normalize('NFKC').trim().toLowerCase().replace(/^option\s+/, '').replace(/^answer\s*[:=]?\s*/, '');
   if (!s) return null;
-  const bare = s.replace(/[.!]+$/, '');
+  const bare = s.replace(/[.!]+$/, '').replace(/^\((.*)\)$/, '$1').replace(/\)$/, '');
   const tf = TF[bare];
   if (tf && (!letters || bare.length > 1)) return tf;
   if (letters && /^[✓✗x]$/.test(bare)) return null;
@@ -30,7 +30,8 @@ export type ChoiceVerdict = { status: 'correct' | 'wrong' | 'unreadable'; picked
 const isLetterKey = (key: string) => /^\(?[A-Ha-h]\)?[.)]?$/.test(key.trim());
 
 /** The key's letter mode: an option letter, except "F" (or "T") on a true/false question. */
-export const choiceLetterMode = (key: string, prompt = '') => isLetterKey(key) && !(/^\(?f\)?[.)]?$/i.test(key.trim()) && /\btrue\b|\bfalse\b|\bT\s*\/\s*F\b/i.test(prompt));
+// "F" is False on a true/false question (or with no question text); otherwise it is option F
+export const choiceLetterMode = (key: string, prompt = '') => isLetterKey(key) && !(/^\(?f\)?[.)]?$/i.test(key.trim()) && (!prompt.trim() || /\btrue\s*(?:or|\/)\s*false\b|\bT\s*(?:or|\/)\s*F\b|\bfalse\b/i.test(prompt)));
 
 export function markChoice(key: string, read: string, prompt = ''): ChoiceVerdict & { two?: boolean } {
   const letterMode = choiceLetterMode(key, prompt);

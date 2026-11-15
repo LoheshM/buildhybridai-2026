@@ -103,5 +103,5 @@ export function adjustSuggestion(key: QuestionKey, m: Marked, d: { met?: boolean
  * pattern instead: no suggestion, a flag, and the teacher marks it. No sample answer and none of 300 real
  * pupils' answers (SciEntsBank) match.
  */
-const TALKS = /(<<<|>>>)|\b(ignore|disregard)\b[^.]{0,40}\b(key|instructions?|rules?|points?|above|previous)\b|\b(full|maximum|max|all( the)?)\s+(marks?|credit|points?|score)\b|\b(give|award)s?\b[^.]{0,30}\b(marks?|points?|full|credit)\b|\b(deserves?|earns?)\b[^.]{0,20}\b(marks?|credit|full)\b|\b\d+\s*(out of|\/)\s*\d+\s*(marks?|points?)?\s*$|(^|[.!?]\s*)(system|assistant|marker|examiner|teacher)\s*(note)?\s*:|\bmarks?\s*[:=]/i;
+const TALKS = /(<<<|>>>)|\b(ignore|disregard)\b[^.]{0,40}\b(key|instructions?|rules?|points?|above|previous)\b|\b(full|maximum|max|all( the)?)\s+(marks?|credit|points?|score)\b|\b(give|award)s?\b[^.]{0,30}\b(marks?|points?|credit)\b|\b(give|award)s?\s+(me|this|it|this answer)\b[^.]{0,20}\b\d+\s*(out of|\/)\s*\d+|\b(deserves?|earns?)\b[^.]{0,20}\b(marks?|credit|full)\b|\b\d+\s*(out of|\/)\s*\d+\s*(marks?|points?)\b|(^|[.!?]\s*)(system|assistant|marker|examiner|teacher)\s*(note)?\s*:|\bmarks?\s*[:=]/i;
 export const talksToMarker = (text: string) => TALKS.test(text ?? '');

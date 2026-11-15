@@ -38,12 +38,17 @@ export function keyPoints(key: string): string[] {
 }
 
 /** "3.14 (2 dp)" → "3.14": a note in brackets after an exact answer is for the teacher, not part of the answer. */
-const NOTE = /^(?:to\s+)?(?:\d+\s*(?:dp|d\.p\.|sf|s\.f\.|decimal places?|significant figures?)|nearest\s+\w+(?:\s+\w+)?|simplest form|lowest terms|in words|any order|or equivalent|accept\s.+|exact|rounded)$/i;
+const NOTE = /^(?:to\s+)?(?:\d+\s*(?:d\.?\s*p\.?|s\.?\s*f\.?|decimal places?|significant figures?)|(?:the\s+)?nearest\s+.+|(?:in\s+)?(?:its\s+)?(?:simplest|lowest)\s+(?:form|terms)|in words|any order|o\.?\s*e\.?|or equivalent|f\.?\s*t\.?|follow[- ]?through|accept\s.+|exact(?:ly)?|rounded|approx(?:\.|imately)?|either order)$/i;
 export function keyCore(key: string): string {
   const k = (key ?? '').trim();
   const m = k.match(/^(.*?\S)\s*\(([^()]*)\)$/);
   // round 6 (E6-01): "3(2 + xy)", "carbon dioxide (CO2)" and "12 (cm)" are answers, not notes
-  return m && NOTE.test(m[2].trim()) && !/[;\n]/.test(k) ? m[1] : k;
+  if (!m || /[;\n]/.test(k)) return k;
+  // "12 (cm)" is 12 cm (a unit wins over a note: "(ft)" is feet); "B (photosynthesis)" is option B
+  if (/^-?[\d.,/ ]+$/.test(m[1]) && parseQuantity(`${m[1]} ${m[2]}`)?.unit) return `${m[1]} ${m[2]}`;
+  if (NOTE.test(m[2].trim())) return m[1];
+  if (/^\(?[A-Ha-h]\)?$/.test(m[1].trim())) return m[1].trim();
+  return k;
 }
 
 /** Picks the type from the key text (and the printed question, when it helps). */
@@ -56,7 +61,7 @@ export function detectType(key: string, prompt = ''): QType {
   const p = parse(k);
   if (p.kind === 'value' && (p.form === 'fraction' || p.form === 'mixed')) return 'fraction';
   // a printed fraction sum ("2/3 + 1/6") makes it a fraction question whatever the key looks like
-  if (prompt && /\d\s*\/\s*\d/.test(prompt) && parseExpr(prompt)) return 'fraction'; // "7 x 8" is not a fraction sum (round 6)
+  if (prompt && /\d\s*\/\s*\d|[½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞]/.test(prompt) && parseExpr(prompt)) return 'fraction'; // "7 x 8" is not a fraction sum (round 6)
   if (looksChoice(k)) return 'choice';
   if (parseQuantity(k)) {
     // an integer key for a fraction sum ("2/3 + 1/3 = 1") is still the fraction engine's

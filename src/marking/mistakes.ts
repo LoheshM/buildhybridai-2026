@@ -11,6 +11,7 @@ export const MISTAKES = {
   rounding: { label: 'Rounding', teacher: 'Close to the answer, but rounded to a different number of places.' },
   wrong_unit: { label: 'Wrong unit', teacher: 'Right number with the wrong unit, or forgot to convert between units.' },
   missing_unit: { label: 'Missing unit', teacher: 'Right number, no unit written.' },
+  copied_question: { label: 'Copied the question', teacher: 'Wrote the number or expression from the question instead of the form it asked for (3.5 cm for "write 3.5 cm in mm").' },
   unsimplified: { label: 'Did not simplify', teacher: 'Right value, not in simplest form (2/4 for 1/2).' },
   decimal_alignment: { label: 'Lined up the digits, not the decimal points', teacher: 'Added or subtracted decimals with the digits aligned on the right (0.6 + 0.25 = 0.31).' },
   // algebra

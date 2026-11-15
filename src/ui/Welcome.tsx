@@ -117,7 +117,7 @@ function DemoRegister() {
   const done = new Set(order.slice(0, inked));
   return (
     <figure className="demo" aria-label="Example: part of Science 7A's register while it is being marked" style={{ margin: 0 }}>
-      <div className="demo-head"><b>Science 7A · Plants and water</b><span className="pill device"><i />On this laptop</span></div>
+      <div className="demo-head"><b>Science 7A · Plants and water</b><span className="pill">Example</span></div>
       <div className="register-wrap">
         <table className="register">
           <thead><tr><th className="who" scope="col">Pupil</th>{DEMO_Q.map((q, i) => <th key={q} scope="col">{q}<span className="qt">{QTYPES[DEMO_QT[i] as QType].short}</span></th>)}<th scope="col">Out of 7</th></tr></thead>

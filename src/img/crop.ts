@@ -11,6 +11,8 @@ export class LayoutMismatch extends Error {
   constructor() { super("The answer boxes in this photo aren't where this quiz's answer sheet has them. It may be the answer sheet for a different quiz, or badly cut off. Retake it, or check it belongs to this quiz."); this.name = 'LayoutMismatch'; }
 }
 const FRAME_MIN = 0.6;
+/** A frame pixel is at least 13% darker than the paper: a 3 px blur leaves the printed line about that dark (round 7, E7-16). */
+const FRAME_DARK = 0.87;
 
 export class NoMarkers extends Error {
   constructor() { super("Tickmark couldn't find the four black corner squares. Retake the photo with the whole answer sheet in view, flat and in good light."); this.name = 'NoMarkers'; }
@@ -33,18 +35,40 @@ export function inkShare(c: OffscreenCanvas, borderPx = 13, ratio = 0.7): number
   const { data, width: w, height: h } = ctx.getImageData(0, 0, c.width, c.height);
   const iw = w - 2 * borderPx, ih = h - 2 * borderPx;
   if (iw <= 0 || ih <= 0) return 0;
-  const lum = new Float32Array(iw * ih);
+  let lum = new Float32Array(iw * ih);
   for (let y = 0; y < ih; y++) for (let x = 0; x < iw; x++) { const p = ((y + borderPx) * w + x + borderPx) * 4; lum[y * iw + x] = (data[p] * 299 + data[p + 1] * 587 + data[p + 2] * 114) / 1000; }
+  // the faint-pencil pass looks at a lightly blurred image: a pencil stroke survives, pixel noise in a dim photo doesn't (round 7, E7-08)
+  if (ratio > 0.75) {
+    const b = new Float32Array(iw * ih);
+    for (let y = 0; y < ih; y++) for (let x = 0; x < iw; x++) {
+      let sum = 0, n = 0;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) { const xx = x + dx, yy = y + dy; if (xx >= 0 && yy >= 0 && xx < iw && yy < ih) { sum += lum[yy * iw + xx]; n++; } }
+      b[y * iw + x] = sum / n;
+    }
+    lum = b;
+  }
   const sorted = Float32Array.from(lum).sort();
   const paper = sorted[Math.floor(sorted.length * 0.6)]; // the page's own brightness in this box
   const dark = new Uint8Array(iw * ih);
   // relative to the box's own paper, so a dim photo's ink still counts (round 5 distortion check)
   for (let i = 0; i < lum.length; i++) dark[i] = lum[i] < paper * ratio ? 1 : 0;
-  // straight lines are print (a box edge left in by a slightly skewed photo), not handwriting
-  for (let y = 0; y < ih; y++) { let n = 0; for (let x = 0; x < iw; x++) n += dark[y * iw + x]; if (n > iw * 0.4) for (let x = 0; x < iw; x++) dark[y * iw + x] = 0; }
+  // Straight printed lines (a box edge left in by a slightly skewed photo) are thin: only runs of at most 4 dark
+  // rows are removed. A shadow across the box is a wide band, and erasing it erased the handwriting in it (round 7, E7-05);
+  // left in, the box counts as written and goes to Nano, and an empty reading is flagged for the teacher.
+  const clearRuns = (n: number, isLine: (i: number) => boolean, clear: (i: number) => void, ok: (i: number) => boolean = () => true) => {
+    for (let i = 0; i < n;) {
+      if (!ok(i) || !isLine(i)) { i++; continue; }
+      let j = i; while (j < n && ok(j) && isLine(j)) j++;
+      if (j - i <= 4) for (let t = i; t < j; t++) clear(t);
+      i = j;
+    }
+  };
+  const rowDark = (y: number) => { let n = 0; for (let x = 0; x < iw; x++) n += dark[y * iw + x]; return n > iw * 0.4; };
+  clearRuns(ih, rowDark, (y) => { for (let x = 0; x < iw; x++) dark[y * iw + x] = 0; });
   // columns: only a near-full-height line close to the frame (a skewed box edge); an upright "1" or "l" stays ink
   const edge = 15;
-  for (let x = 0; x < iw; x++) { if (x >= edge && x < iw - edge) continue; let n = 0; for (let y = 0; y < ih; y++) n += dark[y * iw + x]; if (n > ih * 0.8) for (let y = 0; y < ih; y++) dark[y * iw + x] = 0; }
+  const colDark = (x: number) => { let n = 0; for (let y = 0; y < ih; y++) n += dark[y * iw + x]; return n > ih * 0.8; };
+  clearRuns(iw, colDark, (x) => { for (let y = 0; y < ih; y++) dark[y * iw + x] = 0; }, (x) => x < edge || x >= iw - edge);
   let ink = 0;
   for (const v of dark) ink += v;
   return ink / dark.length;
@@ -87,7 +111,7 @@ export function frameScore(c: OffscreenCanvas, padPx = Math.round(1.5 * PX_PER_M
   sample.sort((a, b) => a - b);
   const paper = sample[Math.floor(sample.length * 0.6)];
   // relative to this box's own paper: a dim or blurred photo keeps the frame about 25% darker than the paper
-  const dark = (x: number, y: number) => x >= 0 && y >= 0 && x < w && y < h && lum(x, y) < paper * 0.8;
+  const dark = (x: number, y: number) => x >= 0 && y >= 0 && x < w && y < h && lum(x, y) < paper * FRAME_DARK;
   let hit = 0, n = 0;
   const near = (x0: number, y0: number, horiz: boolean) => { for (let d = -band; d <= band; d++) if (horiz ? dark(x0, y0 + d) : dark(x0 + d, y0)) return true; return false; };
   for (let x = padPx + 6; x < w - padPx - 6; x += 2) { n += 2; if (near(x, padPx, true)) hit++; if (near(x, h - 1 - padPx, true)) hit++; }

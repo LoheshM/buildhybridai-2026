@@ -160,10 +160,15 @@ export function markAlgebra(keyText: string, readText: string, prompt = ''): Alg
   // "= 12" and "x = 4." are the answer with a stray sign or full stop
   let read = readText.trim().replace(/^=\s*/, '').replace(/\.$/, '').trim();
   // working then the answer: "x = 8/2 = 4" or "2x=8 4" (crossed-out working read together with the answer)
-  const tail = read.match(/^(.*=\s*\S+)\s+(-?[\d./]+)$/); // a whole equation, then a value: \"2x = 8\" alone is not working plus an answer
+  // a whole equation then a value ("2x=8 4"); "x = 2 1/2" is a mixed number, not working
+  const tail = read.match(/^(.*=\s*(\S+))\s+(-?[\d./]+)$/);
+  const head = read.match(/^(-?[\d./]+)\s+(.*=.*)$/); // the answer, then the working ("4 2x=8")
+  const sum = read.match(/^[^=a-z]+=\s*(-?[\d./]+(?:\s+\d+\/\d+)?)$/i); // arithmetic then its value ("8/2 = 4")
   let working = false;
-  if (tail && compile(tail[2])) { read = tail[2]; working = true; }
+  if (tail && !(/^\d+$/.test(tail[2]) && /^\d+\/\d+$/.test(tail[3])) && compile(tail[3])) { read = tail[3]; working = true; }
+  else if (head && compile(head[1])) { read = head[1]; working = true; }
   else if ((read.match(/=/g) ?? []).length >= 2) { read = read.slice(read.lastIndexOf('=') + 1).trim(); working = true; }
+  else if (sum && splitAssignment(keyText).variable && !/[a-z]/i.test(read)) { read = sum[1]; working = true; }
   if (working) { const v = markAlgebra(keyText, read, prompt); return { ...v, working: true }; }
   if (!read) return { status: 'unreadable', mistake: null };
   const key = splitAssignment(keyText);

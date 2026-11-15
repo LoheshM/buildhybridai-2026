@@ -48,7 +48,7 @@ export function Results({ quizId }: { quizId: string }) {
 
       <p className="summary-line" aria-label="Summary">
         <b>{sheets.length}{ctx.total > sheets.length ? ` of ${ctx.total}` : ''} sheets</b> marked · class average <b>{fmtPoints(Math.round(view.avg * 2) / 2)}/{fmtPoints(outOf)}</b>{view.waiting ? ' so far' : ''}
-        {view.waiting ? <> · <a href={href.check(quizId)}><b>{view.waiting}</b> marks waiting for you</a></> : ' · every mark decided'}
+        {view.waiting ? <> · <a href={href.check(quizId)}><b>{view.waiting}</b> marks waiting for you</a></> : ` · every mark decided${sheets.some((s) => s.marks.some((m) => m.decidedBy === 'sample_key')) ? ' (some from the answer key of this made-up class)' : ''}`}
         {' · '}{view.onDevice ? <>read on this laptop: <b>{view.onDevice}/{sheets.length}</b>{view.deviceTime ? ` (${view.deviceTime})` : ''}</> : <>read without on-device AI: {view.sourceLabel}</>}
       </p>
 

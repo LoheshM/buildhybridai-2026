@@ -18,6 +18,9 @@ JS = """async () => {
     'low light': (cx, w, h, img) => { cx.filter = 'brightness(0.55) contrast(0.8)'; cx.drawImage(img, 0, 0); },
     'shadow': (cx, w, h, img) => { cx.drawImage(img, 0, 0); const g = cx.createLinearGradient(0, 0, w, 0); g.addColorStop(0, 'rgba(0,0,0,0.55)'); g.addColorStop(0.6, 'rgba(0,0,0,0)'); cx.fillStyle = g; cx.fillRect(0, 0, w, h); },
     'jpeg q50': (cx, w, h, img) => { cx.drawImage(img, 0, 0); },
+    'hard shadow band': (cx, w, h, img) => { cx.drawImage(img, 0, 0); cx.fillStyle = 'rgba(0,0,0,0.38)'; cx.fillRect(0, h * 0.3, w, h * 0.12); },
+    'dim + noise': (cx, w, h, img) => { cx.filter = 'brightness(0.5)'; cx.drawImage(img, 0, 0); cx.filter = 'none'; const d = cx.getImageData(0, 0, w, h); let seed = 7; const rnd = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }; for (let i = 0; i < d.data.length; i += 4) { const n = (rnd() + rnd() + rnd() - 1.5) * 20; d.data[i] += n; d.data[i + 1] += n; d.data[i + 2] += n; } cx.putImageData(d, 0, 0); },
+    'blur 3px': (cx, w, h, img) => { cx.filter = 'blur(3px)'; cx.drawImage(img, 0, 0); },
   };
   globalThis.__frames = location.hash.includes('frames');
   const out = { total: 0, found: 0, mismatch: 0, other: [], blankRight: 0, blankWrong: 0, byKind: {} };

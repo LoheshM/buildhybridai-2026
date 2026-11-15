@@ -36,6 +36,7 @@ export function Reteach({ quizId }: { quizId: string }) {
   const [showText, setShowText] = useState(false);
   const planHeading = useRef<HTMLHeadingElement>(null);
   useEffect(() => { if (ctx?.saved) setPlan(ctx.saved); }, [ctx?.saved]);
+  useEffect(() => { if (d.state !== 'available') setKeepLocal(false); }, [d.state]);
   useEffect(() => { if (ctx?.cls) setRosterTokens(rosterTokens(ctx.cls.roster.map((s) => s.name))); }, [ctx?.cls]);
   const totals: ClassTotals | null = useMemo(() => (ctx?.quiz ? buildTotals(ctx.quiz.keys, ctx.sheets, currentSettings().minGroupSize, keepLocal ? ['en'] : langs) : null), [ctx, langs, keepLocal]);
 
@@ -51,8 +52,8 @@ export function Reteach({ quizId }: { quizId: string }) {
     try {
       // rebuilt now so the payload uses the settings in force when it is sent
       const fresh = buildTotals(quiz.keys, sheets, currentSettings().minGroupSize, keepLocal ? ['en'] : langs);
-      const r = await planFromTotals(fresh, { sample: !!cls.sample, keepLocal, minK: currentSettings().minGroupSize });
-      const rec: PlanRec = { quizId, at: Date.now(), payload: r.payload, response: r.response, where: r.where, ms: r.ms, heldBack: r.heldBack, note: r.note, mode: String(r.mode) };
+      const r = await planFromTotals(fresh, { sample: !!cls.sample, keepLocal, minK: currentSettings().minGroupSize, sheets: sheets.length });
+      const rec: PlanRec = { quizId, at: Date.now(), payload: r.payload, response: r.response, where: r.where, ms: r.ms, heldBack: r.heldBack, note: r.note, mode: String(r.mode), cloudTried: r.cloudTried };
       await store.putPlan(rec);
       setPlan(rec);
       setTimeout(() => planHeading.current?.focus(), 50);
@@ -89,7 +90,7 @@ export function Reteach({ quizId }: { quizId: string }) {
             </tbody>
           </table>
         </div>
-        <p className="small muted" style={{ marginTop: 8 }}>Class size is sent as a range ({totals.class_size}). <span className="hidden-cell">hidden</span> means fewer than {totals.k} students, or a breakdown that would let someone work a small group out. Blank answers are not sent.</p>
+        <p className="small muted" style={{ marginTop: 8 }}>The class size is not sent. <span className="hidden-cell">hidden</span> means fewer than {totals.k} students, or a breakdown that would let someone work a small group out. Blank answers are not sent.</p>
         {deviceReady && (
           <label className="row small" style={{ gap: 8, margin: '12px 0 0' }}>
             <input type="checkbox" checked={keepLocal} onChange={(e) => setKeepLocal(e.target.checked)} />
@@ -203,7 +204,7 @@ function PlanView({ plan: rec, headingRef, sheets, rosterName, credit }: { plan:
         {rec.where === 'recorded' && <p className="callout small" style={{ marginTop: 8 }}>Live AI wasn't available ({rec.note ?? 'unknown reason'}). This plan was recorded on 15 Nov for the full 28-sheet sample class.</p>}
         {rec.where === 'on_device' && (
           <p className="callout device small" style={{ marginTop: 8 }}>
-            {rec.mode === 'only_on_device' ? 'Written on this laptop by Gemini Nano: nothing was sent.' : rec.heldBack ? `Tickmark held the cloud request back (${rec.heldBack}), so Gemini Nano wrote this plan here.` : 'Cloud Gemini could not be reached, so Gemini Nano wrote this plan on this laptop.'} Hindi and Tamil notes need the cloud.
+            {rec.cloudTried ? 'Cloud Gemini couldn\'t finish (the class totals were sent), so Gemini Nano wrote this plan here.' : rec.mode === 'only_on_device' ? 'Written on this laptop by Gemini Nano: nothing was sent.' : rec.heldBack ? `Tickmark held the cloud request back (${rec.heldBack}), so Gemini Nano wrote this plan here.` : 'Cloud Gemini could not be reached, so Gemini Nano wrote this plan on this laptop.'} Hindi and Tamil notes need the cloud.
           </p>
         )}
         <p className="lede">{plain(p.focus)} {p.minutes ? <span className="pill">About {p.minutes} min</span> : null}</p>

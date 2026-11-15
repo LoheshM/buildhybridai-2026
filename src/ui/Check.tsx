@@ -48,7 +48,7 @@ export function Check({ quizId, sheetId }: { quizId: string; sheetId?: string })
     const done = !s.marks.some(needsCheck) && !nameNeedsCheck(s);
     const next = { ...s, status: done ? 'checked' as const : 'read' as const, checkedAt: done ? Date.now() : undefined };
     setSheets((xs) => xs.map((x) => (x.id === next.id ? next : x))); // update first so quick edits build on it
-    store.putSheet(next).catch(() => undefined);
+    store.putSheet(next).catch((e) => window.dispatchEvent(new CustomEvent('tickmark:save-failed', { detail: (e as Error).message })));
   };
   const remove = async (s: SheetRec) => {
     if (!window.confirm('Remove this sheet and its photo from the quiz? This cannot be undone.')) return;

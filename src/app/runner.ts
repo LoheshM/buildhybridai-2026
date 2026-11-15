@@ -78,7 +78,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           let rereadMs: number | undefined;
           if (qs.length && first.where === 'on_device') {
             const second = isSample(img) ? await rereadSampleQuestions(img as SampleImage, qs) : await rereadStudentQuestions(img as StudentImage, qs);
-            if (second) { marks = mergeReread(marks, second.answers); rereadMs = second.ms; }
+            if (second) { marks = mergeReread(marks, second.answers, quiz.keys); rereadMs = second.ms; }
           }
           marks = stampModelRead(marks);
           const match = matchName(first.read.studentName, cls.roster, taken);
@@ -90,7 +90,8 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           if (!RETRYABLE.has(lastErr.name)) break; // a hung or garbled answer gets one automatic retry
         }
       }
-      if (lastErr) s = { ...s, status: lastErr.name === 'CancelledError' ? 'queued' : 'error', error: lastErr.name === 'CancelledError' ? undefined : friendly(lastErr) };
+      const stopped = !!lastErr && (lastErr.name === 'CancelledError' || (stopRequested && lastErr.name === 'AbortError'));
+      if (lastErr) s = { ...s, status: stopped ? 'queued' : 'error', error: stopped ? undefined : friendly(lastErr) };
       if (s.status === 'reading') s = { ...s, status: 'queued' }; // stopped before an answer came back
       totalMs += performance.now() - t0;
       if (await store.quiz(quiz.id)) await save(s);

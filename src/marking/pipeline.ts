@@ -30,14 +30,26 @@ const sameValue = (a: string, b: string) => normalize(a) === normalize(b);
  * adds a "Second read disagreed" flag and offers the second reading as a one-tap fix.
  * The model's second opinion is never applied silently, so it can never turn a wrong into a right.
  */
-export function mergeReread(marks: Marked[], second: Map<number, string>): Marked[] {
+export function mergeReread(marks: Marked[], second: Map<number, string | { final: string; crossed: string }>, keys: QuestionKey[] = []): Marked[] {
   return marks.map((m) => {
     if (!second.has(m.q)) return m;
-    const alt = second.get(m.q)!;
+    const got = second.get(m.q)!;
+    const alt = typeof got === 'string' ? got : got.final;
+    const secondCrossed = typeof got === 'string' ? undefined : got.crossed;
     // Agreement: a second read that ignores crossed-out work found the same answer, so "crossed-out work"
     // is a note, not a flag (Nano often reports crossed-out text that isn't there). A swapped final and
     // crossed-out answer would make the two reads disagree, which keeps the flag where it matters.
-    if (sameValue(alt, m.read)) return m.flags.includes('crossed_out') && (m.status === 'correct' || m.status === 'unsimplified') ? { ...m, flags: m.flags.filter((f) => f !== 'crossed_out') } : m;
+    if (sameValue(alt, m.read)) {
+      // Clear the crossed-out flag only if reading the crossed-out text as the answer would give the
+      // same mark: then even a swap by both reads can't change the score.
+      // The flag becomes a note when the second read sees no crossed-out work (the first read imagined
+      // it), or when reading the crossed-out text as the answer would give the same mark anyway.
+      // If both reads see crossed-out work and a swap could change the mark, the teacher checks it.
+      const key = keys.find((k) => k.q === m.q);
+      const imagined = secondCrossed !== undefined && secondCrossed.trim() === '';
+      const swapSafe = !!key && !!m.crossedOut && (parse(m.crossedOut).kind !== 'value' || markAnswer(key, m.crossedOut).status === m.status);
+      return m.flags.includes('crossed_out') && (imagined || swapSafe) ? { ...m, flags: m.flags.filter((f) => f !== 'crossed_out') } : m;
+    }
     // Only offer readings that are a single clean value; garbage like "/2 1/2" is never a one-tap fix.
     const pa = parse(alt);
     // "1 1/2" read from a crossed-out "1/2" next to "1/2" is not a reading worth offering

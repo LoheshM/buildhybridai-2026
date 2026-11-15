@@ -22,7 +22,7 @@ export const REREAD_SCHEMA = {
   properties: {
     answers: {
       type: 'array',
-      items: { type: 'object', properties: { q: { type: 'integer' }, finalAnswer: { type: 'string' } }, required: ['q', 'finalAnswer'] },
+      items: { type: 'object', properties: { q: { type: 'integer' }, crossedOutText: { type: 'string' }, finalAnswer: { type: 'string' } }, required: ['q', 'crossedOutText', 'finalAnswer'] },
     },
   },
   required: ['answers'],
@@ -87,7 +87,9 @@ export function coerceSheetRead(x: unknown, questionCount: number): SheetRead {
   let items = raw.map((a) => ({ q: qOf(a?.q), crossedOutText: str(a?.crossedOutText), finalAnswer: str(a?.finalAnswer) })).filter((a) => Number.isInteger(a.q));
   if (raw.length > 0 && items.length === 0) throw new SyntaxError('The reading had no usable question numbers.');
   // 0-based numbering: shift when q:0 is present and the last question is missing
-  if (items.some((a) => a.q === 0) && items.every((a) => a.q >= 0 && a.q < questionCount)) items = items.map((a) => ({ ...a, q: a.q + 1 }));
+  const zero = items.find((a) => a.q === 0);
+  if (zero && !/\d/.test(zero.finalAnswer) && zero.finalAnswer !== '') items = items.filter((a) => a !== zero); // e.g. the name read as q:0
+  else if (zero && items.every((a) => a.q >= 0 && a.q < questionCount)) items = items.map((a) => ({ ...a, q: a.q + 1 }));
   const byQ = new Map<number, { q: number; crossedOutText: string; finalAnswer: string }>();
   for (const a of items) {
     if (a.q < 1 || a.q > questionCount) continue;

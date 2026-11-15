@@ -5,7 +5,7 @@
 Tickmark is for maths teachers in grades 4–8 who mark paper worksheets. It starts with fractions, and with Indian CBSE and private schools, where paper is the norm and a teacher can mark 40 sheets a day.
 
 1. **Read.** Gemini Nano reads each photo of a worksheet *inside Chrome on the teacher's laptop*.
-2. **Mark.** Plain code marks every answer against the teacher's key and names the mistake, for example "added the tops and the bottoms".
+2. **Mark.** Plain code marks every answer against the teacher's key and, where it can, names the mistake, for example "added the tops and the bottoms".
 3. **Check.** The teacher checks only what Tickmark flags.
 4. **Plan.** To plan tomorrow's lesson, **only anonymous class totals** go to cloud Gemini. It writes a reteach mini-lesson and parent-note templates in English, Hindi or Tamil, and the laptop fills in each child's name.
 
@@ -14,15 +14,15 @@ Tickmark is for maths teachers in grades 4–8 who mark paper worksheets. It sta
 **Try it:** https://buildhybridai-lohe.web.app. It's free and needs no sign-in. Built for #BuildHybridAI 2026 on Firebase AI Logic hybrid inference.
 
 ## Why
-- **Marking is hours of unpaid work.** Teachers spend a median 5 hours a week on grading and feedback (EdWeek Research Center, 2022).
+- **Marking takes hours every week.** Teachers spend a median 5 hours a week on grading and feedback (EdWeek Research Center, 2022). With Tickmark the reading runs unattended (about 11 s a sheet) and the teacher looks only at the flagged answers: 17–24% of answers in our runs. We have not yet timed teachers end to end.
 - **Feedback that names the mistake is what helps,** and that's exactly what nobody has time to tally by hand.
 - **The work being marked is children's personal data.**
   - UK DfE guidance recommends that "personal data is not used in generative AI tools".
   - India's DPDP Act (s.9) requires verifiable parental consent to process a child's data.
   - US districts need vendor contracts before student data leaves.
-- **Every cloud AI grader we found uploads the photos.**
+- **The AI graders we looked at (Gradescope, Frizzle, Brisk, CoGrader, Redpen AI) all work from uploaded photos.**
 
-Tickmark is designed so a real class's photos, names and answers never leave the laptop. Nothing about a child is sent to, stored by or reviewed by an AI service.
+Tickmark is designed so a real class's photos, names and answers never leave the laptop. Nothing that identifies a child is sent to, stored by or reviewed by an AI service: the cloud only ever sees anonymous class totals.
 
 ## How the hybrid inference is used
 Tickmark routes every AI call by **what data it carries**, not by how hard the task is.
@@ -32,7 +32,7 @@ Tickmark routes every AI call by **what data it carries**, not by how hard the t
 | Real student sheets (photos, names, answers) | This laptop only | `ONLY_ON_DEVICE` | Device gate, student lock and network guard; **no cloud fallback, ever** |
 | Laptop without on-device AI | Nowhere: the teacher types answers into a grid | none | Marking still runs in plain code |
 | Built-in synthetic sample class | Laptop when Gemini Nano is ready; otherwise up to 3 live cloud reads, then recorded cloud readings | `PREFER_ON_DEVICE` | Each image's SHA-256 must match a sample sheet |
-| Anonymous class totals | Cloud, falling back to Gemini Nano on 429, App Check failure or network error; or kept on the laptop when the teacher asks | `PREFER_IN_CLOUD` / `ONLY_ON_DEVICE` | Closed schema, small groups hidden, roster-name check, shown before sending |
+| Anonymous class totals | Cloud (`PREFER_IN_CLOUD`; if the cloud call fails, Tickmark writes a compact plan with Gemini Nano), or kept on the laptop when the teacher asks | `PREFER_IN_CLOUD` / `ONLY_ON_DEVICE` | Closed schema, small groups hidden, roster-name check, shown before sending |
 | Parent-note personalisation | This laptop, plain code | none | Placeholder validation |
 
 **Every reading shows where it ran.** A step bar (Read sheets → Check flags → Results → Plan lesson) runs through every quiz. Labels such as "Laptop, 7.3 s" and "Cloud" come from the SDK's `inferenceSource`, and the **Privacy & data** page lists every request this browser sent to the AI service.
@@ -52,7 +52,7 @@ Tickmark routes every AI call by **what data it carries**, not by how hard the t
 ## The model never decides a mark
 - **Reading:** Gemini Nano only *reads* the handwriting.
 - **Marking:** marking is exact fraction arithmetic (`src/marking/`). 5/10 equals 1/2, but is flagged "not simplified".
-- **Naming the mistake:** ten detectors recompute common wrong methods (adding straight across, dividing without flipping, losing the whole number, …) and name the mistake when one matches.
+- **Naming the mistake:** eight detectors recompute common wrong methods (adding straight across, dividing without flipping, losing the whole number, …) and name the mistake when one matches; two catch-alls ("arithmetic slip", "different operation") also raise a flag, because a misread looks just like them.
 - **Flags:** answers worth a look are flagged:
   - crossed-out work;
   - two answers;
@@ -67,7 +67,7 @@ Tickmark routes every AI call by **what data it carries**, not by how hard the t
 ## Measured (Chrome 157 on a 16 GB laptop, 15 Nov 2026)
 | | Sample class (handwriting fonts) | Real handwritten digits (MNIST) |
 |---|---|---|
-| Answers read exactly by Gemini Nano on the laptop | 84–90% across runs (235 of 280 on the last run) | 78.6% (220 of 280) |
+| Answers read exactly by Gemini Nano on the laptop | 84–90% across runs | 78.6% (220 of 280) |
 | **Misreads the teacher was not asked to check** | **0 of 280** | **0 of 280** |
 | Answers flagged for the teacher (how many were real misreads) | 16.8% (45 of 47) | 24.3% (60 of 68) |
 | Names matched to the class list (confident) | 28 of 28 (24) | 26 of 28 confident |

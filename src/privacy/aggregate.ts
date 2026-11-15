@@ -26,7 +26,6 @@ export interface ClassTotals {
   v: typeof PAYLOAD_VERSION;
   topic: 'fractions';
   grade_band: '4-8';
-  class_size: string; // a band such as "25-29", never the exact count
   k: number; // suppression threshold used
   questions: QuestionTotals[];
   note_languages: Lang[];
@@ -65,11 +64,24 @@ export function suppressRow(values: number[], k: number, totalKnown: boolean): C
   return values.map((v, i) => (hidden[i] ? ('hidden' as const) : v));
 }
 
-/** Class size as a band, so no question row has a known exact total. */
-export const sizeBand = (n: number) => { const lo = Math.floor(n / 5) * 5; return `${lo}-${lo + 4}`; };
+/**
+ * The published cells for one question. Right and wrong are shown when at least k, otherwise
+ * hidden. The mistake breakdown is only published when the wrong count is shown (its total), and
+ * is fully hidden or withheld when a small group could be worked out from it.
+ */
+export function questionCells(right: number, wrong: number, groups: [string, number][], k: number): { right: Cell; wrong: Cell; mistakes: Record<string, Cell> } {
+  const [r, w] = suppressRow([right, wrong], k, false)!;
+  const mistakes: Record<string, Cell> = {};
+  if (typeof w === 'number' && groups.length) {
+    const cells = suppressRow(groups.map(([, n]) => n), k, true);
+    if (cells) groups.forEach(([g], i) => (mistakes[g] = cells[i]));
+  }
+  return { right: r, wrong: w, mistakes };
+}
 
 export interface SheetMarks { marks: Marked[] }
 
+/** Class size is deliberately not sent: even a band would bound hidden counts. Callers check MIN_SHEETS locally. */
 export function buildTotals(keys: QuestionKey[], sheets: SheetMarks[], kIn: number, langs: Lang[]): ClassTotals {
   const k = Math.max(3, Math.floor(kIn || 3));
   const questions: QuestionTotals[] = keys.map((key): QuestionTotals => {
@@ -81,12 +93,9 @@ export function buildTotals(keys: QuestionKey[], sheets: SheetMarks[], kIn: numb
       if (m.status === 'wrong') { const g = m.misconception ?? 'other'; groups.set(g, (groups.get(g) ?? 0) + 1); }
     }
     // Right and wrong only, with no exact total: blanks and unreadable answers are not sent.
-    const statusCells = suppressRow([c.correct + c.unsimplified, c.wrong], k, false)!;
-    const gIds = [...groups.keys()];
-    // The breakdown sums to the wrong count when that is shown, so it is checked for derivable cells.
-    const gCells = gIds.length ? suppressRow(gIds.map((g) => groups.get(g)!), k, typeof statusCells[1] === 'number') : [];
-    const mistakes: QuestionTotals['mistakes'] = {};
-    if (gCells) gIds.forEach((g, i) => (mistakes[g] = gCells[i])); // an unsafe breakdown is left out
+    const cells = questionCells(c.correct + c.unsimplified, c.wrong, [...groups.entries()], k);
+    const statusCells = [cells.right, cells.wrong];
+    const mistakes = cells.mistakes as QuestionTotals['mistakes'];
     const expr = parseExpr(key.prompt);
     return {
       q: key.q,
@@ -96,7 +105,7 @@ export function buildTotals(keys: QuestionKey[], sheets: SheetMarks[], kIn: numb
       mistakes,
     };
   });
-  return { v: PAYLOAD_VERSION, topic: 'fractions', grade_band: '4-8', class_size: sizeBand(sheets.length), k, questions, note_languages: langs };
+  return { v: PAYLOAD_VERSION, topic: 'fractions', grade_band: '4-8', k, questions, note_languages: langs };
 }
 
 /** Keeps digits, spaces, "/", ".", "-" only. */
@@ -111,12 +120,11 @@ export function validatePayload(p: unknown, minK = 3): asserts p is ClassTotals 
   const fail = (why: string) => { throw new Error(`Blocked: class totals failed validation (${why})`); };
   if (!p || typeof p !== 'object') fail('not an object');
   const o = p as Record<string, unknown>;
-  const allowed = ['v', 'topic', 'grade_band', 'class_size', 'k', 'questions', 'note_languages'];
+  const allowed = ['v', 'topic', 'grade_band', 'k', 'questions', 'note_languages'];
   for (const key of Object.keys(o)) if (!allowed.includes(key)) fail(`unexpected field ${key}`);
   if (o.v !== PAYLOAD_VERSION || o.topic !== 'fractions' || o.grade_band !== '4-8') fail('header');
   const k = o.k as number;
   if (!Number.isInteger(k) || k < Math.max(3, minK)) fail('k');
-  if (typeof o.class_size !== 'string' || !/^\d{1,3}-\d{1,3}$/.test(o.class_size) || Number(o.class_size.split('-')[0]) < MIN_SHEETS) fail(`fewer than ${MIN_SHEETS} sheets`);
   if (!Array.isArray(o.note_languages) || !o.note_languages.every((l) => (LANGS as readonly string[]).includes(l as string))) fail('languages');
   if (!Array.isArray(o.questions) || o.questions.length > 40) fail('questions');
   const qKeys = ['q', 'question', 'answer', 'right', 'wrong', 'mistakes'];

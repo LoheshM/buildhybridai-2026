@@ -24,7 +24,7 @@ export function Results({ quizId }: { quizId: string }) {
     if (!ctx?.quiz || !ctx.cls) return null;
     const v = summarise(ctx.sheets, ctx.quiz.keys, ctx.quiz.unsimplifiedCredit);
     const m = ctx.cls.sample ? sampleManifest() : null;
-    return { ...v, acc: m ? accuracy(ctx.sheets, m.students) : null, deviceShare: ctx.sheets.filter((s) => s.where === 'on_device').length, checkedByTeacher: ctx.sheets.reduce((n, s) => n + s.marks.filter((x) => x.checked && x.flags.length > 0).length, 0) };
+    return { ...v, onDevice: ctx.sheets.filter((s) => s.where === 'on_device').length, acc: m ? accuracy(ctx.sheets, m.students) : null, deviceShare: ctx.sheets.filter((s) => s.where === 'on_device').length, checkedByTeacher: ctx.sheets.reduce((n, s) => n + s.marks.filter((x) => x.checked && x.flags.length > 0).length, 0) };
   }, [ctx]);
   if (!ctx || !view) return <p className="muted">Loading…</p>;
   const { quiz, cls, sheets } = ctx;
@@ -57,10 +57,14 @@ export function Results({ quizId }: { quizId: string }) {
       {ctx.total > sheets.length && <p className="callout" style={{ marginTop: 8 }}>{sheets.length} of {ctx.total} sheets are read so far. <a href={href.scan(quizId)}>Read the rest</a> before planning a lesson.</p>}
       <div className="stats">
         <div className="stat"><b>{sheets.length}{ctx.total > sheets.length ? ` of ${ctx.total}` : ''}</b><span>sheets marked</span></div>
-        <div className="stat"><ScoreRing big={false} draw={false} points={+view.avg.toFixed(1)} outOf={quiz.keys.length} /><span style={{ display: 'block' }}>class average</span></div>
+        <div className="stat"><ScoreRing big={false} draw={false} points={+view.avg.toFixed(1)} outOf={quiz.keys.length} /><span style={{ display: 'block' }}>class average{view.flagsLeft ? ' (provisional until checked)' : ''}</span></div>
         <div className="stat"><b>{view.flagsLeft ? <a href={href.check(quizId)}><span className="flag" style={{ fontSize: '1.2rem' }}>{view.flagsLeft}</span></a> : 0}</b><span>answers still to check{view.checkedByTeacher ? ` (you checked ${view.checkedByTeacher})` : ''}</span></div>
         <div className="stat"><b>{view.deviceMins}</b><span>reading on this laptop</span></div>
       </div>
+      <p className="small" style={{ margin: '0 0 16px' }}>
+        <span className="pill device"><span className="dot" />{view.onDevice} of {sheets.length} sheets read on this laptop</span>{' '}
+        <a href={href.privacy()} className="small">What left this browser</a>
+      </p>
       {cls.sample && view.acc && view.acc.sheets > 0 && (
         <section className="sheet" style={{ marginBottom: 20 }} aria-label="Reading accuracy on the sample class">
           <h3 style={{ marginBottom: 6 }}>How well the reading went (sample class only)</h3>
@@ -80,7 +84,7 @@ export function Results({ quizId }: { quizId: string }) {
           {view.groups.filter((g) => g.id !== 'secure').map((g) => (
             <div key={g.id} className="sheet group">
               <h3>{g.label}</h3>
-              {g.example && <p className="example">{g.example.prompt} = <span className="hand" style={{ color: 'var(--pen)', fontSize: '1.15rem' }}>{g.example.read}</span> <span className="markcell no" style={{ fontSize: '1.1rem' }}>✗</span></p>}
+              {g.example && <p className="example">{g.example.prompt} = <b style={{ color: 'var(--pen)', fontVariantNumeric: 'tabular-nums' }}>{g.example.read}</b> <span className="markcell no" style={{ fontSize: '1.1rem' }}>✗</span></p>}
               <p className="muted small">{g.teacher}</p>
               <p><b>{g.students.length} student{g.students.length === 1 ? '' : 's'}</b>{g.qs.length ? `, on Q${g.qs.join(', Q')}` : ''}</p>
               <p className="small muted">{g.students.map((s) => name(s)).join(', ')}</p>

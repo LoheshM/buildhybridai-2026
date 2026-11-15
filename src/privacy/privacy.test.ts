@@ -32,12 +32,12 @@ describe('class totals payload', () => {
     expect(q2.question).toBe('2/3 + 1/6');
     const cells: Cell[] = [q2.right, q2.wrong];
     for (const c of cells) if (typeof c === 'number') expect(c === 0 || c >= 3).toBe(true);
-    expect(p.class_size).toBe('25-29');
+    expect(Object.keys(p)).not.toContain('class_size');
     expect(Object.keys(q2)).not.toContain('blank');
   });
   it('rejects extra fields, free text, small classes and bad cells', () => {
     expect(() => validatePayload({ ...p, teacher_note: 'Meera struggles' })).toThrow(/unexpected field/);
-    expect(() => validatePayload({ ...p, class_size: '0-4' })).toThrow(/fewer than 5/);
+    expect(() => validatePayload({ ...p, class_size: '25+' })).toThrow(/unexpected field/);
     expect(() => validatePayload({ ...p, sheets: 28 })).toThrow(/unexpected field/);
     const bad = structuredClone(p); bad.questions[0].question = 'Meera + 1/2';
     expect(() => validatePayload(bad)).toThrow(/question text/);

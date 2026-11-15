@@ -39,6 +39,7 @@ export const lastBlockReason = () => lastReason;
 export const onOutbound = (l: Listener) => { listeners.add(l); return () => listeners.delete(l); };
 export const setAllowedImageHashes = (h: Iterable<string>) => { allowedImageHashes = new Set(h); };
 export const setRosterTokens = (t: string[]) => { rosterTokens = t; };
+export const getRosterTokens = () => rosterTokens;
 export const studentLockHeld = () => studentLocks > 0;
 
 /** Run `fn` with the student lock held: no AI request may leave the browser meanwhile. */

@@ -42,15 +42,6 @@
     --shadow-sheet: 0 1px 0 rgba(0, 0, 0, 0.3), 0 8px 20px -12px rgba(0, 0, 0, 0.8);
     color-scheme: dark;
 }
-@media (prefers-color-scheme: dark) {
-  :root[data-theme='system'] {
-    --paper: #17201f; --grid: #1f2b29; --sheet: #1d2726; --ink: #eef1ea; --ink-2: #c3cbc4; --ink-3: #93a09a; --line: #33423f;
-    --pen: #8fb0ff; --pen-ink: #0f1830; --pen-soft: #22304f; --red: #ff7b72; --green: #7ddc84; --hl: #e8c547; --hl-soft: #3d3820;
-    --device: #4fd1c5; --device-soft: #173835; --cloud: #a9b2c3; --cloud-soft: #283039; --danger-soft: #3b2222; --amber: #f0b44c;
-    --shadow-sheet: 0 1px 0 rgba(0, 0, 0, 0.3), 0 8px 20px -12px rgba(0, 0, 0, 0.8);
-    color-scheme: dark;
-  }
-}
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
@@ -213,7 +204,7 @@ kbd { font: .78rem var(--ui); border: 1px solid var(--line); border-bottom-width
 /* ---------- results ---------- */
 .stats { display: flex; gap: 32px; flex-wrap: wrap; margin: 8px 0 24px; }
 .stat b { display: block; font-size: 1.5rem; line-height: 1.1; font-variant-numeric: tabular-nums; }
-.stat .score-ring { position: relative; inset: auto; display: inline-block; font-size: 1.6rem; padding: 6px 14px; }
+.stat .score-ring { position: relative; inset: auto; display: inline-block; font-size: 2rem; padding: 8px 18px; top: 0; right: 0; }
 .stat span { color: var(--ink-2); font-size: .9rem; }
 .heat { border-collapse: separate; border-spacing: 2px; font-size: .85rem; }
 .heat th { font-weight: 700; color: var(--ink-2); padding: 4px 6px; text-align: center; }

@@ -94,17 +94,19 @@ export async function readStudentSheet(img: StudentImage, questionCount: number)
   return { read: coerceSheetRead(parseJson(r.text), questionCount), where: r.where, ms: r.ms };
 }
 
-export async function rereadStudentQuestions(img: StudentImage, qs: number[]): Promise<{ answers: Map<number, string>; ms: number }> {
+export async function rereadStudentQuestions(img: StudentImage, qs: number[]): Promise<{ answers: Map<number, SecondRead>; ms: number }> {
   await assertDeviceReady();
   const r = await call('reread', InferenceMode.ONLY_ON_DEVICE, [rereadPrompt(qs), imagePart(img)], 'student', 'Second read', { queue: true, timeoutMs: DEVICE_TIMEOUT_MS, studentLock: true });
   if (r.where !== 'on_device') throw new OffDeviceAnswer();
   return { answers: rereadMap(parseJson(r.text), qs), ms: r.ms };
 }
 
-function rereadMap(x: unknown, qs: number[]): Map<number, string> {
-  const out = new Map<number, string>();
-  const arr = (x as { answers?: { q?: unknown; finalAnswer?: unknown }[] })?.answers ?? [];
-  for (const a of arr) { const q = Number(a?.q); if (qs.includes(q) && !out.has(q)) out.set(q, String(a.finalAnswer ?? '').trim().slice(0, 40)); }
+export interface SecondRead { final: string; crossed: string }
+function rereadMap(x: unknown, qs: number[]): Map<number, SecondRead> {
+  const out = new Map<number, SecondRead>();
+  const arr = (x as { answers?: { q?: unknown; finalAnswer?: unknown; crossedOutText?: unknown }[] })?.answers ?? [];
+  const str = (v: unknown) => (typeof v === 'string' || typeof v === 'number' ? String(v).trim().slice(0, 40) : '');
+  for (const a of arr) { const q = Number(a?.q); if (qs.includes(q) && !out.has(q)) out.set(q, { final: str(a.finalAnswer), crossed: str(a.crossedOutText) }); }
   return out;
 }
 
@@ -125,7 +127,7 @@ export async function readSampleSheet(img: SampleImage, questionCount: number): 
       deviceFailures = 0;
       return { read: coerceSheetRead(parseJson(r.text), questionCount), where: r.where, ms: r.ms };
     } catch (e) {
-      if (e instanceof CancelledError) throw e;
+      if (e instanceof CancelledError || (e as Error).name === 'AbortError') throw e;
       deviceFailures++; // a slow or broken on-device model falls back for made-up sheets only
     }
   }
@@ -145,7 +147,7 @@ export async function readSampleSheet(img: SampleImage, questionCount: number): 
 }
 
 /** Second read of a sample sheet: on this laptop only (it would cost shared cloud quota otherwise). */
-export async function rereadSampleQuestions(img: SampleImage, qs: number[]): Promise<{ answers: Map<number, string>; ms: number } | null> {
+export async function rereadSampleQuestions(img: SampleImage, qs: number[]): Promise<{ answers: Map<number, SecondRead>; ms: number } | null> {
   if ((await deviceState()) !== 'available' || deviceFailures >= 2) return null;
   try {
     const r = await call('reread', InferenceMode.PREFER_ON_DEVICE, [rereadPrompt(qs), imagePart(img)], 'sample', 'Second read (sample)', { queue: true, timeoutMs: DEVICE_TIMEOUT_MS });
@@ -154,11 +156,11 @@ export async function rereadSampleQuestions(img: SampleImage, qs: number[]): Pro
 }
 
 // ---------------- anonymous class totals -> reteach plan + parent notes ----------------
-export interface TotalsResult { response: TotalsResponse; where: Where; ms: number; heldBack?: string; mode: Mode | 'recorded'; payload: ClassTotals; note?: string }
+export interface TotalsResult { response: TotalsResponse; where: Where; ms: number; heldBack?: string; mode: Mode | 'recorded'; payload: ClassTotals; note?: string; cloudTried?: boolean }
 
-export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; keepLocal: boolean; minK: number }): Promise<TotalsResult> {
+export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; keepLocal: boolean; minK: number; sheets: number }): Promise<TotalsResult> {
   validatePayload(totals, o.minK); // closed schema: numbers and fixed words only
-  if (Number(totals.class_size.split('-')[0]) < MIN_SHEETS) throw new PlanUnavailable('other', `Needs at least ${MIN_SHEETS} marked sheets.`);
+  if (o.sheets < MIN_SHEETS) throw new PlanUnavailable('other', `Needs at least ${MIN_SHEETS} marked sheets.`);
   const device = (await deviceState()) === 'available';
   const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
   const onDevice = async (why: string): Promise<TotalsResult> => {
@@ -184,7 +186,8 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
       return { response: parseJson(r.text) as TotalsResponse, where: r.where, ms: r.ms, heldBack: r.heldBack, mode: InferenceMode.PREFER_IN_CLOUD, payload: totals };
     } catch (e) {
       // The SDK's own fallback sends the full prompt, which Gemini Nano can't finish in time: retry compact on the laptop.
-      if (device && (e as Error).name !== 'GuardBlocked') return await onDevice(`cloud unavailable: ${(e as Error).message.slice(0, 80)}`);
+      // Also after a guard block: Gemini Nano on this laptop is always allowed.
+      if (device) { const r = await onDevice(`cloud tried: ${(e as Error).message.slice(0, 80)}`); return { ...r, cloudTried: true }; }
       throw e;
     }
   } catch (e) {
@@ -213,26 +216,34 @@ function classify(e: Error): PlanUnavailable {
  * anything leaves the browser; the Outbox shows the refusals.
  */
 export async function testGuard(rosterNames: string[]): Promise<{ what: string; blocked: boolean; reason: string }[]> {
-  const { setRosterTokens } = await import('./netGuard');
+  const { setRosterTokens, getRosterTokens, sha256Hex: _ } = await import('./netGuard');
+  void _;
   const { rosterTokens } = await import('../privacy/nameCheck');
-  setRosterTokens(rosterTokens(rosterNames));
+  const { AI_HOST } = await import('../config');
+  const before = getRosterTokens();
+  const names = rosterNames.length ? rosterNames : ['Meera Krishnan'];
+  setRosterTokens([...new Set([...before, ...rosterTokens(names), 'meera', 'krishnan'])]);
   const canvas = new OffscreenCanvas(320, 200);
   const ctx = canvas.getContext('2d')!;
   ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, 320, 200);
   ctx.fillStyle = '#1b2f8a'; ctx.font = '28px sans-serif'; ctx.fillText('Name: Meera K.', 20, 60); ctx.fillText('2/3 + 1/6 = 3/9', 20, 120);
   const photo = await (await import('./images')).blobToBase64(await canvas.convertToBlob({ type: 'image/jpeg' }));
-  const attempts: [string, Part[]][] = [
-    ['A photo that is not a made-up sample sheet', ['Read this worksheet.', { type: 'inlineData', inlineData: { mimeType: 'image/jpeg', data: photo } }]],
-    [`Text with a name from the class list ("${rosterNames[1] ?? 'Meera'}")`, [`Write a note for ${rosterNames[1] ?? 'Meera Krishnan'}, who scored 7 out of 10.`]],
+  const body = (parts: object[]) => JSON.stringify({ contents: [{ role: 'user', parts }] });
+  const attempts: [string, string][] = [
+    ['A photo that is not a made-up sample sheet', body([{ text: 'Read this worksheet.' }, { inlineData: { mimeType: 'image/jpeg', data: photo } }])],
+    [`Text with a name from the class list ("${names[1] ?? names[0]}")`, body([{ text: `Write a note for ${names[1] ?? names[0]}, who scored 7 out of 10.` }])],
   ];
   const out: { what: string; blocked: boolean; reason: string }[] = [];
-  for (const [what, parts] of attempts) {
-    try {
-      await call('readSheet', InferenceMode.ONLY_IN_CLOUD, parts, 'system', `Guard test: ${what}`, { queue: false, timeoutMs: CLOUD_READ_TIMEOUT_MS });
-      out.push({ what, blocked: false, reason: 'it was sent' });
-    } catch (e) {
-      out.push({ what, blocked: (e as Error).name === 'GuardBlocked', reason: (e as Error).message });
+  try {
+    for (const [what, b] of attempts) {
+      try {
+        // An already-aborted request: it passes through the guard, but can never reach the network.
+        await fetch(`https://${AI_HOST}/v1beta/projects/guard-test/models/test:generateContent`, { method: 'POST', body: b, headers: { 'Content-Type': 'application/json' }, signal: AbortSignal.abort() });
+        out.push({ what, blocked: false, reason: 'not refused by the guard (and not sent: the test request was aborted)' });
+      } catch (e) {
+        out.push({ what, blocked: (e as Error).name === 'GuardBlocked', reason: (e as Error).name === 'GuardBlocked' ? (e as Error).message : 'not refused by the guard (and not sent: the test request was aborted)' });
+      }
     }
-  }
+  } finally { setRosterTokens(before); }
   return out;
 }

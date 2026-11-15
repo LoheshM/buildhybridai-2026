@@ -18,6 +18,8 @@ export function App() {
   const r = useRoute();
   const [blocked, setBlocked] = useState(false);
   useEffect(() => { const on = () => setBlocked(true); addEventListener('tickmark:db-blocked', on); return () => removeEventListener('tickmark:db-blocked', on); }, []);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  useEffect(() => { const on = (e: Event) => setSaveError((e as CustomEvent).detail ?? 'unknown error'); addEventListener('tickmark:save-failed', on); return () => removeEventListener('tickmark:save-failed', on); }, []);
   useEffect(() => {
     const titles: Record<string, string> = { welcome: 'Tickmark', home: 'Classes', new: 'New class and quiz', scan: 'Sheets', check: 'Check answers', results: 'Results', reteach: "Plan tomorrow's lesson", privacy: 'Privacy & data' };
     document.title = r.page === 'welcome' ? 'Tickmark' : `${titles[r.page]} | Tickmark`;
@@ -51,6 +53,7 @@ export function App() {
       </header>
       <main id="main">
         {bootError && <p className="callout bad" role="alert">{bootError} <button className="btn small" onClick={() => location.reload()}>Reload</button></p>}
+        {saveError && <p className="callout bad" role="alert">A change could not be saved in this browser ({saveError}). Free some space or reload, then check the last answer again.</p>}
         {blocked && <p className="callout" role="alert">Tickmark was changed in another tab. <button className="btn small" onClick={() => location.reload()}>Reload this tab</button></p>}
         {page}
       </main>
@@ -90,8 +93,8 @@ function ThemeToggle() {
   const [t, setT] = useState<Theme>(currentTheme());
   const next: Theme = t === 'dark' ? 'light' : 'dark';
   return (
-    <button className="btn small ghost" aria-pressed={t === 'dark'} title="Switch between the paper and chalkboard looks" onClick={() => { setTheme(next); setT(next); }}>
-      {t === 'dark' ? 'Paper' : 'Chalkboard'}
+    <button className="btn small ghost" aria-pressed={t === 'dark'} aria-label={t === 'dark' ? 'Switch to the light paper look' : 'Switch to the dark chalkboard look'} title={t === 'dark' ? 'Paper look' : 'Chalkboard look'} onClick={() => { setTheme(next); setT(next); }}>
+      <span aria-hidden="true" style={{ fontSize: '1.1rem' }}>{t === 'dark' ? '☀' : '☾'}</span>
     </button>
   );
 }

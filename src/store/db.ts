@@ -15,7 +15,7 @@ export interface SheetRec {
   marks: Marked[]; read?: SheetRead; where?: Where; ms?: number; rereadQs?: number[]; rereadMs?: number; error?: string;
   createdAt: number; checkedAt?: number;
 }
-export interface PlanRec { quizId: string; at: number; payload: ClassTotals; response: TotalsResponse; where: Where; ms: number; heldBack?: string; note?: string; mode?: string }
+export interface PlanRec { quizId: string; at: number; payload: ClassTotals; response: TotalsResponse; where: Where; ms: number; heldBack?: string; note?: string; mode?: string; cloudTried?: boolean }
 
 interface Schema extends DBSchema {
   classes: { key: string; value: ClassRec };

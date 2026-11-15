@@ -45,7 +45,7 @@ export function Welcome() {
         <div aria-hidden="true" style={{ position: 'relative', maxWidth: 380, justifySelf: 'center', width: '100%' }}>
           <div className="mark-sheet" style={{ transform: 'rotate(1.5deg)' }}>
             <img src="/samples/s16.jpg" alt="" />
-            <PenPass play delayMs={500} marks={HERO_MARKS} note={{ row: 1, text: 'added tops & bottoms' }} />
+            <PenPass play delayMs={500} marks={HERO_MARKS} note={{ row: 0, text: 'added tops & bottoms' }} />
             <ScoreRing points={6} outOf={10} big />
           </div>
         </div>

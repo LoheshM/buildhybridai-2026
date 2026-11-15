@@ -35,7 +35,10 @@ export function Scan({ quizId }: { quizId: string }) {
   const { quiz, cls } = ctx;
   const mine = run.running && run.quizId === quiz.id;
   const pending = sheets.filter((s) => s.status === 'queued' || s.status === 'error' || (s.status === 'reading' && !mine));
-  const toCheck = sheets.reduce((n, s) => n + s.marks.filter(needsCheck).length + ((s.status === 'read' || s.status === 'checked') && (!s.studentId || !s.nameConfident) ? 1 : 0), 0);
+  const answersToCheck = sheets.reduce((n, s) => n + s.marks.filter(needsCheck).length, 0);
+  const namesToCheck = sheets.filter((s) => (s.status === 'read' || s.status === 'checked') && (!s.studentId || !s.nameConfident)).length;
+  const toCheck = answersToCheck + namesToCheck;
+  const toCheckText = [answersToCheck ? `${answersToCheck} answer${answersToCheck === 1 ? '' : 's'}` : '', namesToCheck ? `${namesToCheck} name${namesToCheck === 1 ? '' : 's'}` : ''].filter(Boolean).join(' and ');
   const readCount = sheets.filter((s) => s.status === 'read' || s.status === 'checked').length;
   const state = d.state;
   const deviceReady = state === 'available';
@@ -50,7 +53,7 @@ export function Scan({ quizId }: { quizId: string }) {
         <h1 style={{ margin: 0 }}>{quiz.title}</h1>
         <div className="row">
           <button className="btn ghost" onClick={() => { document.body.classList.add('printing-quiz'); const off = () => { document.body.classList.remove('printing-quiz'); removeEventListener('afterprint', off); }; addEventListener('afterprint', off); window.print(); }}>Print blank quiz</button>
-          <a className={`btn ${toCheck ? 'primary' : ''}`} href={href.check(quiz.id)}>{toCheck ? `Check ${toCheck} flagged item${toCheck === 1 ? '' : 's'}` : 'Check answers'}</a>
+          <a className={`btn ${toCheck ? 'primary' : ''}`} href={href.check(quiz.id)}>{toCheck ? `Check ${toCheckText}` : 'Check answers'}</a>
           <a className={`btn ${toCheck ? '' : 'primary'}`} href={href.results(quiz.id)}>Results</a>
         </div>
       </div>
@@ -86,7 +89,7 @@ export function Scan({ quizId }: { quizId: string }) {
         ) : readCount ? (
           <div className="row" style={{ justifyContent: 'space-between' }}>
             <strong>All {readCount} sheets read.</strong>
-            <span className="muted">{toCheck ? `${toCheck} item${toCheck === 1 ? ' is' : 's are'} waiting for you in Check answers.` : 'Nothing left to check.'}</span>
+            <span className="muted">{toCheck ? `${toCheckText} waiting for you in Check answers.` : 'Nothing left to check.'}</span>
           </div>
         ) : (
           <p className="muted" style={{ margin: 0 }}>{deviceReady || state === 'downloading' || state === 'downloadable' ? 'Add photos of the worksheets below, one photo per student.' : 'Type each student\'s answers below.'}</p>
@@ -102,7 +105,10 @@ export function Scan({ quizId }: { quizId: string }) {
 
       {sheets.length > 0 && (
         <section className="section">
-          <h2>Sheets</h2>
+          <div className="row" style={{ justifyContent: 'space-between' }}>
+            <h2 style={{ margin: 0 }}>Sheets</h2>
+            <span className="muted small">On each sheet: red <b>✓</b> right, <b>✗</b> wrong, yellow = waiting for you, <span className="hand">½</span> = right but not simplified, <span className="hand">?/10</span> = score not final yet</span>
+          </div>
           <div className="tiles">
             {sheets.map((s) => <Tile key={s.id} s={s} cls={cls} quiz={quiz} onRetry={() => start()} canRetry={!run.running} />)}
           </div>

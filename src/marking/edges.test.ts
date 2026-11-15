@@ -6,7 +6,7 @@ import { matchName, parseRoster } from './roster';
 import { evaluate, format, mixedAlternatives, parse, parseExpr } from './fraction';
 import { coerceSheetRead, TOTALS_SCHEMA_CLOUD } from '../ai/schemas';
 import { csvAnswer, validTemplate } from '../privacy/templates';
-import { buildTotals, hiddenRange, suppressRow, validatePayload } from '../privacy/aggregate';
+import { buildTotals, hiddenRange, questionCells, suppressRow, validatePayload } from '../privacy/aggregate';
 import { findRosterNames, rosterTokens } from '../privacy/nameCheck';
 import { FIXED_VOCAB, totalsPrompt } from '../ai/prompts';
 
@@ -32,8 +32,12 @@ describe('E04/E24: model readings with bad question numbers', () => {
     expect(() => coerceSheetRead({ answers: [{ finalAnswer: '3/4' }, { q: true, finalAnswer: '1' }] }, 3)).toThrow(SyntaxError);
   });
   it('repairs 0-based numbering', () => {
-    const r = coerceSheetRead({ answers: [{ q: 0, finalAnswer: 'a' }, { q: 1, finalAnswer: 'b' }, { q: 2, finalAnswer: 'c' }] }, 3);
-    expect(r.answers.map((a) => a.finalAnswer)).toEqual(['a', 'b', 'c']);
+    const r = coerceSheetRead({ answers: [{ q: 0, finalAnswer: '1/2' }, { q: 1, finalAnswer: '3/4' }, { q: 2, finalAnswer: '5/6' }] }, 3);
+    expect(r.answers.map((a) => a.finalAnswer)).toEqual(['1/2', '3/4', '5/6']);
+  });
+  it('a name read as q:0 is dropped, not shifted into the answers', () => {
+    const r = coerceSheetRead({ answers: [{ q: 0, finalAnswer: 'Aarav' }, { q: 1, finalAnswer: '3/4' }, { q: 2, finalAnswer: '5/6' }] }, 3);
+    expect(r.answers.map((a) => a.finalAnswer)).toEqual(['3/4', '5/6', '']);
   });
   it('a duplicated q with a different answer becomes "two answers"', () => {
     const r = coerceSheetRead({ answers: [{ q: 1, finalAnswer: '4/5' }, { q: 1, finalAnswer: '3/4' }] }, 1);
@@ -184,21 +188,67 @@ describe('R12/R49: names in our own prompt, and the payload k', () => {
   });
 });
 
-describe('crossed-out noise is cleared only by an agreeing second read', () => {
+describe('crossed-out work: noise is cleared, a possible swap is never silent', () => {
   const k = K(2, '2/3 + 1/6', '5/6');
-  it('agreeing second read turns the flag into a note', () => {
+  it('second read sees no crossed-out work: the first read imagined it, so it becomes a note', () => {
     const m = markAnswer(k, '5/6', '4/5');
     expect(m.flags).toContain('crossed_out');
-    const merged = mergeReread([m], new Map([[2, '5/6']]))[0];
+    const merged = mergeReread([m], new Map([[2, { final: '5/6', crossed: '' }]]), [k])[0];
     expect(merged.flags).not.toContain('crossed_out');
     expect(merged.crossedOut).toBe('4/5'); // still shown to the teacher
   });
+  it('R1: both reads see crossed-out work and a swap would change the mark: the teacher checks it', () => {
+    // the student wrote 5/6, crossed it out and wrote 4/5; both reads swapped them
+    const merged = mergeReread([markAnswer(k, '5/6', '4/5')], new Map([[2, { final: '5/6', crossed: '4/5' }]]), [k])[0];
+    expect(merged.status).toBe('correct');
+    expect(merged.flags).toContain('crossed_out');
+    expect(needsCheck(merged)).toBe(true);
+  });
+  it('a swap that could not change the mark is cleared', () => {
+    const merged = mergeReread([markAnswer(k, '5/6', '10/12x')], new Map([[2, { final: '5/6', crossed: '10/12x' }]]), [k])[0];
+    expect(merged.flags).not.toContain('crossed_out');
+  });
   it('a disagreeing second read keeps it flagged', () => {
-    const merged = mergeReread([markAnswer(k, '5/6', '4/5')], new Map([[2, '4/5']]))[0];
+    const merged = mergeReread([markAnswer(k, '5/6', '4/5')], new Map([[2, { final: '4/5', crossed: '' }]]), [k])[0];
     expect(merged.flags).toEqual(expect.arrayContaining(['crossed_out', 'reread_disagreed']));
   });
   it('without a second read it stays flagged', () => {
-    expect(mergeReread([markAnswer(k, '5/6', '4/5')], new Map())[0].flags).toContain('crossed_out');
+    expect(mergeReread([markAnswer(k, '5/6', '4/5')], new Map(), [k])[0].flags).toContain('crossed_out');
+  });
+});
+
+describe('R2: whole-question states never pin a hidden count', () => {
+  // Every question state (right, wrong, up to 3 mistake groups) for a class of 5-9 (published as "5+").
+  const groups = ['add_across', 'numerators_only', 'other'];
+  const parts = (n: number, g: number): number[][] => (g === 0 ? (n === 0 ? [[]] : []) : Array.from({ length: n + 1 }, (_, v) => v).flatMap((v) => parts(n - v, g - 1).map((r) => [v, ...r])));
+  it('every published question has at least two consistent states for each hidden cell', () => {
+    // No class size is sent, so right and wrong are unbounded: enumerate up to 14 and judge only
+    // outputs whose visible numbers stay well inside the enumerated range.
+    const k = 3;
+    const byOutput = new Map<string, number[][]>(); // output -> states [right, wrong, g1, g2, g3]
+    for (let wrong = 0; wrong <= 14; wrong++) for (let right = 0; right <= 14; right++) {
+      for (const split of parts(wrong, 3)) {
+        const gs = split.map((v, i) => [groups[i], v] as [string, number]).filter(([, v]) => v > 0);
+        const out = JSON.stringify(questionCells(right, wrong, gs, k));
+        const list = byOutput.get(out) ?? [];
+        list.push([right, wrong, ...split]);
+        byOutput.set(out, list);
+      }
+    }
+    let pinned = 0;
+    for (const [out, states] of byOutput) {
+      const o = JSON.parse(out);
+      if ([o.right, o.wrong, ...Object.values(o.mistakes)].some((v) => typeof v === 'number' && v > 10)) continue;
+      const hiddenIdx: number[] = [];
+      if (o.right === 'hidden') hiddenIdx.push(0);
+      if (o.wrong === 'hidden') hiddenIdx.push(1);
+      groups.forEach((g, i) => { if (o.mistakes[g] === 'hidden') hiddenIdx.push(2 + i); });
+      for (const i of hiddenIdx) if (new Set(states.map((s) => s[i])).size < 2) pinned++;
+    }
+    expect(pinned).toBe(0);
+  });
+  it('two pupils wrong in two different ways: the breakdown is not sent', () => {
+    expect(questionCells(20, 2, [['add_across', 1], ['other', 1]], 3)).toEqual({ right: 20, wrong: 'hidden', mistakes: {} });
   });
 });
 

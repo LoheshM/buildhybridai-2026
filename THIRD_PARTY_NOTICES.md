@@ -10,6 +10,7 @@ Tickmark is licensed under Apache-2.0. It includes or uses the following third-p
 | [Atkinson Hyperlegible](https://www.brailleinstitute.org/freefont/) by Braille Institute, via `@fontsource/atkinson-hyperlegible` | Interface font | SIL Open Font License 1.1 |
 | [Kalam](https://fonts.google.com/specimen/Kalam) by Indian Type Foundry, via `@fontsource/kalam` | Teacher's marks (ticks, scores) | SIL Open Font License 1.1 |
 | Caveat, Kalam, Patrick Hand, Gochi Hand, Indie Flower, Shadows Into Light, Reenie Beanie (Google Fonts) | Used only to *render* the synthetic sample worksheets in `public/samples/` (`tools/samples/`); not shipped as fonts | SIL Open Font License 1.1 |
+| [MNIST](http://yann.lecun.com/exdb/mnist/) test set (Yann LeCun, Corinna Cortes, Christopher J. C. Burges) | Real handwritten digits used only by `tools/samples/mnist.py` to build a local accuracy benchmark; not shipped in the app or the repo | CC BY-SA 3.0 |
 | Google reCAPTCHA Enterprise | Firebase App Check provider | [Google Terms](https://policies.google.com/terms) and [Privacy Policy](https://policies.google.com/privacy) |
 | Gemini Nano (Chrome built-in AI) and Gemini via Firebase AI Logic | On-device and cloud inference | [Google Generative AI terms](https://policies.google.com/terms/generative-ai) |
 

@@ -1,0 +1,18 @@
+{
+ "sheets": 24,
+ "errors": [
+  "n14: TimeoutError No answer from the on-device model after 30 s",
+  "n17: TimeoutError No answer from the on-device model after 30 s",
+  "n24: TimeoutError No answer from the on-device model after 30 s",
+  "n25: TimeoutError No answer from the on-device model after 30 s"
+ ],
+ "answers": 187,
+ "exact": 152,
+ "wrongMarkUnflagged": 0,
+ "readDiffSameMark": 4,
+ "flagged": 47,
+ "blankRight": 240,
+ "blankWrong": 0,
+ "ms": 261347.19999998808,
+ "misses": []
+}

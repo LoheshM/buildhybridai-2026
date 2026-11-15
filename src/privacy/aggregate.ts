@@ -7,7 +7,7 @@ import { exprText, format, parseExpr } from '../marking/fraction';
 import { keyInfo, typeOf, type Marked, type QuestionKey } from '../marking/mark';
 import { MISTAKES, type MistakeId } from '../marking/mistakes';
 import { parseQuantity } from '../marking/numeric';
-import { keyPoints, parseRubric, QTYPES, type QType } from '../marking/qtypes';
+import { keyCore, keyPoints, parseRubric, QTYPES, type QType } from '../marking/qtypes';
 import { normChoice } from '../marking/words';
 import { findRosterNames } from './nameCheck';
 
@@ -100,7 +100,11 @@ export interface SheetMarks { marks: Marked[] }
 
 /** Teacher-written key text: one line, printable, capped. Never student text. */
 export function teacherText(s: string, max = 160): string {
-  return (s ?? '').normalize('NFKC').replace(/[\p{C}]/gu, ' ').replace(/[<>{}[\]\\`]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
+  return (s ?? '').normalize('NFKC').replace(/[\p{C}]/gu, ' ')
+    // what Word and worksheets put in ordinary text: dashes, curly quotes, blanks to fill, arrows
+    .replace(/[‐‑‒–—―−]/g, '-').replace(/[‘’‚‛′]/g, "'").replace(/[“”„‟″]/g, '"').replace(/_{2,}|…/g, '...').replace(/[→⇒⟶]/g, ' to ')
+    .replace(/≥/g, ' at least ').replace(/≤/g, ' at most ').replace(/\*/g, '×')
+    .replace(/[^\p{L}\p{M}\p{N}\p{Zs} .,;:!?'"()%°£$€₹¢+×÷=/&-]/gu, ' ').replace(/\s+/g, ' ').trim().slice(0, max);
 }
 
 const MATHS: QType[] = ['fraction', 'number', 'algebra'];
@@ -110,14 +114,16 @@ export const subjectFor = (keys: QuestionKey[]): Subject => (keys.every((k) => M
 function keyText(k: QuestionKey, type: QType): string {
   if (type === 'fraction') { const v = keyInfo(k).value; return v ? format(v) : ''; }
   if (type === 'number') {
-    const q = parseQuantity(k.answer);
+    const q = parseQuantity(keyCore(k.answer));
     if (!q) return '';
     const v = q.decimals > 0 ? (q.value.n / q.value.d).toFixed(q.decimals) : format(q.value); // 3.6 g stays 3.6, never 3 3/5
     return `${v}${q.percent ? '%' : q.unit ? ` ${q.unit}` : ''}`.replace(/^(.*) ([$£€₹])$/, '$2$1');
   }
   if (type === 'choice') return normChoice(k.answer) ?? '';
   if (type === 'short' || type === 'passage') return '';
-  return teacherText(k.answer, 80);
+  // "2ab", "xy + 3x": implicit products written out, so every variable stays a single letter
+  if (type === 'algebra') return teacherText(keyCore(k.answer), 80).replace(/([a-z])(?=[a-z])/gi, '$1×');
+  return teacherText(keyCore(k.answer), 80);
 }
 
 /** Class size is deliberately not sent: even a band would bound hidden counts. Callers check MIN_SHEETS locally. */
@@ -135,11 +141,12 @@ export function buildTotals(keys: QuestionKey[], sheets: SheetMarks[], kIn: numb
     const bump = (m: Map<string, number>, g: string) => m.set(g, (m.get(g) ?? 0) + 1);
     for (const m of ms) {
       // undecided open answers, blanks and unreadable answers are not counted
-      if (m.status === 'correct' || m.status === 'unsimplified') right++;
-      else if (m.status === 'partial') partial++;
+      if (m.status === 'correct') right++;
+      else if (m.status === 'partial' || m.status === 'unsimplified') partial++;
       else if (m.status === 'wrong') wrong++;
       else continue;
-      if (m.status === 'correct' || m.status === 'unsimplified') continue;
+      if (m.status === 'correct') continue;
+      if (m.status === 'unsimplified') { bump(groups, 'unsimplified'); continue; }
       if (type === 'choice') { if (m.picked) bump(options, m.picked); continue; }
       const labels = m.mistakes?.length ? m.mistakes : m.misconception ? [m.misconception] : ['other'];
       for (const g of labels) bump(groups, g);
@@ -173,9 +180,9 @@ export const safeNumberText = (s: string) => (s ?? '').replace(/[^0-9 ./-]/g, ''
 const CELL = (c: unknown, k: number) => (typeof c === 'number' && Number.isInteger(c) && (c === 0 || (c >= k && c < 10000))) || c === 'hidden';
 /** Maths question text is rebuilt from numbers only; maths answers may add a unit, a % or single-letter variables. */
 const MATH_Q = /^[0-9 ./+×÷-]{0,40}$/;
-const MATH_A = /^(?:[0-9 ./+×÷%$£€₹²³°=()^*-]|(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])|(?:mm|cm|km|kg|ml|min|km\/h|m\/s|mph))*$/;
+const MATH_A = /^(?:[0-9 ./+×÷%$£€₹¢²³°=()^*-]|(?<![a-zA-Z])[a-zA-Z](?![a-zA-Z])|(?:mm|cm|km|kg|ml|min|km\/h|m\/s|mph))*$/;
 /** Teacher text: letters, digits, spaces and ordinary punctuation, one line. */
-const TEXT = /^[\p{L}\p{M}\p{N}\p{Zs} .,;:!?'’"“”()%°£$€₹+×÷=/&-]{0,160}$/u;
+const TEXT = /^[\p{L}\p{M}\p{N}\p{Zs} .,;:!?'’"“”()%°£$€₹¢+×÷=/&-]{0,160}$/u;
 
 /** Strict allowlist validation of the outbound payload. Throws on anything unexpected. */
 export function validatePayload(p: unknown, minK = 3): asserts p is ClassTotals {
@@ -196,8 +203,8 @@ export function validatePayload(p: unknown, minK = 3): asserts p is ClassTotals 
     if (!Number.isInteger(q.q)) fail('q');
     if (typeof q.type !== 'string' || !(q.type in QTYPES)) fail('type');
     const maths = MATHS.includes(q.type as QType);
-    if (typeof q.question !== 'string' || !(maths ? MATH_Q : TEXT).test(q.question)) fail('question text');
-    if (typeof q.answer !== 'string' || q.answer.length > 40 || !(maths ? MATH_A : TEXT).test(q.answer)) fail('answer text');
+    if (typeof q.question !== 'string' || !(maths ? MATH_Q : TEXT).test(q.question)) fail(`question ${q.q} text`);
+    if (typeof q.answer !== 'string' || q.answer.length > 40 || !(maths ? MATH_A : TEXT).test(q.answer)) fail(`question ${q.q} answer`);
     for (const f of ['key_points', 'rubric'] as const) {
       if (q[f] === undefined) continue;
       if (!Array.isArray(q[f]) || (q[f] as unknown[]).length > 6 || !(q[f] as unknown[]).every((x) => typeof x === 'string' && TEXT.test(x) && x.length <= 80)) fail(f);

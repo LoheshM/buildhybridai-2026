@@ -6,7 +6,7 @@ import { detect, type MisconceptionId } from './misconceptions';
 import type { MistakeId } from './mistakes';
 import { markAlgebra } from './algebra';
 import { markQuantity } from './numeric';
-import { detectType, isOpen, marksFor, parseRubric, type QType } from './qtypes';
+import { detectType, isOpen, keyCore, marksFor, parseRubric, type QType } from './qtypes';
 import { markChoice, markWord } from './words';
 
 export interface QuestionKey {
@@ -106,8 +106,8 @@ export function keyInfo(k: QuestionKey): KeyInfo {
 export function keyProblem(k: QuestionKey): string | null {
   const type = typeOf(k);
   if (!k.answer.trim()) return 'Add an answer.';
-  if (type === 'number' && !markQuantity(k.answer, k.answer).status.startsWith('correct')) return 'The answer could not be read as a number.';
-  if (type === 'algebra' && markAlgebra(k.answer, k.answer).status !== 'correct') return 'The answer could not be read as algebra (for example x = 4 or 2x + 3).';
+  if (type === 'number' && !markQuantity(keyCore(k.answer), keyCore(k.answer)).status.startsWith('correct')) return 'The answer could not be read as a number.';
+  if (type === 'algebra' && markAlgebra(keyCore(k.answer), keyCore(k.answer)).status !== 'correct') return 'The answer could not be read as algebra (for example x = 4 or 2x + 3).';
   if (type === 'choice' && markChoice(k.answer, k.answer).status !== 'correct') return 'Use one option letter (A to H) or True/False.';
   if (type === 'passage' && !parseRubric(k.answer)) return 'Write the rubric as lines with marks, for example "Ideas 3; Organisation 2".';
   if (type === 'short' && k.answer.split(/\s*(?:\n|;)\s*/).filter((x) => x.trim()).length > 6) return 'Use at most 6 key points (separate them with ;).';
@@ -133,23 +133,24 @@ export function markAnswer(k: QuestionKey, read: string, crossedOut = ''): Marke
   if (!(read ?? '').trim()) return base;
   if (isOpen(type)) return { ...base, status: 'pending' };
   if (type === 'number') {
-    const v = markQuantity(k.answer, read, k.tolerance ?? 0, k.prompt);
+    const v = markQuantity(keyCore(k.answer), read, k.tolerance ?? 0, k.prompt);
     const flags = [...base.flags, ...(v.status === 'unreadable' ? [/[a-z]{3,}/i.test(read) ? 'letters' as const : 'unreadable' as const] : v.status === 'wrong' && !v.mistake ? ['unusual' as const] : [])];
     return { ...base, status: v.status, misconception: v.mistake, note: v.note, flags };
   }
   if (type === 'algebra') {
-    const v = markAlgebra(k.answer, read, k.prompt);
+    const v = markAlgebra(keyCore(k.answer), read, k.prompt);
     return { ...base, status: v.status, misconception: v.mistake, flags: [...base.flags, ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
   }
   if (type === 'choice') {
-    const v = markChoice(k.answer, read);
+    const v = markChoice(keyCore(k.answer), read);
     return { ...base, status: v.status, picked: v.picked ?? undefined, flags: [...base.flags, ...(v.two ? ['two_answers' as const] : v.status === 'unreadable' ? ['unreadable' as const] : [])] };
   }
   // word
-  const v = markWord(k.answer, read, !!k.spellingCounts);
+  const v = markWord(keyCore(k.answer), read, !!k.spellingCounts);
   // Day-1 bench: Gemini Nano reads a misspelt word as the correct word ("necesary" → "necessary"), even
   // letter by letter. When spelling counts, a reading that equals the key is exactly that risk: ask.
-  const autocorrectRisk = !!k.spellingCounts && v.status === 'correct' && !v.mistake;
+  // A near spelling may be a different term (reflection for refraction): right, but the teacher looks.
+  const autocorrectRisk = (!!k.spellingCounts && v.status === 'correct' && !v.mistake) || (v.status === 'correct' && v.mistake === 'spelling');
   return { ...base, status: v.status, misconception: v.mistake, note: v.mistake === 'spelling' && v.status === 'correct' ? `Spelling: ${v.closest}` : undefined, flags: [...base.flags, ...(v.extraWords ? ['extra_words' as const] : []), ...(autocorrectRisk ? ['check_spelling' as const] : []), ...(v.status === 'unreadable' ? ['unreadable' as const] : [])] };
 }
 

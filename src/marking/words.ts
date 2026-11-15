@@ -3,12 +3,18 @@ import { editDistance } from './roster';
 
 const TF: Record<string, 'true' | 'false'> = { true: 'true', t: 'true', yes: 'true', y: 'true', '✓': 'true', false: 'false', f: 'false', no: 'false', n: 'false', '✗': 'false', x: 'false' };
 
-/** Normalises "B", "(b)", "b)", "B.", "option B", "B 12" to "B"; "True"/"T"/"yes" to "true". Null if neither. */
-export function normChoice(raw: string): string | null {
+/**
+ * Normalises "B", "(b)", "b)", "B.", "option B", "B 12" to "B"; "True"/"T"/"yes" to "true". Null if neither.
+ * In letter mode (the key is an option letter) "F" is option F and "X" is no option: true/false is
+ * only read from whole words there.
+ */
+export function normChoice(raw: string, letters = false): string | null {
   const s = (raw ?? '').normalize('NFKC').trim().toLowerCase().replace(/^option\s+/, '').replace(/^answer\s*[:=]?\s*/, '');
   if (!s) return null;
-  const tf = TF[s.replace(/[.!]+$/, '')];
-  if (tf) return tf;
+  const bare = s.replace(/[.!]+$/, '');
+  const tf = TF[bare];
+  if (tf && (!letters || bare.length > 1)) return tf;
+  if (letters && /^[✓✗x]$/.test(bare)) return null;
   const m = s.match(/^\(?([a-h])\)?(?:[.):]|\s|$)/);
   return m ? m[1].toUpperCase() : null;
 }
@@ -20,12 +26,17 @@ export function looksChoice(key: string): boolean {
 }
 
 export type ChoiceVerdict = { status: 'correct' | 'wrong' | 'unreadable'; picked: string | null };
+/** A key that is one option letter, A to H ("F" included: true/false keys are written as words or T). */
+const isLetterKey = (key: string) => /^\(?[A-Ha-h]\)?[.)]?$/.test(key.trim());
+
 export function markChoice(key: string, read: string): ChoiceVerdict & { two?: boolean } {
-  const k = normChoice(key);
-  // two different option letters ("D C", "B or C") is two answers, never the first one
-  const letters = new Set(((read ?? '').toUpperCase().match(/(?:^|[^A-Z])([A-H])(?=[^A-Z]|$)/g) ?? []).map((x) => x.replace(/[^A-H]/g, '')));
-  if (letters.size > 1 && /^[\s(),.;/&A-Hor]*$/i.test(read ?? '')) return { status: 'unreadable', picked: null, two: true };
-  const s = normChoice(read);
+  const letterMode = isLetterKey(key);
+  const k = normChoice(key, letterMode);
+  // two different option letters ("D C", "B or C", "B and C", "B + C") is two answers, never the first one
+  const joined = (read ?? '').replace(/\b(?:and|or|then|plus|also|&)\b|[+&]/gi, ' ');
+  const letters = new Set((joined.toUpperCase().match(/(?:^|[^A-Z])([A-H])(?=[^A-Z]|$)/g) ?? []).map((x) => x.replace(/[^A-H]/g, '')));
+  if (letters.size > 1 && /^[\s(),.;/A-H]*$/i.test(joined)) return { status: 'unreadable', picked: null, two: true };
+  const s = normChoice(read, letterMode);
   if (!s) return { status: 'unreadable', picked: null };
   return { status: s === k ? 'correct' : 'wrong', picked: s };
 }
@@ -39,12 +50,13 @@ export function normWord(raw: string): string {
 
 /** "evaporation / evaporating | evaporate" → the accepted answers. */
 export function alternatives(key: string): string[] {
-  return key.split(/\s*(?:\/|\||;|\bor\b)\s*/i).map(normWord).filter(Boolean);
+  return key.split(/\s*(?:\/|\||\bor\b)\s*/i).map(normWord).filter(Boolean);
 }
 
-/** A key of one to three words with no sentence punctuation (and not a number). */
+/** A key of one to three words with no sentence punctuation (and not a number). ";" and new lines mean key points, so those are short answers. */
 export function looksWord(key: string): boolean {
-  const alts = key.split(/\s*(?:\/|\||;|\bor\b)\s*/i).map((s) => s.trim()).filter(Boolean);
+  if (/[;\n]/.test(key)) return false;
+  const alts = key.split(/\s*(?:\/|\||\bor\b)\s*/i).map((s) => s.trim()).filter(Boolean);
   return alts.length > 0 && alts.every((a) => /^[\p{L}][\p{L}'’ -]*$/u.test(a) && a.split(/\s+/).length <= 3 && a.length <= 30);
 }
 

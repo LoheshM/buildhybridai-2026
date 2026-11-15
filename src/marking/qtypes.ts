@@ -37,9 +37,18 @@ export function keyPoints(key: string): string[] {
   return key.split(/\s*(?:\n|;)\s*/).map((s) => s.trim().replace(/[.]+$/, '')).filter(Boolean).slice(0, 6);
 }
 
+/** "3.14 (2 dp)" → "3.14": a note in brackets after an exact answer is for the teacher, not part of the answer. */
+export function keyCore(key: string): string {
+  const k = (key ?? '').trim();
+  const m = k.match(/^(.*?\S)\s*\(([^()]*)\)$/);
+  return m && /\p{L}{2,}/u.test(m[2]) && !/[;\n]/.test(k) ? m[1] : k;
+}
+
 /** Picks the type from the key text (and the printed question, when it helps). */
 export function detectType(key: string, prompt = ''): QType {
-  const k = (key ?? '').trim();
+  const full = (key ?? '').trim();
+  if (/^\s*rubric\b/i.test(full) || parseRubric(full)) return 'passage';
+  const k = keyCore(full);
   if (!k) return 'short';
   if (/^\s*rubric\b/i.test(k) || parseRubric(k)) return 'passage';
   const p = parse(k);

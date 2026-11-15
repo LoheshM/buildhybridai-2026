@@ -30,7 +30,9 @@ export function inkShare(c: OffscreenCanvas, borderPx = 13): number {
   for (let i = 0; i < lum.length; i++) dark[i] = lum[i] < paper - 70 ? 1 : 0;
   // straight lines are print (a box edge left in by a slightly skewed photo), not handwriting
   for (let y = 0; y < ih; y++) { let n = 0; for (let x = 0; x < iw; x++) n += dark[y * iw + x]; if (n > iw * 0.4) for (let x = 0; x < iw; x++) dark[y * iw + x] = 0; }
-  for (let x = 0; x < iw; x++) { let n = 0; for (let y = 0; y < ih; y++) n += dark[y * iw + x]; if (n > ih * 0.4) for (let y = 0; y < ih; y++) dark[y * iw + x] = 0; }
+  // columns: only a near-full-height line close to the frame (a skewed box edge); an upright "1" or "l" stays ink
+  const edge = 15;
+  for (let x = 0; x < iw; x++) { if (x >= edge && x < iw - edge) continue; let n = 0; for (let y = 0; y < ih; y++) n += dark[y * iw + x]; if (n > ih * 0.8) for (let y = 0; y < ih; y++) dark[y * iw + x] = 0; }
   let ink = 0;
   for (const v of dark) ink += v;
   return ink / dark.length;

@@ -5,7 +5,9 @@
 type Tok = { t: 'num'; v: number } | { t: 'var'; v: string } | { t: 'op'; v: string };
 
 function tokenize(src: string): Tok[] | null {
-  const s = src.normalize('NFKC').replace(/[−–—]/g, '-').replace(/[×·]/g, '*').replace(/÷/g, '/').replace(/\s+/g, '');
+  const s = src.replace(/²/g, '^2').replace(/³/g, '^3').normalize('NFKC').replace(/[−–—]/g, '-').replace(/[×·]/g, '*').replace(/÷/g, '/')
+    // a mixed number "1 1/2" is one value, before spaces go ("11/2" would be 5.5)
+    .replace(/(\d+)\s+(\d+)\s*\/\s*(\d+)/g, '($1+$2/$3)').replace(/\s+/g, '');
   const out: Tok[] = [];
   for (let i = 0; i < s.length;) {
     const c = s[i];
@@ -46,22 +48,23 @@ export function compile(src: string): { fn: Fn; vars: Set<string> } | null {
     return f;
   };
   const term = (): Fn => {
-    let f = power();
+    let f = unary();
     while (peek()?.t === 'op' && (peek()!.v === '*' || peek()!.v === '/')) {
-      const op = eat().v; const g = power(); const a = f;
+      const op = eat().v; const g = unary(); const a = f;
       f = op === '*' ? (x) => a(x) * g(x) : (x) => a(x) / g(x);
     }
     return f;
   };
-  const power = (): Fn => {
-    const b = unary();
-    if (peek()?.t === 'op' && peek()!.v === '^') { eat(); const e = unary(); return (x) => b(x) ** e(x); }
-    return b;
-  };
+  // unary := '-' unary | power ; power := atom ('^' unary)? — so -3^2 is -9, as on paper
   const unary = (): Fn => {
     if (peek()?.t === 'op' && peek()!.v === '-') { eat(); const f = unary(); return (x) => -f(x); }
     if (peek()?.t === 'op' && peek()!.v === '+') { eat(); return unary(); }
-    return atom();
+    return power();
+  };
+  const power = (): Fn => {
+    const b = atom();
+    if (peek()?.t === 'op' && peek()!.v === '^') { eat(); const e = unary(); return (x) => b(x) ** e(x); }
+    return b;
   };
   const atom = (): Fn => {
     const t = eat();
@@ -94,8 +97,12 @@ export function equivalent(a: string, b: string): boolean {
 
 /** "x = 4" → { variable: 'x', rhs: '4' }; "4" → { rhs: '4' }. */
 export function splitAssignment(s: string): { variable?: string; rhs: string } {
-  const m = s.trim().match(/^([a-z])\s*=\s*(.+)$/i);
-  return m ? { variable: m[1].toLowerCase(), rhs: m[2] } : { rhs: s.trim() };
+  const t = s.trim();
+  const m = t.match(/^([a-z])\s*=\s*(.+)$/i);
+  if (m) return { variable: m[1].toLowerCase(), rhs: m[2] };
+  // "4 = x" is solved too
+  const r = t.match(/^([^=a-z]+?)\s*=\s*([a-z])$/i);
+  return r ? { variable: r[2].toLowerCase(), rhs: r[1] } : { rhs: t };
 }
 
 /** Is a key "x = 4" or an algebraic expression like "2x + 3" (and not plain arithmetic)? */
@@ -150,7 +157,8 @@ export function linearEquation(prompt: string): { variable: string; solution: nu
 const round6 = (x: number) => Math.round(x * 1e6) / 1e6;
 
 export function markAlgebra(keyText: string, readText: string, prompt = ''): AlgebraVerdict {
-  const read = readText.trim();
+  // "= 12" and "x = 4." are the answer with a stray sign or full stop
+  const read = readText.trim().replace(/^=\s*/, '').replace(/\.$/, '').trim();
   if (!read) return { status: 'unreadable', mistake: null };
   const key = splitAssignment(keyText);
   const ans = splitAssignment(read);

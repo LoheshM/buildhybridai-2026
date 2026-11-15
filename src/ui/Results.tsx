@@ -173,7 +173,7 @@ function qsummary(k: QuestionKey, sheets: SheetRec[], nameOf: (s: SheetRec) => s
   for (const s of sheets) {
     const m = s.marks.find((x) => x.q === k.q);
     if (!m) continue;
-    if (m.status === 'correct' || m.status === 'unsimplified') { right++; continue; }
+    if (m.status === 'correct') { right++; continue; }
     if (m.status === 'partial') partial++;
     else if (m.status === 'wrong') wrong++;
     else { if (m.status === 'pending' || (m.status === 'unreadable' && !m.checked)) waiting++; else other++; continue; }

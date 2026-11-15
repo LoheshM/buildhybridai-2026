@@ -40,7 +40,7 @@ describe('class totals payload', () => {
     expect(() => validatePayload({ ...p, class_size: '25+' })).toThrow(/unexpected field/);
     expect(() => validatePayload({ ...p, sheets: 28 })).toThrow(/unexpected field/);
     const bad = structuredClone(p); bad.questions[0].question = 'Meera + 1/2';
-    expect(() => validatePayload(bad)).toThrow(/question text/);
+    expect(() => validatePayload(bad)).toThrow(/question [0-9]+ text/);
     const bad2 = structuredClone(p); (bad2.questions[0] as unknown as Record<string, unknown>).right = 2;
     expect(() => validatePayload(bad2)).toThrow(/cell/);
     const bad3 = structuredClone(p); (bad3.questions[0].mistakes as Record<string, unknown>).meera = 4;
@@ -51,7 +51,7 @@ describe('class totals payload', () => {
     expect(q.questions[0].question).toBe('1/2 + 1/4');
     expect(q.questions[0].answer).toBe('3/4'); // the value of the printed sum, never the typed text
     const bad = structuredClone(q); bad.questions[0].answer = 'Meera';
-    expect(() => validatePayload(bad)).toThrow(/answer text/);
+    expect(() => validatePayload(bad)).toThrow(/question [0-9]+ answer/);
     const ok = structuredClone(q); ok.questions[0].answer = 'x = 4'; validatePayload(ok);
     ok.questions[0].answer = '3.5 cm'; validatePayload(ok);
     validatePayload(q);

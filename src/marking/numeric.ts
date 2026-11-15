@@ -47,7 +47,8 @@ export function parseQuantity(raw: string | null | undefined): Quantity | null {
   const cur = s.match(/^([$£€₹])\s*/);
   if (cur) { unit = cur[1]; s = s.slice(cur[0].length); }
   // thousands separators: "1,250" (but not "1,5" which some students use as a decimal comma)
-  s = s.replace(/(\d),(\d{3})(?!\d)/g, '$1$2').replace(/^(-?\d+),(\d{1,2})(?!\d)/, '$1.$2');
+  // "0,125" is a decimal comma: a number never starts with a thousands group of 0
+  s = s.replace(/^(-?0),(\d+)$/, '$1.$2').replace(/(\d),(\d{3})(?!\d)/g, '$1$2').replace(/^(-?\d+),(\d{1,2})(?!\d)/, '$1.$2');
   const m = s.match(/^(-?\s*(?:\d+(?:\.\d*)?|\.\d+)(?:\s+\d+\/\d+|\/\d+)?)\s*(%|[^\d\s].*)?$/);
   if (!m) return null;
   // "- 12" → "-12"; "1 1/2" keeps its space (a mixed number)
@@ -81,6 +82,10 @@ export function markQuantity(keyText: string, readText: string, tolerance = 0, p
   if (!s) return { status: 'unreadable', mistake: null };
   const kv = asNumber(k), sv = asNumber(s);
   const close = (a: Frac, b: Frac) => (tolerance > 0 ? Math.abs(toNum(a) - toNum(b)) <= tolerance + 1e-12 : eq(a, b));
+  // the same number with or without its % sign: "45%" for 45 is right; "45" for 45% is missing its sign
+  if (!k.unit && !s.unit && k.percent !== s.percent && eq(k.value, s.value)) {
+    return k.percent ? { status: 'partial', mistake: 'missing_unit', note: 'The % sign is missing' } : { status: 'correct', mistake: null, note: 'Written as a percentage' };
+  }
 
   // "100 °" for a key of "100 °C": the C was not written (or not read); the degree sign says what is meant
   if (k.unit === '°C' && s.unit === '°') s.unit = '°C';

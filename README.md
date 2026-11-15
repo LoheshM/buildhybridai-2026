@@ -1,8 +1,20 @@
 # Tickmark
 
-**Any worksheet. One Tickmark answer sheet. Marked on your own laptop, without uploading a single photo.**
+**Any worksheet, any kind of answer, marked on the teacher's own laptop. Not one pupil photo is uploaded.**
 
-Tickmark is for teachers who mark paper worksheets: maths, science, English, any subject with exact answers, sentences or paragraphs. Pupils answer on a printed **Tickmark answer sheet**; the teacher photographs the pile.
+Tickmark is for teachers who mark paper worksheets in any subject: maths, science, English and beyond. Pupils answer on a printed **Tickmark answer sheet**; the teacher photographs the pile.
+
+| Answer type | For example | Who marks it |
+|---|---|---|
+| Number or measurement | 0.85, −12, 35 mm, 45% | Code (units convert, mistakes are named) |
+| Fraction | 5/6, 1 1/2 | Code (equivalent forms right, unsimplified gets half credit) |
+| Algebra | x = 4, 2x + 3 | Code (equivalent expressions right) |
+| Multiple choice or true/false | B, True | Code |
+| One word or spelling | photosynthesis, went | Code |
+| Short answer with key points | "Light gives plants the energy to make food" | Gemini Nano suggests, in pencil; the teacher inks it |
+| Paragraph with a rubric | a 4–6 sentence description | Gemini Nano suggests per rubric line; the teacher inks it |
+
+The answer key picks each question's type, and the teacher can change it. One A4 answer sheet holds up to 26 one-line answers.
 
 1. **Read.** Code finds the sheet's four corner squares, straightens the photo and cuts out each answer box. Gemini Nano reads the boxes *inside Chrome on the teacher's laptop*.
 2. **Mark.** The answer key picks each question's type. Plain code marks every exact answer (numbers and units, fractions, algebra, multiple choice, words) and names the mistake.
@@ -11,7 +23,7 @@ Tickmark is for teachers who mark paper worksheets: maths, science, English, any
 
 > Class totals go up. Names stay here.
 
-**Try it:** https://buildhybridai-lohe.web.app. Free, no sign-in. Built for #BuildHybridAI 2026 on Firebase AI Logic hybrid inference.
+**Try it:** https://buildhybridai-lohe.web.app. Free, no sign-in. **Demo video (2:35):** https://youtu.be/ebjgztHgU68. Built for #BuildHybridAI 2026 on Firebase AI Logic hybrid inference.
 
 ## Why
 - **Marking takes hours every week.** Teachers spend a median 5 hours a week on grading and feedback (EdWeek Research Center, 2022).

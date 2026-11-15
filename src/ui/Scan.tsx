@@ -58,7 +58,7 @@ export function Scan({ quizId }: { quizId: string }) {
       {cls.sample && (
         <Notice>
           <p>These {sheets.length} answer sheets are made up: invented names, handwriting from open-licence fonts, mistakes planted on purpose.
-            {deviceReady ? ' Gemini Nano reads them on this laptop, exactly like a real class.' : ' Without on-device AI here, the first 3 are read live by cloud Gemini (allowed only because they are made up) and the rest use cloud readings recorded on 16 Nov.'}</p>
+            {deviceReady ? ' Gemini Nano reads them on this laptop, exactly like a real class.' : ' Without on-device AI here, the first 3 are read live by cloud Gemini (allowed only because they are made up) and the rest use cloud readings recorded on 15 Nov.'}</p>
         </Notice>
       )}
       {!run.running && cls.sample && deviceReady && notDevice > 0 && (

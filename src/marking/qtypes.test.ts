@@ -147,7 +147,7 @@ describe('spelling: Nano corrects misspellings, so a spelling answer that reads 
   });
 });
 
-describe('bench fixes, 16 Nov', () => {
+describe('bench fixes, 15 Nov', () => {
   it('two option letters are two answers', () => {
     expect(markChoice('C', 'D C')).toMatchObject({ status: 'unreadable', two: true });
     expect(markChoice('C', 'B or C')).toMatchObject({ status: 'unreadable', two: true });

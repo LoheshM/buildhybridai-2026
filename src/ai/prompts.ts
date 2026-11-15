@@ -6,7 +6,7 @@ import { fold } from '../marking/roster';
 import { typeOf, type QuestionKey } from '../marking/mark';
 import type { QType } from '../marking/qtypes';
 
-export const PROMPTS_VERSION = 'v2-2026-11-16';
+export const PROMPTS_VERSION = 'v2-2026-11-15';
 
 const HINT: Record<QType, string> = {
   fraction: 'a fraction such as 3/4, or a mixed number such as 1 1/2',
@@ -19,7 +19,7 @@ const HINT: Record<QType, string> = {
 };
 
 /**
- * Day-1 probe (16 Nov): one required field per question, each anchored to its printed question,
+ * Day-1 probe (15 Nov): one required field per question, each anchored to its printed question,
  * cut real-handwriting character errors from 20.8% to 4.8% on completed reads (docs/research/06).
  */
 export const readSheetPrompt = (keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer' | 'type'>[]) =>
@@ -31,12 +31,12 @@ export const readSheetPrompt = (keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer
   `\nAlso copy the handwritten student name (empty string if there is none).`;
 
 const COPY_ONLY = 'Copy the student\'s handwriting exactly as written, letter by letter, keeping every spelling mistake and every wrong answer; never correct, complete or answer anything yourself. ' +
-  // no literal placeholders ("a/b", "answer"): Nano echoed them back instead of reading (16 Nov bench)
+  // no literal placeholders ("a/b", "answer"): Nano echoed them back instead of reading (15 Nov bench)
   'Write a fraction with a slash, and a whole number before a fraction with a space, as the student wrote them; never simplify. If the student struck something through with a line, give it as crossed out.';
 
 /**
  * The strip: each answer box cut out of a Tickmark answer sheet, on its own labelled row. No
- * question text anywhere (16 Nov bench: shown the question, Gemini Nano answered it instead of
+ * question text anywhere (15 Nov bench: shown the question, Gemini Nano answered it instead of
  * copying the pupil; per-box reading brought unflagged wrong marks from 15-40% to a few percent).
  */
 export const stripPrompt = (keys: Pick<QuestionKey, 'q' | 'prompt' | 'answer' | 'type'>[]) =>
@@ -64,7 +64,7 @@ export const rereadPrompt = (qs: number[], keys: Pick<QuestionKey, 'q' | 'prompt
   `If a whole number is written to the left of a fraction, include it with a space, for example "1 1/2". ` +
   `If an answer has a line through it, it is crossed out: put it in crossedOutText (empty string if nothing is crossed out) and use the other answer as finalAnswer. Use an empty string if there is no answer.` +
   ' You are copying, not answering: never answer a question yourself, and copy a wrong answer as it is.' +
-  // the question's text is NOT given: with it, Nano answered the question instead of copying (bench, 16 Nov)
+  // the question's text is NOT given: with it, Nano answered the question instead of copying (bench, 15 Nov)
   (keys.length ? '\n' + keys.filter((k) => qs.includes(k.q)).map((k) => `Question ${k.q}: the student's answer is ${HINT[typeOf(k as QuestionKey)]}.`).join('\n') : '');
 
 /**

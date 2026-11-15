@@ -144,7 +144,7 @@ export const resetLiveSampleReads = () => { liveSampleReads = 0; cloudUnreachabl
 /**
  * A made-up sample sheet when Gemini Nano can't read it here (missing, downloading, or failed twice):
  * a few live cloud reads of the sample photo itself (its fingerprint is on the allowlist), then the
- * cloud readings recorded on 16 Nov. The on-device path for samples is the strip (runner + readStrip).
+ * cloud readings recorded on 15 Nov. The on-device path for samples is the strip (runner + readStrip).
  */
 export async function readSampleSheet(img: SampleImage, keys: QuestionKey[]): Promise<ReadResult> {
   const questionCount = keys.length;

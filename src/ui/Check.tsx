@@ -177,7 +177,7 @@ function QuestionHead({ quiz, k }: { quiz: QuizRec; k: QuestionKey }) {
       ) : (
         <div className="keyline">Key: <b>{k.answer}</b>{k.spellingCounts ? ' (spelling must be exact)' : ''}</div>
       )}
-      {QTYPES[type].markedBy === 'suggested' && <p className="tiny muted" style={{ margin: 0 }}>Pencil marks are AI suggestions: Gemini Nano on this laptop, or recorded cloud Gemini for the made-up sheets when a browser has no Nano. On 148 real pupils' answers that people had marked, Nano's suggestion matched the human mark half the time and was within one mark 9 times in 10 (16 Nov 2026), so every one is your call.</p>}
+      {QTYPES[type].markedBy === 'suggested' && <p className="tiny muted" style={{ margin: 0 }}>Pencil marks are AI suggestions: Gemini Nano on this laptop, or recorded cloud Gemini for the made-up sheets when a browser has no Nano. On 148 real pupils' answers that people had marked, Nano's suggestion matched the human mark half the time and was within one mark 9 times in 10 (15 Nov 2026), so every one is your call.</p>}
       {quiz.extract && type !== 'fraction' && <details className="peek-d"><summary>Show the reading extract</summary><p className="small" style={{ marginTop: 6 }}>{quiz.extract}</p></details>}
     </div>
   );

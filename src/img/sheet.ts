@@ -1,7 +1,7 @@
 // The Tickmark answer sheet: pupils answer any worksheet in numbered boxes on a printed sheet with
 // four solid corner squares. Code finds the squares in a photo, undoes the perspective and cuts out
 // each box, so Gemini Nano reads one box at a time and never sees the question it could "answer".
-// (16 Nov bench: reading whole worksheets, Nano filled in blanks, flipped True/False and corrected
+// (15 Nov bench: reading whole worksheets, Nano filled in blanks, flipped True/False and corrected
 // misspellings; 15-40% of exact answers got the wrong mark with no flag.)
 // Pure: no DOM. Units are millimetres on an A4 page (210 x 297).
 import type { QuestionKey } from '../marking/mark';

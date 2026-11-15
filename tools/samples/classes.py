@@ -198,7 +198,7 @@ def build(cls, names, prefix, seed):
         students.append({"id": f"{prefix}{i + 1:02d}", "name": name, "answers": answers})
     quiz = {k: v for k, v in cls.items() if k != "questions"}
     quiz["questions"] = [{k: v for k, v in q.items() if k != "pool"} for q in cls["questions"]]
-    return {"quiz": quiz, "students": students, "note": "Synthetic, fictional students. Ground truth for a Tickmark sample class.", "generated": "2026-11-16"}
+    return {"quiz": quiz, "students": students, "note": "Synthetic, fictional students. Ground truth for a Tickmark sample class.", "generated": "2026-11-15"}
 
 
 if __name__ == "__main__":

@@ -138,7 +138,7 @@ export function coerceSheetRead(x: unknown, questionCount: number): SheetRead {
   // answers can be paragraphs now: keep up to 1200 characters (a 6-line passage is ~500)
   const str = (v: unknown, max = 1200) => (typeof v === 'string' || typeof v === 'number' ? String(v).replace(/\s+/g, ' ').trim().slice(0, max) : '');
   const qOf = (v: unknown) => (typeof v === 'number' && Number.isInteger(v) ? v : typeof v === 'string' && /^\s*\d+\s*$/.test(v) ? Number(v) : NaN);
-  // a prompt's own placeholder echoed back is not a reading (16 Nov bench: "a/b", "answer")
+  // a prompt's own placeholder echoed back is not a reading (15 Nov bench: "a/b", "answer")
   const echo = (v: string) => (/^(?:w\s*)?a\/b$|^answer$|^crossed ?out$|^student'?s? answer$/i.test(v.trim()) ? '' : v);
   let items = raw.map((a) => ({ q: qOf(a?.q), crossedOutText: echo(str(a?.crossedOutText)), finalAnswer: echo(str(a?.finalAnswer)) })).filter((a) => Number.isInteger(a.q));
   if (raw.length > 0 && items.length === 0) throw new SyntaxError('The reading had no usable question numbers.');

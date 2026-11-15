@@ -136,7 +136,8 @@ export function Reteach({ quizId }: { quizId: string }) {
 const C = ({ c }: { c: Cell }) => (typeof c === 'string' ? <span className="hidden-cell">{c}</span> : <>{c}</>);
 
 /** Replaces any internal mistake id that slipped into AI text with its plain label. */
-const IDS = new RegExp(`\\b(${Object.keys(MISTAKES).join('|')})\\b`, 'g');
+// only snake_case ids: "spelling" or "rounding" in a sentence is ordinary English, not an id
+const IDS = new RegExp(`\\b(${Object.keys(MISTAKES).filter((k) => k.includes('_')).join('|')})\\b`, 'g');
 const plain = (t: string) => (t ?? '').replace(IDS, (m) => `"${mistakeLabel(m).toLowerCase()}"`);
 
 /** Checks a maths practice item with Tickmark's own fraction engine. */

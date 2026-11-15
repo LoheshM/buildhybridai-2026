@@ -123,7 +123,7 @@ export async function runQuiz(cls: ClassRec, quiz: QuizRec, limit = Infinity): P
           }
           const match = matchName(first.read.studentName, cls.roster, taken);
           if (match.studentId) taken.add(match.studentId);
-          s = { ...s, status: 'read', read: first.read, readName: first.read.studentName, studentId: match.studentId, nameConfident: match.confident, marks, where: first.where, ms: first.ms + cutMs, rereadQs: qs, rereadMs, crops };
+          s = { ...s, status: 'read', read: first.read, readName: first.read.studentName, studentId: match.studentId, nameConfident: match.confident, marks, where: first.where, ms: first.ms + cutMs, rereadQs: rereadMs !== undefined ? qs : undefined, rereadMs, crops };
           break;
         } catch (e) {
           lastErr = e as Error;

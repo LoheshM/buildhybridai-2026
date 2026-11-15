@@ -35,6 +35,30 @@ export function inkShare(c: OffscreenCanvas, borderPx = 13): number {
   for (const v of dark) ink += v;
   return ink / dark.length;
 }
+/** The box cut down to the rows that hold handwriting (plus a margin), so the teacher sees the writing, not empty lines. */
+export function trimToInk(c: OffscreenCanvas, pad = 14): OffscreenCanvas {
+  const ctx = c.getContext('2d', { willReadFrequently: true })!;
+  const { data, width: w, height: h } = ctx.getImageData(0, 0, c.width, c.height);
+  const lum = (x: number, y: number) => { const p = (y * w + x) * 4; return (data[p] * 299 + data[p + 1] * 587 + data[p + 2] * 114) / 1000; };
+  const sample: number[] = [];
+  for (let y = 0; y < h; y += 3) for (let x = 0; x < w; x += 3) sample.push(lum(x, y));
+  sample.sort((a, b) => a - b);
+  const paper = sample[Math.floor(sample.length * 0.6)];
+  let top = -1, bottom = -1;
+  for (let y = 13; y < h - 13; y++) {
+    let n = 0;
+    for (let x = 13; x < w - 13; x++) if (lum(x, y) < paper - 70) n++;
+    // a row with some ink but not a printed line across the box
+    if (n > 2 && n < (w - 26) * 0.4) { if (top < 0) top = y; bottom = y; }
+  }
+  if (top < 0) return c;
+  const y0 = Math.max(0, top - pad), y1 = Math.min(h, bottom + pad);
+  if (y1 - y0 > h * 0.85) return c;
+  const out = new OffscreenCanvas(w, y1 - y0);
+  out.getContext('2d')!.drawImage(c, 0, y0, w, y1 - y0, 0, 0, w, y1 - y0);
+  return out;
+}
+
 export const BLANK_BELOW = 0.002; // blank boxes measure 0; one handwritten letter about 0.0065
 
 async function bitmapOf(b: Blob) { return createImageBitmap(b, { imageOrientation: 'from-image' }); }
@@ -72,7 +96,7 @@ export async function cutAnswerSheet(photo: Blob, keys: QuestionKey[]): Promise<
   const preview = await warp(full, h, 0, 0, 210, 297, 2.4).convertToBlob({ type: 'image/jpeg', quality: 0.8 });
   // each box's handwriting, kept so the teacher always sees what the pupil wrote beside what Nano read
   const crops = new Map<number, Blob>();
-  for (const { b, c } of answers) crops.set(b.q, await c.convertToBlob({ type: 'image/jpeg', quality: 0.8 }));
+  for (const { b, c } of answers) crops.set(b.q, await trimToInk(c).convertToBlob({ type: 'image/jpeg', quality: 0.8 }));
   return { strip, boxes, blank, name, preview, crops, ms: Math.round(performance.now() - t0) };
 }
 

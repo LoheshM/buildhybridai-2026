@@ -96,8 +96,8 @@ function QuizBar({ quizId, at }: { quizId: string; at: 'scan' | 'check' | 'resul
     <div className="ctxbar">
       <div className="ctxbar-in">
         <div className="ctx-title">
-          <a className="cls" href={href.home()}>{ctx.cls.name}{ctx.cls.sample ? ' · made-up class' : ''}</a>
           <h1 className="clip" title={ctx.quiz.title}>{ctx.quiz.title}</h1>
+          <a className="ctx-meta" href={href.home()}>{ctx.cls.name}{ctx.cls.sample ? ', a made-up class' : ''}</a>
         </div>
         <nav aria-label="Marking steps" className="grow">
           <ul className="tabs">

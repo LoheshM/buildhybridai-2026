@@ -6,7 +6,6 @@ import { needsCheck } from '../marking/pipeline';
 import { store } from '../store/db';
 import { useLoad } from './hooks';
 
-const BOOK: Record<string, string> = { maths: '#1d4e9e', science: '#1f7a4f', english: '#a3233a', other: '#5b6487' };
 
 export function Home() {
   const [data, reload] = useLoad(async () => {
@@ -57,7 +56,7 @@ function ClassList({ items, reload }: { items: Item[]; reload: () => void }) {
   return (
     <div className="classlist">
       {items.map(({ c, qs, subject }) => (
-        <section key={c.id} className="classrow" style={{ ['--book' as string]: BOOK[subject] ?? BOOK.other }} aria-labelledby={`c-${c.id}`}>
+        <section key={c.id} className="classrow" aria-labelledby={`c-${c.id}`} data-subject={subject}>
           <div className="spine" />
           <div className="body">
             <div className="row spread">

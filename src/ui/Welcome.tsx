@@ -92,7 +92,7 @@ function ClassDoor({ k }: { k: SampleKey }) {
   const types = [...new Set(keys.map((q) => typeOf(q)))] as QType[];
   const open = types.some((t) => QTYPES[t].markedBy === 'suggested');
   return (
-    <button className={`door ${k}`} onClick={() => go(href.scan(sampleQuizId(k)))} aria-label={`Open ${m.quiz.className}, ${m.quiz.title}: ${m.students.length} answer sheets`}>
+    <button className="door" onClick={() => go(href.scan(sampleQuizId(k)))} aria-label={`Open ${m.quiz.className}, ${m.quiz.title}: ${m.students.length} answer sheets`}>
       <div className="label">
         <h3>{m.quiz.className}</h3>
         <div className="sub">{m.quiz.title} · {m.students.length} answer sheets · {keys.length} questions</div>

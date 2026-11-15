@@ -11,7 +11,7 @@ import { csvAnswer, csvCell } from '../privacy/templates';
 import { store, type ClassRec, type QuizRec, type SheetRec } from '../store/db';
 import { useLoad, useToast } from './hooks';
 import { Notice } from './App';
-import { AnswerMark, fmtPoints, ScoreRing } from './Marks';
+import { AnswerMark, fmtPoints } from './Marks';
 
 export function Results({ quizId }: { quizId: string }) {
   const [ctx, reload] = useLoad(async () => {
@@ -45,12 +45,11 @@ export function Results({ quizId }: { quizId: string }) {
       {ctx.total > sheets.length && <Notice>{sheets.length} of {ctx.total} sheets are read so far. <a href={href.scan(quizId)}>Read the rest</a> before planning a lesson.</Notice>}
       {view.waiting > 0 && <Notice tone="warn"><p>{view.waiting} mark{view.waiting === 1 ? ' is' : 's are'} still in pencil or flagged. Totals below count them as Tickmark's best guess until you <a href={href.check(quizId)}>decide them</a>.</p></Notice>}
 
-      <ul className="facts" aria-label="Summary">
-        <li><b>{sheets.length}{ctx.total > sheets.length ? ` of ${ctx.total}` : ''}</b><span>sheets marked</span></li>
-        <li><ScoreRing points={+view.avg.toFixed(1)} outOf={outOf} open={view.waiting > 0} /><span>class average</span></li>
-        <li><b>{view.waiting}</b><span>marks waiting for you</span></li>
-        <li><b>{view.onDevice ? `${view.onDevice}/${sheets.length}` : view.sourceLabel}</b><span>{view.onDevice ? `sheets read on this laptop${view.deviceTime ? ` (${view.deviceTime})` : ''}` : 'no on-device AI in this browser'}</span></li>
-      </ul>
+      <p className="summary-line" aria-label="Summary">
+        <b>{sheets.length}{ctx.total > sheets.length ? ` of ${ctx.total}` : ''} sheets</b> marked · class average <b>{fmtPoints(Math.round(view.avg * 2) / 2)}/{fmtPoints(outOf)}</b>{view.waiting ? ' so far' : ''}
+        {view.waiting ? <> · <a href={href.check(quizId)}><b>{view.waiting}</b> marks waiting for you</a></> : ' · every mark decided'}
+        {' · '}{view.onDevice ? <>read on this laptop: <b>{view.onDevice}/{sheets.length}</b>{view.deviceTime ? ` (${view.deviceTime})` : ''}</> : <>read without on-device AI: {view.sourceLabel}</>}
+      </p>
 
       <section aria-labelledby="reg-h">
         <div className="panel-head">
@@ -117,12 +116,11 @@ export function Results({ quizId }: { quizId: string }) {
         <section className="section" aria-labelledby="acc-h">
           <h2 id="acc-h">How well the reading went</h2>
           <p className="muted">This class is made up, so its right answers are known and Tickmark can score its own run. Measured on the sheets you just read.</p>
-          <ul className="facts">
-            <li><b>{view.acc.exact.exact}/{view.acc.exact.answers}</b><span>exact answers read exactly</span></li>
-            <li><b>{view.acc.exact.unflagged}</b><span>misreads that weren't flagged for you</span></li>
-            {view.acc.open.answers > 0 && <li><b>{(100 - (100 * view.acc.open.charErrors) / Math.max(1, view.acc.open.chars)).toFixed(1)}%</b><span>of characters right in {view.acc.open.answers} sentences and paragraphs</span></li>}
-            {view.acc.open.suggested > 0 && <li><b>{view.acc.open.agree}/{view.acc.open.suggested}</b><span>suggested marks equal to the reference mark ({view.acc.open.within1} within one mark)</span></li>}
-          </ul>
+          <p className="small">
+            <b>{view.acc.exact.exact} of {view.acc.exact.answers}</b> exact answers read exactly, and <b>{view.acc.exact.unflagged}</b> misreads weren't flagged for you.
+            {view.acc.open.answers > 0 && <> In {view.acc.open.answers} sentences and paragraphs, <b>{(100 - (100 * view.acc.open.charErrors) / Math.max(1, view.acc.open.chars)).toFixed(1)}%</b> of characters were read right.</>}
+            {view.acc.open.suggested > 0 && <> <b>{view.acc.open.agree} of {view.acc.open.suggested}</b> suggested marks equalled the reference mark ({view.acc.open.within1} within one mark).</>}
+          </p>
         </section>
       )}
 

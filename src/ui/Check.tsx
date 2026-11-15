@@ -165,11 +165,11 @@ function QuestionHead({ quiz, k }: { quiz: QuizRec; k: QuestionKey }) {
   const rubric = parseRubric(k.answer);
   return (
     <div className="qkey">
-      <div className="row spread">
-        <span className="small muted">Question {k.q} · {QTYPES[type].label} · {outOfFor(k)} mark{outOfFor(k) === 1 ? '' : 's'}</span>
-        <span className={`chip ${QTYPES[type].markedBy === 'code' ? 'code' : 'pencil'}`}>{QTYPES[type].markedBy === 'code' ? 'Marked by code' : 'Gemini Nano suggests, you decide'}</span>
+      <div className="row spread" style={{ alignItems: 'flex-start' }}>
+        <h2 id="q-h" className="prompt grow" style={{ margin: 0 }}>{k.q}. {k.prompt || `Question ${k.q}`}</h2>
+        <span className={`chip ${QTYPES[type].markedBy === 'code' ? 'code' : 'pencil'}`}>{QTYPES[type].markedBy === 'code' ? 'Marked by code' : 'Suggested in pencil, you decide'}</span>
       </div>
-      <h2 id="q-h" className="prompt" style={{ margin: 0 }}>{k.prompt || `Question ${k.q}`}</h2>
+      <p className="qmeta">{QTYPES[type].label} · {outOfFor(k)} mark{outOfFor(k) === 1 ? '' : 's'}</p>
       {type === 'short' ? (
         <div className="row keyline" style={{ gap: 14 }}>{pts.map((p, i) => <span key={i} className="kp"><b>{i + 1}</b>{p}</span>)}</div>
       ) : type === 'passage' && rubric ? (
@@ -177,7 +177,7 @@ function QuestionHead({ quiz, k }: { quiz: QuizRec; k: QuestionKey }) {
       ) : (
         <div className="keyline">Key: <b>{k.answer}</b>{k.spellingCounts ? ' (spelling must be exact)' : ''}</div>
       )}
-      {QTYPES[type].markedBy === 'suggested' && <p className="tiny muted" style={{ margin: 0 }}>Pencil marks are Gemini Nano's suggestions. On 148 real pupils' answers that people had marked, its suggestion matched the human mark half the time and was within one mark 9 times in 10, so every one is your call.</p>}
+      {QTYPES[type].markedBy === 'suggested' && <p className="tiny muted" style={{ margin: 0 }}>Pencil marks are AI suggestions: Gemini Nano on this laptop, or recorded cloud Gemini for the made-up sheets when a browser has no Nano. On 148 real pupils' answers that people had marked, Nano's suggestion matched the human mark half the time and was within one mark 9 times in 10 (16 Nov 2026), so every one is your call.</p>}
       {quiz.extract && type !== 'fraction' && <details className="peek-d"><summary>Show the reading extract</summary><p className="small" style={{ marginTop: 6 }}>{quiz.extract}</p></details>}
     </div>
   );
@@ -271,7 +271,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
         {open && s && pending && (
           <div className="sugg">
             <span className="why">{s.reason || 'No reason given.'}</span>
-            <span className="tiny">Suggested by Gemini Nano {s.where === 'on_device' ? `on this laptop, ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? '(a recorded cloud suggestion: this browser has no on-device AI)' : 'in the cloud (made-up sheet)'}</span>
+            <span className="tiny">{s.where === 'on_device' ? `Suggested by Gemini Nano on this laptop, ${(s.ms / 1000).toFixed(1)} s` : s.where === 'recorded' ? 'Suggested by cloud Gemini (recorded)' : 'Suggested by cloud Gemini (made-up sheet)'}{s.adjusted ? ' · changed by you' : ''}</span>
           </div>
         )}
         {open && !s && pending && m.read && <div className="sugg"><span className="tiny">No suggestion for this answer. Tick the key points it states, or set the rubric scores.</span></div>}
@@ -290,9 +290,9 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
               <div key={i} className="line">
                 <span>{r.line}</span>
                 <span className="stepper" role="group" aria-label={`${r.line} score`}>
-                  <button aria-label={`Lower ${r.line}`} onMouseDown={keep} onClick={(e) => { e.stopPropagation(); setLine(i, (lines[i]?.score ?? 0) - 1); }}>−</button>
+                  <button aria-label={`Lower ${r.line}`} onMouseDown={keep} onClick={(e) => { e.stopPropagation(); setLine(i, (lines[i]?.score ?? 0) - 1); }}><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg></button>
                   <span className={pending ? 'hand' : ''} style={{ color: pending ? 'var(--pencil)' : 'var(--red)' }}>{lines[i]?.score ?? 0}/{r.max}</span>
-                  <button aria-label={`Raise ${r.line}`} onMouseDown={keep} onClick={(e) => { e.stopPropagation(); setLine(i, (lines[i]?.score ?? 0) + 1); }}>+</button>
+                  <button aria-label={`Raise ${r.line}`} onMouseDown={keep} onClick={(e) => { e.stopPropagation(); setLine(i, (lines[i]?.score ?? 0) + 1); }}><svg width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5v14" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" /></svg></button>
                 </span>
               </div>
             ))}
@@ -304,7 +304,7 @@ function AnswerRow({ k, m, sheet, who, whoHref, focus, onFocus, onChange, onDone
         {!open && needsCheck(m) && m.suggestions.slice(0, 3).map((x, j) => <button key={x} className="btn small" onClick={(e) => { e.stopPropagation(); correct(x); }}>It says {x} <kbd>{j + 1}</kbd></button>)}
         {!open && needsCheck(m) && (m.status === 'unreadable'
           ? <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(markWrongByTeacher(m)); onDone(); }}>Mark wrong</button>
-          : <button className="btn small ink" onClick={(e) => { e.stopPropagation(); accept(); }}>Reading is right <kbd>Enter</kbd></button>)}
+          : <button className="btn small primary" onClick={(e) => { e.stopPropagation(); accept(); }}>Reading is right <kbd>Enter</kbd></button>)}
         {open && pending && s && <button className="btn small ink" onClick={(e) => { e.stopPropagation(); accept(); }}>Ink {fmtPoints(s.points)}/{fmtPoints(outOf)} <kbd>Enter</kbd></button>}
         {open && pending && m.read && <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(decideOpen(k, m, { points: 0 })); onDone(); }}>No marks <kbd>0</kbd></button>}
         {open && pending && m.read && <button className="btn small" onClick={(e) => { e.stopPropagation(); onChange(decideOpen(k, m, { points: outOf })); onDone(); }}>Full marks</button>}

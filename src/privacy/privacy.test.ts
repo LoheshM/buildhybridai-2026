@@ -105,3 +105,12 @@ describe('templates and CSV', () => {
     expect(csvCell(7)).toBe('7');
   });
 });
+
+describe('round 5 S4: names in Indian scripts', () => {
+  it('a Tamil name with a case suffix is found', async () => {
+    const { findRosterNames, rosterTokens } = await import('./nameCheck');
+    expect(findRosterNames('பிரியாவின் தாய்க்கு', rosterTokens(['பிரியா ராஜ்'])).length).toBe(1);
+    expect(findRosterNames('प्रिया को बताएँ', rosterTokens(['प्रिया शर्मा'])).length).toBe(1);
+    expect(findRosterNames('Hopefully fine', rosterTokens(['Hope Adams'])).length).toBe(0);
+  });
+});

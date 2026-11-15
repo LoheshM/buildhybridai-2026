@@ -1,6 +1,6 @@
 // Second layer behind the closed payload: refuses any outbound text that contains a word from
 // the class roster. Folding handles case, accents and full-width forms; word boundaries keep
-// "Hope" from matching "hopefully". Roster words in non-Latin scripts are checked as-is.
+// "Hope" from matching "hopefully". Roster words in Indian scripts also match with a suffix written on.
 import { fold } from '../marking/roster';
 
 /** Words that appear in our own fixed vocabulary; a student literally named "Other" must not block every call. */
@@ -24,7 +24,9 @@ export function findRosterNames(text: string, tokens: string[], ignore: Readonly
   const hits: NameHit[] = [];
   for (const tok of tokens) {
     if (VOCAB.has(tok) || ignore.has(tok)) continue;
-    const at = hay.indexOf(` ${tok} `);
+    // Indian-script names take case endings written onto the word (பிரியாவின் = "Priya's"): match the start of a word
+    const prefix = tok.length >= 3 && !/[a-z]/.test(tok);
+    const at = hay.indexOf(prefix ? ` ${tok}` : ` ${tok} `);
     if (at >= 0) hits.push({ token: tok, at });
   }
   return hits;

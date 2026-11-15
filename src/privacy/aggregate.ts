@@ -122,9 +122,19 @@ function keyText(k: QuestionKey, type: QType): string {
   if (type === 'choice') return normChoice(k.answer) ?? '';
   if (type === 'short' || type === 'passage') return '';
   // "2ab", "xy + 3x": implicit products written out, so every variable stays a single letter
-  if (type === 'algebra') return teacherText(keyCore(k.answer), 80).replace(/([a-z])(?=[a-z])/gi, '$1×');
-  return teacherText(keyCore(k.answer), 80);
+  if (type === 'algebra') return fit40(teacherText(keyCore(k.answer), 80).replace(/([a-z])(?=[a-z])/gi, '$1×'));
+  // word keys: whole alternatives, as many as fit ("photosynthesis / photosynthesise / …")
+  if (type === 'word') {
+    const alts = teacherText(keyCore(k.answer), 160).split(/\s*(?:\/|\||\bor\b)\s*/i).filter(Boolean);
+    let out = '';
+    for (const a of alts) { const next = out ? `${out} / ${a}` : a; if (next.length > 40) break; out = next; }
+    return out || fit40(alts[0] ?? '');
+  }
+  return fit40(teacherText(keyCore(k.answer), 80));
 }
+
+/** At most 40 characters, cut at a space, never mid-word (the validator's limit for an answer). */
+const fit40 = (s: string) => (s.length <= 40 ? s : (s.slice(0, 41).replace(/\s+\S*$/, '') || s.slice(0, 40)).trim());
 
 /** Class size is deliberately not sent: even a band would bound hidden counts. Callers check MIN_SHEETS locally. */
 export function buildTotals(keys: QuestionKey[], sheets: SheetMarks[], kIn: number, langs: Lang[], meta: { subject?: Subject; grade_band?: GradeBand; rosterTokens?: string[] } = {}): ClassTotals {

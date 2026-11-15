@@ -18,8 +18,8 @@ describe('open answers wait for the teacher', () => {
 describe('toSuggestion: code computes the points', () => {
   it('holistic mark decides; missing list names the gaps', () => {
     expect(toSuggestion(SHORT, { mark: 'full', missing: [2], reason: 'ok' }, 'on_device', 1500)).toMatchObject({ points: 2, met: [true, true] });
-    expect(toSuggestion(SHORT, { mark: 'none', missing: [], reason: '' }, 'on_device', 1)).toMatchObject({ points: 0, met: [false, false], contradicts: true });
-    expect(toSuggestion(SHORT, { mark: 'none', missing: [1, 2], reason: '' }, 'on_device', 1)).toMatchObject({ points: 0, contradicts: false });
+    expect(toSuggestion(SHORT, { mark: 'none', missing: [], reason: '' }, 'on_device', 1)).toMatchObject({ points: 0, met: [false, false], named: [] }); // round 5 E19: no invented misconception
+    expect(toSuggestion(SHORT, { mark: 'none', missing: [1, 2], reason: '' }, 'on_device', 1)).toMatchObject({ points: 0, named: [1, 2] });
     expect(toSuggestion(SHORT, { mark: 'partial', missing: [1], reason: '' }, 'on_device', 1)).toMatchObject({ points: 1, met: [false, true] });
     expect(toSuggestion(SHORT, { mark: 'partial', missing: [], reason: '' }, 'on_device', 1)).toMatchObject({ points: 1, met: [true, false] });
     expect(toSuggestion(SHORT, { mark: 'partial', missing: [1, 2], reason: '' }, 'on_device', 1)).toMatchObject({ points: 1, met: [true, false] });

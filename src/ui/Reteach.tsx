@@ -208,6 +208,7 @@ function PlanView({ plan: rec, headingRef, sheets, quiz, rosterName }: { plan: P
           <WhereChip where={rec.where} ms={rec.ms} />
         </div>
         {rec.where === 'recorded' && <Notice>Live AI wasn't available ({rec.note ?? 'unknown reason'}). This plan was recorded for this made-up class on {recordedOn}.</Notice>}
+        {rec.where === 'in_cloud' && rec.note?.startsWith('written by ') && <p className="small muted">Written by {rec.note.slice(11)}, because the first cloud model's free daily allowance was used up.</p>}
         {rec.where === 'on_device' && (
           <Notice tone="device">
             {rec.cloudTried ? "Cloud Gemini couldn't finish (the class totals were sent), so Gemini Nano wrote this plan here." : rec.mode === 'only_on_device' ? 'Written on this laptop by Gemini Nano: nothing was sent.' : rec.heldBack ? `Tickmark held the cloud request back (${rec.heldBack}), so Gemini Nano wrote this plan here.` : "Cloud Gemini couldn't be reached, so Gemini Nano wrote this plan on this laptop."} Hindi and Tamil notes need the cloud.

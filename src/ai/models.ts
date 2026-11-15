@@ -16,11 +16,12 @@ const FIXED: Partial<Record<Task, { device?: object; cloud?: object }>> = {
 };
 
 const cache = new Map<string, { m: GenerativeModel; abort: AbortController }>();
-const keyOf = (task: Task, mode: Mode, schema?: object) =>
-  `${task}|${mode}|${mode === InferenceMode.ONLY_ON_DEVICE ? '' : currentSettings().cloudModel}|${schema ? JSON.stringify(schema) : ''}`;
+const keyOf = (task: Task, mode: Mode, schema?: object, cloudModel?: string) =>
+  `${task}|${mode}|${mode === InferenceMode.ONLY_ON_DEVICE ? '' : cloudModel ?? currentSettings().cloudModel}|${schema ? JSON.stringify(schema) : ''}`;
 
-export function model(task: Task, mode: Mode, schema?: object): GenerativeModel {
-  const key = keyOf(task, mode, schema);
+/** cloudModel: one call on another allowlisted cloud model (the plan's retry when the first model's daily allowance is used up). */
+export function model(task: Task, mode: Mode, schema?: object, cloudModel?: string): GenerativeModel {
+  const key = keyOf(task, mode, schema, cloudModel);
   const hit = cache.get(key);
   if (hit) return hit.m;
   const s = schema ? { device: schema, cloud: schema } : (FIXED[task] ?? {});
@@ -34,7 +35,7 @@ export function model(task: Task, mode: Mode, schema?: object): GenerativeModel 
       promptOptions: { ...(s.device ? { responseConstraint: s.device as never } : {}), signal: abort.signal } as never,
     },
     inCloudParams: {
-      model: currentSettings().cloudModel,
+      model: cloudModel ?? currentSettings().cloudModel,
       generationConfig: {
         temperature: task === 'classTotals' ? 0.6 : 0,
         ...(s.cloud ? ({ responseMimeType: 'application/json', responseJsonSchema: s.cloud } as object) : {}),

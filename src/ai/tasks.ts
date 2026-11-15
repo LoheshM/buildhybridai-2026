@@ -3,7 +3,7 @@
 //   sample sheets   -> PREFER_ON_DEVICE, else a few live cloud reads, else recorded cloud readings
 //   class totals    -> PREFER_IN_CLOUD (the SDK falls back to Gemini Nano on 429, App Check failure or
 //                      network errors); ONLY_ON_DEVICE when the teacher keeps it on the laptop or is offline
-import { CLOUD_READ_TIMEOUT_MS, DEVICE_TIMEOUT_MS, SUGGEST_TIMEOUT_MS, PLAN_TIMEOUT_CLOUD_MS, PLAN_TIMEOUT_DEVICE_MS, PLAN_TIMEOUT_HYBRID_MS } from '../config';
+import { CLOUD_MODELS, CLOUD_READ_TIMEOUT_MS, DEVICE_TIMEOUT_MS, SUGGEST_TIMEOUT_MS, PLAN_TIMEOUT_CLOUD_MS, PLAN_TIMEOUT_DEVICE_MS, PLAN_TIMEOUT_HYBRID_MS } from '../config';
 import { MIN_SHEETS, validatePayload, type ClassTotals } from '../privacy/aggregate';
 import { currentSettings } from './firebase';
 import { assertDeviceReady, deviceState } from './gate';
@@ -24,7 +24,7 @@ export class OffDeviceAnswer extends Error {
   constructor() { super('A student sheet was answered somewhere other than this laptop. Tickmark stopped the batch.'); this.name = 'OffDeviceAnswer'; }
 }
 
-export type PlanProblem = 'limit' | 'offline' | 'quota' | 'blocked' | 'timeout' | 'device' | 'other' | 'quota_day';
+export type PlanProblem = 'limit' | 'offline' | 'quota' | 'blocked' | 'timeout' | 'device' | 'other' | 'quota_day' | 'invalid' | 'disabled';
 export class PlanUnavailable extends Error {
   kind: PlanProblem;
   detail: string;
@@ -39,6 +39,8 @@ const PLAN_TEXT: Record<PlanProblem, string> = {
   timeout: 'The AI took too long to answer. Try again.',
   device: 'The on-device model is not ready on this laptop.',
   other: 'The plan could not be written just now. Try again.',
+  invalid: "Tickmark couldn't build the class totals from this quiz's key, so nothing was sent.",
+  disabled: 'Cloud AI is switched off for Tickmark right now, and this laptop has no on-device AI to write the plan instead.',
 };
 
 type Part = string | { type: 'inlineData'; inlineData: { mimeType: string; data: string } };
@@ -49,14 +51,14 @@ function withTimeout<T>(p: Promise<T>, ms: number, what: string): Promise<T> {
   return Promise.race([p, new Promise<never>((_, rej) => { t = setTimeout(() => rej(new TimeoutError(ms, what)), ms); })]).finally(() => clearTimeout(t));
 }
 
-interface CallOpts { queue: boolean; timeoutMs: number; studentLock?: boolean; what?: string; schema?: object }
+interface CallOpts { queue: boolean; timeoutMs: number; studentLock?: boolean; what?: string; schema?: object; cloudModel?: string }
 interface CallResult { text: string; where: Where; ms: number; heldBack?: string }
 
 async function call(task: Task, mode: Mode, parts: Part[], dataClass: DataClass, label: string, o: CallOpts): Promise<CallResult> {
   const t0 = performance.now();
   const blocksBefore = blockCount();
   // The student lock covers only the SDK call itself, so queued cloud work never collides with it.
-  const sdk = () => model(task, mode, o.schema).generateContent(parts as never);
+  const sdk = () => model(task, mode, o.schema, o.cloudModel).generateContent(parts as never);
   const run = () => (o.studentLock ? withStudentLock(sdk) : sdk());
   try {
     const r = o.queue ? await enqueue(run, o.timeoutMs, o.what) : await withTimeout(run(), o.timeoutMs, o.what ?? 'cloud Gemini');
@@ -228,7 +230,13 @@ export interface TotalsResult { response: TotalsResponse; where: Where; ms: numb
 
 export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; sampleClass?: string; keepLocal: boolean; minK: number; sheets: number }): Promise<TotalsResult> {
   const recorded = o.sampleClass ? recordings.get(o.sampleClass) ?? null : null;
-  validatePayload(totals, o.minK); // closed schema: numbers and fixed words only
+  // closed schema: numbers and fixed words only. A key it can't express is named, never "try again".
+  try { validatePayload(totals, o.minK); } catch (e) {
+    const q = (e as Error).message.match(/question (\d+)/)?.[1];
+    const pu = new PlanUnavailable('invalid', (e as Error).message);
+    if (q) pu.message = `Question ${q}'s key has text Tickmark can't put in the class totals, so nothing was sent. Shorten that key or its question, then send again.`;
+    throw pu;
+  }
   if (o.sheets < MIN_SHEETS) throw new PlanUnavailable('other', `Needs at least ${MIN_SHEETS} marked sheets.`);
   const device = (await deviceState()) === 'available';
   const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
@@ -244,7 +252,7 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
       return await onDevice('kept on this laptop');
     }
     if (offline || !currentSettings().cloudFeaturesEnabled || !canCallCloud()) {
-      if (!device) throw new PlanUnavailable(offline ? 'offline' : !canCallCloud() ? 'limit' : 'device', offline ? 'offline' : 'cloud not available');
+      if (!device) throw new PlanUnavailable(offline ? 'offline' : !currentSettings().cloudFeaturesEnabled ? 'disabled' : 'limit', offline ? 'offline' : 'cloud not available');
       return await onDevice(offline ? 'offline' : 'cloud not available');
     }
     noteCloudCall();
@@ -254,6 +262,16 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
       const r = await call('classTotals', InferenceMode.PREFER_IN_CLOUD, [totalsPrompt(totals)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: device ? PLAN_TIMEOUT_HYBRID_MS : PLAN_TIMEOUT_CLOUD_MS, what: device ? 'the AI' : 'cloud Gemini' });
       return { response: parseJson(r.text) as TotalsResponse, where: r.where, ms: r.ms, heldBack: r.heldBack, mode: InferenceMode.PREFER_IN_CLOUD, payload: totals };
     } catch (e) {
+      // The free daily allowance is per model: one retry, same validated totals, on the other allowlisted model.
+      const alt = CLOUD_MODELS.find((m) => m !== currentSettings().cloudModel);
+      if (alt && classifyPlanError(e as Error).kind === 'quota_day' && canCallCloud()) {
+        noteCloudCall();
+        try {
+          const r = await call('classTotals', InferenceMode.ONLY_IN_CLOUD, [totalsPrompt(totals)], 'totals', 'Reteach plan and parent notes', { queue: true, timeoutMs: PLAN_TIMEOUT_CLOUD_MS, what: 'cloud Gemini', cloudModel: alt });
+          ledger.addCall({ task: 'Reteach plan and parent notes', dataClass: 'totals', mode: InferenceMode.ONLY_IN_CLOUD, where: 'in_cloud', ms: r.ms, ok: true, note: `Written by ${alt}: the daily allowance of ${currentSettings().cloudModel} was used up` });
+          return { response: parseJson(r.text) as TotalsResponse, where: r.where, ms: r.ms, mode: InferenceMode.ONLY_IN_CLOUD, payload: totals, note: `written by ${alt}` };
+        } catch { /* fall through to the laptop or the recording */ }
+      }
       // The SDK's own fallback sends the full prompt, which Gemini Nano can't finish in time: retry compact on the laptop.
       // Also after a guard block: Gemini Nano on this laptop is always allowed.
       if (device) { const r = await onDevice(`cloud tried: ${(e as Error).message.slice(0, 80)}`); return { ...r, cloudTried: true }; }
@@ -271,7 +289,13 @@ export async function planFromTotals(totals: ClassTotals, o: { sample: boolean; 
 
 export function classifyPlanError(e: Error): PlanUnavailable {
   if (e instanceof PlanUnavailable) return e;
-  if (e.name === 'GuardBlocked') return new PlanUnavailable('blocked', e.message);
+  if (e.name === 'GuardBlocked') {
+    // say what the guard actually saw (it isn't always a name)
+    const p = new PlanUnavailable('blocked', e.message);
+    if (/student sheet was being read/.test(e.message)) p.message = 'Tickmark held the request back because a pupil sheet was being read on this laptop at that moment. Send the class totals again when the reading has finished.';
+    else if (/image|file reference/.test(e.message)) p.message = 'Tickmark held the request back because it carried an image that is not one of the made-up sample sheets.';
+    return p;
+  }
   if (e.name === 'TimeoutError') return new PlanUnavailable('timeout', e.message);
   if (e.name === 'DeviceUnavailable') return new PlanUnavailable('device', e.message);
   const status = (e as { customErrorData?: { status?: number } }).customErrorData?.status;

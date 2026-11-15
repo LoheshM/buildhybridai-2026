@@ -106,7 +106,7 @@ export async function cutAnswerSheet(photo: Blob, keys: QuestionKey[]): Promise<
     h = pageToImage([corners[2], corners[3], corners[0], corners[1]]);
   }
   const boxes = layout(keys);
-  const cut = (b: Box, pad = 1.5) => warp(full, h, b.x - pad, b.y - pad, b.w + 2 * pad, b.h + 2 * pad);
+  const cut = (b: Box) => boxCanvas(full, h, b);
   const nameCanvas = cut(boxes[0]);
   const name = await nameCanvas.convertToBlob({ type: 'image/png' });
   const answers = boxes.slice(1).map((b) => ({ b, c: cut(b) }));
@@ -120,6 +120,34 @@ export async function cutAnswerSheet(photo: Blob, keys: QuestionKey[]): Promise<
   for (const { b, c } of answers) crops.set(b.q, await trimToInk(c).convertToBlob({ type: 'image/jpeg', quality: 0.8 }));
   return { strip, boxes, blank, name, preview, crops, ms: Math.round(performance.now() - t0) };
 }
+
+/** One box (with a 1.5 mm margin for its frame) cut out of the photo. */
+const boxCanvas = (full: ImageData, h: H, b: Box, pad = 1.5) => warp(full, h, b.x - pad, b.y - pad, b.w + 2 * pad, b.h + 2 * pad);
+
+/** For benches: every answer box of a photo as the canvas the strip is built from (same cut as cutAnswerSheet). */
+export async function answerBoxes(photo: Blob, keys: QuestionKey[]): Promise<{ q: number; c: OffscreenCanvas; blank: boolean }[]> {
+  const bmp = await bitmapOf(photo);
+  const scale = Math.min(1, DETECT_WIDTH / bmp.width);
+  const dw = Math.round(bmp.width * scale), dh = Math.round(bmp.height * scale);
+  const small = new OffscreenCanvas(dw, dh);
+  const sctx = small.getContext('2d', { willReadFrequently: true })!;
+  sctx.drawImage(bmp, 0, 0, dw, dh);
+  const rgba = sctx.getImageData(0, 0, dw, dh).data;
+  const gray = new Uint8ClampedArray(dw * dh);
+  for (let i = 0; i < dw * dh; i++) gray[i] = (rgba[i * 4] * 299 + rgba[i * 4 + 1] * 587 + rgba[i * 4 + 2] * 114) / 1000;
+  const found = findMarkers(gray, dw, dh);
+  if (!found) { bmp.close(); throw new NoMarkers(); }
+  const h = pageToImage(found.map(([x, y]) => [x / scale, y / scale] as [number, number]));
+  const src = new OffscreenCanvas(bmp.width, bmp.height);
+  const cctx = src.getContext('2d', { willReadFrequently: true })!;
+  cctx.drawImage(bmp, 0, 0);
+  const full = cctx.getImageData(0, 0, bmp.width, bmp.height);
+  bmp.close();
+  return layout(keys).slice(1).map((b) => { const c = boxCanvas(full, h, b); return { q: b.q, c, blank: inkShare(c) < BLANK_BELOW }; });
+}
+
+/** For benches: the strip image for any list of labelled boxes. */
+export const stripImage = (rows: { label: string; c: OffscreenCanvas }[]) => stripOf(rows).convertToBlob({ type: 'image/jpeg', quality: 0.9 });
 
 /** Samples a page rectangle (mm) out of the photo through the homography, bilinear. */
 function warp(img: ImageData, h: H, x: number, y: number, w: number, hgt: number, ppm = PX_PER_MM): OffscreenCanvas {

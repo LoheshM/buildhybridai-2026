@@ -72,3 +72,22 @@ describe('round 5 engine pins', () => {
   });
   it('E14 annotations do not turn a number into algebra', () => { expect(detectType('3.14 (2 dp)')).not.toBe('algebra'); });
 });
+
+import { decideOpen, toSuggestion } from './open';
+describe('round 5 critic WP1 pins', () => {
+  const key = { q: 6, prompt: 'Why do plants need light?', answer: 'light gives energy; to make food' };
+  const base = { q: 6, read: 'they need it', crossedOut: '', status: 'pending' as const, misconception: null, flags: [], suggestions: [], type: 'short' as const, outOf: 2 };
+  it('E19 a vague partial records no invented key point', () => {
+    const s = toSuggestion(key, { mark: 'partial', missing: [], reason: 'vague' }, 'on_device', 1)!;
+    expect(decideOpen(key, { ...base, suggestion: s }).mistakes).toEqual([]);
+  });
+  it('E19 none without reasons is not a misconception', () => {
+    const s = toSuggestion(key, { mark: 'none', missing: [], reason: 'wrong' }, 'on_device', 1)!;
+    expect(decideOpen(key, { ...base, suggestion: s }).mistakes).not.toContain('contradicts');
+  });
+  it('E19 a named missing point is recorded', () => {
+    const s = toSuggestion(key, { mark: 'partial', missing: [1], reason: 'no energy' }, 'on_device', 1)!;
+    expect(decideOpen(key, { ...base, suggestion: s }).mistakes).toEqual(['missing_point_1']);
+  });
+  it('E21 5 ms is not 5 m', () => { expect(markQuantity('5 m', '5 ms').status).not.toBe('correct'); });
+});

@@ -40,7 +40,8 @@ export function toSuggestion(key: QuestionKey, raw: RawSuggestion | null | undef
   if (mark === 'partial' && !met.some(Boolean) && n > 1) met[0] = true;
   const count = met.filter(Boolean).length;
   const points = mark === 'full' ? outOf : mark === 'none' ? 0 : n === 1 ? half(outOf / 2) : clamp(half((count / n) * outOf), 0.5, outOf - 0.5);
-  return { points, outOf, met, contradicts: mark === 'none' && missing.size < n, reason, where, ms };
+  // the labels a mark records are only the key points the model itself named as missing (round 5, E19)
+  return { points, outOf, met, named: [...missing].sort((a, b) => a - b), reason, where, ms };
 }
 
 /** Mistake labels for an open answer from its met key points / rubric lines (fixed ids only). */
@@ -67,7 +68,9 @@ export function decideOpen(key: QuestionKey, m: Marked, d: { points?: number; me
   if (points === undefined) return m; // nothing to decide from
   points = clamp(half(points), 0, outOf);
   const status = statusFromPoints(points, outOf);
-  const mistakes = status === 'correct' ? [] : openMistakes(key, { met: status === 'wrong' && !met ? undefined : met, contradicts: !d.met && !d.points && s?.contradicts, lines });
+  // accepted as suggested: only the key points the model named; the teacher's own ticks are taken as given
+  const labelMet = d.met ?? (s?.named && met ? met.map((_, i) => !s.named!.includes(i + 1)) : met);
+  const mistakes = status === 'correct' ? [] : openMistakes(key, { met: status === 'wrong' && !labelMet ? undefined : labelMet, contradicts: !d.met && !d.points && s?.contradicts, lines });
   const changed = !!s && (!!s.adjusted || points !== s.points || (!!d.met && JSON.stringify(d.met) !== JSON.stringify(s.met)));
   const keepMet = d.met ?? (d.points === undefined && !d.lines ? s?.met : undefined);
   const keepLines = d.lines ?? (d.points === undefined && !d.met ? s?.lines : undefined);

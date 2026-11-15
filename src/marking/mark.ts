@@ -57,6 +57,7 @@ export interface Suggestion {
   outOf: number;
   met?: boolean[]; // short answers: one per key point
   contradicts?: boolean;
+  named?: number[]; // short answers: the key points the model itself said were missing
   lines?: { score: number; max: number }[]; // paragraphs: one per rubric line
   reason: string;
   where: 'on_device' | 'in_cloud' | 'recorded' | 'recorded_device';

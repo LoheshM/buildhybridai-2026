@@ -36,7 +36,8 @@ const FAMILY: Record<string, [string, Frac]> = {
 const unitOf = (raw: string) => {
   const u = raw.trim().toLowerCase().replace(/\^2/, '2').replace(/\^3/, '3').replace(/\.$/, '').replace(/\s+/g, '');
   if (!u) return '';
-  return ALIASES[u] ?? ALIASES[u.replace(/s$/, '')] ?? ''; // unknown words are not units ("2x" is algebra)
+  // a plural "s" only after a word ("metres"), never after a symbol: "5 ms" is not "5 m"
+  return ALIASES[u] ?? (u.length > 3 ? ALIASES[u.replace(/s$/, '')] : undefined) ?? ''; // unknown words are not units ("2x" is algebra)
 };
 
 /** Parses "3.5 cm", "-12", "45%", "£4.50", "1,250 g", "0.75". Returns null if it is not one quantity. */
